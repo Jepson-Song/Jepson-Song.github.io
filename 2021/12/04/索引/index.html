@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="索引是对数据库表中一列或多列的值进行处理后的一种结构，使用索引可快速访问数据库表中的特定信息。 Hash索引说到Hash，老铁们很容易联想到HashMap，没错，Hash索引的结构和HashMap相类似，键值 key 通过 Hash 映射找到桶 bucket。在这里桶（bucket）指的是一个能存储一条或多条记录的存储单位。一个桶的结构包含了一个内存指针数组，桶中的每行数据都会指向下一行，形成链表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="索引">
+<meta property="og:url" content="http://example.com/2021/12/04/%E7%B4%A2%E5%BC%95/index.html">
+<meta property="og:site_name" content="Jepson&#39;s Blog">
+<meta property="og:description" content="索引是对数据库表中一列或多列的值进行处理后的一种结构，使用索引可快速访问数据库表中的特定信息。 Hash索引说到Hash，老铁们很容易联想到HashMap，没错，Hash索引的结构和HashMap相类似，键值 key 通过 Hash 映射找到桶 bucket。在这里桶（bucket）指的是一个能存储一条或多条记录的存储单位。一个桶的结构包含了一个内存指针数组，桶中的每行数据都会指向下一行，形成链表">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2021/12/04/BOnpZRJCkog1e4U.png">
+<meta property="og:image" content="https://s2.loli.net/2021/12/04/LPS6OpWXoGTYDtB.png">
+<meta property="article:published_time" content="2021-12-04T08:15:26.000Z">
+<meta property="article:modified_time" content="2021-12-07T12:38:36.517Z">
+<meta property="article:author" content="Jepson">
+<meta property="article:tag" content="知识点">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2021/12/04/BOnpZRJCkog1e4U.png">
+
+<link rel="canonical" href="http://example.com/2021/12/04/%E7%B4%A2%E5%BC%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>索引 | Jepson's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jepson's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/Jepson-Song" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/%E7%B4%A2%E5%BC%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          索引
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-04 16:15:26" itemprop="dateCreated datePublished" datetime="2021-12-04T16:15:26+08:00">2021-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-12-07 20:38:36" itemprop="dateModified" datetime="2021-12-07T20:38:36+08:00">2021-12-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>索引是对数据库表中一列或多列的值进行处理后的一种结构，使用索引可快速访问数据库表中的特定信息。</p>
+<h2 id="Hash索引"><a href="#Hash索引" class="headerlink" title="Hash索引"></a>Hash索引</h2><p>说到Hash，老铁们很容易联想到HashMap，没错，Hash索引的结构和HashMap相类似，键值 key 通过 Hash 映射找到桶 bucket。在这里桶（bucket）指的是一个能存储一条或多条记录的存储单位。一个桶的结构包含了一个内存指针数组，桶中的每行数据都会指向下一行，形成链表结构，当遇到 Hash 冲突时，会在桶中进行键值的查找。</p>
+<p>InnoDB中采用除法散列函数(取余法)，冲突机制采用链接法。</p>
+<h2 id="Hash索引和B-tree索引查询效率"><a href="#Hash索引和B-tree索引查询效率" class="headerlink" title="Hash索引和B+tree索引查询效率"></a>Hash索引和B+tree索引查询效率</h2><p>采用 Hash 进行检索效率非常高，基本上一次检索就可以找到数据，而 B+ 树需要自顶向下依次查找，多次访问节点才能找到数据，中间需要多次 I/O 操作，理论上来说 Hash 比 B+ tree更快。下图是引用网上的Hash索引图片和 B+tree 索引图片，便于直观的理解2种索引结构。</p>
+<h3 id="Hash索引-1"><a href="#Hash索引-1" class="headerlink" title="Hash索引"></a>Hash索引</h3><p><img src="https://s2.loli.net/2021/12/04/BOnpZRJCkog1e4U.png" alt="20211204161752"></p>
+<h3 id="B-树索引"><a href="#B-树索引" class="headerlink" title="B+树索引"></a>B+树索引</h3><p><img src="https://s2.loli.net/2021/12/04/LPS6OpWXoGTYDtB.png" alt="20211204161803"></p>
+<h2 id="Hash索引和B-tree索引的区别"><a href="#Hash索引和B-tree索引的区别" class="headerlink" title="Hash索引和B+tree索引的区别"></a>Hash索引和B+tree索引的区别</h2><ol>
+<li><p>在查询速度上，如果是等值查询，那么Hash索引明显有绝对优势，因为只需要经过一次 Hash 算法即可找到相应的键值，复杂度为O(1)；当然了，这个前提是键值都是唯一的。如果键值不是唯一(或存在Hash冲突)，就需要先找到该键所在位置，然后再根据链表往后扫描，直到找到相应的数据，这时候复杂度会变成O(n)，降低了Hash索引的查找效率。所以，Hash 索引通常不会用到重复值多的列上，比如列为性别、年龄的情况等（当然B+tree索引也不适合这种离散型低的字段上）；</p>
+</li>
+<li><p>Hash 索引是无序的，如果是范围查询检索，这时候 Hash 索引就无法起到作用，即使原先是有序的键值，经过 Hash 算法后，也会变成不连续的了。因此:</p>
+<ol>
+<li><p>Hash 索引只支持等值比较查询、无法索成范围查询检索，B+tree索引的叶子节点形成有序链表，便于范围查询。</p>
+</li>
+<li><p>Hash 索引无法做 like ‘xxx%’ 这样的部分模糊查询，因为需要对 完整 key 做 Hash 计算，定位bucket。而 B+tree 索引具有最左前缀匹配，可以进行部分模糊查询。</p>
+</li>
+<li><p>Hash索引中存放的是经过Hash计算之后的Hash值，而且Hash值的大小关系并不一定和Hash运算前的键值完全一样，所以数据库无法利用索引的数据来避免任何排序运算。B+tree 索引的叶子节点形成有序链表，可用于排序。</p>
+</li>
+</ol>
+</li>
+<li><p>Hash 索引不支持多列联合索引，对于联合索引来说，Hash 索引在计算 Hash 值的时候是将索引键合并后再一起计算 Hash 值，不会针对每个索引单独计算 Hash 值。因此如果用到联合索引的一个或者几个索引时，联合索引无法被利用；</p>
+</li>
+<li><p>因为存在哈希碰撞问题，在有大量重复键值情况下，哈希索引的效率极低。B+tree 所有查询都要找到叶子节点，性能稳定；</p>
+</li>
+</ol>
+<h2 id="场景区分"><a href="#场景区分" class="headerlink" title="场景区分"></a>场景区分</h2><ol>
+<li><p>大多数场景下，都会有组合查询，范围查询、排序、分组、模糊查询等查询特征，Hash 索引无法满足要求，建议数据库使用B+树索引。</p>
+</li>
+<li><p>在离散型高，数据基数大，且等值查询时候，Hash索引有优势。</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/Jepson-Song">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GItHub</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag"><i class="fa fa-tag"></i> 知识点</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/04/b%E6%A0%91%E5%92%8Cb+%E6%A0%91/" rel="prev" title="b树和b+树">
+      <i class="fa fa-chevron-left"></i> b树和b+树
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/13/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951213/" rel="next" title="实验记录1213">
+      实验记录1213 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hash%E7%B4%A2%E5%BC%95"><span class="nav-number">1.</span> <span class="nav-text">Hash索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hash%E7%B4%A2%E5%BC%95%E5%92%8CB-tree%E7%B4%A2%E5%BC%95%E6%9F%A5%E8%AF%A2%E6%95%88%E7%8E%87"><span class="nav-number">2.</span> <span class="nav-text">Hash索引和B+tree索引查询效率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hash%E7%B4%A2%E5%BC%95-1"><span class="nav-number">2.1.</span> <span class="nav-text">Hash索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-%E6%A0%91%E7%B4%A2%E5%BC%95"><span class="nav-number">2.2.</span> <span class="nav-text">B+树索引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hash%E7%B4%A2%E5%BC%95%E5%92%8CB-tree%E7%B4%A2%E5%BC%95%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">3.</span> <span class="nav-text">Hash索引和B+tree索引的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E5%8C%BA%E5%88%86"><span class="nav-number">4.</span> <span class="nav-text">场景区分</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jepson</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://jinpengsong20.github.io/" title="Homepage → https:&#x2F;&#x2F;jinpengsong20.github.io" rel="noopener" target="_blank"><i class="fa fa-user fa-fw"></i>Homepage</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/Jepson-Song" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Jepson-Song" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jinpengsong@smail.nju.edu.cn" title="E-Mail → mailto:jinpengsong@smail.nju.edu.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.nju.edu.cn/" title="School&#x2F;NJU → https:&#x2F;&#x2F;www.nju.edu.cn" rel="noopener" target="_blank"><i class="fa fa-university fa-fw"></i>School/NJU</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://cs.nju.edu.cn/lands" title="Lab&#x2F;LANDS → https:&#x2F;&#x2F;cs.nju.edu.cn&#x2F;lands" rel="noopener" target="_blank"><i class="fa fa-users fa-fw"></i>Lab/LANDS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://baike.baidu.com/item/%E5%8D%97%E4%BA%AC/23952?fr=aladdin" title="City&#x2F;NanJing → https:&#x2F;&#x2F;baike.baidu.com&#x2F;item&#x2F;%E5%8D%97%E4%BA%AC&#x2F;23952?fr&#x3D;aladdin" rel="noopener" target="_blank"><i class="fa fa-map-marker fa-fw"></i>City/NanJing</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://jepson-song.github.io/" title="https:&#x2F;&#x2F;jepson-song.github.io" rel="noopener" target="_blank">Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://jinpengsong20.github.io/" title="https:&#x2F;&#x2F;jinpengsong20.github.io" rel="noopener" target="_blank">Homepage</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jepson</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
