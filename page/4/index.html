@@ -159,6 +159,91 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/23/%E8%AE%A8%E8%AE%BA0924/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/23/%E8%AE%A8%E8%AE%BA0924/" class="post-title-link" itemprop="url">讨论0924</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-09-23 14:31:17" itemprop="dateCreated datePublished" datetime="2021-09-23T14:31:17+08:00">2021-09-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-09-24 13:00:08" itemprop="dateModified" datetime="2021-09-24T13:00:08+08:00">2021-09-24</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="头部追踪系统"><a href="#头部追踪系统" class="headerlink" title="头部追踪系统"></a>头部追踪系统</h2><h3 id="系统组成"><a href="#系统组成" class="headerlink" title="系统组成"></a>系统组成</h3><ol>
+<li><p>耳机定位</p>
+<p>在环境中部署若干个接收端，在左右耳机各部署一个发射端。两发射端发射不同的zc超声信号，接收端接收信号。参考GPS卫星定位的思想，每次都选择信号质量最好的三个接收端来计算与耳机的距离，然后根据三个距离用牛顿迭代解方程计算出耳机的位置（自己手写了牛顿迭代的代码解决了matlab里solve函数计算太慢的问题）。</p>
+<p>存在的问题：</p>
+<ol>
+<li>计算距离时用相位好像比不用相位效果更差。因为不用相位的精度是声速除以采样率（96k）精度为3.5mm左右，但是用相位要把距离先对波长取整，而波长是8.5mm左右，虽然可以用相位进行补偿，但是实验看起来补偿效果不是太好，用相位的测得的距离波动更大一些。<br><img src="https://i.loli.net/2021/09/24/c4IuQTwvkZKHYxq.png" alt="20210924124649"></li>
+<li>计算位置过程中因为每次都要选择三个信号最好的接收端，导致一旦接收端切换位置就可能会出现比较大的偏移。</li>
+</ol>
+</li>
+<li><p>头部动作识别</p>
+<p>把头部的动作进行分类（目前分成了六类，分别是：前后移动，左右移动，上下移动，旋转，俯仰，倾斜），然后利用耳机的位置数据来判断头部正在做哪个动作。</p>
+<p>采用LSTM作为分类模型，用左右耳机的轨迹完成头部动作分类。每秒对耳机定位10次，把两耳机2s的轨迹作为训练数据，因为每个耳机的位置是3维，所以构造特征维度为6长度为20的数据输入LSTM训练，六分类的平均准确率达到了97%以上。</p>
+<p>构造了一个数据集，六类动作每一类大概1000条数据，训练LSTM的效果如下。</p>
+<p> <img src="https://i.loli.net/2021/09/23/nFxqM32AwKhY8I4.png" alt="20210923160403"></p>
+<p> <img src="https://i.loli.net/2021/09/23/6TagVw3t1yEWLpG.png" alt="20210923160347"></p>
+</li>
+<li><p>头部朝向计算</p>
+<p>左右耳机的位置可以看成左右耳的位置，但是只知道两个点的坐标没办法计算出头部的朝向。我们知道头部的动作近似是围绕着脖子处的一个轴点进行的，有的动作会导致轴点位置改变（比如前后左右上下移动），而有的动作不会导致轴点位置改变（比如旋转俯仰倾斜）。</p>
+<p>在第二步识别出头部动作的基础上，如果是转动类型的动作（旋转，俯仰，倾斜），则轴点不变，如果是移动类型的动作（前后移动，左右移动，上下移动），虽然轴点发生变化了，但是轴点与两耳的相对位置基本可以认为是不变的，所以可以直接根据两耳的位置推算出轴点的位置，这里暂时只考虑了这些简单动作，没考虑复杂的移动，比如低着头移动等。最后根据两耳位置和轴点位置即可得到头部的姿态。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950922/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -938,70 +1023,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/05/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950805/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/05/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950805/" class="post-title-link" itemprop="url">实验记录0805</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-08-05 15:48:56" itemprop="dateCreated datePublished" datetime="2021-08-05T15:48:56+08:00">2021-08-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-27 19:47:06" itemprop="dateModified" datetime="2021-08-27T19:47:06+08:00">2021-08-27</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Pos按钮"><a href="#Pos按钮" class="headerlink" title="Pos按钮"></a>Pos按钮</h2><h3 id="功能：根据距离数据计算前两点坐标pos1和pos2"><a href="#功能：根据距离数据计算前两点坐标pos1和pos2" class="headerlink" title="功能：根据距离数据计算前两点坐标pos1和pos2"></a>功能：根据距离数据计算前两点坐标pos1和pos2</h3><h3 id="输入：dis文件（或者dis-cor文件）"><a href="#输入：dis文件（或者dis-cor文件）" class="headerlink" title="输入：dis文件（或者dis_cor文件）"></a>输入：dis文件（或者dis_cor文件）</h3><h3 id="输出：pos文件（或者pos-cor文件），内部数据每一行nin-nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离"><a href="#输出：pos文件（或者pos-cor文件），内部数据每一行nin-nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离" class="headerlink" title="输出：pos文件（或者pos_cor文件），内部数据每一行nin*nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离"></a>输出：pos文件（或者pos_cor文件），内部数据每一行nin*nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离</h3><h2 id="Dir按钮"><a href="#Dir按钮" class="headerlink" title="Dir按钮"></a>Dir按钮</h2><h3 id="功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir"><a href="#功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir" class="headerlink" title="功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir"></a>功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir</h3><h3 id="输入：pos文件（或者pos-cor文件）"><a href="#输入：pos文件（或者pos-cor文件）" class="headerlink" title="输入：pos文件（或者pos_cor文件）"></a>输入：pos文件（或者pos_cor文件）</h3><h3 id="输出：dir文件（或者dir-cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量"><a href="#输出：dir文件（或者dir-cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量" class="headerlink" title="输出：dir文件（或者dir_cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量"></a>输出：dir文件（或者dir_cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量</h3>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1071,7 +1092,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-count">78</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
