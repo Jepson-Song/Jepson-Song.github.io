@@ -20,22 +20,21 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="一个基于非比较的排序算法，只能应用于整数排序，复杂度为O(dn)，d是整数最大的长度，即可以在线性时间和线性空间复杂度内完成排序，快于一切基于比较的排序算法，比如快排、归并排序等。 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748class Solution &amp;#123;p">
+  <meta name="description" content="允许多个进程同时对数据进行读操作，但是不允许读和写以及写和写操作同时发生。 一个整型变量 count 记录在对数据进行读操作的进程数量，一个互斥量 count_mutex 用于对 count 加锁，一个互斥量 data_mutex 用于对读写的数据加锁。 123456789101112131415161718192021222324252627282930typedef int samephore">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基数排序">
-<meta property="og:url" content="http://example.com/2021/12/01/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:title" content="读者写者问题">
+<meta property="og:url" content="http://example.com/2022/02/17/%E8%AF%BB%E8%80%85%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="Jepson&#39;s Blog">
-<meta property="og:description" content="一个基于非比较的排序算法，只能应用于整数排序，复杂度为O(dn)，d是整数最大的长度，即可以在线性时间和线性空间复杂度内完成排序，快于一切基于比较的排序算法，比如快排、归并排序等。 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748class Solution &amp;#123;p">
+<meta property="og:description" content="允许多个进程同时对数据进行读操作，但是不允许读和写以及写和写操作同时发生。 一个整型变量 count 记录在对数据进行读操作的进程数量，一个互斥量 count_mutex 用于对 count 加锁，一个互斥量 data_mutex 用于对读写的数据加锁。 123456789101112131415161718192021222324252627282930typedef int samephore">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://s2.loli.net/2021/12/09/IaWo8EmNZrgLSdn.png">
-<meta property="article:published_time" content="2021-12-01T02:15:29.000Z">
-<meta property="article:modified_time" content="2021-12-19T06:20:44.401Z">
+<meta property="article:published_time" content="2022-02-17T11:27:31.000Z">
+<meta property="article:modified_time" content="2022-02-17T11:29:36.466Z">
 <meta property="article:author" content="Jepson">
-<meta property="article:tag" content="算法">
+<meta property="article:tag" content="八股文">
+<meta property="article:tag" content="操作系统">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s2.loli.net/2021/12/09/IaWo8EmNZrgLSdn.png">
 
-<link rel="canonical" href="http://example.com/2021/12/01/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/">
+<link rel="canonical" href="http://example.com/2022/02/17/%E8%AF%BB%E8%80%85%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98/">
 
 
 <script id="page-configurations">
@@ -48,7 +47,7 @@
   };
 </script>
 
-  <title>基数排序 | Jepson's Blog</title>
+  <title>读者写者问题 | Jepson's Blog</title>
   
 
 
@@ -167,7 +166,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/01/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/%E8%AF%BB%E8%80%85%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -180,7 +179,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          基数排序
+          读者写者问题
         </h1>
 
         <div class="post-meta">
@@ -189,16 +188,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2021-12-01 10:15:29" itemprop="dateCreated datePublished" datetime="2021-12-01T10:15:29+08:00">2021-12-01</time>
+              <time title="Created: 2022-02-17 19:27:31 / Modified: 19:29:36" itemprop="dateCreated datePublished" datetime="2022-02-17T19:27:31+08:00">2022-02-17</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-12-19 14:20:44" itemprop="dateModified" datetime="2021-12-19T14:20:44+08:00">2021-12-19</time>
-              </span>
 
           
 
@@ -211,10 +204,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>一个基于非比较的排序算法，只能应用于整数排序，复杂度为O(dn)，d是整数最大的长度，即可以在线性时间和线性空间复杂度内完成排序，快于一切基于比较的排序算法，比如快排、归并排序等。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maximumGap</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="keyword">if</span>(n&lt;<span class="number">2</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//sort(nums.begin(),nums.end());</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> mx = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">        <span class="comment">// 找到最大的整数，决定排序迭代的次数</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            mx = max(mx, nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> x = <span class="number">1</span>;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">tmp</span><span class="params">(n)</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(mx&gt;=x)&#123;</span><br><span class="line">            <span class="comment">// 计数器</span></span><br><span class="line">            <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">cnt</span><span class="params">(<span class="number">10</span>)</span></span>;</span><br><span class="line">            <span class="comment">// 对十进制的每一位进行计数</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">                <span class="keyword">int</span> d = (nums[i]/x)%<span class="number">10</span>;</span><br><span class="line">                cnt[d] ++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 把计数器转换为索引</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">                cnt[i] += cnt[i<span class="number">-1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 逆序遍历，对数组进行重新排序</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=n<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">                <span class="keyword">int</span> d = (nums[i]/x)%<span class="number">10</span>;</span><br><span class="line">                tmp[cnt[d]<span class="number">-1</span>] = nums[i];</span><br><span class="line">                cnt[d] --;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 更新数组</span></span><br><span class="line">            <span class="comment">//copy(tmp.begin(), tmp.end(), nums.begin());</span></span><br><span class="line">            nums.swap(tmp);</span><br><span class="line">            </span><br><span class="line">            x *= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;n;i++)&#123;</span><br><span class="line">            ans = max(ans, nums[i]-nums[i<span class="number">-1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+        <p>允许多个进程同时对数据进行读操作，但是不允许读和写以及写和写操作同时发生。</p>
+<p>一个整型变量 count 记录在对数据进行读操作的进程数量，一个互斥量 count_mutex 用于对 count 加锁，一个互斥量 data_mutex 用于对读写的数据加锁。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> samephore;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">down</span><span class="params">(<span class="keyword">int</span>* x)</span></span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">up</span><span class="params">(<span class="keyword">int</span>* y)</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">samephore count_mutex = <span class="number">1</span>;</span><br><span class="line">samephore data_mutex = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reader</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count ++;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">1</span>) <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">        <span class="comment">//read</span></span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count --;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">0</span>) <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">writer</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="comment">//write</span></span><br><span class="line">        <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://s2.loli.net/2021/12/09/IaWo8EmNZrgLSdn.png" alt="20211209124114"></p>
+<p>此解法中读者是优先的，当存在读者时，写者将被延迟，且只要有一个读者活跃，随后而来的读者都将被允许访问此文件，从而导致写者长时间等待，并有可能出现写者饥饿现象。</p>
+<p>增加信号量并修改此程序，让写者与读者平等：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">samephore s = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reader</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">down</span>(&amp;s);</span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count ++;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">1</span>) <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;s);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//read</span></span><br><span class="line">        </span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count --;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">0</span>) <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">writer</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">down</span>(&amp;s);</span><br><span class="line">        <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="comment">//write</span></span><br><span class="line">        <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>假设进程队列：R1、W1、W2、R2、R3</p>
+<p>当R1刚刚执行完V(s)，W1进程若调度会卡在P(writeblock)，而W2R2R3想要运行，均会卡在P(s)，当R1读完，V(writeblock)完成，W1可以运行，以此类推，R1W1W2R2R3按顺序调度。</p>
 
     </div>
 
@@ -244,7 +243,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+              <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" rel="tag"><i class="fa fa-tag"></i> 八股文</a>
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"><i class="fa fa-tag"></i> 操作系统</a>
           </div>
 
         
@@ -253,13 +253,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/11/30/new%E5%92%8Cmalloc/" rel="prev" title="new和malloc">
-      <i class="fa fa-chevron-left"></i> new和malloc
+    <a href="/2022/02/17/%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%90%8C%E6%AD%A5%E5%92%8C%E4%BA%92%E6%96%A5/" rel="prev" title="进程的同步和互斥">
+      <i class="fa fa-chevron-left"></i> 进程的同步和互斥
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/12/01/%E5%8C%BA%E9%97%B4dp/" rel="next" title="区间dp">
-      区间dp <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
