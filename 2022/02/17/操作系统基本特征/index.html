@@ -20,15 +20,21 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Jepson&#39;s Blog">
-<meta property="og:url" content="http://example.com/archives/2021/page/5/index.html">
+  <meta name="description" content="基本特征 并发  并发是指宏观上在一段时间内能同时运行多个程序，而并行则指同一时刻能运行多个指令。  并行需要硬件支持，如多流水线、多核处理器或者分布式计算系统。  操作系统通过引入进程和线程，使得程序能够并发运行。  共享  共享是指系统中的资源可以被多个并发进程共同使用。  有两种共享方式：互斥共享和同时共享。  互斥共享的资源称为临界资源，例如打印机等，在同一时刻只允许一个进程访问，需要用同">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统基本特征">
+<meta property="og:url" content="http://example.com/2022/02/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81/index.html">
 <meta property="og:site_name" content="Jepson&#39;s Blog">
+<meta property="og:description" content="基本特征 并发  并发是指宏观上在一段时间内能同时运行多个程序，而并行则指同一时刻能运行多个指令。  并行需要硬件支持，如多流水线、多核处理器或者分布式计算系统。  操作系统通过引入进程和线程，使得程序能够并发运行。  共享  共享是指系统中的资源可以被多个并发进程共同使用。  有两种共享方式：互斥共享和同时共享。  互斥共享的资源称为临界资源，例如打印机等，在同一时刻只允许一个进程访问，需要用同">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-17T08:26:27.000Z">
+<meta property="article:modified_time" content="2022-02-17T08:27:20.115Z">
 <meta property="article:author" content="Jepson">
+<meta property="article:tag" content="八股文">
+<meta property="article:tag" content="操作系统">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/archives/2021/page/5/">
+<link rel="canonical" href="http://example.com/2022/02/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81/">
 
 
 <script id="page-configurations">
@@ -36,12 +42,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Archive | Jepson's Blog</title>
+  <title>操作系统基本特征 | Jepson's Blog</title>
   
 
 
@@ -153,235 +159,121 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        
-        <span class="collection-header">Good! 86 posts in total. Keep on posting.</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          操作系统基本特征
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-17 16:26:27 / Modified: 16:27:20" itemprop="dateCreated datePublished" datetime="2022-02-17T16:26:27+08:00">2022-02-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2021</span>
+        <h2 id="基本特征"><a href="#基本特征" class="headerlink" title="基本特征"></a>基本特征</h2><ol>
+<li><p>并发</p>
+<p> 并发是指宏观上在一段时间内能同时运行多个程序，而并行则指同一时刻能运行多个指令。</p>
+<p> 并行需要硬件支持，如多流水线、多核处理器或者分布式计算系统。</p>
+<p> 操作系统通过引入进程和线程，使得程序能够并发运行。</p>
+</li>
+<li><p>共享</p>
+<p> 共享是指系统中的资源可以被多个并发进程共同使用。</p>
+<p> 有两种共享方式：互斥共享和同时共享。</p>
+<p> 互斥共享的资源称为临界资源，例如打印机等，在同一时刻只允许一个进程访问，需要用同步机制来实现互斥访问。</p>
+</li>
+<li><p>虚拟</p>
+<p> 虚拟技术把一个物理实体转换为多个逻辑实体。</p>
+<p> 主要有两种虚拟技术：时（时间）分复用技术和空（空间）分复用技术。</p>
+<p> 多个进程能在同一个处理器上并发执行使用了时分复用技术，让每个进程轮流占用处理器，每次只执行一小个时间片并快速切换。</p>
+<p> 虚拟内存使用了空分复用技术，它将物理内存抽象为地址空间，每个进程都有各自的地址空间。地址空间的页被映射到物理内存，地址空间的页并不需要全部在物理内存中，当使用到一个没有在物理内存的页时，执行页面置换算法，将该页置换到内存中。</p>
+</li>
+<li><p>异步<br> 异步指进程不是一次性执行完毕，而是走走停停，以不可知的速度向前推进</p>
+</li>
+</ol>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
+        
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-07-20T10:35:10+08:00"
-              content="2021-07-20">
-          07-20
-        </time>
-      </div>
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/07/20/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950720/" itemprop="url">
-            <span itemprop="name">实验记录0720</span>
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/Jepson-Song">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GItHub</span>
           </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-07-19T19:33:51+08:00"
-              content="2021-07-19">
-          07-19
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/07/19/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950719/" itemprop="url">
-            <span itemprop="name">实验记录0719</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-07-18T16:27:07+08:00"
-              content="2021-07-18">
-          07-18
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/07/18/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950718/" itemprop="url">
-            <span itemprop="name">实验记录0718</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-07-17T21:37:38+08:00"
-              content="2021-07-17">
-          07-17
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/07/17/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950717/" itemprop="url">
-            <span itemprop="name">实验记录0717</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-07-16T21:40:14+08:00"
-              content="2021-07-16">
-          07-16
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/07/16/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950716/" itemprop="url">
-            <span itemprop="name">实验记录0716</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-07-15T21:10:44+08:00"
-              content="2021-07-15">
-          07-15
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/07/15/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950715/" itemprop="url">
-            <span itemprop="name">实验记录0715</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-07-14T16:53:15+08:00"
-              content="2021-07-14">
-          07-14
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/07/14/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950714/" itemprop="url">
-            <span itemprop="name">实验记录0714</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-07-13T19:26:04+08:00"
-              content="2021-07-13">
-          07-13
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/07/13/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950713/" itemprop="url">
-            <span itemprop="name">实验记录0713</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-07-07T10:59:46+08:00"
-              content="2021-07-07">
-          07-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/07/07/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950707/" itemprop="url">
-            <span itemprop="name">实验记录0707</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-05-18T19:53:29+08:00"
-              content="2021-05-18">
-          05-18
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/05/18/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950518/" itemprop="url">
-            <span itemprop="name">实验记录0518</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-
+        </div>
     </div>
   </div>
-  
-  
-  
 
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" rel="tag"><i class="fa fa-tag"></i> 八股文</a>
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"><i class="fa fa-tag"></i> 操作系统</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/17/%E9%A9%AC%E6%88%8F%E5%9B%A2%E4%BA%BA%E5%A1%94/" rel="prev" title="马戏团人塔">
+      <i class="fa fa-chevron-left"></i> 马戏团人塔
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
   
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/2021/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/archives/2021/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/2021/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/archives/2021/page/6/">6</a><a class="page-number" href="/archives/2021/page/7/">7</a><a class="extend next" rel="next" href="/archives/2021/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
-  </nav>
+  
+  
 
 
 
@@ -433,6 +325,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81"><span class="nav-number">1.</span> <span class="nav-text">基本特征</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
