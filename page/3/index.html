@@ -159,6 +159,71 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/15/%E7%BD%91%E9%A1%B5%E6%89%93%E5%BC%80%E6%89%80%E7%BB%8F%E5%8E%86%E7%9A%84%E8%BF%87%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/15/%E7%BD%91%E9%A1%B5%E6%89%93%E5%BC%80%E6%89%80%E7%BB%8F%E5%8E%86%E7%9A%84%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">网页打开所经历的过程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-15 21:24:14 / Modified: 21:43:19" itemprop="dateCreated datePublished" datetime="2021-12-15T21:24:14+08:00">2021-12-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="1-DNS解析"><a href="#1-DNS解析" class="headerlink" title="1.DNS解析"></a>1.DNS解析</h2><h3 id="输入网址后，浏览器会先在自己的缓存中查找网址对应的ip"><a href="#输入网址后，浏览器会先在自己的缓存中查找网址对应的ip" class="headerlink" title="输入网址后，浏览器会先在自己的缓存中查找网址对应的ip"></a>输入网址后，浏览器会先在自己的缓存中查找网址对应的ip</h3><h3 id="如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）"><a href="#如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）" class="headerlink" title="如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）"></a>如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）</h3><h3 id="如果还没找到，会向路由器缓存中查找"><a href="#如果还没找到，会向路由器缓存中查找" class="headerlink" title="如果还没找到，会向路由器缓存中查找"></a>如果还没找到，会向路由器缓存中查找</h3><h3 id="如果还没有，就向DNS服务器查找"><a href="#如果还没有，就向DNS服务器查找" class="headerlink" title="如果还没有，就向DNS服务器查找"></a>如果还没有，就向DNS服务器查找</h3><h3 id="如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端"><a href="#如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端" class="headerlink" title="如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端"></a>如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端</h3><h3 id="客户端拿到ip后更新自己的缓存并与服务器建立连接"><a href="#客户端拿到ip后更新自己的缓存并与服务器建立连接" class="headerlink" title="客户端拿到ip后更新自己的缓存并与服务器建立连接"></a>客户端拿到ip后更新自己的缓存并与服务器建立连接</h3><h2 id="2-网络通信"><a href="#2-网络通信" class="headerlink" title="2.网络通信"></a>2.网络通信</h2><h3 id="TCP三次握手建立链接"><a href="#TCP三次握手建立链接" class="headerlink" title="TCP三次握手建立链接"></a>TCP三次握手建立链接</h3><p><img src="https://s2.loli.net/2021/12/15/82Kq4HfkiRjMYGP.png" alt="20211215213744"></p>
+<h3 id="四次挥手释放链接"><a href="#四次挥手释放链接" class="headerlink" title="四次挥手释放链接"></a>四次挥手释放链接</h3><p><img src="https://s2.loli.net/2021/12/15/ehx1bui5gIOnC7L.png" alt="20211215213754"></p>
+<p>为什么“握手”是三次，“挥手”却要四次？</p>
+<p>TCP建立连接时之所以只需要”三次握手”，是因为在第二次”握手”过程中，服务器端发送给客户端的TCP报文是以SYN与ACK作为标志位的。SYN是请求连接标志，表示服务器端同意建立连接；ACK是确认报文，表示告诉客户端，服务器端收到了它的请求报文。</p>
+<p>即SYN建立连接报文与ACK确认接收报文是在同一次”握手”当中传输的，所以”三次握手”不多也不少，正好让双方明确彼此信息互通。</p>
+<p>TCP释放连接时之所以需要“四次挥手”,是因为FIN释放连接报文与ACK确认接收报文是分别由第二次和第三次”握手”传输的。为何建立连接时一起传输，释放连接时却要分开传输？</p>
+<p>建立连接时，被动方服务器端结束CLOSED阶段进入“握手”阶段并不需要任何准备，可以直接返回SYN和ACK报文，开始建立连接。释放连接时，被动方服务器，突然收到主动方客户端释放连接的请求时并不能立即释放连接，因为还有必要的数据需要处理，所以服务器先返回ACK确认收到报文，经过CLOSE-WAIT阶段准备好释放连接之后，才能返回FIN释放连接报文。</p>
+<h2 id="3-页面渲染"><a href="#3-页面渲染" class="headerlink" title="3.页面渲染"></a>3.页面渲染</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/13/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951213/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -894,74 +959,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/01/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/01/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">基数排序</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-12-01 10:15:29" itemprop="dateCreated datePublished" datetime="2021-12-01T10:15:29+08:00">2021-12-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-12-19 14:20:44" itemprop="dateModified" datetime="2021-12-19T14:20:44+08:00">2021-12-19</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>一个基于非比较的排序算法，只能应用于整数排序，复杂度为O(dn)，d是整数最大的长度，即可以在线性时间和线性空间复杂度内完成排序，快于一切基于比较的排序算法，比如快排、归并排序等。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maximumGap</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="keyword">if</span>(n&lt;<span class="number">2</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//sort(nums.begin(),nums.end());</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> mx = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">        <span class="comment">// 找到最大的整数，决定排序迭代的次数</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            mx = max(mx, nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> x = <span class="number">1</span>;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">tmp</span><span class="params">(n)</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(mx&gt;=x)&#123;</span><br><span class="line">            <span class="comment">// 计数器</span></span><br><span class="line">            <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">cnt</span><span class="params">(<span class="number">10</span>)</span></span>;</span><br><span class="line">            <span class="comment">// 对十进制的每一位进行计数</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">                <span class="keyword">int</span> d = (nums[i]/x)%<span class="number">10</span>;</span><br><span class="line">                cnt[d] ++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 把计数器转换为索引</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">                cnt[i] += cnt[i<span class="number">-1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 逆序遍历，对数组进行重新排序</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=n<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">                <span class="keyword">int</span> d = (nums[i]/x)%<span class="number">10</span>;</span><br><span class="line">                tmp[cnt[d]<span class="number">-1</span>] = nums[i];</span><br><span class="line">                cnt[d] --;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 更新数组</span></span><br><span class="line">            <span class="comment">//copy(tmp.begin(), tmp.end(), nums.begin());</span></span><br><span class="line">            nums.swap(tmp);</span><br><span class="line">            </span><br><span class="line">            x *= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;n;i++)&#123;</span><br><span class="line">            ans = max(ans, nums[i]-nums[i<span class="number">-1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s2.loli.net/2021/12/09/IaWo8EmNZrgLSdn.png" alt="20211209124114"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1031,7 +1028,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-count">85</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
