@@ -159,6 +159,296 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/17/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA/" class="post-title-link" itemprop="url">关系数据库设计理论</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-17 10:04:12 / Modified: 10:06:40" itemprop="dateCreated datePublished" datetime="2022-02-17T10:04:12+08:00">2022-02-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>关系数据库设计理论</p>
+<h3 id="函数依赖"><a href="#函数依赖" class="headerlink" title="函数依赖"></a>函数依赖</h3><p>记 A-&gt;B 表示 A 函数决定 B，也可以说 B 函数依赖于 A。</p>
+<p>如果 {A1，A2，… ，An} 是关系的一个或多个属性的集合，该集合函数决定了关系的其它所有属性并且是最小的，那么该集合就称为键码。</p>
+<p>对于 A-&gt;B，如果能找到 A 的真子集 A’，使得 A’-&gt; B，那么 A-&gt;B 就是部分函数依赖，否则就是完全函数依赖。</p>
+<p>对于 A-&gt;B，B-&gt;C，则 A-&gt;C 是一个传递函数依赖。</p>
+<h3 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h3><p>以下的学生课程关系的函数依赖为 {Sno, Cname} -&gt; {Sname, Sdept, Mname, Grade}，键码为 {Sno, Cname}。也就是说，确定学生和课程之后，就能确定其它信息。</p>
+<table>
+<thead>
+<tr>
+<th align="center">Sno</th>
+<th align="center">Sname</th>
+<th align="center">Sdept</th>
+<th align="center">Mname</th>
+<th align="center">Cname</th>
+<th align="center">Grade</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">学生-1</td>
+<td align="center">学院-1</td>
+<td align="center">院长-1</td>
+<td align="center">课程-1</td>
+<td align="center">90</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">学生-2</td>
+<td align="center">学院-2</td>
+<td align="center">院长-2</td>
+<td align="center">课程-2</td>
+<td align="center">80</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">学生-2</td>
+<td align="center">学院-2</td>
+<td align="center">院长-2</td>
+<td align="center">课程-1</td>
+<td align="center">100</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">学生-3</td>
+<td align="center">学院-2</td>
+<td align="center">院长-2</td>
+<td align="center">课程-2</td>
+<td align="center">95</td>
+</tr>
+</tbody></table>
+<p>不符合范式的关系，会产生很多异常，主要有以下四种异常：</p>
+<ul>
+<li>冗余数据：例如 <code>学生-2</code> 出现了两次。</li>
+<li>修改异常：修改了一个记录中的信息，但是另一个记录中相同的信息却没有被修改。</li>
+<li>删除异常：删除一个信息，那么也会丢失其它信息。例如删除了 <code>课程-1</code> 需要删除第一行和第三行，那么 <code>学生-1</code> 的信息就会丢失。</li>
+<li>插入异常：例如想要插入一个学生的信息，如果这个学生还没选课，那么就无法插入。</li>
+</ul>
+<h3 id="范式"><a href="#范式" class="headerlink" title="范式"></a>范式</h3><p>范式理论是为了解决以上提到四种异常。</p>
+<p>高级别范式的依赖于低级别的范式，1NF 是最低级别的范式。</p>
+<h4 id="1-第一范式-1NF"><a href="#1-第一范式-1NF" class="headerlink" title="1. 第一范式 (1NF)"></a>1. 第一范式 (1NF)</h4><p>属性不可分。</p>
+<h4 id="2-第二范式-2NF"><a href="#2-第二范式-2NF" class="headerlink" title="2. 第二范式 (2NF)"></a>2. 第二范式 (2NF)</h4><p>每个非主属性完全函数依赖于键码。</p>
+<p>可以通过分解来满足。</p>
+<p>&lt;f<strong>分解前</strong>:</p>
+<table>
+<thead>
+<tr>
+<th align="center">Sno</th>
+<th align="center">Sname</th>
+<th align="center">Sdept</th>
+<th align="center">Mname</th>
+<th align="center">Cname</th>
+<th align="center">Grade</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">学生-1</td>
+<td align="center">学院-1</td>
+<td align="center">院长-1</td>
+<td align="center">课程-1</td>
+<td align="center">90</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">学生-2</td>
+<td align="center">学院-2</td>
+<td align="center">院长-2</td>
+<td align="center">课程-2</td>
+<td align="center">80</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">学生-2</td>
+<td align="center">学院-2</td>
+<td align="center">院长-2</td>
+<td align="center">课程-1</td>
+<td align="center">100</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">学生-3</td>
+<td align="center">学院-2</td>
+<td align="center">院长-2</td>
+<td align="center">课程-2</td>
+<td align="center">95</td>
+</tr>
+</tbody></table>
+<p>以上学生课程关系中，{Sno, Cname} 为键码，有如下函数依赖：</p>
+<ul>
+<li>Sno -&gt; Sname, Sdept</li>
+<li>Sdept -&gt; Mname</li>
+<li>Sno, Cname-&gt; Grade</li>
+</ul>
+<p>Grade 完全函数依赖于键码，它没有任何冗余数据，每个学生的每门课都有特定的成绩。</p>
+<p>Sname, Sdept 和 Mname 都部分依赖于键码，当一个学生选修了多门课时，这些数据就会出现多次，造成大量冗余数据。</p>
+<p><strong>分解后</strong>:</p>
+<p>关系-1</p>
+<table>
+<thead>
+<tr>
+<th align="center">Sno</th>
+<th align="center">Sname</th>
+<th align="center">Sdept</th>
+<th align="center">Mname</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">学生-1</td>
+<td align="center">学院-1</td>
+<td align="center">院长-1</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">学生-2</td>
+<td align="center">学院-2</td>
+<td align="center">院长-2</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">学生-3</td>
+<td align="center">学院-2</td>
+<td align="center">院长-2</td>
+</tr>
+</tbody></table>
+<p>有以下函数依赖：</p>
+<ul>
+<li>Sno -&gt; Sname, Sdept</li>
+<li>Sdept -&gt; Mname</li>
+</ul>
+<p>关系-2</p>
+<table>
+<thead>
+<tr>
+<th align="center">Sno</th>
+<th align="center">Cname</th>
+<th align="center">Grade</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">课程-1</td>
+<td align="center">90</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">课程-2</td>
+<td align="center">80</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">课程-1</td>
+<td align="center">100</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">课程-2</td>
+<td align="center">95</td>
+</tr>
+</tbody></table>
+<p>有以下函数依赖：</p>
+<ul>
+<li>Sno, Cname -&gt;  Grade</li>
+</ul>
+<h4 id="3-第三范式-3NF"><a href="#3-第三范式-3NF" class="headerlink" title="3. 第三范式 (3NF)"></a>3. 第三范式 (3NF)</h4><p>非主属性不传递函数依赖于键码。</p>
+<p>上面的 关系-1 中存在以下传递函数依赖：</p>
+<ul>
+<li>Sno -&gt; Sdept -&gt; Mname</li>
+</ul>
+<p>可以进行以下分解：</p>
+<p>关系-11</p>
+<table>
+<thead>
+<tr>
+<th align="center">Sno</th>
+<th align="center">Sname</th>
+<th align="center">Sdept</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">学生-1</td>
+<td align="center">学院-1</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">学生-2</td>
+<td align="center">学院-2</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">学生-3</td>
+<td align="center">学院-2</td>
+</tr>
+</tbody></table>
+<p>关系-12</p>
+<table>
+<thead>
+<tr>
+<th align="center">Sdept</th>
+<th align="center">Mname</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">学院-1</td>
+<td align="center">院长-1</td>
+</tr>
+<tr>
+<td align="center">学院-2</td>
+<td align="center">院长-2</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E5%B0%81%E9%94%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1020,81 +1310,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/14/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/14/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">内存管理</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-14 14:25:12 / Modified: 16:02:07" itemprop="dateCreated datePublished" datetime="2022-02-14T14:25:12+08:00">2022-02-14</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>C++ 内存分区：栈、堆、全局/静态存储区、常量存储区、代码区。</p>
-<ol>
-<li><p>栈：存放函数的局部变量、函数参数、返回地址等，由编译器自动分配和释放。</p>
-</li>
-<li><p>堆：动态申请的内存空间，就是由 malloc 分配的内存块，由程序员控制它的分配和释放，如果程序执行结束还没有释放，操作系统会自动回收。</p>
-</li>
-<li><p>全局区/静态存储区（.bss 段和 .data 段）：存放全局变量和静态变量，程序运行结束操作系统自动释放，在 C 语言中，未初始化的放在 .bss 段中，初始化的放在 .data 段中，C++ 中不再区分了。</p>
-</li>
-<li><p>常量存储区（.data 段）：存放的是常量，不允许修改，程序运行结束自动释放。</p>
-</li>
-<li><p>代码区（.text 段）：存放代码，不允许修改，但可以执行。编译后的二进制文件存放在这里。</p>
-</li>
-</ol>
-<p>说明：</p>
-<p>从操作系统的本身来讲，以上存储区在内存中的分布是如下形式(从低地址到高地址)：.text 段 –&gt; .data 段 –&gt; .bss 段 –&gt; 堆 –&gt; unused –&gt; 栈 –&gt; env</p>
-<p>程序实例：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">说明：C++ 中不再区分初始化和未初始化的全局变量、静态变量的存储区，如果非要区分下述程序标注在了括号中</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> g_var = <span class="number">0</span>; <span class="comment">// g_var 在全局区（.data 段）</span></span><br><span class="line"><span class="keyword">char</span> *gp_var;  <span class="comment">// gp_var 在全局区（.bss 段）</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> var;                    <span class="comment">// var 在栈区</span></span><br><span class="line">    <span class="keyword">char</span> *p_var;                <span class="comment">// p_var 在栈区</span></span><br><span class="line">    <span class="keyword">char</span> arr[] = <span class="string">&quot;abc&quot;</span>;         <span class="comment">// arr 为数组变量，存储在栈区；&quot;abc&quot;为字符串常量，存储在常量区</span></span><br><span class="line">    <span class="keyword">char</span> *p_var1 = <span class="string">&quot;123456&quot;</span>;    <span class="comment">// p_var1 在栈区；&quot;123456&quot;为字符串常量，存储在常量区</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> s_var = <span class="number">0</span>;       <span class="comment">// s_var 为静态变量，存在静态存储区（.data 段）</span></span><br><span class="line">    p_var = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">10</span>); <span class="comment">// 分配得来的 10 个字节的区域在堆区</span></span><br><span class="line">    <span class="built_in">free</span>(p_var);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1164,7 +1379,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">82</span>
+          <span class="site-state-item-count">83</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
