@@ -15,22 +15,6 @@
       </tags>
   </entry>
   <entry>
-    <title>CSMA/CD</title>
-    <url>/2022/02/20/CSMA-CD/</url>
-    <content><![CDATA[<h2 id="CSMA-CD-协议"><a href="#CSMA-CD-协议" class="headerlink" title="CSMA/CD 协议"></a>CSMA/CD 协议</h2><p>CSMA/CD 表示载波监听多点接入 / 碰撞检测。</p>
-<pre><code>多点接入 ：说明这是总线型网络，许多主机以多点的方式连接到总线上。
-载波监听 ：每个主机都必须不停地监听信道。在发送前，如果监听到信道正在使用，就必须等待。
-碰撞检测 ：在发送中，如果监听到信道已有其它主机正在发送数据，就表示发生了碰撞。虽然每个主机在发送数据之前都已经监听到信道为空闲，但是由于电磁波的传播时延的存在，还是有可能会发生碰撞。
-</code></pre>
-<p>记端到端的传播时延为 τ，最先发送的站点最多经过 2τ 就可以知道是否发生了碰撞，称 2τ 为 争用期 。只有经过争用期之后还没有检测到碰撞，才能肯定这次发送不会发生碰撞。</p>
-<p>当发生碰撞时，站点要停止发送，等待一段时间再发送。这个时间采用 截断二进制指数退避算法 来确定。从离散的整数集合 {0, 1, .., (2k-1)} 中随机取出一个数，记作 r，然后取 r 倍的争用期作为重传等待时间。</p>
-]]></content>
-      <tags>
-        <tag>八股文</tag>
-        <tag>网络</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MVCC+NextKeyLocks</title>
     <url>/2022/02/17/MVCC-NextKeyLocks/</url>
     <content><![CDATA[<h2 id="多版本并发控制"><a href="#多版本并发控制" class="headerlink" title="多版本并发控制"></a>多版本并发控制</h2><p>多版本并发控制（Multi-Version Concurrency Control, MVCC）是 MySQL 的 InnoDB 存储引擎实现隔离级别的一种具体方式，用于实现提交读和可重复读这两种隔离级别。而未提交读隔离级别总是读取最新的数据行，要求很低，无需使用 MVCC。可串行化隔离级别需要对所有读取的行都加锁，单纯使用 MVCC 无法实现。</p>
@@ -91,45 +75,19 @@
       </tags>
   </entry>
   <entry>
-    <title>b树和b+树</title>
-    <url>/2021/12/04/b%E6%A0%91%E5%92%8Cb+%E6%A0%91/</url>
-    <content><![CDATA[<h2 id="b树"><a href="#b树" class="headerlink" title="b树"></a>b树</h2><p>b树就是平衡M叉树。跟平衡二叉树类似，avl的非叶子节点只有一个关键字，b树的非叶子节点有M-1个关键字。M-1个关键字将数据划分为M段，每个儿子节点对应一段。b树的叶子结点和非叶子节点都存放数据。</p>
-<p><img src="https://s2.loli.net/2021/12/04/5de4ZTs6hIn9Rbw.png" alt="20211204160835"></p>
-<p>一个M阶的b树具有如下几个特征：</p>
-<ul>
-<li>定义任意非叶子结点最多只有M个儿子，且M&gt;2；</li>
-<li>根结点的儿子数为[2, M]；</li>
-<li>除根结点以外的非叶子结点的儿子数为[M/2, M]，向上取整；</li>
-<li>非叶子结点的关键字个数=儿子数-1；</li>
-<li>所有叶子结点位于同一层；</li>
-<li>k个关键字把节点拆成k+1段，分别指向k+1个儿子，同时满足查找树的大小关系。</li>
-</ul>
-<p>有关b树的一些特性，注意与后面的b+树区分：</p>
-<ul>
-<li>关键字集合分布在整颗树中；</li>
-<li>任何一个关键字出现且只出现在一个结点中；</li>
-<li>搜索有可能在非叶子结点结束；</li>
-<li>其搜索性能等价于在关键字全集内做一次二分查找；</li>
-</ul>
-<h2 id="b-树"><a href="#b-树" class="headerlink" title="b+树"></a>b+树</h2><p>b+树是b树的变体，区别是b+树非叶子节点有M个关键字，并且不在非叶子结点存储数据，同时b+树的叶子结点之间也有指针相连。</p>
-<p><img src="https://s2.loli.net/2021/12/04/YuMm2KXtR9BWk63.png" alt="20211204160733"></p>
-<p>M阶的b+树的特征：</p>
-<ul>
-<li>有M棵子树的非叶子结点中含有M个关键字（b树是M-1个），这些关键字不保存数据，只用来索引，所有数据都保存在叶子节点（b树是每个关键字都保存数据）。</li>
-<li>所有的叶子结点中包含了全部关键字的信息，及指向含这些关键字记录的指针，且叶子结点本身依关键字的大小自小而大顺序链接。</li>
-<li>所有的非叶子结点可以看成是索引部分，结点中仅含其子树中的最大（或最小）关键字。</li>
-<li>通常在b+树上有两个头指针，一个指向根结点，一个指向关键字最小的叶子结点。</li>
-<li>同一个数字会在不同节点中重复出现，根节点的最大元素就是b+树的最大元素。</li>
-</ul>
-<p>b+树相比于b树的查询优势：</p>
-<ul>
-<li>b+树的中间节点不保存数据，所以磁盘页能容纳更多节点元素，更“矮胖”；</li>
-<li>b+树查询必须查找到叶子节点，b树只要匹配到即可不用管元素位置，因此b+树查找更稳定（并不慢）；</li>
-<li>对于范围查找来说，b+树只需遍历叶子节点链表即可，b树却需要重复地中序遍历;</li>
-</ul>
+    <title>CSMA/CD</title>
+    <url>/2022/02/20/CSMA-CD/</url>
+    <content><![CDATA[<h2 id="CSMA-CD-协议"><a href="#CSMA-CD-协议" class="headerlink" title="CSMA/CD 协议"></a>CSMA/CD 协议</h2><p>CSMA/CD 表示载波监听多点接入 / 碰撞检测。</p>
+<pre><code>多点接入 ：说明这是总线型网络，许多主机以多点的方式连接到总线上。
+载波监听 ：每个主机都必须不停地监听信道。在发送前，如果监听到信道正在使用，就必须等待。
+碰撞检测 ：在发送中，如果监听到信道已有其它主机正在发送数据，就表示发生了碰撞。虽然每个主机在发送数据之前都已经监听到信道为空闲，但是由于电磁波的传播时延的存在，还是有可能会发生碰撞。
+</code></pre>
+<p>记端到端的传播时延为 τ，最先发送的站点最多经过 2τ 就可以知道是否发生了碰撞，称 2τ 为 争用期 。只有经过争用期之后还没有检测到碰撞，才能肯定这次发送不会发生碰撞。</p>
+<p>当发生碰撞时，站点要停止发送，等待一段时间再发送。这个时间采用 截断二进制指数退避算法 来确定。从离散的整数集合 {0, 1, .., (2k-1)} 中随机取出一个数，记作 r，然后取 r 倍的争用期作为重传等待时间。</p>
 ]]></content>
       <tags>
-        <tag>知识点</tag>
+        <tag>八股文</tag>
+        <tag>网络</tag>
       </tags>
   </entry>
   <entry>
@@ -224,6 +182,48 @@
       </tags>
   </entry>
   <entry>
+    <title>b树和b+树</title>
+    <url>/2021/12/04/b%E6%A0%91%E5%92%8Cb+%E6%A0%91/</url>
+    <content><![CDATA[<h2 id="b树"><a href="#b树" class="headerlink" title="b树"></a>b树</h2><p>b树就是平衡M叉树。跟平衡二叉树类似，avl的非叶子节点只有一个关键字，b树的非叶子节点有M-1个关键字。M-1个关键字将数据划分为M段，每个儿子节点对应一段。b树的叶子结点和非叶子节点都存放数据。</p>
+<p><img src="https://s2.loli.net/2021/12/04/5de4ZTs6hIn9Rbw.png" alt="20211204160835"></p>
+<p>一个M阶的b树具有如下几个特征：</p>
+<ul>
+<li>定义任意非叶子结点最多只有M个儿子，且M&gt;2；</li>
+<li>根结点的儿子数为[2, M]；</li>
+<li>除根结点以外的非叶子结点的儿子数为[M/2, M]，向上取整；</li>
+<li>非叶子结点的关键字个数=儿子数-1；</li>
+<li>所有叶子结点位于同一层；</li>
+<li>k个关键字把节点拆成k+1段，分别指向k+1个儿子，同时满足查找树的大小关系。</li>
+</ul>
+<p>有关b树的一些特性，注意与后面的b+树区分：</p>
+<ul>
+<li>关键字集合分布在整颗树中；</li>
+<li>任何一个关键字出现且只出现在一个结点中；</li>
+<li>搜索有可能在非叶子结点结束；</li>
+<li>其搜索性能等价于在关键字全集内做一次二分查找；</li>
+</ul>
+<h2 id="b-树"><a href="#b-树" class="headerlink" title="b+树"></a>b+树</h2><p>b+树是b树的变体，区别是b+树非叶子节点有M个关键字，并且不在非叶子结点存储数据，同时b+树的叶子结点之间也有指针相连。</p>
+<p><img src="https://s2.loli.net/2021/12/04/YuMm2KXtR9BWk63.png" alt="20211204160733"></p>
+<p>M阶的b+树的特征：</p>
+<ul>
+<li>有M棵子树的非叶子结点中含有M个关键字（b树是M-1个），这些关键字不保存数据，只用来索引，所有数据都保存在叶子节点（b树是每个关键字都保存数据）。</li>
+<li>所有的叶子结点中包含了全部关键字的信息，及指向含这些关键字记录的指针，且叶子结点本身依关键字的大小自小而大顺序链接。</li>
+<li>所有的非叶子结点可以看成是索引部分，结点中仅含其子树中的最大（或最小）关键字。</li>
+<li>通常在b+树上有两个头指针，一个指向根结点，一个指向关键字最小的叶子结点。</li>
+<li>同一个数字会在不同节点中重复出现，根节点的最大元素就是b+树的最大元素。</li>
+</ul>
+<p>b+树相比于b树的查询优势：</p>
+<ul>
+<li>b+树的中间节点不保存数据，所以磁盘页能容纳更多节点元素，更“矮胖”；</li>
+<li>b+树查询必须查找到叶子节点，b树只要匹配到即可不用管元素位置，因此b+树查找更稳定（并不慢）；</li>
+<li>对于范围查找来说，b+树只需遍历叶子节点链表即可，b树却需要重复地中序遍历;</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>c++知识点</title>
     <url>/2022/02/21/c-%E7%9F%A5%E8%AF%86%E7%82%B9/</url>
     <content><![CDATA[<ol>
@@ -283,6 +283,18 @@
       </tags>
   </entry>
   <entry>
+    <title>github图片看不了</title>
+    <url>/2021/04/08/github%E5%9B%BE%E7%89%87%E7%9C%8B%E4%B8%8D%E4%BA%86/</url>
+    <content><![CDATA[<h2 id="改host"><a href="#改host" class="headerlink" title="改host"></a>改host</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">140.82.113.3      github.com</span><br><span class="line">140.82.114.20     gist.github.com</span><br><span class="line"></span><br><span class="line">151.101.184.133    assets-cdn.github.com</span><br><span class="line">151.101.184.133    raw.githubusercontent.com</span><br><span class="line">151.101.184.133    gist.githubusercontent.com</span><br><span class="line">151.101.184.133    cloud.githubusercontent.com</span><br><span class="line">151.101.184.133    camo.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars0.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars0.githubusercontent.com</span><br><span class="line">199.232.28.133     avatars1.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars1.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars2.githubusercontent.com</span><br><span class="line">199.232.28.133     avatars2.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars3.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars3.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars4.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars4.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars5.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars5.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars6.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars6.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars7.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars7.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars8.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars8.githubusercontent.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="改DNS"><a href="#改DNS" class="headerlink" title="改DNS"></a>改DNS</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">233.5.5.5</span><br><span class="line">233.6.6.6</span><br></pre></td></tr></table></figure>
+
+<h2 id="结果都没用"><a href="#结果都没用" class="headerlink" title="结果都没用"></a>结果都没用</h2>]]></content>
+      <tags>
+        <tag>教程</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>git报错10054</title>
     <url>/2021/05/02/git%E6%8A%A5%E9%94%9910054/</url>
     <content><![CDATA[<h2 id="Git-Push时报错-Connection-was-reset-errno-10054"><a href="#Git-Push时报错-Connection-was-reset-errno-10054" class="headerlink" title="Git Push时报错 Connection was reset, errno 10054"></a>Git Push时报错 Connection was reset, errno 10054</h2><p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210502110023.png" alt="20210502110023"></p>
@@ -294,16 +306,22 @@
       </tags>
   </entry>
   <entry>
-    <title>github图片看不了</title>
-    <url>/2021/04/08/github%E5%9B%BE%E7%89%87%E7%9C%8B%E4%B8%8D%E4%BA%86/</url>
-    <content><![CDATA[<h2 id="改host"><a href="#改host" class="headerlink" title="改host"></a>改host</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">140.82.113.3      github.com</span><br><span class="line">140.82.114.20     gist.github.com</span><br><span class="line"></span><br><span class="line">151.101.184.133    assets-cdn.github.com</span><br><span class="line">151.101.184.133    raw.githubusercontent.com</span><br><span class="line">151.101.184.133    gist.githubusercontent.com</span><br><span class="line">151.101.184.133    cloud.githubusercontent.com</span><br><span class="line">151.101.184.133    camo.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars0.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars0.githubusercontent.com</span><br><span class="line">199.232.28.133     avatars1.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars1.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars2.githubusercontent.com</span><br><span class="line">199.232.28.133     avatars2.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars3.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars3.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars4.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars4.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars5.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars5.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars6.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars6.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars7.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars7.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars8.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars8.githubusercontent.com</span><br></pre></td></tr></table></figure>
+    <title>Hello World</title>
+    <url>/2021/03/29/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="改DNS"><a href="#改DNS" class="headerlink" title="改DNS"></a>改DNS</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">233.5.5.5</span><br><span class="line">233.6.6.6</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 
-<h2 id="结果都没用"><a href="#结果都没用" class="headerlink" title="结果都没用"></a>结果都没用</h2>]]></content>
-      <tags>
-        <tag>教程</tag>
-      </tags>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>insert和erase</title>
@@ -335,24 +353,6 @@
       <tags>
         <tag>算法</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2021/03/29/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>new和malloc</title>
@@ -1055,16 +1055,6 @@
       </tags>
   </entry>
   <entry>
-    <title>单调栈</title>
-    <url>/2021/04/08/%E5%8D%95%E8%B0%83%E6%A0%88/</url>
-    <content><![CDATA[<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">    rightMin[i] = len;       </span><br><span class="line">    <span class="keyword">while</span>(!que.empty()&amp;&amp;heights[que.top()]&gt;heights[i])&#123;</span><br><span class="line">        rightMin[que.top()] = i;</span><br><span class="line">        que.pop();</span><br><span class="line">    &#125;    </span><br><span class="line">    que.push(i);    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>算法</tag>
-        <tag>C</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>区间dp</title>
     <url>/2021/12/01/%E5%8C%BA%E9%97%B4dp/</url>
     <content><![CDATA[<h2 id="1-先枚举区间长度"><a href="#1-先枚举区间长度" class="headerlink" title="1.先枚举区间长度"></a>1.先枚举区间长度</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> len=<span class="number">3</span>;len&lt;=n;len++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i+len<span class="number">-1</span>&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> j = i+len<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k=i+<span class="number">1</span>;k&lt;=j<span class="number">-1</span>;k++)&#123;</span><br><span class="line">            dp[i][j] = <span class="built_in">max</span>(dp[i][j], a[k]*a[i]*a[j]+dp[i][k]+dp[k][j]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -1075,6 +1065,16 @@
 ]]></content>
       <tags>
         <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>单调栈</title>
+    <url>/2021/04/08/%E5%8D%95%E8%B0%83%E6%A0%88/</url>
+    <content><![CDATA[<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">    rightMin[i] = len;       </span><br><span class="line">    <span class="keyword">while</span>(!que.empty()&amp;&amp;heights[que.top()]&gt;heights[i])&#123;</span><br><span class="line">        rightMin[que.top()] = i;</span><br><span class="line">        que.pop();</span><br><span class="line">    &#125;    </span><br><span class="line">    que.push(i);    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>算法</tag>
+        <tag>C</tag>
       </tags>
   </entry>
   <entry>
@@ -1145,24 +1145,6 @@
       <tags>
         <tag>知识点</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>实验记录0413</title>
-    <url>/2021/04/13/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950413/</url>
-    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210413202855.png" alt="20210413202855"><br>低频部分信号很弱，噪声很多</p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录0414</title>
-    <url>/2021/04/14/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950414/</url>
-    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414213909.png" alt="20210414213909"><br>偶尔出现的，两个都好像是对的</p>
-<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414215908.png" alt="20210414215908"><br>273 3 4 </p>
-<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414220040.png" alt="20210414220040"><br>273 15 13</p>
-<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414220124.png" alt="20210414220124"><br>253 15 13</p>
-]]></content>
   </entry>
   <entry>
     <title>实验记录0103</title>
@@ -1255,6 +1237,15 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录0413</title>
+    <url>/2021/04/13/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950413/</url>
+    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210413202855.png" alt="20210413202855"><br>低频部分信号很弱，噪声很多</p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录0420</title>
     <url>/2021/04/20/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950420/</url>
     <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210420212718.png" alt="20210420212718"></p>
@@ -1271,6 +1262,15 @@
       <tags>
         <tag>实验记录</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>实验记录0414</title>
+    <url>/2021/04/14/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950414/</url>
+    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414213909.png" alt="20210414213909"><br>偶尔出现的，两个都好像是对的</p>
+<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414215908.png" alt="20210414215908"><br>273 3 4 </p>
+<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414220040.png" alt="20210414220040"><br>273 15 13</p>
+<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414220124.png" alt="20210414220124"><br>253 15 13</p>
+]]></content>
   </entry>
   <entry>
     <title>实验记录0426</title>
@@ -1324,21 +1324,6 @@
       </tags>
   </entry>
   <entry>
-    <title>实验记录0713</title>
-    <url>/2021/07/13/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950713/</url>
-    <content><![CDATA[<h2 id="challenge："><a href="#challenge：" class="headerlink" title="challenge："></a>challenge：</h2><ol>
-<li>多个接收端的固定问题。固定在哪里？可能需要一个架子。</li>
-<li>实验开始之前需要初始化一个接收端和发射端的位置，这个可能需要每次都重新测量一下，但这样太麻烦了，而且要精确测量压电陶瓷在空间中的位置好像并不容易。</li>
-<li>没有办法自动初始化的原因是，虽然接收端和发射端在同一个同源的设备上，但是还是存在一个偏差，就是即使把接收端和发射端贴到一起测得的距离也大概有0.07m左右。</li>
-<li>从多个接收端中挑选三个信号比较好的来定位，即如何找出直达径没有被遮挡？肉眼可以通过观察cir图有没有明显的主峰来判断，但是让计算机去判断可能需要一个评判标准，比如最高峰与其他所有点的均值的比值等等。</li>
-<li>用三个没有被遮挡的接收端的信号计算出三个距离来解算出两个发射端的位置，两个发射端的位置只代表了人双耳的位置，怎么用这两个坐标的追踪完成对头部运动的追踪。如果假定身子不动的话，那么只能完成三个自由度，即旋转、俯仰和倾斜，然而实际上人不可能保持身体完全不动。那么如何只用两个点完成六个自由度的追踪呢？</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>实验记录0707</title>
     <url>/2021/07/07/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950707/</url>
     <content><![CDATA[<p>存在的问题：</p>
@@ -1368,6 +1353,21 @@
 <li>ni设备分配的时间是二四六白天和一三五晚上，所以上述部署好之后需要每次把ni和笔记本搬到623做实验。</li>
 </ol>
 </li>
+</ol>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实验记录0713</title>
+    <url>/2021/07/13/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950713/</url>
+    <content><![CDATA[<h2 id="challenge："><a href="#challenge：" class="headerlink" title="challenge："></a>challenge：</h2><ol>
+<li>多个接收端的固定问题。固定在哪里？可能需要一个架子。</li>
+<li>实验开始之前需要初始化一个接收端和发射端的位置，这个可能需要每次都重新测量一下，但这样太麻烦了，而且要精确测量压电陶瓷在空间中的位置好像并不容易。</li>
+<li>没有办法自动初始化的原因是，虽然接收端和发射端在同一个同源的设备上，但是还是存在一个偏差，就是即使把接收端和发射端贴到一起测得的距离也大概有0.07m左右。</li>
+<li>从多个接收端中挑选三个信号比较好的来定位，即如何找出直达径没有被遮挡？肉眼可以通过观察cir图有没有明显的主峰来判断，但是让计算机去判断可能需要一个评判标准，比如最高峰与其他所有点的均值的比值等等。</li>
+<li>用三个没有被遮挡的接收端的信号计算出三个距离来解算出两个发射端的位置，两个发射端的位置只代表了人双耳的位置，怎么用这两个坐标的追踪完成对头部运动的追踪。如果假定身子不动的话，那么只能完成三个自由度，即旋转、俯仰和倾斜，然而实际上人不可能保持身体完全不动。那么如何只用两个点完成六个自由度的追踪呢？</li>
 </ol>
 ]]></content>
       <tags>
@@ -1484,39 +1484,6 @@
       </tags>
   </entry>
   <entry>
-    <title>实验记录0721</title>
-    <url>/2021/07/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950721/</url>
-    <content><![CDATA[<p>数据编号：20210720_213700</p>
-<p><img src="https://i.loli.net/2021/07/22/VKnY97UIrLThoHc.png" alt="20210722141029"></p>
-<p>修正后</p>
-<p><img src="https://i.loli.net/2021/07/22/xMIkXEhKTG65AHL.png" alt="20210722141053"></p>
-<p>可能是跳波长？接下来试一下整个波长纠正。</p>
-<p>温度影响？？</p>
-<p>温度试验：<br>原始20℃</p>
-<p><img src="https://i.loli.net/2021/07/22/VKnY97UIrLThoHc.png" alt="20210722141101"></p>
-<p>21℃</p>
-<p><img src="https://i.loli.net/2021/07/22/pqUTtlKR9OubAHF.png" alt="20210722141109"></p>
-<p>22℃</p>
-<p><img src="https://i.loli.net/2021/07/22/Oe9u6VrzXsy3SIE.png" alt="20210722141116"></p>
-<p>23℃</p>
-<p><img src="https://i.loli.net/2021/07/22/Zi81MxudVgSLRAt.png" alt="20210722141124"></p>
-<p>24℃</p>
-<p><img src="https://i.loli.net/2021/07/22/dxy4bTGmwlJ8FUZ.png" alt="20210722141130"></p>
-<p>25℃</p>
-<p><img src="https://i.loli.net/2021/07/22/qlFgUY5hkZN69BC.png" alt="20210722141137"></p>
-<p>30℃</p>
-<p><img src="https://i.loli.net/2021/07/22/CASwHeqh1BKzPOQ.png" alt="20210722141145"></p>
-<p>50℃</p>
-<p><img src="https://i.loli.net/2021/07/22/BKw7HqE1GldLUkO.png" alt="20210722141212"></p>
-<p>100℃</p>
-<p><img src="https://i.loli.net/2021/07/22/rN678mecnyqWXxQ.png" alt="20210722141227"></p>
-<p>感觉就是图像整体平移了呀，这有点儿不合理，是不是代码写的有问题？？  </p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>实验记录0720</title>
     <url>/2021/07/20/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950720/</url>
     <content><![CDATA[<h2 id="测距的锯齿问题"><a href="#测距的锯齿问题" class="headerlink" title="测距的锯齿问题"></a>测距的锯齿问题</h2><p><img src="https://i.loli.net/2021/07/20/qcRVyKobepILfw8.png" alt="20210720103532"></p>
@@ -1604,6 +1571,55 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录0721</title>
+    <url>/2021/07/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950721/</url>
+    <content><![CDATA[<p>数据编号：20210720_213700</p>
+<p><img src="https://i.loli.net/2021/07/22/VKnY97UIrLThoHc.png" alt="20210722141029"></p>
+<p>修正后</p>
+<p><img src="https://i.loli.net/2021/07/22/xMIkXEhKTG65AHL.png" alt="20210722141053"></p>
+<p>可能是跳波长？接下来试一下整个波长纠正。</p>
+<p>温度影响？？</p>
+<p>温度试验：<br>原始20℃</p>
+<p><img src="https://i.loli.net/2021/07/22/VKnY97UIrLThoHc.png" alt="20210722141101"></p>
+<p>21℃</p>
+<p><img src="https://i.loli.net/2021/07/22/pqUTtlKR9OubAHF.png" alt="20210722141109"></p>
+<p>22℃</p>
+<p><img src="https://i.loli.net/2021/07/22/Oe9u6VrzXsy3SIE.png" alt="20210722141116"></p>
+<p>23℃</p>
+<p><img src="https://i.loli.net/2021/07/22/Zi81MxudVgSLRAt.png" alt="20210722141124"></p>
+<p>24℃</p>
+<p><img src="https://i.loli.net/2021/07/22/dxy4bTGmwlJ8FUZ.png" alt="20210722141130"></p>
+<p>25℃</p>
+<p><img src="https://i.loli.net/2021/07/22/qlFgUY5hkZN69BC.png" alt="20210722141137"></p>
+<p>30℃</p>
+<p><img src="https://i.loli.net/2021/07/22/CASwHeqh1BKzPOQ.png" alt="20210722141145"></p>
+<p>50℃</p>
+<p><img src="https://i.loli.net/2021/07/22/BKw7HqE1GldLUkO.png" alt="20210722141212"></p>
+<p>100℃</p>
+<p><img src="https://i.loli.net/2021/07/22/rN678mecnyqWXxQ.png" alt="20210722141227"></p>
+<p>感觉就是图像整体平移了呀，这有点儿不合理，是不是代码写的有问题？？  </p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实验记录0725</title>
+    <url>/2021/07/25/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950725/</url>
+    <content><![CDATA[<p>20℃<br><img src="https://i.loli.net/2021/07/25/ZCjRvyaxMOSK6pF.png" alt="20210725172935"></p>
+<p>26℃<br><img src="https://i.loli.net/2021/07/25/dzCymheBcDvAa3E.png" alt="20210725195329"></p>
+<ol>
+<li><p>明天可以重测一下发射单和接收端初始的偏移距离，因为修正了一个bug</p>
+</li>
+<li><p>可能需要找到一个比较好的纠正跳波长问题的算</p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录0726</title>
     <url>/2021/07/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950726/</url>
     <content><![CDATA[<p><img src="https://i.loli.net/2021/07/26/C2WaSTFlHUcdn9s.png" alt="20210726131049"></p>
@@ -1623,30 +1639,6 @@
 <h2 id="实时计算并且画cir-dis-pos图时一帧大概需要0-6秒"><a href="#实时计算并且画cir-dis-pos图时一帧大概需要0-6秒" class="headerlink" title="实时计算并且画cir dis pos图时一帧大概需要0.6秒"></a>实时计算并且画cir dis pos图时一帧大概需要0.6秒</h2><p><img src="https://i.loli.net/2021/07/31/W2lPCwUEan3HJ4G.png" alt="20210731163047"></p>
 <h2 id="是否使用相位比较"><a href="#是否使用相位比较" class="headerlink" title="是否使用相位比较"></a>是否使用相位比较</h2><p><img src="https://i.loli.net/2021/07/31/ScTqszZluoDk1Bp.png" alt="20210731170010"></p>
 <p>上面的是用了相位，下面的没用相位，结果还是没用相位的波动更小一点。</p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录0805</title>
-    <url>/2021/08/05/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950805/</url>
-    <content><![CDATA[<h2 id="Pos按钮"><a href="#Pos按钮" class="headerlink" title="Pos按钮"></a>Pos按钮</h2><h3 id="功能：根据距离数据计算前两点坐标pos1和pos2"><a href="#功能：根据距离数据计算前两点坐标pos1和pos2" class="headerlink" title="功能：根据距离数据计算前两点坐标pos1和pos2"></a>功能：根据距离数据计算前两点坐标pos1和pos2</h3><h3 id="输入：dis文件（或者dis-cor文件）"><a href="#输入：dis文件（或者dis-cor文件）" class="headerlink" title="输入：dis文件（或者dis_cor文件）"></a>输入：dis文件（或者dis_cor文件）</h3><h3 id="输出：pos文件（或者pos-cor文件），内部数据每一行nin-nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离"><a href="#输出：pos文件（或者pos-cor文件），内部数据每一行nin-nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离" class="headerlink" title="输出：pos文件（或者pos_cor文件），内部数据每一行nin*nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离"></a>输出：pos文件（或者pos_cor文件），内部数据每一行nin*nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离</h3><h2 id="Dir按钮"><a href="#Dir按钮" class="headerlink" title="Dir按钮"></a>Dir按钮</h2><h3 id="功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir"><a href="#功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir" class="headerlink" title="功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir"></a>功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir</h3><h3 id="输入：pos文件（或者pos-cor文件）"><a href="#输入：pos文件（或者pos-cor文件）" class="headerlink" title="输入：pos文件（或者pos_cor文件）"></a>输入：pos文件（或者pos_cor文件）</h3><h3 id="输出：dir文件（或者dir-cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量"><a href="#输出：dir文件（或者dir-cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量" class="headerlink" title="输出：dir文件（或者dir_cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量"></a>输出：dir文件（或者dir_cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量</h3>]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录0725</title>
-    <url>/2021/07/25/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950725/</url>
-    <content><![CDATA[<p>20℃<br><img src="https://i.loli.net/2021/07/25/ZCjRvyaxMOSK6pF.png" alt="20210725172935"></p>
-<p>26℃<br><img src="https://i.loli.net/2021/07/25/dzCymheBcDvAa3E.png" alt="20210725195329"></p>
-<ol>
-<li><p>明天可以重测一下发射单和接收端初始的偏移距离，因为修正了一个bug</p>
-</li>
-<li><p>可能需要找到一个比较好的纠正跳波长问题的算</p>
-</li>
-</ol>
 ]]></content>
       <tags>
         <tag>实验记录</tag>
@@ -1748,6 +1740,14 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录0805</title>
+    <url>/2021/08/05/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950805/</url>
+    <content><![CDATA[<h2 id="Pos按钮"><a href="#Pos按钮" class="headerlink" title="Pos按钮"></a>Pos按钮</h2><h3 id="功能：根据距离数据计算前两点坐标pos1和pos2"><a href="#功能：根据距离数据计算前两点坐标pos1和pos2" class="headerlink" title="功能：根据距离数据计算前两点坐标pos1和pos2"></a>功能：根据距离数据计算前两点坐标pos1和pos2</h3><h3 id="输入：dis文件（或者dis-cor文件）"><a href="#输入：dis文件（或者dis-cor文件）" class="headerlink" title="输入：dis文件（或者dis_cor文件）"></a>输入：dis文件（或者dis_cor文件）</h3><h3 id="输出：pos文件（或者pos-cor文件），内部数据每一行nin-nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离"><a href="#输出：pos文件（或者pos-cor文件），内部数据每一行nin-nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离" class="headerlink" title="输出：pos文件（或者pos_cor文件），内部数据每一行nin*nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离"></a>输出：pos文件（或者pos_cor文件），内部数据每一行nin*nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离</h3><h2 id="Dir按钮"><a href="#Dir按钮" class="headerlink" title="Dir按钮"></a>Dir按钮</h2><h3 id="功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir"><a href="#功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir" class="headerlink" title="功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir"></a>功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir</h3><h3 id="输入：pos文件（或者pos-cor文件）"><a href="#输入：pos文件（或者pos-cor文件）" class="headerlink" title="输入：pos文件（或者pos_cor文件）"></a>输入：pos文件（或者pos_cor文件）</h3><h3 id="输出：dir文件（或者dir-cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量"><a href="#输出：dir文件（或者dir-cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量" class="headerlink" title="输出：dir文件（或者dir_cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量"></a>输出：dir文件（或者dir_cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量</h3>]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录0806</title>
     <url>/2021/08/06/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950806/</url>
     <content><![CDATA[<h2 id="6DoF设计"><a href="#6DoF设计" class="headerlink" title="6DoF设计"></a>6DoF设计</h2><p><img src="https://i.loli.net/2021/08/06/uLwXkANxpcHF6BM.png" alt="20210806110016"></p>
@@ -1799,18 +1799,6 @@
       </tags>
   </entry>
   <entry>
-    <title>实验记录0808</title>
-    <url>/2021/08/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950808/</url>
-    <content><![CDATA[<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>全部默认为转动，知道耳机中点与轴点的距离超出阈值认为是移动，更新轴点。</p>
-<p>俯仰数据：20210808_202031</p>
-<p>旋转数据：20210808_202544</p>
-<p>倾斜数据：20210808_202641</p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>实验记录0823</title>
     <url>/2021/08/23/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950823/</url>
     <content><![CDATA[<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><ol>
@@ -1825,6 +1813,18 @@
 <li><p>再增加部署2个接收端，一共8个接收端。</p>
 </li>
 </ol>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实验记录0808</title>
+    <url>/2021/08/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950808/</url>
+    <content><![CDATA[<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>全部默认为转动，知道耳机中点与轴点的距离超出阈值认为是移动，更新轴点。</p>
+<p>俯仰数据：20210808_202031</p>
+<p>旋转数据：20210808_202544</p>
+<p>倾斜数据：20210808_202641</p>
 ]]></content>
       <tags>
         <tag>实验记录</tag>
@@ -1990,6 +1990,15 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录1008</title>
+    <url>/2021/10/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951008/</url>
+    <content><![CDATA[<p><img src="https://i.loli.net/2021/10/08/jt2qzDFK9uLiTNU.png" alt="20211008123140"><br>（左边是cir右边是dcir）</p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录0922</title>
     <url>/2021/09/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950922/</url>
     <content><![CDATA[<h2 id="完成LSTM"><a href="#完成LSTM" class="headerlink" title="完成LSTM"></a>完成LSTM</h2><p>numHiddenUnits = 200</p>
@@ -2063,31 +2072,6 @@
       </tags>
   </entry>
   <entry>
-    <title>实验记录1008</title>
-    <url>/2021/10/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951008/</url>
-    <content><![CDATA[<p><img src="https://i.loli.net/2021/10/08/jt2qzDFK9uLiTNU.png" alt="20211008123140"><br>（左边是cir右边是dcir）</p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录1015</title>
-    <url>/2021/10/15/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951015/</url>
-    <content><![CDATA[<p>发射端距离身体十几厘米：20211014_103041</p>
-<p><img src="https://i.loli.net/2021/10/15/CYOQKIJ91GlMoNX.png" alt="20211015110858"></p>
-<p>这个数据还不错：20211015_123426<br><img src="https://i.loli.net/2021/10/15/8V6OMJUa2WSP9dI.png" alt="20211015123542"></p>
-<p>20211015_123946<br><img src="https://i.loli.net/2021/10/15/UnR4d2KDhAVlqYi.png" alt="20211015124113"></p>
-<p>发射端放到耳机上就不太好了：20211015_130101<br><img src="https://i.loli.net/2021/10/15/iHRTZQvMa7yIGpq.png" alt="20211015130229"></p>
-<p>发射端在耳机上，20211015_130834，SNR阈值设置为0.9效果还不错<br><img src="https://i.loli.net/2021/10/15/V4fqxD51rvb6dgU.png" alt="20211015131249"></p>
-<h2 id="六个接收端"><a href="#六个接收端" class="headerlink" title="六个接收端"></a>六个接收端</h2><p>数据编号：20211015_184816 降维后的第三个特征向量还可以</p>
-<p><img src="https://i.loli.net/2021/10/15/BhZlSYc5goHdTj4.png" alt="20211015185038"></p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>实验记录1213</title>
     <url>/2021/12/13/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951213/</url>
     <content><![CDATA[<p>数据编号：20211213_205317</p>
@@ -2106,6 +2090,22 @@
 <p><img src="https://s2.loli.net/2021/12/13/ixVj64o12wpTclm.png" alt="20211213213732"></p>
 <p>数据编号：20211213_214603</p>
 <p><img src="https://s2.loli.net/2021/12/13/KkeWJOQdwqzDoYm.png" alt="20211213215710"></p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实验记录1015</title>
+    <url>/2021/10/15/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951015/</url>
+    <content><![CDATA[<p>发射端距离身体十几厘米：20211014_103041</p>
+<p><img src="https://i.loli.net/2021/10/15/CYOQKIJ91GlMoNX.png" alt="20211015110858"></p>
+<p>这个数据还不错：20211015_123426<br><img src="https://i.loli.net/2021/10/15/8V6OMJUa2WSP9dI.png" alt="20211015123542"></p>
+<p>20211015_123946<br><img src="https://i.loli.net/2021/10/15/UnR4d2KDhAVlqYi.png" alt="20211015124113"></p>
+<p>发射端放到耳机上就不太好了：20211015_130101<br><img src="https://i.loli.net/2021/10/15/iHRTZQvMa7yIGpq.png" alt="20211015130229"></p>
+<p>发射端在耳机上，20211015_130834，SNR阈值设置为0.9效果还不错<br><img src="https://i.loli.net/2021/10/15/V4fqxD51rvb6dgU.png" alt="20211015131249"></p>
+<h2 id="六个接收端"><a href="#六个接收端" class="headerlink" title="六个接收端"></a>六个接收端</h2><p>数据编号：20211015_184816 降维后的第三个特征向量还可以</p>
+<p><img src="https://i.loli.net/2021/10/15/BhZlSYc5goHdTj4.png" alt="20211015185038"></p>
 ]]></content>
       <tags>
         <tag>实验记录</tag>
@@ -2240,30 +2240,6 @@
       </tags>
   </entry>
   <entry>
-    <title>操作系统基本功能</title>
-    <url>/2022/02/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD/</url>
-    <content><![CDATA[<h2 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h2><ol>
-<li><p>进程管理</p>
-<p> 进程控制、进程同步、进程通信、死锁处理、处理机调度等。</p>
-</li>
-<li><p>内存管理</p>
-<p> 内存分配、地址映射、内存保护与共享、虚拟内存等。</p>
-</li>
-<li><p>文件管理</p>
-<p> 文件存储空间的管理、目录管理、文件读写管理和保护等。</p>
-</li>
-<li><p>设备管理</p>
-<p> 完成用户的 I/O 请求，方便用户使用各种设备，并提高设备的利用率。</p>
-<p> 主要包括缓冲管理、设备分配、设备处理、虛拟设备等。</p>
-</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>八股文</tag>
-        <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>搭建Hexo博客</title>
     <url>/2021/03/29/%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h2 id="安装配置Hexo"><a href="#安装配置Hexo" class="headerlink" title="安装配置Hexo"></a>安装配置Hexo</h2><ul>
@@ -2290,6 +2266,30 @@
       <tags>
         <tag>教程</tag>
         <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>操作系统基本功能</title>
+    <url>/2022/02/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD/</url>
+    <content><![CDATA[<h2 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h2><ol>
+<li><p>进程管理</p>
+<p> 进程控制、进程同步、进程通信、死锁处理、处理机调度等。</p>
+</li>
+<li><p>内存管理</p>
+<p> 内存分配、地址映射、内存保护与共享、虚拟内存等。</p>
+</li>
+<li><p>文件管理</p>
+<p> 文件存储空间的管理、目录管理、文件读写管理和保护等。</p>
+</li>
+<li><p>设备管理</p>
+<p> 完成用户的 I/O 请求，方便用户使用各种设备，并提高设备的利用率。</p>
+<p> 主要包括缓冲管理、设备分配、设备处理、虛拟设备等。</p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>八股文</tag>
+        <tag>操作系统</tag>
       </tags>
   </entry>
   <entry>
@@ -2378,25 +2378,6 @@
       </tags>
   </entry>
   <entry>
-    <title>柱状图中最大的矩形</title>
-    <url>/2022/02/16/%E6%9F%B1%E7%8A%B6%E5%9B%BE%E4%B8%AD%E6%9C%80%E5%A4%A7%E7%9A%84%E7%9F%A9%E5%BD%A2/</url>
-    <content><![CDATA[<p>给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。</p>
-<p>求在该柱状图中，能够勾勒出来的矩形的最大面积。</p>
-<p>示例：</p>
-<p><img src="https://s2.loli.net/2022/02/16/sTSw6JUKRNqjDyV.png" alt="20220216152744"></p>
-<p>输入：heights = [2,1,5,6,2,3]</p>
-<p>输出：10</p>
-<p>解释：最大的矩形为图中红色区域，面积为 10</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>遍历每个柱子，以该柱子的高度为矩形高度，并寻找每个柱子左边和右边最后一个高于它的柱子的位置作为左右矩形边界。</p>
-<h2 id="解法1：单调栈"><a href="#解法1：单调栈" class="headerlink" title="解法1：单调栈"></a>解法1：单调栈</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> n = heights.<span class="built_in">size</span>();</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">lb</span><span class="params">(n, <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">rb</span><span class="params">(n, n<span class="number">-1</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    stack&lt;<span class="keyword">int</span>&gt; sta;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">while</span>(!sta.<span class="built_in">empty</span>()&amp;&amp;heights[i]&lt;heights[sta.<span class="built_in">top</span>()])&#123;</span><br><span class="line">            rb[sta.<span class="built_in">top</span>()] = i<span class="number">-1</span>;</span><br><span class="line">            sta.<span class="built_in">pop</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        sta.<span class="built_in">push</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    sta.<span class="built_in">pop</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=n<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">        <span class="keyword">while</span>(!sta.<span class="built_in">empty</span>()&amp;&amp;heights[i]&lt;heights[sta.<span class="built_in">top</span>()])&#123;</span><br><span class="line">            lb[sta.<span class="built_in">top</span>()] = i+<span class="number">1</span>;</span><br><span class="line">            sta.<span class="built_in">pop</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        sta.<span class="built_in">push</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    sta.<span class="built_in">pop</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++) ans = <span class="built_in">max</span>(ans, heights[i]*(rb[i]-lb[i]+<span class="number">1</span>));</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="解法2：线段树"><a href="#解法2：线段树" class="headerlink" title="解法2：线段树"></a>解法2：线段树</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; a;</span><br><span class="line"><span class="keyword">int</span> tree[<span class="number">1000000</span>];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(l==r)&#123;</span><br><span class="line">        tree[p] = a[l];</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid=(l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="built_in">build</span>(p*<span class="number">2</span>,l,mid);</span><br><span class="line">    <span class="built_in">build</span>(p*<span class="number">2</span>+<span class="number">1</span>,mid+<span class="number">1</span>,r);</span><br><span class="line">    tree[p] = <span class="built_in">min</span>(tree[p*<span class="number">2</span>], tree[p*<span class="number">2</span>+<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(x&lt;=l&amp;&amp;r&lt;=y)&#123;</span><br><span class="line">        <span class="keyword">return</span> tree[p];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span>(y&lt;=mid) <span class="keyword">return</span> <span class="built_in">query</span>(p*<span class="number">2</span>,l,mid,x,y);</span><br><span class="line">    <span class="keyword">if</span>(x&gt;=mid+<span class="number">1</span>) <span class="keyword">return</span> <span class="built_in">query</span>(p*<span class="number">2</span>+<span class="number">1</span>,mid+<span class="number">1</span>,r,x,y);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">min</span>(<span class="built_in">query</span>(p*<span class="number">2</span>,l,mid,x,y),<span class="built_in">query</span>(p*<span class="number">2</span>+<span class="number">1</span>,mid+<span class="number">1</span>,r,x,y));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea2</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">    a = heights;</span><br><span class="line">    <span class="keyword">int</span> n = heights.<span class="built_in">size</span>();</span><br><span class="line">    <span class="built_in">build</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> ans = <span class="built_in">max</span>(heights[<span class="number">0</span>], heights[n<span class="number">-1</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> lm,rm,lb,rb;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=n<span class="number">-1</span>;i++)&#123;</span><br><span class="line">        <span class="comment">//cout&lt;&lt;i&lt;&lt;&quot;: (&quot;&lt;&lt;heights[i]&lt;&lt;&quot;) &quot;;</span></span><br><span class="line">        <span class="keyword">if</span>(i==<span class="number">0</span>) lm = heights[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">else</span> lm = <span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,<span class="number">0</span>,i<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span>(lm&gt;=heights[i])&#123;</span><br><span class="line">            lb = <span class="number">0</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">int</span> l, r, mid;</span><br><span class="line">            l = <span class="number">0</span>;</span><br><span class="line">            r = i<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">                mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,mid+<span class="number">1</span>,r)&lt;heights[i])&#123;</span><br><span class="line">                    l = mid+<span class="number">1</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    r = mid;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            lb = l+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(i==n<span class="number">-1</span>) rm = heights[n<span class="number">-1</span>];</span><br><span class="line">        <span class="keyword">else</span> rm = <span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,i+<span class="number">1</span>,n<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span>(rm&gt;=heights[i])&#123;</span><br><span class="line">            rb = n<span class="number">-1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">int</span> l, r, mid;</span><br><span class="line">            l = i+<span class="number">1</span>;</span><br><span class="line">            r = n<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">                mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,l,mid)&lt;heights[i])&#123;</span><br><span class="line">                    r = mid;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    l = mid+<span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            rb = l<span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ans = <span class="built_in">max</span>(ans, heights[i]*(rb-lb+<span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>刷题</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>最短路算法总结</title>
     <url>/2021/12/03/%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<p>算法变革：BFS-&gt;Dijkstra-&gt;A*</p>
@@ -2420,6 +2401,25 @@
 ]]></content>
       <tags>
         <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>柱状图中最大的矩形</title>
+    <url>/2022/02/16/%E6%9F%B1%E7%8A%B6%E5%9B%BE%E4%B8%AD%E6%9C%80%E5%A4%A7%E7%9A%84%E7%9F%A9%E5%BD%A2/</url>
+    <content><![CDATA[<p>给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。</p>
+<p>求在该柱状图中，能够勾勒出来的矩形的最大面积。</p>
+<p>示例：</p>
+<p><img src="https://s2.loli.net/2022/02/16/sTSw6JUKRNqjDyV.png" alt="20220216152744"></p>
+<p>输入：heights = [2,1,5,6,2,3]</p>
+<p>输出：10</p>
+<p>解释：最大的矩形为图中红色区域，面积为 10</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>遍历每个柱子，以该柱子的高度为矩形高度，并寻找每个柱子左边和右边最后一个高于它的柱子的位置作为左右矩形边界。</p>
+<h2 id="解法1：单调栈"><a href="#解法1：单调栈" class="headerlink" title="解法1：单调栈"></a>解法1：单调栈</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> n = heights.<span class="built_in">size</span>();</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">lb</span><span class="params">(n, <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">rb</span><span class="params">(n, n<span class="number">-1</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    stack&lt;<span class="keyword">int</span>&gt; sta;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">while</span>(!sta.<span class="built_in">empty</span>()&amp;&amp;heights[i]&lt;heights[sta.<span class="built_in">top</span>()])&#123;</span><br><span class="line">            rb[sta.<span class="built_in">top</span>()] = i<span class="number">-1</span>;</span><br><span class="line">            sta.<span class="built_in">pop</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        sta.<span class="built_in">push</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    sta.<span class="built_in">pop</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=n<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">        <span class="keyword">while</span>(!sta.<span class="built_in">empty</span>()&amp;&amp;heights[i]&lt;heights[sta.<span class="built_in">top</span>()])&#123;</span><br><span class="line">            lb[sta.<span class="built_in">top</span>()] = i+<span class="number">1</span>;</span><br><span class="line">            sta.<span class="built_in">pop</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        sta.<span class="built_in">push</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    sta.<span class="built_in">pop</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++) ans = <span class="built_in">max</span>(ans, heights[i]*(rb[i]-lb[i]+<span class="number">1</span>));</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="解法2：线段树"><a href="#解法2：线段树" class="headerlink" title="解法2：线段树"></a>解法2：线段树</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; a;</span><br><span class="line"><span class="keyword">int</span> tree[<span class="number">1000000</span>];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(l==r)&#123;</span><br><span class="line">        tree[p] = a[l];</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid=(l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="built_in">build</span>(p*<span class="number">2</span>,l,mid);</span><br><span class="line">    <span class="built_in">build</span>(p*<span class="number">2</span>+<span class="number">1</span>,mid+<span class="number">1</span>,r);</span><br><span class="line">    tree[p] = <span class="built_in">min</span>(tree[p*<span class="number">2</span>], tree[p*<span class="number">2</span>+<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(x&lt;=l&amp;&amp;r&lt;=y)&#123;</span><br><span class="line">        <span class="keyword">return</span> tree[p];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span>(y&lt;=mid) <span class="keyword">return</span> <span class="built_in">query</span>(p*<span class="number">2</span>,l,mid,x,y);</span><br><span class="line">    <span class="keyword">if</span>(x&gt;=mid+<span class="number">1</span>) <span class="keyword">return</span> <span class="built_in">query</span>(p*<span class="number">2</span>+<span class="number">1</span>,mid+<span class="number">1</span>,r,x,y);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">min</span>(<span class="built_in">query</span>(p*<span class="number">2</span>,l,mid,x,y),<span class="built_in">query</span>(p*<span class="number">2</span>+<span class="number">1</span>,mid+<span class="number">1</span>,r,x,y));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea2</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">    a = heights;</span><br><span class="line">    <span class="keyword">int</span> n = heights.<span class="built_in">size</span>();</span><br><span class="line">    <span class="built_in">build</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> ans = <span class="built_in">max</span>(heights[<span class="number">0</span>], heights[n<span class="number">-1</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> lm,rm,lb,rb;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=n<span class="number">-1</span>;i++)&#123;</span><br><span class="line">        <span class="comment">//cout&lt;&lt;i&lt;&lt;&quot;: (&quot;&lt;&lt;heights[i]&lt;&lt;&quot;) &quot;;</span></span><br><span class="line">        <span class="keyword">if</span>(i==<span class="number">0</span>) lm = heights[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">else</span> lm = <span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,<span class="number">0</span>,i<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span>(lm&gt;=heights[i])&#123;</span><br><span class="line">            lb = <span class="number">0</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">int</span> l, r, mid;</span><br><span class="line">            l = <span class="number">0</span>;</span><br><span class="line">            r = i<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">                mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,mid+<span class="number">1</span>,r)&lt;heights[i])&#123;</span><br><span class="line">                    l = mid+<span class="number">1</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    r = mid;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            lb = l+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(i==n<span class="number">-1</span>) rm = heights[n<span class="number">-1</span>];</span><br><span class="line">        <span class="keyword">else</span> rm = <span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,i+<span class="number">1</span>,n<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span>(rm&gt;=heights[i])&#123;</span><br><span class="line">            rb = n<span class="number">-1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">int</span> l, r, mid;</span><br><span class="line">            l = i+<span class="number">1</span>;</span><br><span class="line">            r = n<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">                mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,l,mid)&lt;heights[i])&#123;</span><br><span class="line">                    r = mid;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    l = mid+<span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            rb = l<span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ans = <span class="built_in">max</span>(ans, heights[i]*(rb-lb+<span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>刷题</tag>
       </tags>
   </entry>
   <entry>
@@ -2479,6 +2479,40 @@
       </tags>
   </entry>
   <entry>
+    <title>磁盘管理</title>
+    <url>/2022/02/20/%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<h2 id="磁盘调度算法"><a href="#磁盘调度算法" class="headerlink" title="磁盘调度算法"></a>磁盘调度算法</h2><p>读写一个磁盘块的时间的影响因素有：</p>
+<pre><code>旋转时间（主轴转动盘面，使得磁头移动到适当的扇区上）
+寻道时间（制动手臂移动，使得磁头移动到适当的磁道上）
+实际的数据传输时间
+</code></pre>
+<p>其中，寻道时间最长，因此磁盘调度的主要目标是使磁盘的平均寻道时间最短。</p>
+<ol>
+<li><p>先来先服务</p>
+<p> FCFS, First Come First Served</p>
+<p> 按照磁盘请求的顺序进行调度。</p>
+<p> 优点是公平和简单。缺点也很明显，因为未对寻道做任何优化，使平均寻道时间可能较长。</p>
+</li>
+<li><p>最短寻道时间优先</p>
+<p> SSTF, Shortest Seek Time First</p>
+<p> 优先调度与当前磁头所在磁道距离最近的磁道。</p>
+<p> 虽然平均寻道时间比较低，但是不够公平。如果新到达的磁道请求总是比一个在等待的磁道请求近，那么在等待的磁道请求会一直等待下去，也就是出现饥饿现象。具体来说，两端的磁道请求更容易出现饥饿现象。</p>
+<p> <img src="https://s2.loli.net/2022/02/20/vpGJOkajMPBUnbf.png" alt="20220220155042"></p>
+</li>
+<li><p>电梯算法</p>
+<p> 电梯总是保持一个方向运行，直到该方向没有请求为止，然后改变运行方向。</p>
+<p> 电梯算法（扫描算法）和电梯的运行过程类似，总是按一个方向来进行磁盘调度，直到该方向上没有未完成的磁盘请求，然后改变方向。</p>
+<p> 因为考虑了移动方向，因此所有的磁盘请求都会被满足，解决了 SSTF 的饥饿问题。</p>
+<p> <img src="https://s2.loli.net/2022/02/20/uwMSyHxKlRz1BZc.png" alt="20220220155049"></p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>八股文</tag>
+        <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>死锁</title>
     <url>/2021/12/26/%E6%AD%BB%E9%94%81/</url>
     <content><![CDATA[<h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>如果一个进程集合中的每个进程都在等待只能由该进程集合中的其他进程才能引发的事件，那么该进程集合就是死锁的。</p>
@@ -2518,46 +2552,6 @@
       </tags>
   </entry>
   <entry>
-    <title>磁盘管理</title>
-    <url>/2022/02/20/%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[<h2 id="磁盘调度算法"><a href="#磁盘调度算法" class="headerlink" title="磁盘调度算法"></a>磁盘调度算法</h2><p>读写一个磁盘块的时间的影响因素有：</p>
-<pre><code>旋转时间（主轴转动盘面，使得磁头移动到适当的扇区上）
-寻道时间（制动手臂移动，使得磁头移动到适当的磁道上）
-实际的数据传输时间
-</code></pre>
-<p>其中，寻道时间最长，因此磁盘调度的主要目标是使磁盘的平均寻道时间最短。</p>
-<ol>
-<li><p>先来先服务</p>
-<p> FCFS, First Come First Served</p>
-<p> 按照磁盘请求的顺序进行调度。</p>
-<p> 优点是公平和简单。缺点也很明显，因为未对寻道做任何优化，使平均寻道时间可能较长。</p>
-</li>
-<li><p>最短寻道时间优先</p>
-<p> SSTF, Shortest Seek Time First</p>
-<p> 优先调度与当前磁头所在磁道距离最近的磁道。</p>
-<p> 虽然平均寻道时间比较低，但是不够公平。如果新到达的磁道请求总是比一个在等待的磁道请求近，那么在等待的磁道请求会一直等待下去，也就是出现饥饿现象。具体来说，两端的磁道请求更容易出现饥饿现象。</p>
-<p> <img src="https://s2.loli.net/2022/02/20/vpGJOkajMPBUnbf.png" alt="20220220155042"></p>
-</li>
-<li><p>电梯算法</p>
-<p> 电梯总是保持一个方向运行，直到该方向没有请求为止，然后改变运行方向。</p>
-<p> 电梯算法（扫描算法）和电梯的运行过程类似，总是按一个方向来进行磁盘调度，直到该方向上没有未完成的磁盘请求，然后改变方向。</p>
-<p> 因为考虑了移动方向，因此所有的磁盘请求都会被满足，解决了 SSTF 的饥饿问题。</p>
-<p> <img src="https://s2.loli.net/2022/02/20/uwMSyHxKlRz1BZc.png" alt="20220220155049"></p>
-</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>八股文</tag>
-        <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>端口转发</title>
-    <url>/2021/04/08/%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/</url>
-    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210408172946.png" alt="20210408172946"></p>
-]]></content>
-  </entry>
-  <entry>
     <title>索引</title>
     <url>/2021/12/04/%E7%B4%A2%E5%BC%95/</url>
     <content><![CDATA[<p>索引是对数据库表中一列或多列的值进行处理后的一种结构，使用索引可快速访问数据库表中的特定信息。</p>
@@ -2594,6 +2588,12 @@
       <tags>
         <tag>知识点</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>端口转发</title>
+    <url>/2021/04/08/%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/</url>
+    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210408172946.png" alt="20210408172946"></p>
+]]></content>
   </entry>
   <entry>
     <title>继承方式</title>
@@ -2694,20 +2694,6 @@
       </tags>
   </entry>
   <entry>
-    <title>讨论0218</title>
-    <url>/2022/02/18/%E8%AE%A8%E8%AE%BA0218/</url>
-    <content><![CDATA[<p>目前的瓶颈：应用场景</p>
-<p>有源方案的问题：头上只有两个点，测朝向有局限性</p>
-<p>无源方案的问题：只做头部朝向的分类，太小了</p>
-<p>都存在的问题：呼吸和心跳融不进头部朝向</p>
-<p>卖技术：一个技术能在很多场景应用</p>
-<p>卖故事：把一个应用场景的故事讲的很好</p>
-]]></content>
-      <tags>
-        <tag>讨论</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>虚函数</title>
     <url>/2021/04/13/%E8%99%9A%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>多态是在不同继承关系的类对象，去调同一函数，产生了不同的行为。</p>
@@ -2724,6 +2710,20 @@
 ]]></content>
       <tags>
         <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>讨论0218</title>
+    <url>/2022/02/18/%E8%AE%A8%E8%AE%BA0218/</url>
+    <content><![CDATA[<p>目前的瓶颈：应用场景</p>
+<p>有源方案的问题：头上只有两个点，测朝向有局限性</p>
+<p>无源方案的问题：只做头部朝向的分类，太小了</p>
+<p>都存在的问题：呼吸和心跳融不进头部朝向</p>
+<p>卖技术：一个技术能在很多场景应用</p>
+<p>卖故事：把一个应用场景的故事讲的很好</p>
+]]></content>
+      <tags>
+        <tag>讨论</tag>
       </tags>
   </entry>
   <entry>
