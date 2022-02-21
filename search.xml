@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CSMA/CD</title>
+    <url>/2022/02/20/CSMA-CD/</url>
+    <content><![CDATA[<h2 id="CSMA-CD-协议"><a href="#CSMA-CD-协议" class="headerlink" title="CSMA/CD 协议"></a>CSMA/CD 协议</h2><p>CSMA/CD 表示载波监听多点接入 / 碰撞检测。</p>
+<pre><code>多点接入 ：说明这是总线型网络，许多主机以多点的方式连接到总线上。
+载波监听 ：每个主机都必须不停地监听信道。在发送前，如果监听到信道正在使用，就必须等待。
+碰撞检测 ：在发送中，如果监听到信道已有其它主机正在发送数据，就表示发生了碰撞。虽然每个主机在发送数据之前都已经监听到信道为空闲，但是由于电磁波的传播时延的存在，还是有可能会发生碰撞。
+</code></pre>
+<p>记端到端的传播时延为 τ，最先发送的站点最多经过 2τ 就可以知道是否发生了碰撞，称 2τ 为 争用期 。只有经过争用期之后还没有检测到碰撞，才能肯定这次发送不会发生碰撞。</p>
+<p>当发生碰撞时，站点要停止发送，等待一段时间再发送。这个时间采用 截断二进制指数退避算法 来确定。从离散的整数集合 {0, 1, .., (2k-1)} 中随机取出一个数，记作 r，然后取 r 倍的争用期作为重传等待时间。</p>
+]]></content>
+      <tags>
+        <tag>八股文</tag>
+        <tag>网络</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>B+树</title>
     <url>/2021/12/04/B+%E6%A0%91/</url>
     <content><![CDATA[<p><img src="https://s2.loli.net/2021/12/04/AwbHXzlkDKIBPuW.png" alt="20211204154031"></p>
@@ -72,22 +88,6 @@
       <tags>
         <tag>八股文</tag>
         <tag>数据库</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CSMA/CD</title>
-    <url>/2022/02/20/CSMA-CD/</url>
-    <content><![CDATA[<h2 id="CSMA-CD-协议"><a href="#CSMA-CD-协议" class="headerlink" title="CSMA/CD 协议"></a>CSMA/CD 协议</h2><p>CSMA/CD 表示载波监听多点接入 / 碰撞检测。</p>
-<pre><code>多点接入 ：说明这是总线型网络，许多主机以多点的方式连接到总线上。
-载波监听 ：每个主机都必须不停地监听信道。在发送前，如果监听到信道正在使用，就必须等待。
-碰撞检测 ：在发送中，如果监听到信道已有其它主机正在发送数据，就表示发生了碰撞。虽然每个主机在发送数据之前都已经监听到信道为空闲，但是由于电磁波的传播时延的存在，还是有可能会发生碰撞。
-</code></pre>
-<p>记端到端的传播时延为 τ，最先发送的站点最多经过 2τ 就可以知道是否发生了碰撞，称 2τ 为 争用期 。只有经过争用期之后还没有检测到碰撞，才能肯定这次发送不会发生碰撞。</p>
-<p>当发生碰撞时，站点要停止发送，等待一段时间再发送。这个时间采用 截断二进制指数退避算法 来确定。从离散的整数集合 {0, 1, .., (2k-1)} 中随机取出一个数，记作 r，然后取 r 倍的争用期作为重传等待时间。</p>
-]]></content>
-      <tags>
-        <tag>八股文</tag>
-        <tag>网络</tag>
       </tags>
   </entry>
   <entry>
@@ -182,6 +182,47 @@
       </tags>
   </entry>
   <entry>
+    <title>c++知识点</title>
+    <url>/2022/02/21/c-%E7%9F%A5%E8%AF%86%E7%82%B9/</url>
+    <content><![CDATA[<ol>
+<li><p>为什么拷贝构造函数必须为引用？</p>
+<p>避免拷贝构造函数无限制的递归，最终导致栈溢出。</p>
+<p>因为如果拷贝构造函数的参数不是引用的话，那么就是值传递。而值传递本身又会调用拷贝构造函数，拷贝构造函数又是值传递，值传递又会调用拷贝构造函数……导致无限递归下去。</p>
+</li>
+<li><p>构造函数的隐式调用</p>
+<p> 对已经实例化的对象赋值调用的是赋值函数，对还没实例话的对象赋值调用的是拷贝构造函数，这里使用的就是拷贝构造函数的隐式调用。</p>
+<p> 如：</p>
+<pre><code> A a;
+ a = b; 调用的是赋值函数
+
+ A a(b); 调用的也是拷贝构造函数
+
+ A a = b; 调用的是拷贝构造函数（隐式调用）
+</code></pre>
+</li>
+<li><p>C++类对象的初始化顺序</p>
+<p>构造函数调用顺序：</p>
+<pre><code> 1. 按照派生类继承基类的顺序，即派生列表中声明的顺序，依次调用基类的构造函数；
+ 2. 按照派生类中成员变量的声名顺序，依次调用派生类中成员变量所属类的构造函数；
+ 3. 执行派生类自身的构造函数。
+</code></pre>
+<p> 综上可以得出，类对象的初始化顺序：基类构造函数–&gt;派生类成员变量的构造函数–&gt;自身构造函数</p>
+<p> 注：</p>
+<pre><code> 基类构造函数的调用顺序与派生类的派生列表中的顺序有关；
+ 成员变量的初始化顺序与声明顺序有关；
+ 析构顺序和构造顺序相反。
+</code></pre>
+</li>
+<li><p>为什么用成员初始化列表会快一些？</p>
+<p>原因：用户自定义类型如果使用类初始化列表，直接调用该成员变量对应的构造函数即完成初始化；如果在构造函数中初始化，因为 C++ 规定，对象的成员变量的初始化动作发生在进入构造函数本体之前，那么在执行构造函数的函数体之前首先调用默认的构造函数为成员变量设初值，在进入函数体之后，调用该成员变量对应的构造函数。因此，使用列表初始化会减少调用默认的构造函数的过程，效率高。</p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>b树和b+树</title>
     <url>/2021/12/04/b%E6%A0%91%E5%92%8Cb+%E6%A0%91/</url>
     <content><![CDATA[<h2 id="b树"><a href="#b树" class="headerlink" title="b树"></a>b树</h2><p>b树就是平衡M叉树。跟平衡二叉树类似，avl的非叶子节点只有一个关键字，b树的非叶子节点有M-1个关键字。M-1个关键字将数据划分为M段，每个儿子节点对应一段。b树的叶子结点和非叶子节点都存放数据。</p>
@@ -218,47 +259,6 @@
 <li>b+树查询必须查找到叶子节点，b树只要匹配到即可不用管元素位置，因此b+树查找更稳定（并不慢）；</li>
 <li>对于范围查找来说，b+树只需遍历叶子节点链表即可，b树却需要重复地中序遍历;</li>
 </ul>
-]]></content>
-      <tags>
-        <tag>知识点</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>c++知识点</title>
-    <url>/2022/02/21/c-%E7%9F%A5%E8%AF%86%E7%82%B9/</url>
-    <content><![CDATA[<ol>
-<li><p>为什么拷贝构造函数必须为引用？</p>
-<p>避免拷贝构造函数无限制的递归，最终导致栈溢出。</p>
-<p>因为如果拷贝构造函数的参数不是引用的话，那么就是值传递。而值传递本身又会调用拷贝构造函数，拷贝构造函数又是值传递，值传递又会调用拷贝构造函数……导致无限递归下去。</p>
-</li>
-<li><p>构造函数的隐式调用</p>
-<p> 对已经实例化的对象赋值调用的是赋值函数，对还没实例话的对象赋值调用的是拷贝构造函数，这里使用的就是拷贝构造函数的隐式调用。</p>
-<p> 如：</p>
-<pre><code> A a;
- a = b; 调用的是赋值函数
-
- A a(b); 调用的也是拷贝构造函数
-
- A a = b; 调用的是拷贝构造函数（隐式调用）
-</code></pre>
-</li>
-<li><p>C++类对象的初始化顺序</p>
-<p>构造函数调用顺序：</p>
-<pre><code> 1. 按照派生类继承基类的顺序，即派生列表中声明的顺序，依次调用基类的构造函数；
- 2. 按照派生类中成员变量的声名顺序，依次调用派生类中成员变量所属类的构造函数；
- 3. 执行派生类自身的构造函数。
-</code></pre>
-<p> 综上可以得出，类对象的初始化顺序：基类构造函数–&gt;派生类成员变量的构造函数–&gt;自身构造函数</p>
-<p> 注：</p>
-<pre><code> 基类构造函数的调用顺序与派生类的派生列表中的顺序有关；
- 成员变量的初始化顺序与声明顺序有关；
- 析构顺序和构造顺序相反。
-</code></pre>
-</li>
-<li><p>为什么用成员初始化列表会快一些？</p>
-<p>原因：用户自定义类型如果使用类初始化列表，直接调用该成员变量对应的构造函数即完成初始化；如果在构造函数中初始化，因为 C++ 规定，对象的成员变量的初始化动作发生在进入构造函数本体之前，那么在执行构造函数的函数体之前首先调用默认的构造函数为成员变量设初值，在进入函数体之后，调用该成员变量对应的构造函数。因此，使用列表初始化会减少调用默认的构造函数的过程，效率高。</p>
-</li>
-</ol>
 ]]></content>
       <tags>
         <tag>知识点</tag>
@@ -324,37 +324,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>insert和erase</title>
-    <url>/2021/12/03/insert%E5%92%8Cerase/</url>
-    <content><![CDATA[<p>string和vector都有insert和erase函数，但是参数有区别。</p>
-<table>
-<thead>
-<tr>
-<th>容器</th>
-<th>insert</th>
-<th>erase</th>
-<th>*note</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>string</td>
-<td>s.insert(i, s)</td>
-<td>s.erase(i, n)</td>
-<td>string可以用迭代器也可以直接用下标，习惯直接用下标</td>
-</tr>
-<tr>
-<td>vector</td>
-<td>a.insert(a.begin()+i, val)</td>
-<td>a.erase(a.begin()+i)</td>
-<td>vector只能用迭代器</td>
-</tr>
-</tbody></table>
-]]></content>
-      <tags>
-        <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>new和malloc</title>
     <url>/2021/11/30/new%E5%92%8Cmalloc/</url>
     <content><![CDATA[<table>
@@ -397,6 +366,37 @@
 ]]></content>
       <tags>
         <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>insert和erase</title>
+    <url>/2021/12/03/insert%E5%92%8Cerase/</url>
+    <content><![CDATA[<p>string和vector都有insert和erase函数，但是参数有区别。</p>
+<table>
+<thead>
+<tr>
+<th>容器</th>
+<th>insert</th>
+<th>erase</th>
+<th>*note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>string</td>
+<td>s.insert(i, s)</td>
+<td>s.erase(i, n)</td>
+<td>string可以用迭代器也可以直接用下标，习惯直接用下标</td>
+</tr>
+<tr>
+<td>vector</td>
+<td>a.insert(a.begin()+i, val)</td>
+<td>a.erase(a.begin()+i)</td>
+<td>vector只能用迭代器</td>
+</tr>
+</tbody></table>
+]]></content>
+      <tags>
+        <tag>算法</tag>
       </tags>
   </entry>
   <entry>
@@ -445,6 +445,12 @@
     <content><![CDATA[<h1 id="this-is-a-test"><a href="#this-is-a-test" class="headerlink" title="this is a test"></a>this is a test</h1>]]></content>
   </entry>
   <entry>
+    <title>testPic</title>
+    <url>/2021/03/29/testPic/</url>
+    <content><![CDATA[<h1 id="this-is-a-test-for-picture"><a href="#this-is-a-test-for-picture" class="headerlink" title="this is a test for picture"></a>this is a test for picture</h1><p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210329152430.png" alt="20210329152430"></p>
+]]></content>
+  </entry>
+  <entry>
     <title>test2</title>
     <url>/2021/03/29/test2/</url>
     <content><![CDATA[<h1 id="this-is-test2"><a href="#this-is-test2" class="headerlink" title="this is test2"></a>this is test2</h1>]]></content>
@@ -469,10 +475,35 @@
       </tags>
   </entry>
   <entry>
-    <title>testPic</title>
-    <url>/2021/03/29/testPic/</url>
-    <content><![CDATA[<h1 id="this-is-a-test-for-picture"><a href="#this-is-a-test-for-picture" class="headerlink" title="this is a test for picture"></a>this is a test for picture</h1><p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210329152430.png" alt="20210329152430"></p>
+    <title>事务ACID</title>
+    <url>/2022/02/16/%E4%BA%8B%E5%8A%A1ACID/</url>
+    <content><![CDATA[<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>事务指的是满足 ACID 特性的一组操作，可以通过 Commit 提交一个事务，也可以使用 Rollback 进行回滚。</p>
+<h2 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h2><ol>
+<li><p>原子性（Atomicity）</p>
+<p> 事务被视为不可分割的最小单元，事务的所有操作要么全部提交成功，要么全部失败回滚。</p>
+<p> 回滚可以用回滚日志（Undo Log）来实现，回滚日志记录着事务所执行的修改操作，在回滚时反向执行这些修改操作即可。</p>
+</li>
+<li><p>一致性（Consistency）</p>
+<p> 数据库在事务执行前后都保持一致性状态。在一致性状态下，所有事务对同一个数据的读取结果都是相同的。</p>
+</li>
+<li><p>隔离性（Isolation）</p>
+<p> 一个事务所做的修改在最终提交以前，对其它事务是不可见的。</p>
+</li>
+<li><p>持久性（Durability）</p>
+<p> 一旦事务提交，则其所做的修改将会永远保存到数据库中。即使系统发生崩溃，事务执行的结果也不能丢失。</p>
+<p> 系统发生崩溃可以用重做日志（Redo Log）进行恢复，从而实现持久性。与回滚日志记录数据的逻辑修改不同，重做日志记录的是数据页的物理修改。</p>
+</li>
+</ol>
+<p>事务的 ACID 特性概念简单，但不是很好理解，主要是因为这几个特性不是一种平级关系：</p>
+<p>只有满足一致性，事务的执行结果才是正确的。</p>
+<p>在无并发的情况下，事务串行执行，隔离性一定能够满足。此时只要能满足原子性，就一定能满足一致性。</p>
+<p>在并发的情况下，多个事务并行执行，事务不仅要满足原子性，还需要满足隔离性，才能满足一致性。</p>
+<p>事务满足持久化是为了能应对系统崩溃的情况。</p>
 ]]></content>
+      <tags>
+        <tag>八股文</tag>
+        <tag>数据库</tag>
+      </tags>
   </entry>
   <entry>
     <title>不同层常用的网络协议</title>
@@ -540,37 +571,6 @@
       <tags>
         <tag>八股文</tag>
         <tag>网络</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>事务ACID</title>
-    <url>/2022/02/16/%E4%BA%8B%E5%8A%A1ACID/</url>
-    <content><![CDATA[<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>事务指的是满足 ACID 特性的一组操作，可以通过 Commit 提交一个事务，也可以使用 Rollback 进行回滚。</p>
-<h2 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h2><ol>
-<li><p>原子性（Atomicity）</p>
-<p> 事务被视为不可分割的最小单元，事务的所有操作要么全部提交成功，要么全部失败回滚。</p>
-<p> 回滚可以用回滚日志（Undo Log）来实现，回滚日志记录着事务所执行的修改操作，在回滚时反向执行这些修改操作即可。</p>
-</li>
-<li><p>一致性（Consistency）</p>
-<p> 数据库在事务执行前后都保持一致性状态。在一致性状态下，所有事务对同一个数据的读取结果都是相同的。</p>
-</li>
-<li><p>隔离性（Isolation）</p>
-<p> 一个事务所做的修改在最终提交以前，对其它事务是不可见的。</p>
-</li>
-<li><p>持久性（Durability）</p>
-<p> 一旦事务提交，则其所做的修改将会永远保存到数据库中。即使系统发生崩溃，事务执行的结果也不能丢失。</p>
-<p> 系统发生崩溃可以用重做日志（Redo Log）进行恢复，从而实现持久性。与回滚日志记录数据的逻辑修改不同，重做日志记录的是数据页的物理修改。</p>
-</li>
-</ol>
-<p>事务的 ACID 特性概念简单，但不是很好理解，主要是因为这几个特性不是一种平级关系：</p>
-<p>只有满足一致性，事务的执行结果才是正确的。</p>
-<p>在无并发的情况下，事务串行执行，隔离性一定能够满足。此时只要能满足原子性，就一定能满足一致性。</p>
-<p>在并发的情况下，多个事务并行执行，事务不仅要满足原子性，还需要满足隔离性，才能满足一致性。</p>
-<p>事务满足持久化是为了能应对系统崩溃的情况。</p>
-]]></content>
-      <tags>
-        <tag>八股文</tag>
-        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -1078,18 +1078,6 @@
       </tags>
   </entry>
   <entry>
-    <title>基数排序</title>
-    <url>/2021/12/01/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/</url>
-    <content><![CDATA[<p>一个基于非比较的排序算法，只能应用于整数排序，复杂度为O(dn)，d是整数最大的长度，即可以在线性时间和线性空间复杂度内完成排序，快于一切基于比较的排序算法，比如快排、归并排序等。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maximumGap</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="keyword">if</span>(n&lt;<span class="number">2</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//sort(nums.begin(),nums.end());</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> mx = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">        <span class="comment">// 找到最大的整数，决定排序迭代的次数</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            mx = max(mx, nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> x = <span class="number">1</span>;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">tmp</span><span class="params">(n)</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(mx&gt;=x)&#123;</span><br><span class="line">            <span class="comment">// 计数器</span></span><br><span class="line">            <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">cnt</span><span class="params">(<span class="number">10</span>)</span></span>;</span><br><span class="line">            <span class="comment">// 对十进制的每一位进行计数</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">                <span class="keyword">int</span> d = (nums[i]/x)%<span class="number">10</span>;</span><br><span class="line">                cnt[d] ++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 把计数器转换为索引</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">                cnt[i] += cnt[i<span class="number">-1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 逆序遍历，对数组进行重新排序</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=n<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">                <span class="keyword">int</span> d = (nums[i]/x)%<span class="number">10</span>;</span><br><span class="line">                tmp[cnt[d]<span class="number">-1</span>] = nums[i];</span><br><span class="line">                cnt[d] --;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 更新数组</span></span><br><span class="line">            <span class="comment">//copy(tmp.begin(), tmp.end(), nums.begin());</span></span><br><span class="line">            nums.swap(tmp);</span><br><span class="line">            </span><br><span class="line">            x *= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;n;i++)&#123;</span><br><span class="line">            ans = max(ans, nums[i]-nums[i<span class="number">-1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://s2.loli.net/2021/12/09/IaWo8EmNZrgLSdn.png" alt="20211209124114"></p>
-]]></content>
-      <tags>
-        <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>友元函数</title>
     <url>/2022/02/21/%E5%8F%8B%E5%85%83%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h2 id="友元函数的作用"><a href="#友元函数的作用" class="headerlink" title="友元函数的作用"></a>友元函数的作用</h2><p>友元提供了不同类的成员函数之间、类的成员函数与一般函数之间进行数据共享的机制。通过友元，一个不同函数或另一个类中的成员函数可以访问类中的私有成员和保护成员。</p>
@@ -1103,6 +1091,18 @@
 ]]></content>
       <tags>
         <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>基数排序</title>
+    <url>/2021/12/01/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[<p>一个基于非比较的排序算法，只能应用于整数排序，复杂度为O(dn)，d是整数最大的长度，即可以在线性时间和线性空间复杂度内完成排序，快于一切基于比较的排序算法，比如快排、归并排序等。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">maximumGap</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = nums.size();</span><br><span class="line">        <span class="keyword">if</span>(n&lt;<span class="number">2</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//sort(nums.begin(),nums.end());</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> mx = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">        <span class="comment">// 找到最大的整数，决定排序迭代的次数</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">            mx = max(mx, nums[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> x = <span class="number">1</span>;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">tmp</span><span class="params">(n)</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(mx&gt;=x)&#123;</span><br><span class="line">            <span class="comment">// 计数器</span></span><br><span class="line">            <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">cnt</span><span class="params">(<span class="number">10</span>)</span></span>;</span><br><span class="line">            <span class="comment">// 对十进制的每一位进行计数</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">                <span class="keyword">int</span> d = (nums[i]/x)%<span class="number">10</span>;</span><br><span class="line">                cnt[d] ++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 把计数器转换为索引</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">                cnt[i] += cnt[i<span class="number">-1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 逆序遍历，对数组进行重新排序</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=n<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">                <span class="keyword">int</span> d = (nums[i]/x)%<span class="number">10</span>;</span><br><span class="line">                tmp[cnt[d]<span class="number">-1</span>] = nums[i];</span><br><span class="line">                cnt[d] --;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 更新数组</span></span><br><span class="line">            <span class="comment">//copy(tmp.begin(), tmp.end(), nums.begin());</span></span><br><span class="line">            nums.swap(tmp);</span><br><span class="line">            </span><br><span class="line">            x *= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;n;i++)&#123;</span><br><span class="line">            ans = max(ans, nums[i]-nums[i<span class="number">-1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2021/12/09/IaWo8EmNZrgLSdn.png" alt="20211209124114"></p>
+]]></content>
+      <tags>
+        <tag>算法</tag>
       </tags>
   </entry>
   <entry>
@@ -1246,6 +1246,15 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录0414</title>
+    <url>/2021/04/14/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950414/</url>
+    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414213909.png" alt="20210414213909"><br>偶尔出现的，两个都好像是对的</p>
+<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414215908.png" alt="20210414215908"><br>273 3 4 </p>
+<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414220040.png" alt="20210414220040"><br>273 15 13</p>
+<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414220124.png" alt="20210414220124"><br>253 15 13</p>
+]]></content>
+  </entry>
+  <entry>
     <title>实验记录0420</title>
     <url>/2021/04/20/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950420/</url>
     <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210420212718.png" alt="20210420212718"></p>
@@ -1264,29 +1273,6 @@
       </tags>
   </entry>
   <entry>
-    <title>实验记录0414</title>
-    <url>/2021/04/14/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950414/</url>
-    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414213909.png" alt="20210414213909"><br>偶尔出现的，两个都好像是对的</p>
-<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414215908.png" alt="20210414215908"><br>273 3 4 </p>
-<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414220040.png" alt="20210414220040"><br>273 15 13</p>
-<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414220124.png" alt="20210414220124"><br>253 15 13</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>实验记录0426</title>
-    <url>/2021/04/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950426/</url>
-    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210426162158.png" alt="20210426162158"></p>
-<p>存在的问题：</p>
-<ol>
-<li>跳2pi</li>
-<li>压电陶瓷的朝向对cir影响很大</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>实验记录0427</title>
     <url>/2021/04/27/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950427/</url>
     <content><![CDATA[<p>现象：</p>
@@ -1298,6 +1284,20 @@
 <ol>
 <li>用双耳距离来纠跳2pi的问题</li>
 <li>zc+单频连续波的思路</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实验记录0426</title>
+    <url>/2021/04/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950426/</url>
+    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210426162158.png" alt="20210426162158"></p>
+<p>存在的问题：</p>
+<ol>
+<li>跳2pi</li>
+<li>压电陶瓷的朝向对cir影响很大</li>
 </ol>
 ]]></content>
       <tags>
@@ -1337,29 +1337,6 @@
       </tags>
   </entry>
   <entry>
-    <title>实验记录0714</title>
-    <url>/2021/07/14/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950714/</url>
-    <content><![CDATA[<ol>
-<li><p>测了一下压电陶瓷超声信号的传播距离，两三米肯定是没什么问题，而且发现一个现象就是距离越远反而信号质量越高，即cir主峰更明显旁瓣更弱，感觉可能是因为多径的其他反射信号比较弱，距离远了这些反射信号衰减比较厉害，只留下直达径的信号。所以感觉可以把接收端的部署范围扩大一点，没必要只安装在工位这么小的区域上，其实可以找个会议室安装地远一点。</p>
-<p><img src="https://i.loli.net/2021/07/14/MxeuEZUHsp865Bm.png" alt="20210714165454"></p>
-</li>
-<li><p>目前的思路是在一个屋子内部署多个接收端，然后借鉴GPS卫星定位的思路，即确保每个发射端再任何位置都至少能和三个（或者四个？）接收端之间的直达径不被遮挡。</p>
-</li>
-<li><p>接下来要做的事：</p>
-<ol>
-<li>找一个空会议室，目前感觉623可以。</li>
-<li>在会议室内布置6个压电陶瓷接收端，目前好像只能给他粘到墙上，要是有架子什么的可能会好一点。</li>
-<li>把两个压电陶瓷发射端粘到耳机上，先粘到耳机侧面试试。</li>
-<li>ni设备分配的时间是二四六白天和一三五晚上，所以上述部署好之后需要每次把ni和笔记本搬到623做实验。</li>
-</ol>
-</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>实验记录0713</title>
     <url>/2021/07/13/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950713/</url>
     <content><![CDATA[<h2 id="challenge："><a href="#challenge：" class="headerlink" title="challenge："></a>challenge：</h2><ol>
@@ -1385,6 +1362,29 @@
 </li>
 <li><p>用耳机上的两个发射端测试了一下，感觉距离在1m~1.5m左右效果更好一点，这两面墙的间距可能稍微大了一点儿，有的时候离得远的接收端信号不稳定。</p>
 <p> <img src="https://i.loli.net/2021/07/15/EhBS1JING6Lstzp.png" alt="20210715211332"></p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实验记录0714</title>
+    <url>/2021/07/14/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950714/</url>
+    <content><![CDATA[<ol>
+<li><p>测了一下压电陶瓷超声信号的传播距离，两三米肯定是没什么问题，而且发现一个现象就是距离越远反而信号质量越高，即cir主峰更明显旁瓣更弱，感觉可能是因为多径的其他反射信号比较弱，距离远了这些反射信号衰减比较厉害，只留下直达径的信号。所以感觉可以把接收端的部署范围扩大一点，没必要只安装在工位这么小的区域上，其实可以找个会议室安装地远一点。</p>
+<p><img src="https://i.loli.net/2021/07/14/MxeuEZUHsp865Bm.png" alt="20210714165454"></p>
+</li>
+<li><p>目前的思路是在一个屋子内部署多个接收端，然后借鉴GPS卫星定位的思路，即确保每个发射端再任何位置都至少能和三个（或者四个？）接收端之间的直达径不被遮挡。</p>
+</li>
+<li><p>接下来要做的事：</p>
+<ol>
+<li>找一个空会议室，目前感觉623可以。</li>
+<li>在会议室内布置6个压电陶瓷接收端，目前好像只能给他粘到墙上，要是有架子什么的可能会好一点。</li>
+<li>把两个压电陶瓷发射端粘到耳机上，先粘到耳机侧面试试。</li>
+<li>ni设备分配的时间是二四六白天和一三五晚上，所以上述部署好之后需要每次把ni和笔记本搬到623做实验。</li>
+</ol>
 </li>
 </ol>
 ]]></content>
@@ -1533,6 +1533,39 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录0721</title>
+    <url>/2021/07/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950721/</url>
+    <content><![CDATA[<p>数据编号：20210720_213700</p>
+<p><img src="https://i.loli.net/2021/07/22/VKnY97UIrLThoHc.png" alt="20210722141029"></p>
+<p>修正后</p>
+<p><img src="https://i.loli.net/2021/07/22/xMIkXEhKTG65AHL.png" alt="20210722141053"></p>
+<p>可能是跳波长？接下来试一下整个波长纠正。</p>
+<p>温度影响？？</p>
+<p>温度试验：<br>原始20℃</p>
+<p><img src="https://i.loli.net/2021/07/22/VKnY97UIrLThoHc.png" alt="20210722141101"></p>
+<p>21℃</p>
+<p><img src="https://i.loli.net/2021/07/22/pqUTtlKR9OubAHF.png" alt="20210722141109"></p>
+<p>22℃</p>
+<p><img src="https://i.loli.net/2021/07/22/Oe9u6VrzXsy3SIE.png" alt="20210722141116"></p>
+<p>23℃</p>
+<p><img src="https://i.loli.net/2021/07/22/Zi81MxudVgSLRAt.png" alt="20210722141124"></p>
+<p>24℃</p>
+<p><img src="https://i.loli.net/2021/07/22/dxy4bTGmwlJ8FUZ.png" alt="20210722141130"></p>
+<p>25℃</p>
+<p><img src="https://i.loli.net/2021/07/22/qlFgUY5hkZN69BC.png" alt="20210722141137"></p>
+<p>30℃</p>
+<p><img src="https://i.loli.net/2021/07/22/CASwHeqh1BKzPOQ.png" alt="20210722141145"></p>
+<p>50℃</p>
+<p><img src="https://i.loli.net/2021/07/22/BKw7HqE1GldLUkO.png" alt="20210722141212"></p>
+<p>100℃</p>
+<p><img src="https://i.loli.net/2021/07/22/rN678mecnyqWXxQ.png" alt="20210722141227"></p>
+<p>感觉就是图像整体平移了呀，这有点儿不合理，是不是代码写的有问题？？  </p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录0722</title>
     <url>/2021/07/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950722/</url>
     <content><![CDATA[<h2 id="实验记录"><a href="#实验记录" class="headerlink" title="实验记录"></a>实验记录</h2><ol>
@@ -1565,39 +1598,6 @@
 <p> <img src="https://i.loli.net/2021/07/23/1kahuU2plFfbPc9.png" alt="20210723135441"></p>
 </li>
 </ol>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录0721</title>
-    <url>/2021/07/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950721/</url>
-    <content><![CDATA[<p>数据编号：20210720_213700</p>
-<p><img src="https://i.loli.net/2021/07/22/VKnY97UIrLThoHc.png" alt="20210722141029"></p>
-<p>修正后</p>
-<p><img src="https://i.loli.net/2021/07/22/xMIkXEhKTG65AHL.png" alt="20210722141053"></p>
-<p>可能是跳波长？接下来试一下整个波长纠正。</p>
-<p>温度影响？？</p>
-<p>温度试验：<br>原始20℃</p>
-<p><img src="https://i.loli.net/2021/07/22/VKnY97UIrLThoHc.png" alt="20210722141101"></p>
-<p>21℃</p>
-<p><img src="https://i.loli.net/2021/07/22/pqUTtlKR9OubAHF.png" alt="20210722141109"></p>
-<p>22℃</p>
-<p><img src="https://i.loli.net/2021/07/22/Oe9u6VrzXsy3SIE.png" alt="20210722141116"></p>
-<p>23℃</p>
-<p><img src="https://i.loli.net/2021/07/22/Zi81MxudVgSLRAt.png" alt="20210722141124"></p>
-<p>24℃</p>
-<p><img src="https://i.loli.net/2021/07/22/dxy4bTGmwlJ8FUZ.png" alt="20210722141130"></p>
-<p>25℃</p>
-<p><img src="https://i.loli.net/2021/07/22/qlFgUY5hkZN69BC.png" alt="20210722141137"></p>
-<p>30℃</p>
-<p><img src="https://i.loli.net/2021/07/22/CASwHeqh1BKzPOQ.png" alt="20210722141145"></p>
-<p>50℃</p>
-<p><img src="https://i.loli.net/2021/07/22/BKw7HqE1GldLUkO.png" alt="20210722141212"></p>
-<p>100℃</p>
-<p><img src="https://i.loli.net/2021/07/22/rN678mecnyqWXxQ.png" alt="20210722141227"></p>
-<p>感觉就是图像整体平移了呀，这有点儿不合理，是不是代码写的有问题？？  </p>
 ]]></content>
       <tags>
         <tag>实验记录</tag>
@@ -1799,6 +1799,18 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录0808</title>
+    <url>/2021/08/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950808/</url>
+    <content><![CDATA[<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>全部默认为转动，知道耳机中点与轴点的距离超出阈值认为是移动，更新轴点。</p>
+<p>俯仰数据：20210808_202031</p>
+<p>旋转数据：20210808_202544</p>
+<p>倾斜数据：20210808_202641</p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录0823</title>
     <url>/2021/08/23/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950823/</url>
     <content><![CDATA[<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><ol>
@@ -1813,18 +1825,6 @@
 <li><p>再增加部署2个接收端，一共8个接收端。</p>
 </li>
 </ol>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录0808</title>
-    <url>/2021/08/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950808/</url>
-    <content><![CDATA[<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>全部默认为转动，知道耳机中点与轴点的距离超出阈值认为是移动，更新轴点。</p>
-<p>俯仰数据：20210808_202031</p>
-<p>旋转数据：20210808_202544</p>
-<p>倾斜数据：20210808_202641</p>
 ]]></content>
       <tags>
         <tag>实验记录</tag>
@@ -1865,19 +1865,6 @@
 <li>把HMM和之前的代码结合起来</li>
 <li>每次采集数据时要新建一个文件夹</li>
 </ol>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录0826</title>
-    <url>/2021/08/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950826/</url>
-    <content><![CDATA[<h2 id="hmm环境配置"><a href="#hmm环境配置" class="headerlink" title="hmm环境配置"></a>hmm环境配置</h2><p>用hmm之前要添加一下地址：addpath(genpath(‘D:\chrome下载\HMM\HMMall’))</p>
-<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><p>提高cal_pos解方程的速度，至少要提高到每秒10帧</p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>牛顿迭代就一定会用到雅可比矩阵，雅可比矩阵就一定会用到符号计算，用到符号计算就一定会很慢。。</p>
-<p><img src="https://i.loli.net/2021/08/26/TauQpWYhcdfrKGU.png" alt="20210826202638"></p>
-<p><img src="https://i.loli.net/2021/08/26/GQZ3nkTUK4odzAr.png" alt="20210826202715"></p>
 ]]></content>
       <tags>
         <tag>实验记录</tag>
@@ -1990,15 +1977,6 @@
       </tags>
   </entry>
   <entry>
-    <title>实验记录1008</title>
-    <url>/2021/10/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951008/</url>
-    <content><![CDATA[<p><img src="https://i.loli.net/2021/10/08/jt2qzDFK9uLiTNU.png" alt="20211008123140"><br>（左边是cir右边是dcir）</p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>实验记录0922</title>
     <url>/2021/09/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950922/</url>
     <content><![CDATA[<h2 id="完成LSTM"><a href="#完成LSTM" class="headerlink" title="完成LSTM"></a>完成LSTM</h2><p>numHiddenUnits = 200</p>
@@ -2060,12 +2038,37 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录1008</title>
+    <url>/2021/10/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951008/</url>
+    <content><![CDATA[<p><img src="https://i.loli.net/2021/10/08/jt2qzDFK9uLiTNU.png" alt="20211008123140"><br>（左边是cir右边是dcir）</p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录1012</title>
     <url>/2021/10/12/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951012/</url>
     <content><![CDATA[<p>先对CIR做滑动平均滤波，然后在做PCA降维，得到的呼吸结果。</p>
 <p><img src="https://i.loli.net/2021/10/12/vTUS6tgoYzJaHhi.png" alt="20211012150346"></p>
 <p>数据编号：20211010_140604</p>
 <p>发射端放在肚子附近：20211012_170451</p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实验记录1015</title>
+    <url>/2021/10/15/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951015/</url>
+    <content><![CDATA[<p>发射端距离身体十几厘米：20211014_103041</p>
+<p><img src="https://i.loli.net/2021/10/15/CYOQKIJ91GlMoNX.png" alt="20211015110858"></p>
+<p>这个数据还不错：20211015_123426<br><img src="https://i.loli.net/2021/10/15/8V6OMJUa2WSP9dI.png" alt="20211015123542"></p>
+<p>20211015_123946<br><img src="https://i.loli.net/2021/10/15/UnR4d2KDhAVlqYi.png" alt="20211015124113"></p>
+<p>发射端放到耳机上就不太好了：20211015_130101<br><img src="https://i.loli.net/2021/10/15/iHRTZQvMa7yIGpq.png" alt="20211015130229"></p>
+<p>发射端在耳机上，20211015_130834，SNR阈值设置为0.9效果还不错<br><img src="https://i.loli.net/2021/10/15/V4fqxD51rvb6dgU.png" alt="20211015131249"></p>
+<h2 id="六个接收端"><a href="#六个接收端" class="headerlink" title="六个接收端"></a>六个接收端</h2><p>数据编号：20211015_184816 降维后的第三个特征向量还可以</p>
+<p><img src="https://i.loli.net/2021/10/15/BhZlSYc5goHdTj4.png" alt="20211015185038"></p>
 ]]></content>
       <tags>
         <tag>实验记录</tag>
@@ -2096,22 +2099,6 @@
       </tags>
   </entry>
   <entry>
-    <title>实验记录1015</title>
-    <url>/2021/10/15/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951015/</url>
-    <content><![CDATA[<p>发射端距离身体十几厘米：20211014_103041</p>
-<p><img src="https://i.loli.net/2021/10/15/CYOQKIJ91GlMoNX.png" alt="20211015110858"></p>
-<p>这个数据还不错：20211015_123426<br><img src="https://i.loli.net/2021/10/15/8V6OMJUa2WSP9dI.png" alt="20211015123542"></p>
-<p>20211015_123946<br><img src="https://i.loli.net/2021/10/15/UnR4d2KDhAVlqYi.png" alt="20211015124113"></p>
-<p>发射端放到耳机上就不太好了：20211015_130101<br><img src="https://i.loli.net/2021/10/15/iHRTZQvMa7yIGpq.png" alt="20211015130229"></p>
-<p>发射端在耳机上，20211015_130834，SNR阈值设置为0.9效果还不错<br><img src="https://i.loli.net/2021/10/15/V4fqxD51rvb6dgU.png" alt="20211015131249"></p>
-<h2 id="六个接收端"><a href="#六个接收端" class="headerlink" title="六个接收端"></a>六个接收端</h2><p>数据编号：20211015_184816 降维后的第三个特征向量还可以</p>
-<p><img src="https://i.loli.net/2021/10/15/BhZlSYc5goHdTj4.png" alt="20211015185038"></p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>实验记录1221</title>
     <url>/2021/12/21/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951221/</url>
     <content><![CDATA[<p>用CIR虚部做PCA效果更好</p>
@@ -2122,6 +2109,19 @@
 <p>实部和虚部分别独立做PCA再将结果相减：（效果又好了一点）</p>
 <p><img src="https://s2.loli.net/2021/12/21/51CL9mc6FfYwMXz.png" alt="20211221190046"></p>
 <p>数据编号：20211213_214603</p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实验记录0826</title>
+    <url>/2021/08/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950826/</url>
+    <content><![CDATA[<h2 id="hmm环境配置"><a href="#hmm环境配置" class="headerlink" title="hmm环境配置"></a>hmm环境配置</h2><p>用hmm之前要添加一下地址：addpath(genpath(‘D:\chrome下载\HMM\HMMall’))</p>
+<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><p>提高cal_pos解方程的速度，至少要提高到每秒10帧</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>牛顿迭代就一定会用到雅可比矩阵，雅可比矩阵就一定会用到符号计算，用到符号计算就一定会很慢。。</p>
+<p><img src="https://i.loli.net/2021/08/26/TauQpWYhcdfrKGU.png" alt="20210826202638"></p>
+<p><img src="https://i.loli.net/2021/08/26/GQZ3nkTUK4odzAr.png" alt="20210826202715"></p>
 ]]></content>
       <tags>
         <tag>实验记录</tag>
@@ -2479,40 +2479,6 @@
       </tags>
   </entry>
   <entry>
-    <title>磁盘管理</title>
-    <url>/2022/02/20/%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[<h2 id="磁盘调度算法"><a href="#磁盘调度算法" class="headerlink" title="磁盘调度算法"></a>磁盘调度算法</h2><p>读写一个磁盘块的时间的影响因素有：</p>
-<pre><code>旋转时间（主轴转动盘面，使得磁头移动到适当的扇区上）
-寻道时间（制动手臂移动，使得磁头移动到适当的磁道上）
-实际的数据传输时间
-</code></pre>
-<p>其中，寻道时间最长，因此磁盘调度的主要目标是使磁盘的平均寻道时间最短。</p>
-<ol>
-<li><p>先来先服务</p>
-<p> FCFS, First Come First Served</p>
-<p> 按照磁盘请求的顺序进行调度。</p>
-<p> 优点是公平和简单。缺点也很明显，因为未对寻道做任何优化，使平均寻道时间可能较长。</p>
-</li>
-<li><p>最短寻道时间优先</p>
-<p> SSTF, Shortest Seek Time First</p>
-<p> 优先调度与当前磁头所在磁道距离最近的磁道。</p>
-<p> 虽然平均寻道时间比较低，但是不够公平。如果新到达的磁道请求总是比一个在等待的磁道请求近，那么在等待的磁道请求会一直等待下去，也就是出现饥饿现象。具体来说，两端的磁道请求更容易出现饥饿现象。</p>
-<p> <img src="https://s2.loli.net/2022/02/20/vpGJOkajMPBUnbf.png" alt="20220220155042"></p>
-</li>
-<li><p>电梯算法</p>
-<p> 电梯总是保持一个方向运行，直到该方向没有请求为止，然后改变运行方向。</p>
-<p> 电梯算法（扫描算法）和电梯的运行过程类似，总是按一个方向来进行磁盘调度，直到该方向上没有未完成的磁盘请求，然后改变方向。</p>
-<p> 因为考虑了移动方向，因此所有的磁盘请求都会被满足，解决了 SSTF 的饥饿问题。</p>
-<p> <img src="https://s2.loli.net/2022/02/20/uwMSyHxKlRz1BZc.png" alt="20220220155049"></p>
-</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>八股文</tag>
-        <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>死锁</title>
     <url>/2021/12/26/%E6%AD%BB%E9%94%81/</url>
     <content><![CDATA[<h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>如果一个进程集合中的每个进程都在等待只能由该进程集合中的其他进程才能引发的事件，那么该进程集合就是死锁的。</p>
@@ -2552,6 +2518,46 @@
       </tags>
   </entry>
   <entry>
+    <title>磁盘管理</title>
+    <url>/2022/02/20/%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<h2 id="磁盘调度算法"><a href="#磁盘调度算法" class="headerlink" title="磁盘调度算法"></a>磁盘调度算法</h2><p>读写一个磁盘块的时间的影响因素有：</p>
+<pre><code>旋转时间（主轴转动盘面，使得磁头移动到适当的扇区上）
+寻道时间（制动手臂移动，使得磁头移动到适当的磁道上）
+实际的数据传输时间
+</code></pre>
+<p>其中，寻道时间最长，因此磁盘调度的主要目标是使磁盘的平均寻道时间最短。</p>
+<ol>
+<li><p>先来先服务</p>
+<p> FCFS, First Come First Served</p>
+<p> 按照磁盘请求的顺序进行调度。</p>
+<p> 优点是公平和简单。缺点也很明显，因为未对寻道做任何优化，使平均寻道时间可能较长。</p>
+</li>
+<li><p>最短寻道时间优先</p>
+<p> SSTF, Shortest Seek Time First</p>
+<p> 优先调度与当前磁头所在磁道距离最近的磁道。</p>
+<p> 虽然平均寻道时间比较低，但是不够公平。如果新到达的磁道请求总是比一个在等待的磁道请求近，那么在等待的磁道请求会一直等待下去，也就是出现饥饿现象。具体来说，两端的磁道请求更容易出现饥饿现象。</p>
+<p> <img src="https://s2.loli.net/2022/02/20/vpGJOkajMPBUnbf.png" alt="20220220155042"></p>
+</li>
+<li><p>电梯算法</p>
+<p> 电梯总是保持一个方向运行，直到该方向没有请求为止，然后改变运行方向。</p>
+<p> 电梯算法（扫描算法）和电梯的运行过程类似，总是按一个方向来进行磁盘调度，直到该方向上没有未完成的磁盘请求，然后改变方向。</p>
+<p> 因为考虑了移动方向，因此所有的磁盘请求都会被满足，解决了 SSTF 的饥饿问题。</p>
+<p> <img src="https://s2.loli.net/2022/02/20/uwMSyHxKlRz1BZc.png" alt="20220220155049"></p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>八股文</tag>
+        <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>端口转发</title>
+    <url>/2021/04/08/%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/</url>
+    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210408172946.png" alt="20210408172946"></p>
+]]></content>
+  </entry>
+  <entry>
     <title>索引</title>
     <url>/2021/12/04/%E7%B4%A2%E5%BC%95/</url>
     <content><![CDATA[<p>索引是对数据库表中一列或多列的值进行处理后的一种结构，使用索引可快速访问数据库表中的特定信息。</p>
@@ -2588,12 +2594,6 @@
       <tags>
         <tag>知识点</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>端口转发</title>
-    <url>/2021/04/08/%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/</url>
-    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210408172946.png" alt="20210408172946"></p>
-]]></content>
   </entry>
   <entry>
     <title>继承方式</title>
