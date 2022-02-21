@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="层 协议 用处    数据链路层 CSMA&#x2F;CD 载波监听，多点接入，冲突检测    PPP 用户和ISP之间通信   网络层 IP 建立主机之间的联系    ARP 地址解析协议，已知IP地址获取MAC地址    ICMP 网际控制报文协议，封装在IP内，用于更有效地转发IP数据报   传输层 TCP 建立点对点的可靠的连接    UDP 无连接，不可靠，及时性好   应用层 HTTP,">
+  <meta name="description" content="层 协议 用处    数据链路层 CSMA&#x2F;CD 载波监听，多点接入，冲突检测    PPP 用户和ISP之间通信   网络层 IP 建立主机之间的联系    ARP 地址解析协议，已知IP地址获取MAC地址    ICMP 网际控制报文协议，封装在IP内，用于更有效地转发IP数据报   传输层 TCP 建立点对点的可靠的连接    UDP 无连接，不可靠，及时性好   应用层 DHCP 动">
 <meta property="og:type" content="article">
 <meta property="og:title" content="不同层常用的网络协议">
 <meta property="og:url" content="http://example.com/2022/02/21/%E4%B8%8D%E5%90%8C%E5%B1%82%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/index.html">
 <meta property="og:site_name" content="Jepson&#39;s Blog">
-<meta property="og:description" content="层 协议 用处    数据链路层 CSMA&#x2F;CD 载波监听，多点接入，冲突检测    PPP 用户和ISP之间通信   网络层 IP 建立主机之间的联系    ARP 地址解析协议，已知IP地址获取MAC地址    ICMP 网际控制报文协议，封装在IP内，用于更有效地转发IP数据报   传输层 TCP 建立点对点的可靠的连接    UDP 无连接，不可靠，及时性好   应用层 HTTP,">
+<meta property="og:description" content="层 协议 用处    数据链路层 CSMA&#x2F;CD 载波监听，多点接入，冲突检测    PPP 用户和ISP之间通信   网络层 IP 建立主机之间的联系    ARP 地址解析协议，已知IP地址获取MAC地址    ICMP 网际控制报文协议，封装在IP内，用于更有效地转发IP数据报   传输层 TCP 建立点对点的可靠的连接    UDP 无连接，不可靠，及时性好   应用层 DHCP 动">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-02-21T08:30:13.000Z">
-<meta property="article:modified_time" content="2022-02-21T08:44:32.905Z">
+<meta property="article:modified_time" content="2022-02-21T08:49:42.080Z">
 <meta property="article:author" content="Jepson">
 <meta property="article:tag" content="八股文">
 <meta property="article:tag" content="网络">
@@ -190,7 +190,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-21 16:30:13 / Modified: 16:44:32" itemprop="dateCreated datePublished" datetime="2022-02-21T16:30:13+08:00">2022-02-21</time>
+              <time title="Created: 2022-02-21 16:30:13 / Modified: 16:49:42" itemprop="dateCreated datePublished" datetime="2022-02-21T16:30:13+08:00">2022-02-21</time>
             </span>
 
           
@@ -249,7 +249,17 @@
 </tr>
 <tr>
 <td>应用层</td>
-<td>HTTP, FTP, DNS, POP3, SMTP…</td>
+<td>DHCP</td>
+<td>动态主机配置协议，用于配置主机的IP地址、子网掩码和网关</td>
+</tr>
+<tr>
+<td></td>
+<td>DNS</td>
+<td>域名解析协议，用于将域名转换成IP地址</td>
+</tr>
+<tr>
+<td></td>
+<td>HTTP, FTP, POP3, SMTP…</td>
 <td></td>
 </tr>
 </tbody></table>
