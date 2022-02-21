@@ -159,6 +159,87 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/03/insert%E5%92%8Cerase/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/03/insert%E5%92%8Cerase/" class="post-title-link" itemprop="url">insert和erase</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-03 11:01:26 / Modified: 11:13:31" itemprop="dateCreated datePublished" datetime="2021-12-03T11:01:26+08:00">2021-12-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>string和vector都有insert和erase函数，但是参数有区别。</p>
+<table>
+<thead>
+<tr>
+<th>容器</th>
+<th>insert</th>
+<th>erase</th>
+<th>*note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>string</td>
+<td>s.insert(i, s)</td>
+<td>s.erase(i, n)</td>
+<td>string可以用迭代器也可以直接用下标，习惯直接用下标</td>
+</tr>
+<tr>
+<td>vector</td>
+<td>a.insert(a.begin()+i, val)</td>
+<td>a.erase(a.begin()+i)</td>
+<td>vector只能用迭代器</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/01/%E5%8C%BA%E9%97%B4dp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -806,123 +887,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950922/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950922/" class="post-title-link" itemprop="url">实验记录0922</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-09-22 10:14:24" itemprop="dateCreated datePublished" datetime="2021-09-22T10:14:24+08:00">2021-09-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-09-23 20:00:33" itemprop="dateModified" datetime="2021-09-23T20:00:33+08:00">2021-09-23</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="完成LSTM"><a href="#完成LSTM" class="headerlink" title="完成LSTM"></a>完成LSTM</h2><p>numHiddenUnits = 200</p>
-<p>maxEpochs = 200</p>
-<p>miniBatchSize = 100</p>
-<p>rmsprop</p>
-<p>‘InitialLearnRate’, 0.001</p>
-<p><img src="https://i.loli.net/2021/09/22/vK1PFb24QZMIoW3.png" alt="20210922101444"></p>
-<hr>
-<p>numHiddenUnits = 200</p>
-<p>maxEpochs = 200</p>
-<p>miniBatchSize = 100</p>
-<p>adam</p>
-<p>‘InitialLearnRate’, 0.001</p>
-<p><img src="https://i.loli.net/2021/09/22/imF4S7CNlBaMtb2.png" alt="20210922152552"></p>
-<hr>
-<p>numHiddenUnits = 200</p>
-<p>maxEpochs = 200</p>
-<p>miniBatchSize = 100</p>
-<p>adam</p>
-<p>‘InitialLearnRate’, 0.0001</p>
-<p><img src="https://i.loli.net/2021/09/22/TeWNc492InFEzZA.png" alt="20210922162306"></p>
-<p>（学习率太低了）</p>
-<hr>
-<p>numHiddenUnits = 200</p>
-<p>maxEpochs = 200</p>
-<p>miniBatchSize = 50</p>
-<p>adam</p>
-<p>‘InitialLearnRate’, 0.001</p>
-<p>‘LearnRateSchedule’, ‘piecewise’</p>
-<p>‘LearnRateDropFactor’, 0.5</p>
-<p>‘LearnRateDropPeriod’, 50</p>
-<p><img src="https://i.loli.net/2021/09/23/DzHlK7QYUme9pvk.png" alt="20210923190541"></p>
-<p>（分段调节的学习率，效果反而不好）</p>
-<p>acc = 0.9674</p>
-<hr>
-<p>numHiddenUnits = 200</p>
-<p>maxEpochs = 200</p>
-<p>miniBatchSize = 50</p>
-<p>adam</p>
-<p>‘InitialLearnRate’, 0.001</p>
-<p><img src="https://i.loli.net/2021/09/23/jZbsLE6oVDzR2Gc.png" alt="20210923193326"></p>
-<p>acc = 0.9801</p>
-<hr>
-<p>numHiddenUnits = 200</p>
-<p>maxEpochs = 200</p>
-<p>miniBatchSize = 50</p>
-<p>adam</p>
-<p>‘InitialLearnRate’, 0.001</p>
-<p>‘LearnRateSchedule’, ‘piecewise’</p>
-<p>‘LearnRateDropFactor’, 0.5</p>
-<p>‘LearnRateDropPeriod’, 100</p>
-<p><img src="https://i.loli.net/2021/09/23/iE8cxjKBWTy9OfA.png" alt="20210923195915"></p>
-<p>（100epoch之后学习率减半，acc稍微低一点点）</p>
-<p>acc = 0.9772</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -992,7 +956,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">96</span>
+          <span class="site-state-item-count">97</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
