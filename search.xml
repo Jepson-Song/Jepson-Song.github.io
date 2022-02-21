@@ -47,6 +47,81 @@
       </tags>
   </entry>
   <entry>
+    <title>SSL</title>
+    <url>/2021/12/04/SSL/</url>
+    <content><![CDATA[<p><img src="https://s2.loli.net/2021/12/04/vDsWVg24TJExnti.png" alt="20211204150221"></p>
+<p>http是超文本传输协议，服务器和浏览器之间的数据传输使用的是明文传输，所以很不安全。</p>
+<p>https就是在http的基础上增加安全套接字层SSL(sercue socket layer)，使用SSL对服务器和浏览器之间的数据传输进行加密。</p>
+<p>第一阶段：建立安全能力</p>
+<p>客户端-client_hello：</p>
+<ul>
+<li>客户端可以支持的SSL最高版本号;</li>
+<li>客户端生成的32字节的随机数;</li>
+<li>会话标识符ID;</li>
+<li>客户端可以支持的密码套件列表;</li>
+<li>客户端可以支持的压缩方法列表。</li>
+</ul>
+<p>服务端-server_hello：</p>
+<ul>
+<li>SSL版本号，取收到的客户端SSL版本和服务端支持的最高版本中的较低者;</li>
+<li>服务端生成的32字节的随机数;</li>
+<li>会话标识符ID;</li>
+<li>从收到的客户端密码套件列表中选择一个密码套件(包含密钥交换算法、对称加密算法、摘要算法);</li>
+<li>从收到的客户端压缩方法列表中选择一种压缩方法。</li>
+</ul>
+<p>第二阶段：服务端验证和密钥交换</p>
+<p>服务端-certificate：</p>
+<ul>
+<li>含有公钥信息的服务端数字证书或到CA的完整证书链。</li>
+</ul>
+<p>服务端-server_key_exchange：</p>
+<ul>
+<li>可选，根据密钥协商算法而定，如果传送给客户端的服务端证书数据不足以按照第一阶段选定的密钥交换算法协商密钥，该步骤不足密钥协商元素。</li>
+</ul>
+<p>服务端-certificate_request：</p>
+<ul>
+<li>可选，请求验证客户端证书信息，单向数据认证(只认证服务端)无此步骤。</li>
+</ul>
+<p>服务端-server_hello_done：</p>
+<ul>
+<li>通知客户端版本号和加密套件协商结束。</li>
+</ul>
+<p>第三阶段：客户端验证和密钥交换</p>
+<p>客户端-certificate：</p>
+<ul>
+<li>可选，客户端数字证书，双向数据认证中服务端要求验证客户端身份合法性。</li>
+</ul>
+<p>客户端-client_key_exchange：</p>
+<ul>
+<li>客户端交换密钥，视密钥交换算法而定，密钥协商参数或pre-master key(服务端公钥加密)。</li>
+</ul>
+<p>客户端-certificate_verify：</p>
+<ul>
+<li>可选，客户端将已交互的握手消息、会话密钥的摘要值用客户端私钥加密发送给服务端。</li>
+</ul>
+<p>第四阶段：完成</p>
+<p>客户端-change_cipher_spec：</p>
+<ul>
+<li>改变密码格式信息，告诉服务端之后的报文消息用会话密钥加密。</li>
+</ul>
+<p>客户端-finished：</p>
+<ul>
+<li>向服务端宣布握手协议完成。</li>
+</ul>
+<p>服务端-change_cipher_spec：</p>
+<ul>
+<li>改变密码格式信息，告诉客户端之后的报文消息用会话密钥加密。</li>
+</ul>
+<p>服务端-finished：</p>
+<ul>
+<li>向客户端宣布握手协议完成。</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MVCC+NextKeyLocks</title>
     <url>/2022/02/17/MVCC-NextKeyLocks/</url>
     <content><![CDATA[<h2 id="多版本并发控制"><a href="#多版本并发控制" class="headerlink" title="多版本并发控制"></a>多版本并发控制</h2><p>多版本并发控制（Multi-Version Concurrency Control, MVCC）是 MySQL 的 InnoDB 存储引擎实现隔离级别的一种具体方式，用于实现提交读和可重复读这两种隔离级别。而未提交读隔离级别总是读取最新的数据行，要求很低，无需使用 MVCC。可串行化隔离级别需要对所有读取的行都加锁，单纯使用 MVCC 无法实现。</p>
@@ -149,75 +224,18 @@
       </tags>
   </entry>
   <entry>
-    <title>SSL</title>
-    <url>/2021/12/04/SSL/</url>
-    <content><![CDATA[<p><img src="https://s2.loli.net/2021/12/04/vDsWVg24TJExnti.png" alt="20211204150221"></p>
-<p>http是超文本传输协议，服务器和浏览器之间的数据传输使用的是明文传输，所以很不安全。</p>
-<p>https就是在http的基础上增加安全套接字层SSL(sercue socket layer)，使用SSL对服务器和浏览器之间的数据传输进行加密。</p>
-<p>第一阶段：建立安全能力</p>
-<p>客户端-client_hello：</p>
-<ul>
-<li>客户端可以支持的SSL最高版本号;</li>
-<li>客户端生成的32字节的随机数;</li>
-<li>会话标识符ID;</li>
-<li>客户端可以支持的密码套件列表;</li>
-<li>客户端可以支持的压缩方法列表。</li>
-</ul>
-<p>服务端-server_hello：</p>
-<ul>
-<li>SSL版本号，取收到的客户端SSL版本和服务端支持的最高版本中的较低者;</li>
-<li>服务端生成的32字节的随机数;</li>
-<li>会话标识符ID;</li>
-<li>从收到的客户端密码套件列表中选择一个密码套件(包含密钥交换算法、对称加密算法、摘要算法);</li>
-<li>从收到的客户端压缩方法列表中选择一种压缩方法。</li>
-</ul>
-<p>第二阶段：服务端验证和密钥交换</p>
-<p>服务端-certificate：</p>
-<ul>
-<li>含有公钥信息的服务端数字证书或到CA的完整证书链。</li>
-</ul>
-<p>服务端-server_key_exchange：</p>
-<ul>
-<li>可选，根据密钥协商算法而定，如果传送给客户端的服务端证书数据不足以按照第一阶段选定的密钥交换算法协商密钥，该步骤不足密钥协商元素。</li>
-</ul>
-<p>服务端-certificate_request：</p>
-<ul>
-<li>可选，请求验证客户端证书信息，单向数据认证(只认证服务端)无此步骤。</li>
-</ul>
-<p>服务端-server_hello_done：</p>
-<ul>
-<li>通知客户端版本号和加密套件协商结束。</li>
-</ul>
-<p>第三阶段：客户端验证和密钥交换</p>
-<p>客户端-certificate：</p>
-<ul>
-<li>可选，客户端数字证书，双向数据认证中服务端要求验证客户端身份合法性。</li>
-</ul>
-<p>客户端-client_key_exchange：</p>
-<ul>
-<li>客户端交换密钥，视密钥交换算法而定，密钥协商参数或pre-master key(服务端公钥加密)。</li>
-</ul>
-<p>客户端-certificate_verify：</p>
-<ul>
-<li>可选，客户端将已交互的握手消息、会话密钥的摘要值用客户端私钥加密发送给服务端。</li>
-</ul>
-<p>第四阶段：完成</p>
-<p>客户端-change_cipher_spec：</p>
-<ul>
-<li>改变密码格式信息，告诉服务端之后的报文消息用会话密钥加密。</li>
-</ul>
-<p>客户端-finished：</p>
-<ul>
-<li>向服务端宣布握手协议完成。</li>
-</ul>
-<p>服务端-change_cipher_spec：</p>
-<ul>
-<li>改变密码格式信息，告诉客户端之后的报文消息用会话密钥加密。</li>
-</ul>
-<p>服务端-finished：</p>
-<ul>
-<li>向客户端宣布握手协议完成。</li>
-</ul>
+    <title>const</title>
+    <url>/2021/11/30/const/</url>
+    <content><![CDATA[<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><p>const是只读类型的变量，值不能修改，只能在定义的时候赋值。</p>
+<p>形式为const int a = 1;</p>
+<h2 id="常量指针和指针常量"><a href="#常量指针和指针常量" class="headerlink" title="常量指针和指针常量"></a>常量指针和指针常量</h2><p><strong>常量指针</strong>又叫<strong>底层const</strong>，形式为const int *p = &a;</p>
+<p>特点：不能使用该指针修改指向的值，但是可以修改指针指向的地址。</p>
+<p>即，初始化后不可以*p=2，但是可以p=&b;</p>
+<p><strong>指针常量</strong>又叫<strong>顶层const</strong>，形式为int* const p = &a;</p>
+<p>特点：能使用该指针修改指向的值，但是不可以修改指针指向的地址。</p>
+<p>即，初始化后可以*p=2，但是不能p=&b;</p>
+<p>还有一种叫做<strong>常指针常量</strong>的，形式为const int* const a = &b;</p>
+<p>是常量指针和指针常量的综合，既不可以修改指针指向的地址也不可以修改指针指向的值。</p>
 ]]></content>
       <tags>
         <tag>知识点</tag>
@@ -265,24 +283,6 @@
       </tags>
   </entry>
   <entry>
-    <title>const</title>
-    <url>/2021/11/30/const/</url>
-    <content><![CDATA[<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><p>const是只读类型的变量，值不能修改，只能在定义的时候赋值。</p>
-<p>形式为const int a = 1;</p>
-<h2 id="常量指针和指针常量"><a href="#常量指针和指针常量" class="headerlink" title="常量指针和指针常量"></a>常量指针和指针常量</h2><p><strong>常量指针</strong>又叫<strong>底层const</strong>，形式为const int *p = &a;</p>
-<p>特点：不能使用该指针修改指向的值，但是可以修改指针指向的地址。</p>
-<p>即，初始化后不可以*p=2，但是可以p=&b;</p>
-<p><strong>指针常量</strong>又叫<strong>顶层const</strong>，形式为int* const p = &a;</p>
-<p>特点：能使用该指针修改指向的值，但是不可以修改指针指向的地址。</p>
-<p>即，初始化后可以*p=2，但是不能p=&b;</p>
-<p>还有一种叫做<strong>常指针常量</strong>的，形式为const int* const a = &b;</p>
-<p>是常量指针和指针常量的综合，既不可以修改指针指向的地址也不可以修改指针指向的值。</p>
-]]></content>
-      <tags>
-        <tag>知识点</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>github图片看不了</title>
     <url>/2021/04/08/github%E5%9B%BE%E7%89%87%E7%9C%8B%E4%B8%8D%E4%BA%86/</url>
     <content><![CDATA[<h2 id="改host"><a href="#改host" class="headerlink" title="改host"></a>改host</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">140.82.113.3      github.com</span><br><span class="line">140.82.114.20     gist.github.com</span><br><span class="line"></span><br><span class="line">151.101.184.133    assets-cdn.github.com</span><br><span class="line">151.101.184.133    raw.githubusercontent.com</span><br><span class="line">151.101.184.133    gist.githubusercontent.com</span><br><span class="line">151.101.184.133    cloud.githubusercontent.com</span><br><span class="line">151.101.184.133    camo.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars0.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars0.githubusercontent.com</span><br><span class="line">199.232.28.133     avatars1.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars1.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars2.githubusercontent.com</span><br><span class="line">199.232.28.133     avatars2.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars3.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars3.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars4.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars4.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars5.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars5.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars6.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars6.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars7.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars7.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars8.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars8.githubusercontent.com</span><br></pre></td></tr></table></figure>
@@ -304,6 +304,24 @@
       <tags>
         <tag>教程</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2021/03/29/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>insert和erase</title>
@@ -335,24 +353,6 @@
       <tags>
         <tag>算法</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2021/03/29/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>new和malloc</title>
@@ -456,6 +456,25 @@
 ]]></content>
   </entry>
   <entry>
+    <title>七层网络模型</title>
+    <url>/2021/04/13/%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/</url>
+    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210413144030.png" alt="20210413144030"></p>
+<p>从下往上</p>
+<ul>
+<li>物理层</li>
+<li>数据链路层</li>
+<li>网络层</li>
+<li>传输层</li>
+<li>会话层</li>
+<li>表示层</li>
+<li>应用层</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>不同层常用的网络协议</title>
     <url>/2022/02/21/%E4%B8%8D%E5%90%8C%E5%B1%82%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/</url>
     <content><![CDATA[<table>
@@ -524,25 +543,6 @@
       </tags>
   </entry>
   <entry>
-    <title>七层网络模型</title>
-    <url>/2021/04/13/%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/</url>
-    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210413144030.png" alt="20210413144030"></p>
-<p>从下往上</p>
-<ul>
-<li>物理层</li>
-<li>数据链路层</li>
-<li>网络层</li>
-<li>传输层</li>
-<li>会话层</li>
-<li>表示层</li>
-<li>应用层</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>知识点</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>事务ACID</title>
     <url>/2022/02/16/%E4%BA%8B%E5%8A%A1ACID/</url>
     <content><![CDATA[<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>事务指的是满足 ACID 特性的一组操作，可以通过 Commit 提交一个事务，也可以使用 Rollback 进行回滚。</p>
@@ -571,20 +571,6 @@
       <tags>
         <tag>八股文</tag>
         <tag>数据库</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>优先队列</title>
-    <url>/2021/12/04/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/</url>
-    <content><![CDATA[<p>C++ STL里的优先队列priority_queue底层时用堆实现的。</p>
-<p>使用时简单的小顶堆/大顶堆可以如下定义：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">priority_queue&lt;<span class="keyword">int</span>,vector&lt;<span class="keyword">int</span>&gt;,greater&lt;<span class="keyword">int</span>&gt; &gt; q;  <span class="comment">//小顶堆</span></span><br><span class="line"></span><br><span class="line">priority_queue&lt;<span class="keyword">int</span>,vector&lt;<span class="keyword">int</span>&gt;,less&lt;<span class="keyword">int</span>&gt; &gt; q;  <span class="comment">//大顶堆</span></span><br></pre></td></tr></table></figure>
-
-<p>但是greater和less只适用于简单的元素类型，对于复杂元素（比如自定义的结构体）需要重载运算符&lt;。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">int</span> dis;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &lt;(<span class="keyword">const</span> node &amp;a) <span class="keyword">const</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.dis&lt;dis; <span class="comment">// 小顶堆</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>算法</tag>
       </tags>
   </entry>
   <entry>
@@ -829,6 +815,45 @@
       </tags>
   </entry>
   <entry>
+    <title>优先队列</title>
+    <url>/2021/12/04/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/</url>
+    <content><![CDATA[<p>C++ STL里的优先队列priority_queue底层时用堆实现的。</p>
+<p>使用时简单的小顶堆/大顶堆可以如下定义：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">priority_queue&lt;<span class="keyword">int</span>,vector&lt;<span class="keyword">int</span>&gt;,greater&lt;<span class="keyword">int</span>&gt; &gt; q;  <span class="comment">//小顶堆</span></span><br><span class="line"></span><br><span class="line">priority_queue&lt;<span class="keyword">int</span>,vector&lt;<span class="keyword">int</span>&gt;,less&lt;<span class="keyword">int</span>&gt; &gt; q;  <span class="comment">//大顶堆</span></span><br></pre></td></tr></table></figure>
+
+<p>但是greater和less只适用于简单的元素类型，对于复杂元素（比如自定义的结构体）需要重载运算符&lt;。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">int</span> dis;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &lt;(<span class="keyword">const</span> node &amp;a) <span class="keyword">const</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.dis&lt;dis; <span class="comment">// 小顶堆</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>内存管理</title>
+    <url>/2022/02/14/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<p>C++ 内存分区：栈、堆、全局/静态存储区、常量存储区、代码区。</p>
+<ol>
+<li><p>栈：存放函数的局部变量、函数参数、返回地址等，由编译器自动分配和释放。</p>
+</li>
+<li><p>堆：动态申请的内存空间，就是由 malloc 分配的内存块，由程序员控制它的分配和释放，如果程序执行结束还没有释放，操作系统会自动回收。</p>
+</li>
+<li><p>全局区/静态存储区（.bss 段和 .data 段）：存放全局变量和静态变量，程序运行结束操作系统自动释放，在 C 语言中，未初始化的放在 .bss 段中，初始化的放在 .data 段中，C++ 中不再区分了。</p>
+</li>
+<li><p>常量存储区（.data 段）：存放的是常量，不允许修改，程序运行结束自动释放。</p>
+</li>
+<li><p>代码区（.text 段）：存放代码，不允许修改，但可以执行。编译后的二进制文件存放在这里。</p>
+</li>
+</ol>
+<p>说明：</p>
+<p>从操作系统的本身来讲，以上存储区在内存中的分布是如下形式(从低地址到高地址)：.text 段 –&gt; .data 段 –&gt; .bss 段 –&gt; 堆 –&gt; unused –&gt; 栈 –&gt; env</p>
+<p>程序实例：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">说明：C++ 中不再区分初始化和未初始化的全局变量、静态变量的存储区，如果非要区分下述程序标注在了括号中</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> g_var = <span class="number">0</span>; <span class="comment">// g_var 在全局区（.data 段）</span></span><br><span class="line"><span class="keyword">char</span> *gp_var;  <span class="comment">// gp_var 在全局区（.bss 段）</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> var;                    <span class="comment">// var 在栈区</span></span><br><span class="line">    <span class="keyword">char</span> *p_var;                <span class="comment">// p_var 在栈区</span></span><br><span class="line">    <span class="keyword">char</span> arr[] = <span class="string">&quot;abc&quot;</span>;         <span class="comment">// arr 为数组变量，存储在栈区；&quot;abc&quot;为字符串常量，存储在常量区</span></span><br><span class="line">    <span class="keyword">char</span> *p_var1 = <span class="string">&quot;123456&quot;</span>;    <span class="comment">// p_var1 在栈区；&quot;123456&quot;为字符串常量，存储在常量区</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> s_var = <span class="number">0</span>;       <span class="comment">// s_var 为静态变量，存在静态存储区（.data 段）</span></span><br><span class="line">    p_var = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">10</span>); <span class="comment">// 分配得来的 10 个字节的区域在堆区</span></span><br><span class="line">    <span class="built_in">free</span>(p_var);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>刷题记录</title>
     <url>/2022/02/15/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<h2 id="02-21"><a href="#02-21" class="headerlink" title="02/21"></a>02/21</h2><p>面试题 04.01. 节点间通路</p>
@@ -1030,31 +1055,6 @@
       </tags>
   </entry>
   <entry>
-    <title>内存管理</title>
-    <url>/2022/02/14/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</url>
-    <content><![CDATA[<p>C++ 内存分区：栈、堆、全局/静态存储区、常量存储区、代码区。</p>
-<ol>
-<li><p>栈：存放函数的局部变量、函数参数、返回地址等，由编译器自动分配和释放。</p>
-</li>
-<li><p>堆：动态申请的内存空间，就是由 malloc 分配的内存块，由程序员控制它的分配和释放，如果程序执行结束还没有释放，操作系统会自动回收。</p>
-</li>
-<li><p>全局区/静态存储区（.bss 段和 .data 段）：存放全局变量和静态变量，程序运行结束操作系统自动释放，在 C 语言中，未初始化的放在 .bss 段中，初始化的放在 .data 段中，C++ 中不再区分了。</p>
-</li>
-<li><p>常量存储区（.data 段）：存放的是常量，不允许修改，程序运行结束自动释放。</p>
-</li>
-<li><p>代码区（.text 段）：存放代码，不允许修改，但可以执行。编译后的二进制文件存放在这里。</p>
-</li>
-</ol>
-<p>说明：</p>
-<p>从操作系统的本身来讲，以上存储区在内存中的分布是如下形式(从低地址到高地址)：.text 段 –&gt; .data 段 –&gt; .bss 段 –&gt; 堆 –&gt; unused –&gt; 栈 –&gt; env</p>
-<p>程序实例：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">说明：C++ 中不再区分初始化和未初始化的全局变量、静态变量的存储区，如果非要区分下述程序标注在了括号中</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> g_var = <span class="number">0</span>; <span class="comment">// g_var 在全局区（.data 段）</span></span><br><span class="line"><span class="keyword">char</span> *gp_var;  <span class="comment">// gp_var 在全局区（.bss 段）</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> var;                    <span class="comment">// var 在栈区</span></span><br><span class="line">    <span class="keyword">char</span> *p_var;                <span class="comment">// p_var 在栈区</span></span><br><span class="line">    <span class="keyword">char</span> arr[] = <span class="string">&quot;abc&quot;</span>;         <span class="comment">// arr 为数组变量，存储在栈区；&quot;abc&quot;为字符串常量，存储在常量区</span></span><br><span class="line">    <span class="keyword">char</span> *p_var1 = <span class="string">&quot;123456&quot;</span>;    <span class="comment">// p_var1 在栈区；&quot;123456&quot;为字符串常量，存储在常量区</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> s_var = <span class="number">0</span>;       <span class="comment">// s_var 为静态变量，存在静态存储区（.data 段）</span></span><br><span class="line">    p_var = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">10</span>); <span class="comment">// 分配得来的 10 个字节的区域在堆区</span></span><br><span class="line">    <span class="built_in">free</span>(p_var);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>知识点</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>区间dp</title>
     <url>/2021/12/01/%E5%8C%BA%E9%97%B4dp/</url>
     <content><![CDATA[<h2 id="1-先枚举区间长度"><a href="#1-先枚举区间长度" class="headerlink" title="1.先枚举区间长度"></a>1.先枚举区间长度</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> len=<span class="number">3</span>;len&lt;=n;len++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i+len<span class="number">-1</span>&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> j = i+len<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k=i+<span class="number">1</span>;k&lt;=j<span class="number">-1</span>;k++)&#123;</span><br><span class="line">            dp[i][j] = <span class="built_in">max</span>(dp[i][j], a[k]*a[i]*a[j]+dp[i][k]+dp[k][j]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -1117,30 +1117,6 @@
 <p>派生类的对象虚函数表如下：</p>
 <p><img src="https://s2.loli.net/2022/02/15/YqVBLIPJpWHlM2y.png" alt="20220215171352"></p>
 <p>简单解释：当基类的指针指向派生类的对象时，通过派生类的对象的虚表指针找到虚函数表（派生类的对象虚函数表），进而找到相应的虚函数 Derive::f() 进行调用。</p>
-]]></content>
-      <tags>
-        <tag>知识点</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实例化一个对象的过程</title>
-    <url>/2022/02/21/%E5%AE%9E%E4%BE%8B%E5%8C%96%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[<ol>
-<li><p>分配空间</p>
-<p> 创建类对象首先要为该对象分配内存空间。不同的对象，为其分配空间的时机未必相同。全局对象、静态对象、分配在栈区域内的对象，在编译阶段进行内存分配；存储在堆空间的对象，是在运行阶段进行内存分配。</p>
-</li>
-<li><p>初始化</p>
-<p> 首先明确一点：初始化不同于赋值。初始化发生在赋值之前，初始化随对象的创建而进行，而赋值是在对象创建好后，为其赋上相应的值。这一点可以联想下上一个问题中提到：初始化列表先于构造函数体内的代码执行，初始化列表执行的是数据成员的初始化过程，这个可以从成员对象的构造函数被调用看的出来。</p>
-</li>
-<li><p>赋值</p>
-<p> 对象初始化完成后，可以对其进行赋值。对于一个类的对象，其成员变量的赋值过程发生在类的构造函数的函数体中。当执行完该函数体，也就意味着类对象的实例化过程完成了。（总结：构造函数实现了对象的初始化和赋值两个过程，对象的初始化是通过初始化列表来完成，而对象的赋值则才是通过构造函数的函数体来实现。）</p>
-</li>
-</ol>
-<p>注：对于拥有虚函数的类的对象，还需要给虚表指针赋值。</p>
-<pre><code>没有继承关系的类，分配完内存后，首先给虚表指针赋值，然后再列表初始化以及执行构造函数的函数体，即上述中的初始化和赋值操作。
-
-有继承关系的类，分配内存之后，首先进行基类的构造过程，然后给该派生类的虚表指针赋值，最后再列表初始化以及执行构造函数的函数体，即上述中的初始化和赋值操作。
-</code></pre>
 ]]></content>
       <tags>
         <tag>知识点</tag>
@@ -1237,6 +1213,30 @@
       </tags>
   </entry>
   <entry>
+    <title>实例化一个对象的过程</title>
+    <url>/2022/02/21/%E5%AE%9E%E4%BE%8B%E5%8C%96%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<ol>
+<li><p>分配空间</p>
+<p> 创建类对象首先要为该对象分配内存空间。不同的对象，为其分配空间的时机未必相同。全局对象、静态对象、分配在栈区域内的对象，在编译阶段进行内存分配；存储在堆空间的对象，是在运行阶段进行内存分配。</p>
+</li>
+<li><p>初始化</p>
+<p> 首先明确一点：初始化不同于赋值。初始化发生在赋值之前，初始化随对象的创建而进行，而赋值是在对象创建好后，为其赋上相应的值。这一点可以联想下上一个问题中提到：初始化列表先于构造函数体内的代码执行，初始化列表执行的是数据成员的初始化过程，这个可以从成员对象的构造函数被调用看的出来。</p>
+</li>
+<li><p>赋值</p>
+<p> 对象初始化完成后，可以对其进行赋值。对于一个类的对象，其成员变量的赋值过程发生在类的构造函数的函数体中。当执行完该函数体，也就意味着类对象的实例化过程完成了。（总结：构造函数实现了对象的初始化和赋值两个过程，对象的初始化是通过初始化列表来完成，而对象的赋值则才是通过构造函数的函数体来实现。）</p>
+</li>
+</ol>
+<p>注：对于拥有虚函数的类的对象，还需要给虚表指针赋值。</p>
+<pre><code>没有继承关系的类，分配完内存后，首先给虚表指针赋值，然后再列表初始化以及执行构造函数的函数体，即上述中的初始化和赋值操作。
+
+有继承关系的类，分配内存之后，首先进行基类的构造过程，然后给该派生类的虚表指针赋值，最后再列表初始化以及执行构造函数的函数体，即上述中的初始化和赋值操作。
+</code></pre>
+]]></content>
+      <tags>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录0413</title>
     <url>/2021/04/13/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950413/</url>
     <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210413202855.png" alt="20210413202855"><br>低频部分信号很弱，噪声很多</p>
@@ -1244,6 +1244,15 @@
       <tags>
         <tag>实验记录</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>实验记录0414</title>
+    <url>/2021/04/14/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950414/</url>
+    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414213909.png" alt="20210414213909"><br>偶尔出现的，两个都好像是对的</p>
+<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414215908.png" alt="20210414215908"><br>273 3 4 </p>
+<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414220040.png" alt="20210414220040"><br>273 15 13</p>
+<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414220124.png" alt="20210414220124"><br>253 15 13</p>
+]]></content>
   </entry>
   <entry>
     <title>实验记录0420</title>
@@ -1264,29 +1273,6 @@
       </tags>
   </entry>
   <entry>
-    <title>实验记录0414</title>
-    <url>/2021/04/14/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950414/</url>
-    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414213909.png" alt="20210414213909"><br>偶尔出现的，两个都好像是对的</p>
-<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414215908.png" alt="20210414215908"><br>273 3 4 </p>
-<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414220040.png" alt="20210414220040"><br>273 15 13</p>
-<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210414220124.png" alt="20210414220124"><br>253 15 13</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>实验记录0426</title>
-    <url>/2021/04/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950426/</url>
-    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210426162158.png" alt="20210426162158"></p>
-<p>存在的问题：</p>
-<ol>
-<li>跳2pi</li>
-<li>压电陶瓷的朝向对cir影响很大</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>实验记录0427</title>
     <url>/2021/04/27/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950427/</url>
     <content><![CDATA[<p>现象：</p>
@@ -1298,6 +1284,20 @@
 <ol>
 <li>用双耳距离来纠跳2pi的问题</li>
 <li>zc+单频连续波的思路</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实验记录0426</title>
+    <url>/2021/04/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950426/</url>
+    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210426162158.png" alt="20210426162158"></p>
+<p>存在的问题：</p>
+<ol>
+<li>跳2pi</li>
+<li>压电陶瓷的朝向对cir影响很大</li>
 </ol>
 ]]></content>
       <tags>
@@ -1393,6 +1393,16 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录0717</title>
+    <url>/2021/07/17/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950717/</url>
+    <content><![CDATA[<p>重写了一下计算位置解方程的代码，目前距离能测出来，但是位置解不出来，方程组无解。<br>数据编号：20210717_213221</p>
+<p><img src="https://i.loli.net/2021/07/17/CY8cOrpKDBnjQ2J.png" alt="20210717213808"></p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录0716</title>
     <url>/2021/07/16/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950716/</url>
     <content><![CDATA[<h2 id="收发压电陶瓷之间的初始距离校准。（0距离，ni一次开关机之内）"><a href="#收发压电陶瓷之间的初始距离校准。（0距离，ni一次开关机之内）" class="headerlink" title="收发压电陶瓷之间的初始距离校准。（0距离，ni一次开关机之内）"></a>收发压电陶瓷之间的初始距离校准。（0距离，ni一次开关机之内）</h2><p>第一次：</p>
@@ -1445,26 +1455,6 @@
       </tags>
   </entry>
   <entry>
-    <title>实验记录0717</title>
-    <url>/2021/07/17/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950717/</url>
-    <content><![CDATA[<p>重写了一下计算位置解方程的代码，目前距离能测出来，但是位置解不出来，方程组无解。<br>数据编号：20210717_213221</p>
-<p><img src="https://i.loli.net/2021/07/17/CY8cOrpKDBnjQ2J.png" alt="20210717213808"></p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录0718</title>
-    <url>/2021/07/18/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950718/</url>
-    <content><![CDATA[<p>好像找到方程组无解的原因了，应该是因为三个接收端在同一条直线上了。需要重新布置一下实验环境，让三个压电陶瓷不在同一条直线上。</p>
-<p><img src="https://i.loli.net/2021/07/18/UTolOQvcKEqmxWy.png" alt="20210718163148"></p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>实验记录0719</title>
     <url>/2021/07/19/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950719/</url>
     <content><![CDATA[<ol>
@@ -1478,6 +1468,16 @@
 <li><p>把采集数据，测距，定位三个功能独立开了，每个按钮只负责一个功能。</p>
 </li>
 </ol>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实验记录0718</title>
+    <url>/2021/07/18/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950718/</url>
+    <content><![CDATA[<p>好像找到方程组无解的原因了，应该是因为三个接收端在同一条直线上了。需要重新布置一下实验环境，让三个压电陶瓷不在同一条直线上。</p>
+<p><img src="https://i.loli.net/2021/07/18/UTolOQvcKEqmxWy.png" alt="20210718163148"></p>
 ]]></content>
       <tags>
         <tag>实验记录</tag>
@@ -1533,6 +1533,39 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录0721</title>
+    <url>/2021/07/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950721/</url>
+    <content><![CDATA[<p>数据编号：20210720_213700</p>
+<p><img src="https://i.loli.net/2021/07/22/VKnY97UIrLThoHc.png" alt="20210722141029"></p>
+<p>修正后</p>
+<p><img src="https://i.loli.net/2021/07/22/xMIkXEhKTG65AHL.png" alt="20210722141053"></p>
+<p>可能是跳波长？接下来试一下整个波长纠正。</p>
+<p>温度影响？？</p>
+<p>温度试验：<br>原始20℃</p>
+<p><img src="https://i.loli.net/2021/07/22/VKnY97UIrLThoHc.png" alt="20210722141101"></p>
+<p>21℃</p>
+<p><img src="https://i.loli.net/2021/07/22/pqUTtlKR9OubAHF.png" alt="20210722141109"></p>
+<p>22℃</p>
+<p><img src="https://i.loli.net/2021/07/22/Oe9u6VrzXsy3SIE.png" alt="20210722141116"></p>
+<p>23℃</p>
+<p><img src="https://i.loli.net/2021/07/22/Zi81MxudVgSLRAt.png" alt="20210722141124"></p>
+<p>24℃</p>
+<p><img src="https://i.loli.net/2021/07/22/dxy4bTGmwlJ8FUZ.png" alt="20210722141130"></p>
+<p>25℃</p>
+<p><img src="https://i.loli.net/2021/07/22/qlFgUY5hkZN69BC.png" alt="20210722141137"></p>
+<p>30℃</p>
+<p><img src="https://i.loli.net/2021/07/22/CASwHeqh1BKzPOQ.png" alt="20210722141145"></p>
+<p>50℃</p>
+<p><img src="https://i.loli.net/2021/07/22/BKw7HqE1GldLUkO.png" alt="20210722141212"></p>
+<p>100℃</p>
+<p><img src="https://i.loli.net/2021/07/22/rN678mecnyqWXxQ.png" alt="20210722141227"></p>
+<p>感觉就是图像整体平移了呀，这有点儿不合理，是不是代码写的有问题？？  </p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录0722</title>
     <url>/2021/07/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950722/</url>
     <content><![CDATA[<h2 id="实验记录"><a href="#实验记录" class="headerlink" title="实验记录"></a>实验记录</h2><ol>
@@ -1571,33 +1604,11 @@
       </tags>
   </entry>
   <entry>
-    <title>实验记录0721</title>
-    <url>/2021/07/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950721/</url>
-    <content><![CDATA[<p>数据编号：20210720_213700</p>
-<p><img src="https://i.loli.net/2021/07/22/VKnY97UIrLThoHc.png" alt="20210722141029"></p>
-<p>修正后</p>
-<p><img src="https://i.loli.net/2021/07/22/xMIkXEhKTG65AHL.png" alt="20210722141053"></p>
-<p>可能是跳波长？接下来试一下整个波长纠正。</p>
-<p>温度影响？？</p>
-<p>温度试验：<br>原始20℃</p>
-<p><img src="https://i.loli.net/2021/07/22/VKnY97UIrLThoHc.png" alt="20210722141101"></p>
-<p>21℃</p>
-<p><img src="https://i.loli.net/2021/07/22/pqUTtlKR9OubAHF.png" alt="20210722141109"></p>
-<p>22℃</p>
-<p><img src="https://i.loli.net/2021/07/22/Oe9u6VrzXsy3SIE.png" alt="20210722141116"></p>
-<p>23℃</p>
-<p><img src="https://i.loli.net/2021/07/22/Zi81MxudVgSLRAt.png" alt="20210722141124"></p>
-<p>24℃</p>
-<p><img src="https://i.loli.net/2021/07/22/dxy4bTGmwlJ8FUZ.png" alt="20210722141130"></p>
-<p>25℃</p>
-<p><img src="https://i.loli.net/2021/07/22/qlFgUY5hkZN69BC.png" alt="20210722141137"></p>
-<p>30℃</p>
-<p><img src="https://i.loli.net/2021/07/22/CASwHeqh1BKzPOQ.png" alt="20210722141145"></p>
-<p>50℃</p>
-<p><img src="https://i.loli.net/2021/07/22/BKw7HqE1GldLUkO.png" alt="20210722141212"></p>
-<p>100℃</p>
-<p><img src="https://i.loli.net/2021/07/22/rN678mecnyqWXxQ.png" alt="20210722141227"></p>
-<p>感觉就是图像整体平移了呀，这有点儿不合理，是不是代码写的有问题？？  </p>
+    <title>实验记录0726</title>
+    <url>/2021/07/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950726/</url>
+    <content><![CDATA[<p><img src="https://i.loli.net/2021/07/26/C2WaSTFlHUcdn9s.png" alt="20210726131049"></p>
+<p>突然发现用相位的测距结果反而比不用相位的波动大。。</p>
+<p><img src="https://i.loli.net/2021/07/26/sN9Ak6Pz2HLWXFg.png" alt="20210726155435"></p>
 ]]></content>
       <tags>
         <tag>实验记录</tag>
@@ -1614,17 +1625,6 @@
 <li><p>可能需要找到一个比较好的纠正跳波长问题的算</p>
 </li>
 </ol>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录0726</title>
-    <url>/2021/07/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950726/</url>
-    <content><![CDATA[<p><img src="https://i.loli.net/2021/07/26/C2WaSTFlHUcdn9s.png" alt="20210726131049"></p>
-<p>突然发现用相位的测距结果反而比不用相位的波动大。。</p>
-<p><img src="https://i.loli.net/2021/07/26/sN9Ak6Pz2HLWXFg.png" alt="20210726155435"></p>
 ]]></content>
       <tags>
         <tag>实验记录</tag>
@@ -1785,6 +1785,26 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录0823</title>
+    <url>/2021/08/23/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950823/</url>
+    <content><![CDATA[<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><ol>
+<li><p>提高计算速度。现在每秒只能计算一帧，至少提到每秒10帧。</p>
+<ul>
+<li>优化解方程</li>
+<li>减小帧长，20~40ms</li>
+</ul>
+</li>
+<li><p>用轨迹来判断动作。根据过去3~5s的轨迹来判断当前在做什么动作。</p>
+</li>
+<li><p>再增加部署2个接收端，一共8个接收端。</p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录0807</title>
     <url>/2021/08/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950807/</url>
     <content><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>感觉上面的思路可能想复杂了，可能没必要把动作划分的那么细，应该只要分别出移动和转动就可以了，因为只有移动会导致轴点改变，而转动不会改变轴点位置。</p>
@@ -1811,19 +1831,21 @@
       </tags>
   </entry>
   <entry>
-    <title>实验记录0823</title>
-    <url>/2021/08/23/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950823/</url>
-    <content><![CDATA[<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><ol>
-<li><p>提高计算速度。现在每秒只能计算一帧，至少提到每秒10帧。</p>
-<ul>
-<li>优化解方程</li>
-<li>减小帧长，20~40ms</li>
-</ul>
-</li>
-<li><p>用轨迹来判断动作。根据过去3~5s的轨迹来判断当前在做什么动作。</p>
-</li>
-<li><p>再增加部署2个接收端，一共8个接收端。</p>
-</li>
+    <title>实验记录0825</title>
+    <url>/2021/08/25/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950825/</url>
+    <content><![CDATA[<h2 id="用HMM完成分类任务"><a href="#用HMM完成分类任务" class="headerlink" title="用HMM完成分类任务"></a>用HMM完成分类任务</h2><p><img src="https://i.loli.net/2021/08/25/XVh9TxvJnpMSRDG.png" alt="20210825170754"></p>
+<p>只用了单边位置的数据进行分类，理论上左右发射端的位置是非常对称的。主要是因为HMM的输入好像只能是一维的？</p>
+<p>数据长度为10时正确率在90%左右</p>
+<p>把数据长度改成20能达到97%的准确率</p>
+<p><img src="https://i.loli.net/2021/08/25/oYcQPRKT2wlMpHZ.png" alt="20210825181612"></p>
+<p>步长设为5准确率也有96%</p>
+<p>但是步长设为10准确率就降到85%zuoyou</p>
+<p>步长设为20准确率会降到65%</p>
+<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><ol>
+<li>优化HMM</li>
+<li>把HMM训练好的参数保存下来</li>
+<li>把HMM和之前的代码结合起来</li>
+<li>每次采集数据时要新建一个文件夹</li>
 </ol>
 ]]></content>
       <tags>
@@ -1842,28 +1864,6 @@
 <li>对数据集进行处理，初始位置移动到坐标原点</li>
 <li>还可以继续进行数据增强，比如把轨迹进行旋转等</li>
 <li>用HMMM训练和分类</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录0825</title>
-    <url>/2021/08/25/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950825/</url>
-    <content><![CDATA[<h2 id="用HMM完成分类任务"><a href="#用HMM完成分类任务" class="headerlink" title="用HMM完成分类任务"></a>用HMM完成分类任务</h2><p><img src="https://i.loli.net/2021/08/25/XVh9TxvJnpMSRDG.png" alt="20210825170754"></p>
-<p>只用了单边位置的数据进行分类，理论上左右发射端的位置是非常对称的。主要是因为HMM的输入好像只能是一维的？</p>
-<p>数据长度为10时正确率在90%左右</p>
-<p>把数据长度改成20能达到97%的准确率</p>
-<p><img src="https://i.loli.net/2021/08/25/oYcQPRKT2wlMpHZ.png" alt="20210825181612"></p>
-<p>步长设为5准确率也有96%</p>
-<p>但是步长设为10准确率就降到85%zuoyou</p>
-<p>步长设为20准确率会降到65%</p>
-<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><ol>
-<li>优化HMM</li>
-<li>把HMM训练好的参数保存下来</li>
-<li>把HMM和之前的代码结合起来</li>
-<li>每次采集数据时要新建一个文件夹</li>
 </ol>
 ]]></content>
       <tags>
@@ -1990,6 +1990,15 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录1008</title>
+    <url>/2021/10/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951008/</url>
+    <content><![CDATA[<p><img src="https://i.loli.net/2021/10/08/jt2qzDFK9uLiTNU.png" alt="20211008123140"><br>（左边是cir右边是dcir）</p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录0922</title>
     <url>/2021/09/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950922/</url>
     <content><![CDATA[<h2 id="完成LSTM"><a href="#完成LSTM" class="headerlink" title="完成LSTM"></a>完成LSTM</h2><p>numHiddenUnits = 200</p>
@@ -2057,15 +2066,6 @@
 <p><img src="https://i.loli.net/2021/10/12/vTUS6tgoYzJaHhi.png" alt="20211012150346"></p>
 <p>数据编号：20211010_140604</p>
 <p>发射端放在肚子附近：20211012_170451</p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录1008</title>
-    <url>/2021/10/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951008/</url>
-    <content><![CDATA[<p><img src="https://i.loli.net/2021/10/08/jt2qzDFK9uLiTNU.png" alt="20211008123140"><br>（左边是cir右边是dcir）</p>
 ]]></content>
       <tags>
         <tag>实验记录</tag>
@@ -2187,6 +2187,15 @@
       </tags>
   </entry>
   <entry>
+    <title>快排</title>
+    <url>/2021/04/08/%E5%BF%AB%E6%8E%92/</url>
+    <content><![CDATA[<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mysort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(l&gt;=r) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> tl = l;</span><br><span class="line">    <span class="keyword">int</span> tr = r;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> flag = nums[l];</span><br><span class="line">    <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(l&lt;r&amp;&amp;flag&lt;=nums[r])&#123;</span><br><span class="line">            r--;</span><br><span class="line">        &#125;</span><br><span class="line">        nums[l] = nums[r];</span><br><span class="line">        <span class="keyword">while</span>(l&lt;r&amp;&amp;nums[l]&lt;=flag)&#123;</span><br><span class="line">            l ++;</span><br><span class="line">        &#125;</span><br><span class="line">        nums[r] = nums[l];</span><br><span class="line">    &#125;</span><br><span class="line">    nums[l] = flag;</span><br><span class="line"></span><br><span class="line">    mysort(nums, tl, l<span class="number">-1</span>);</span><br><span class="line">    mysort(nums, l+<span class="number">1</span>, tr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>算法</tag>
+        <tag>C</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>并发一致性</title>
     <url>/2022/02/16/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7/</url>
     <content><![CDATA[<h2 id="并发一致性问题"><a href="#并发一致性问题" class="headerlink" title="并发一致性问题"></a>并发一致性问题</h2><p>在并发环境下，事务的隔离性很难保证，因此会出现很多并发一致性问题。</p>
@@ -2205,15 +2214,6 @@
       <tags>
         <tag>八股文</tag>
         <tag>数据库</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>快排</title>
-    <url>/2021/04/08/%E5%BF%AB%E6%8E%92/</url>
-    <content><![CDATA[<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mysort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(l&gt;=r) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> tl = l;</span><br><span class="line">    <span class="keyword">int</span> tr = r;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> flag = nums[l];</span><br><span class="line">    <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(l&lt;r&amp;&amp;flag&lt;=nums[r])&#123;</span><br><span class="line">            r--;</span><br><span class="line">        &#125;</span><br><span class="line">        nums[l] = nums[r];</span><br><span class="line">        <span class="keyword">while</span>(l&lt;r&amp;&amp;nums[l]&lt;=flag)&#123;</span><br><span class="line">            l ++;</span><br><span class="line">        &#125;</span><br><span class="line">        nums[r] = nums[l];</span><br><span class="line">    &#125;</span><br><span class="line">    nums[l] = flag;</span><br><span class="line"></span><br><span class="line">    mysort(nums, tl, l<span class="number">-1</span>);</span><br><span class="line">    mysort(nums, l+<span class="number">1</span>, tr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>算法</tag>
-        <tag>C</tag>
       </tags>
   </entry>
   <entry>
@@ -2323,6 +2323,25 @@
       </tags>
   </entry>
   <entry>
+    <title>智能指针</title>
+    <url>/2021/12/23/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/</url>
+    <content><![CDATA[<h2 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h2><p>因为c++没有自动的内存回收机制，所以程序员每次在new一个对象的时候都需要手动delete，但是有的时候会忘记delete，或者因为程序分支等原因delete没有执行，就会使得对象没有释放而导致内存泄漏。</p>
+<p>智能指针（shared_ptr）是一个类，存储了指向一个对象的指针，通过引用计数的方式记录有多少个智能指针对象共享同一个指针，它在指针没有被使用时会自动释放其内存。</p>
+<h2 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h2><p>每次创建智能指针对象时，初始化其指针，引用计数设为1；</p>
+<p>当智能指针对象成为另一个智能指针对象的副本时，执行拷贝构造函数，并将引用计数加1；</p>
+<p>当执行赋值语句时，左操作数的引用计数减1，右操作数的引用计数加1；</p>
+<p>当执行析构函数时，引用计数减1；</p>
+<p>当引用计数为0时，释放内部指针指向的对象的空间。</p>
+<h2 id="循环引用"><a href="#循环引用" class="headerlink" title="循环引用"></a>循环引用</h2><p>智能指针存在的一个经典问题就是循环引用问题，如下。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="built_in">Node</span>(T data = <span class="built_in">T</span>()) :_data(data), <span class="built_in">Pnext</span>(<span class="literal">NULL</span>), <span class="built_in">Ppre</span>(<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	~<span class="built_in">Node</span>()</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;Call ~Node()&quot;</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	shared_ptr&lt;Node&gt; Pnext;</span><br><span class="line">	shared_ptr&lt;Node&gt; Ppre;</span><br><span class="line">	T _data;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testShared_Ptr</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	shared_ptr&lt;Node&lt;<span class="keyword">int</span>&gt;&gt;<span class="built_in">sp1</span>(<span class="keyword">new</span> Node&lt;<span class="keyword">int</span>&gt;(<span class="number">1</span>));</span><br><span class="line">	shared_ptr&lt;Node&lt;<span class="keyword">int</span>&gt;&gt;<span class="built_in">sp2</span>(<span class="keyword">new</span> Node&lt;<span class="keyword">int</span>&gt;(<span class="number">2</span>));</span><br><span class="line">	cout &lt;&lt; sp1.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//1</span></span><br><span class="line">	cout &lt;&lt; sp2.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//1</span></span><br><span class="line">	sp1-&gt;Pnext = sp2;</span><br><span class="line">	sp2-&gt;Ppre = sp1;</span><br><span class="line">	cout &lt;&lt; sp1.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//2</span></span><br><span class="line">	cout &lt;&lt; sp2.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//2</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*Node&lt;int&gt; *a = new Node&lt;int&gt;(3);</span></span><br><span class="line"><span class="comment">    delete a;</span></span><br><span class="line"><span class="comment">    shared_ptr&lt;Node&lt;int&gt;&gt; c(new Node&lt;int&gt;(4));*/</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">testShared_Ptr</span>();                                                                                                                            </span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;testShared_pte()函数运行结束&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在函数testShared_Ptr执行完之后，会先释放sp2，所以sp2的引用计数减1变为1，然后释放sp1的内存，sp1的引用计数也减1变为1。因为sp1中有对sp2的指针，sp2中也有sp1的指针，所以导致二者的引用计数都没有办法变为0，于是导致二者的内存空间都不会释放。</p>
+]]></content>
+      <tags>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>智能指针实现原理</title>
     <url>/2022/02/14/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</url>
     <content><![CDATA[<h2 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h2><p>智能指针是为了解决动态内存分配时带来的内存泄漏以及多次释放同一块内存空间而提出的。C++11 中封装在了 &lt;memory&gt; 头文件中。</p>
@@ -2353,25 +2372,6 @@
 </li>
 </ol>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Parent</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Parent</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">//shared_ptr&lt;Child&gt; ChildPtr;</span></span><br><span class="line">    weak_ptr&lt;Child&gt; ChildPtr;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setChild</span><span class="params">(shared_ptr&lt;Child&gt; child)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;ChildPtr = child;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//new shared_ptr</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>-&gt;ChildPtr.<span class="built_in">lock</span>()) &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">Parent</span>() &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    shared_ptr&lt;Parent&gt; ParentPtr;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setPartent</span><span class="params">(shared_ptr&lt;Parent&gt; parent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;ParentPtr = parent;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>-&gt;ParentPtr.<span class="built_in">use_count</span>()) &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">Child</span>() &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    weak_ptr&lt;Parent&gt; wpp;</span><br><span class="line">    weak_ptr&lt;Child&gt; wpc;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">shared_ptr&lt;Parent&gt; <span class="title">p</span><span class="params">(<span class="keyword">new</span> Parent)</span></span>;</span><br><span class="line">        <span class="function">shared_ptr&lt;Child&gt; <span class="title">c</span><span class="params">(<span class="keyword">new</span> Child)</span></span>;</span><br><span class="line">        p-&gt;<span class="built_in">setChild</span>(c);</span><br><span class="line">        c-&gt;<span class="built_in">setPartent</span>(p);</span><br><span class="line">        wpp = p;</span><br><span class="line">        wpc = c;</span><br><span class="line">        cout &lt;&lt; p.<span class="built_in">use_count</span>() &lt;&lt; endl; <span class="comment">// 2</span></span><br><span class="line">        cout &lt;&lt; c.<span class="built_in">use_count</span>() &lt;&lt; endl; <span class="comment">// 1</span></span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; wpp.<span class="built_in">use_count</span>() &lt;&lt; endl;  <span class="comment">// 0</span></span><br><span class="line">    cout &lt;&lt; wpc.<span class="built_in">use_count</span>() &lt;&lt; endl;  <span class="comment">// 0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>知识点</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>智能指针</title>
-    <url>/2021/12/23/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/</url>
-    <content><![CDATA[<h2 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h2><p>因为c++没有自动的内存回收机制，所以程序员每次在new一个对象的时候都需要手动delete，但是有的时候会忘记delete，或者因为程序分支等原因delete没有执行，就会使得对象没有释放而导致内存泄漏。</p>
-<p>智能指针（shared_ptr）是一个类，存储了指向一个对象的指针，通过引用计数的方式记录有多少个智能指针对象共享同一个指针，它在指针没有被使用时会自动释放其内存。</p>
-<h2 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h2><p>每次创建智能指针对象时，初始化其指针，引用计数设为1；</p>
-<p>当智能指针对象成为另一个智能指针对象的副本时，执行拷贝构造函数，并将引用计数加1；</p>
-<p>当执行赋值语句时，左操作数的引用计数减1，右操作数的引用计数加1；</p>
-<p>当执行析构函数时，引用计数减1；</p>
-<p>当引用计数为0时，释放内部指针指向的对象的空间。</p>
-<h2 id="循环引用"><a href="#循环引用" class="headerlink" title="循环引用"></a>循环引用</h2><p>智能指针存在的一个经典问题就是循环引用问题，如下。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="built_in">Node</span>(T data = <span class="built_in">T</span>()) :_data(data), <span class="built_in">Pnext</span>(<span class="literal">NULL</span>), <span class="built_in">Ppre</span>(<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	~<span class="built_in">Node</span>()</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;Call ~Node()&quot;</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	shared_ptr&lt;Node&gt; Pnext;</span><br><span class="line">	shared_ptr&lt;Node&gt; Ppre;</span><br><span class="line">	T _data;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testShared_Ptr</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	shared_ptr&lt;Node&lt;<span class="keyword">int</span>&gt;&gt;<span class="built_in">sp1</span>(<span class="keyword">new</span> Node&lt;<span class="keyword">int</span>&gt;(<span class="number">1</span>));</span><br><span class="line">	shared_ptr&lt;Node&lt;<span class="keyword">int</span>&gt;&gt;<span class="built_in">sp2</span>(<span class="keyword">new</span> Node&lt;<span class="keyword">int</span>&gt;(<span class="number">2</span>));</span><br><span class="line">	cout &lt;&lt; sp1.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//1</span></span><br><span class="line">	cout &lt;&lt; sp2.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//1</span></span><br><span class="line">	sp1-&gt;Pnext = sp2;</span><br><span class="line">	sp2-&gt;Ppre = sp1;</span><br><span class="line">	cout &lt;&lt; sp1.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//2</span></span><br><span class="line">	cout &lt;&lt; sp2.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//2</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*Node&lt;int&gt; *a = new Node&lt;int&gt;(3);</span></span><br><span class="line"><span class="comment">    delete a;</span></span><br><span class="line"><span class="comment">    shared_ptr&lt;Node&lt;int&gt;&gt; c(new Node&lt;int&gt;(4));*/</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">testShared_Ptr</span>();                                                                                                                            </span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;testShared_pte()函数运行结束&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在函数testShared_Ptr执行完之后，会先释放sp2，所以sp2的引用计数减1变为1，然后释放sp1的内存，sp1的引用计数也减1变为1。因为sp1中有对sp2的指针，sp2中也有sp1的指针，所以导致二者的引用计数都没有办法变为0，于是导致二者的内存空间都不会释放。</p>
 ]]></content>
       <tags>
         <tag>知识点</tag>
@@ -2518,6 +2518,12 @@
       </tags>
   </entry>
   <entry>
+    <title>端口转发</title>
+    <url>/2021/04/08/%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/</url>
+    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210408172946.png" alt="20210408172946"></p>
+]]></content>
+  </entry>
+  <entry>
     <title>磁盘管理</title>
     <url>/2022/02/20/%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/</url>
     <content><![CDATA[<h2 id="磁盘调度算法"><a href="#磁盘调度算法" class="headerlink" title="磁盘调度算法"></a>磁盘调度算法</h2><p>读写一个磁盘块的时间的影响因素有：</p>
@@ -2552,10 +2558,38 @@
       </tags>
   </entry>
   <entry>
-    <title>端口转发</title>
-    <url>/2021/04/08/%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/</url>
-    <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210408172946.png" alt="20210408172946"></p>
+    <title>继承方式</title>
+    <url>/2021/12/20/%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F/</url>
+    <content><![CDATA[<p>不同的继承方式会影响基类成员在派生类中的访问权限。</p>
+<ol>
+<li>public继承方式</li>
+</ol>
+<ul>
+<li>基类中所有 public 成员在派生类中为 public 属性；</li>
+<li>基类中所有 protected 成员在派生类中为 protected 属性；</li>
+<li>基类中所有 private 成员在派生类中不能使用。</li>
+</ul>
+<ol start="2">
+<li>protected继承方式</li>
+</ol>
+<ul>
+<li>基类中的所有 public 成员在派生类中为 protected 属性；</li>
+<li>基类中的所有 protected 成员在派生类中为 protected 属性；</li>
+<li>基类中的所有 private 成员在派生类中不能使用。</li>
+</ul>
+<ol start="3">
+<li>private继承方式</li>
+</ol>
+<ul>
+<li>基类中的所有 public 成员在派生类中均为 private 属性；</li>
+<li>基类中的所有 protected 成员在派生类中均为 private 属性；</li>
+<li>基类中的所有 private 成员在派生类中不能使用。</li>
+</ul>
+<p>默认是私有继承</p>
 ]]></content>
+      <tags>
+        <tag>知识点</tag>
+      </tags>
   </entry>
   <entry>
     <title>索引</title>
@@ -2590,40 +2624,6 @@
 <li><p>在离散型高，数据基数大，且等值查询时候，Hash索引有优势。</p>
 </li>
 </ol>
-]]></content>
-      <tags>
-        <tag>知识点</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>继承方式</title>
-    <url>/2021/12/20/%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F/</url>
-    <content><![CDATA[<p>不同的继承方式会影响基类成员在派生类中的访问权限。</p>
-<ol>
-<li>public继承方式</li>
-</ol>
-<ul>
-<li>基类中所有 public 成员在派生类中为 public 属性；</li>
-<li>基类中所有 protected 成员在派生类中为 protected 属性；</li>
-<li>基类中所有 private 成员在派生类中不能使用。</li>
-</ul>
-<ol start="2">
-<li>protected继承方式</li>
-</ol>
-<ul>
-<li>基类中的所有 public 成员在派生类中为 protected 属性；</li>
-<li>基类中的所有 protected 成员在派生类中为 protected 属性；</li>
-<li>基类中的所有 private 成员在派生类中不能使用。</li>
-</ul>
-<ol start="3">
-<li>private继承方式</li>
-</ol>
-<ul>
-<li>基类中的所有 public 成员在派生类中均为 private 属性；</li>
-<li>基类中的所有 protected 成员在派生类中均为 private 属性；</li>
-<li>基类中的所有 private 成员在派生类中不能使用。</li>
-</ul>
-<p>默认是私有继承</p>
 ]]></content>
       <tags>
         <tag>知识点</tag>
@@ -2694,25 +2694,6 @@
       </tags>
   </entry>
   <entry>
-    <title>虚函数</title>
-    <url>/2021/04/13/%E8%99%9A%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>多态是在不同继承关系的类对象，去调同一函数，产生了不同的行为。</p>
-<p>就是说，有一对继承关系的两个类，这两个类里面都有一个函数且名字、参数、返回值均相同，然后我们通过调用函数来实现不同类对象完成不同的事件。</p>
-<h2 id="虚函数"><a href="#虚函数" class="headerlink" title="虚函数"></a>虚函数</h2><p>在main函数中，如果有父类或者子类的实例对象，就需要有父类的虚函数的实现；在main函数中，如果没有父类或者子类的实例对象，可以不实现父类的虚函数。</p>
-<p>虚函数的目的是为了(在继承中)实现多态 。每一个类都有一个虚函数表(v-table)，每个对象都有一个虚函数指针(vptr)，指向虚函数表。当子类对象被创建后，虚函数指针就会指向子类中覆盖的虚函数。当使用基类指针时，虚函数指针将根据基类指针指向的对象的实际类型，来指向正确的函数。</p>
-<h2 id="纯虚函数"><a href="#纯虚函数" class="headerlink" title="纯虚函数"></a>纯虚函数</h2><p>子类必须实现该函数（接口）</p>
-<p>有纯虚函数的类叫做抽象类，不能生成实例对象</p>
-<p>抽象类就像一个规范一样，like 接口(Interface) in Java</p>
-<h2 id="虚函数与纯虚函数"><a href="#虚函数与纯虚函数" class="headerlink" title="虚函数与纯虚函数"></a>虚函数与纯虚函数</h2><p>定义一个函数为虚函数，不代表函数为不被实现的函数。</p>
-<p>定义他为虚函数是为了允许用基类的指针来调用子类的这个函数。</p>
-<p>定义一个函数为纯虚函数，才代表函数没有被实现。</p>
-<p>定义纯虚函数是为了实现一个接口，起到一个规范的作用，规范继承这个类的程序员必须实现这个函数。</p>
-]]></content>
-      <tags>
-        <tag>知识点</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>讨论0218</title>
     <url>/2022/02/18/%E8%AE%A8%E8%AE%BA0218/</url>
     <content><![CDATA[<p>目前的瓶颈：应用场景</p>
@@ -2753,6 +2734,25 @@
 ]]></content>
       <tags>
         <tag>讨论</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>虚函数</title>
+    <url>/2021/04/13/%E8%99%9A%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>多态是在不同继承关系的类对象，去调同一函数，产生了不同的行为。</p>
+<p>就是说，有一对继承关系的两个类，这两个类里面都有一个函数且名字、参数、返回值均相同，然后我们通过调用函数来实现不同类对象完成不同的事件。</p>
+<h2 id="虚函数"><a href="#虚函数" class="headerlink" title="虚函数"></a>虚函数</h2><p>在main函数中，如果有父类或者子类的实例对象，就需要有父类的虚函数的实现；在main函数中，如果没有父类或者子类的实例对象，可以不实现父类的虚函数。</p>
+<p>虚函数的目的是为了(在继承中)实现多态 。每一个类都有一个虚函数表(v-table)，每个对象都有一个虚函数指针(vptr)，指向虚函数表。当子类对象被创建后，虚函数指针就会指向子类中覆盖的虚函数。当使用基类指针时，虚函数指针将根据基类指针指向的对象的实际类型，来指向正确的函数。</p>
+<h2 id="纯虚函数"><a href="#纯虚函数" class="headerlink" title="纯虚函数"></a>纯虚函数</h2><p>子类必须实现该函数（接口）</p>
+<p>有纯虚函数的类叫做抽象类，不能生成实例对象</p>
+<p>抽象类就像一个规范一样，like 接口(Interface) in Java</p>
+<h2 id="虚函数与纯虚函数"><a href="#虚函数与纯虚函数" class="headerlink" title="虚函数与纯虚函数"></a>虚函数与纯虚函数</h2><p>定义一个函数为虚函数，不代表函数为不被实现的函数。</p>
+<p>定义他为虚函数是为了允许用基类的指针来调用子类的这个函数。</p>
+<p>定义一个函数为纯虚函数，才代表函数没有被实现。</p>
+<p>定义纯虚函数是为了实现一个接口，起到一个规范的作用，规范继承这个类的程序员必须实现这个函数。</p>
+]]></content>
+      <tags>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
