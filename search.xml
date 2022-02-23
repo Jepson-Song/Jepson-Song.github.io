@@ -856,7 +856,15 @@
   <entry>
     <title>刷题记录</title>
     <url>/2022/02/15/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h2 id="02-21"><a href="#02-21" class="headerlink" title="02/21"></a>02/21</h2><p>面试题 04.01. 节点间通路</p>
+    <content><![CDATA[<h2 id="02-23"><a href="#02-23" class="headerlink" title="02/23"></a>02/23</h2><p>剑指 Offer 14- I. 剪绳子</p>
+<p>115.不同的子序列</p>
+<p>139.单词拆分</p>
+<p>140.单词拆分 II</p>
+<h2 id="02-22"><a href="#02-22" class="headerlink" title="02/22"></a>02/22</h2><p>面试题 16.24. 数对和</p>
+<p>面试题 17.05.  字母与数字</p>
+<p>面试题 17.11. 单词距离</p>
+<p>面试题 17.16. 按摩师</p>
+<h2 id="02-21"><a href="#02-21" class="headerlink" title="02/21"></a>02/21</h2><p>面试题 04.01. 节点间通路</p>
 <p>面试题 04.05. 合法二叉搜索树</p>
 <p>面试题 04.06. 后继者</p>
 <p>面试题 04.08. 首个共同祖先</p>
@@ -2953,6 +2961,42 @@ double findMedian() - 返回目前所有元素的中位数。
 ]]></content>
       <tags>
         <tag>刷题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BM65最长公共子序列二</title>
+    <url>/2022/02/23/BM65%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97%E4%BA%8C/</url>
+    <content><![CDATA[<h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>给定两个字符串str1和str2，输出两个字符串的最长公共子序列。如果最长公共子序列为空，则返回”-1”。目前给出的数据，仅仅会存在一个最长的公共子序列</p>
+<p>数据范围：0 &lt;= |str1|,|str2| &lt;= 20000</p>
+<p>要求：空间复杂度 O(n^2)，时间复杂度 O(n^2)</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><pre><code>输入：&quot;1A2C3D4B56&quot;,&quot;B1D23A456A&quot;
+返回值：&quot;123456&quot;
+</code></pre>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>普通的最长公共子序列只需要返回长度，这道题需要返回子序列，而且受空间复杂度限制不能开二维string数组记录。</p>
+<p>需要用dp的结果倒推出子序列。</p>
+<p><img src="https://s2.loli.net/2022/02/23/PFUdSlp94ZRIf3N.png" alt="20220223210736"></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">string <span class="title">LCS</span><span class="params">(string s1, string s2)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// write code here</span></span><br><span class="line">    <span class="keyword">int</span> l1 = s1.<span class="built_in">length</span>();</span><br><span class="line">    <span class="keyword">int</span> l2 = s2.<span class="built_in">length</span>();</span><br><span class="line">    s1 = <span class="string">&quot;+&quot;</span>+s1;</span><br><span class="line">    s2 = <span class="string">&quot;-&quot;</span>+s2;</span><br><span class="line">    <span class="keyword">int</span> dp[l1+<span class="number">1</span>][l2+<span class="number">1</span>];</span><br><span class="line">    <span class="built_in">memset</span>(dp, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(dp));</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=l1;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=l2;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(s1[i]==s2[j])&#123;</span><br><span class="line">                dp[i][j] = dp[i<span class="number">-1</span>][j<span class="number">-1</span>] + <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                dp[i][j] = <span class="built_in">max</span>(dp[i<span class="number">-1</span>][j], dp[i][j<span class="number">-1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    string ans;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=l1,j=l2;dp[i][j]&gt;=<span class="number">1</span>;)&#123;</span><br><span class="line">        <span class="keyword">if</span>(s1[i]==s2[j])&#123;</span><br><span class="line">            ans = s1[i]+ans;</span><br><span class="line">            i--;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(dp[i<span class="number">-1</span>][j]&gt;dp[i][j<span class="number">-1</span>]) i--;</span><br><span class="line">            <span class="keyword">else</span> j--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(ans.<span class="built_in">length</span>()==<span class="number">0</span>) ans = <span class="string">&quot;-1&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>刷题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>指针和引用的区别</title>
+    <url>/2022/02/22/%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<h2 id="指针和引用的区别"><a href="#指针和引用的区别" class="headerlink" title="指针和引用的区别"></a>指针和引用的区别</h2><ol>
+<li><p>指针所指向的内存空间在程序运行过程中可以改变，而引用所绑定的对象一旦绑定就不能改变。（是否可变）</p>
+</li>
+<li><p>指针本身在内存中占有内存空间，引用相当于变量的别名，在内存中不占内存空间。（是否占内存）</p>
+</li>
+<li><p>指针可以为空，但是引用必须绑定对象。（是否可为空）</p>
+</li>
+<li><p>指针可以有多级，但是引用只能一级。（是否能为多级）</p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>知识点</tag>
       </tags>
   </entry>
 </search>
