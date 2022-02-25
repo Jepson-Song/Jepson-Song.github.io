@@ -187,6 +187,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/c-%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/21/c-%E7%9F%A5%E8%AF%86%E7%82%B9/" class="post-title-link" itemprop="url">c++知识点</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-21 19:12:20 / Modified: 19:27:57" itemprop="dateCreated datePublished" datetime="2022-02-21T19:12:20+08:00">2022-02-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ol>
+<li><p>为什么拷贝构造函数必须为引用？</p>
+<p>避免拷贝构造函数无限制的递归，最终导致栈溢出。</p>
+<p>因为如果拷贝构造函数的参数不是引用的话，那么就是值传递。而值传递本身又会调用拷贝构造函数，拷贝构造函数又是值传递，值传递又会调用拷贝构造函数……导致无限递归下去。</p>
+</li>
+<li><p>构造函数的隐式调用</p>
+<p> 对已经实例化的对象赋值调用的是赋值函数，对还没实例话的对象赋值调用的是拷贝构造函数，这里使用的就是拷贝构造函数的隐式调用。</p>
+<p> 如：</p>
+<pre><code> A a;
+ a = b; 调用的是赋值函数
+
+ A a(b); 调用的也是拷贝构造函数
+
+ A a = b; 调用的是拷贝构造函数（隐式调用）
+</code></pre>
+</li>
+<li><p>C++类对象的初始化顺序</p>
+<p>构造函数调用顺序：</p>
+<pre><code> 1. 按照派生类继承基类的顺序，即派生列表中声明的顺序，依次调用基类的构造函数；
+ 2. 按照派生类中成员变量的声名顺序，依次调用派生类中成员变量所属类的构造函数；
+ 3. 执行派生类自身的构造函数。
+</code></pre>
+<p> 综上可以得出，类对象的初始化顺序：基类构造函数–&gt;派生类成员变量的构造函数–&gt;自身构造函数</p>
+<p> 注：</p>
+<pre><code> 基类构造函数的调用顺序与派生类的派生列表中的顺序有关；
+ 成员变量的初始化顺序与声明顺序有关；
+ 析构顺序和构造顺序相反。
+</code></pre>
+</li>
+<li><p>为什么用成员初始化列表会快一些？</p>
+<p>原因：用户自定义类型如果使用类初始化列表，直接调用该成员变量对应的构造函数即完成初始化；如果在构造函数中初始化，因为 C++ 规定，对象的成员变量的初始化动作发生在进入构造函数本体之前，那么在执行构造函数的函数体之前首先调用默认的构造函数为成员变量设初值，在进入函数体之后，调用该成员变量对应的构造函数。因此，使用列表初始化会减少调用默认的构造函数的过程，效率高。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/%E4%B8%8D%E5%90%8C%E5%B1%82%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -933,76 +1024,6 @@ double findMedian() - 返回目前所有元素的中位数。
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%90%8C%E6%AD%A5%E5%92%8C%E4%BA%92%E6%96%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/17/%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%90%8C%E6%AD%A5%E5%92%8C%E4%BA%92%E6%96%A5/" class="post-title-link" itemprop="url">进程的同步和互斥</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-17 17:02:32 / Modified: 18:26:02" itemprop="dateCreated datePublished" datetime="2022-02-17T17:02:32+08:00">2022-02-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><p>同步亦称直接制约关系，它是指为完成某种任务而建立的两个或多个进程，这些进程因为需要在某些位置上协调它们的工作次序而等待、传递信息所产生的制约关系。</p>
-<p>进程间的直接制约关系就是源于它们之间的相互合作。例如：上面两个程序可以看成5+3*5中的加法程序和乘法程序。若先执行乘法程序再执行加法程序，则5+3*5=20。这个答案一定是对的吗？其实不然。如果我们想要的答案是40，就要先执行加法程序再执行乘法程序，(5+3)*5=40。我们通过加 () 改变了运算的先后顺序，使先乘除后加减变成了先加减后乘除，这就是一种同步机制。</p>
-<h2 id="互斥"><a href="#互斥" class="headerlink" title="互斥"></a>互斥</h2><p>互斥亦称间接制约关系。当一个进程进入临界区使用临界资源时，另一个进程必须等待，当占用临界资源的进程退出临界区后，另一进程才允许去访问此临界资源。</p>
-<p>例如，在仅有一台打印机的系统中，有两个进程A和进程B，如果进程A需要打印时，系统已将打印机分配给进程B，则进程A必须阻塞。一旦进程B将打印机释放，系统便将进程A唤醒，并将其由阻塞状态变为就绪状态。为禁止两个进程同时进入临界区，同步机制应遵循以下准则：</p>
-<pre><code>空闲让进：临界区空闲时，可以允许一个请求进入临界区的进程立即进入临界区。
-
-忙则等待：当已有进程进入临界区时，其他试图进入临界区的进程必须等待。
-
-有限等待：对请求访问的进程，应保证能在有限时间内进入临界区。
-
-让权等待：当进程不能进入临界区时，应立即释放处理器，防止进程忙等待。
-</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1072,14 +1093,14 @@ double findMedian() - 返回目前所有元素的中位数。
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">107</span>
+          <span class="site-state-item-count">108</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
