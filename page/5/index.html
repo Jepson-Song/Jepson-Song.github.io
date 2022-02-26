@@ -187,6 +187,152 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/03/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950103/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/03/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950103/" class="post-title-link" itemprop="url">实验记录0103</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-03 13:28:36" itemprop="dateCreated datePublished" datetime="2022-01-03T13:28:36+08:00">2022-01-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-08 17:00:15" itemprop="dateModified" datetime="2022-01-08T17:00:15+08:00">2022-01-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>效果比较好的数据有：</p>
+<table>
+<thead>
+<tr>
+<th>数据编号</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>20211213_214603</td>
+<td></td>
+</tr>
+<tr>
+<td>20211213_210547</td>
+<td></td>
+</tr>
+<tr>
+<td>20211213_204805</td>
+<td></td>
+</tr>
+<tr>
+<td>20220103_195518</td>
+<td>中间停了10s</td>
+</tr>
+<tr>
+<td>20220103_200136</td>
+<td>中间10s</td>
+</tr>
+<tr>
+<td>20220103_201517</td>
+<td>后半段人走开</td>
+</tr>
+<tr>
+<td>20220103_202140</td>
+<td>耳机架在桌子上，后半段走开了30-40s，再回来</td>
+</tr>
+<tr>
+<td>20220103_204606</td>
+<td>50多秒时人走开</td>
+</tr>
+<tr>
+<td>20220103_205434</td>
+<td>一直呼吸</td>
+</tr>
+<tr>
+<td>20220103_205952</td>
+<td>一直呼吸</td>
+</tr>
+<tr>
+<td>20220103_210435</td>
+<td>后面半段人走开</td>
+</tr>
+<tr>
+<td>20220103_211403</td>
+<td>中间人走开</td>
+</tr>
+<tr>
+<td>20220103_212938</td>
+<td>中间人走开</td>
+</tr>
+<tr>
+<td>20220104_090548</td>
+<td>一直呼吸</td>
+</tr>
+<tr>
+<td>20220104_091117</td>
+<td>中间人走开</td>
+</tr>
+</tbody></table>
+<h2 id="实验分析"><a href="#实验分析" class="headerlink" title="实验分析"></a>实验分析</h2><ul>
+<li>耳机戴在头上得到的结果要比放在桌子上的结果好。<br>分析：可能是由于人呼吸和心跳带动身体微小的动作会传递到头部，这样就会影响发射端，所以实验得到的波形可能不仅仅提取自反射信号，直达信号的变化很可能对实验结果有很大的影响。这也是该系统跟其它同类型的系统之间的一个区别，因为其它已有的测呼吸的工作大多是把发射端和接收端都放在人旁边，这样就只能从反射信号中提取信息，而我们的系统发射端是穿戴在任身体上的，呼吸和心跳的pattern会直接作用于发射端并通过直达信号反应出来。</li>
+</ul>
+<h2 id="后续的实验方向"><a href="#后续的实验方向" class="headerlink" title="后续的实验方向"></a>后续的实验方向</h2><ol>
+<li><p>结合直达信号和反射信号共同用于波形提取。可以考虑把直达信号左右一部分的路径和其它路径设置不同的权重再放到一起做pca。</p>
+</li>
+<li><p>参数的调整。呼吸和心跳的snr阈值可能还需要进一步调整，用于识别出没有呼吸和心跳的场景。</p>
+</li>
+<li><p>路径选择的方法可能还需要调试，目前的结果是百分比法（前10%）效果比阈值法要好一些。</p>
+</li>
+<li><p>cir的长度和频率（现在是10）可能考虑一下是否需要调整。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/26/%E6%AD%BB%E9%94%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -906,74 +1052,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/B+%E6%A0%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/04/B+%E6%A0%91/" class="post-title-link" itemprop="url">B+树</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-12-04 15:39:57 / Modified: 15:42:55" itemprop="dateCreated datePublished" datetime="2021-12-04T15:39:57+08:00">2021-12-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://s2.loli.net/2021/12/04/AwbHXzlkDKIBPuW.png" alt="20211204154031"></p>
-<p>浅蓝色的块我们称之为一个磁盘块，可以看到每个磁盘块包含几个数据项（深蓝色所示）和指针（黄色所示），如磁盘块1包含数据项17和35，包含指针P1、P2、P3，P1表示小于17的磁盘块，P2表示在17和35之间的磁盘块，P3表示大于35的磁盘块。</p>
-<p>真实的数据存在于叶子节点即3、5、9、10、13、15、28、29、36、60、75、79、90、99。非叶子节点只不存储真实的数据，只存储指引搜索方向的数据项，如17、35并不真实存在于数据表中。</p>
-<h3 id="b-树的查找过程"><a href="#b-树的查找过程" class="headerlink" title="b+树的查找过程"></a>b+树的查找过程</h3><p>如图所示，如果要查找数据项29，那么首先会把磁盘块1由磁盘加载到内存，此时发生一次IO，在内存中用二分查找确定29在17和35之间，锁定磁盘块1的P2指针，内存时间因为非常短（相比磁盘的IO）可以忽略不计，通过磁盘块1的P2指针的磁盘地址把磁盘块3由磁盘加载到内存，发生第二次IO，29在26和30之间，锁定磁盘块3的P2指针，通过指针加载磁盘块8到内存，发生第三次IO，同时内存中做二分查找找到29，结束查询，总计三次IO。</p>
-<p>真实的情况是，3层的b+树可以表示上百万的数据，如果上百万的数据查找只需要三次IO，性能提高将是巨大的，如果没有索引，每个数据项都要发生一次IO，那么总共需要百万次的IO，显然成本非常非常高。</p>
-<p>从IO的角度来说B+树的复杂度是O(log<sub>m</sub>N)</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1039,7 +1121,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
