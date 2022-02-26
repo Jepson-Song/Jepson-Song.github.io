@@ -3152,4 +3152,41 @@ double findMedian() - 返回目前所有元素的中位数。
         <tag>面经</tag>
       </tags>
   </entry>
+  <entry>
+    <title>HTTP状态码</title>
+    <url>/2022/02/26/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/</url>
+    <content><![CDATA[<p>http状态码的由三位数字和原因短语组成，数字的第一位数字表示响应的类别，后面两位无类别。</p>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1XX</td>
+<td>临时状态码，表示正在处理请求</td>
+</tr>
+<tr>
+<td>2XX</td>
+<td>请求处理成功</td>
+</tr>
+<tr>
+<td>3XX</td>
+<td>重定向，表示要完成请求需要进一步操作</td>
+</tr>
+<tr>
+<td>4XX</td>
+<td>请求错误，错误的原因在客户端，比如请求的参数错误或者url过长等</td>
+</tr>
+<tr>
+<td>5XX</td>
+<td>服务器错误，比如服务不可用或者服务器内部出错</td>
+</tr>
+</tbody></table>
+]]></content>
+      <tags>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
 </search>
