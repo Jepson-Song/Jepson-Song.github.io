@@ -187,6 +187,70 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/18/%E8%AE%A8%E8%AE%BA0218/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/18/%E8%AE%A8%E8%AE%BA0218/" class="post-title-link" itemprop="url">讨论0218</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-18 13:23:32 / Modified: 13:26:52" itemprop="dateCreated datePublished" datetime="2022-02-18T13:23:32+08:00">2022-02-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>目前的瓶颈：应用场景</p>
+<p>有源方案的问题：头上只有两个点，测朝向有局限性</p>
+<p>无源方案的问题：只做头部朝向的分类，太小了</p>
+<p>都存在的问题：呼吸和心跳融不进头部朝向</p>
+<p>卖技术：一个技术能在很多场景应用</p>
+<p>卖故事：把一个应用场景的故事讲的很好</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/%E8%AF%BB%E8%80%85%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1121,86 +1185,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E4%BA%8B%E5%8A%A1ACID/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/16/%E4%BA%8B%E5%8A%A1ACID/" class="post-title-link" itemprop="url">事务ACID</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-16 22:27:30 / Modified: 22:29:59" itemprop="dateCreated datePublished" datetime="2022-02-16T22:27:30+08:00">2022-02-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>事务指的是满足 ACID 特性的一组操作，可以通过 Commit 提交一个事务，也可以使用 Rollback 进行回滚。</p>
-<h2 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h2><ol>
-<li><p>原子性（Atomicity）</p>
-<p> 事务被视为不可分割的最小单元，事务的所有操作要么全部提交成功，要么全部失败回滚。</p>
-<p> 回滚可以用回滚日志（Undo Log）来实现，回滚日志记录着事务所执行的修改操作，在回滚时反向执行这些修改操作即可。</p>
-</li>
-<li><p>一致性（Consistency）</p>
-<p> 数据库在事务执行前后都保持一致性状态。在一致性状态下，所有事务对同一个数据的读取结果都是相同的。</p>
-</li>
-<li><p>隔离性（Isolation）</p>
-<p> 一个事务所做的修改在最终提交以前，对其它事务是不可见的。</p>
-</li>
-<li><p>持久性（Durability）</p>
-<p> 一旦事务提交，则其所做的修改将会永远保存到数据库中。即使系统发生崩溃，事务执行的结果也不能丢失。</p>
-<p> 系统发生崩溃可以用重做日志（Redo Log）进行恢复，从而实现持久性。与回滚日志记录数据的逻辑修改不同，重做日志记录的是数据页的物理修改。</p>
-</li>
-</ol>
-<p>事务的 ACID 特性概念简单，但不是很好理解，主要是因为这几个特性不是一种平级关系：</p>
-<p>只有满足一致性，事务的执行结果才是正确的。</p>
-<p>在无并发的情况下，事务串行执行，隔离性一定能够满足。此时只要能满足原子性，就一定能满足一致性。</p>
-<p>在并发的情况下，多个事务并行执行，事务不仅要满足原子性，还需要满足隔离性，才能满足一致性。</p>
-<p>事务满足持久化是为了能应对系统崩溃的情况。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1270,7 +1254,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-count">110</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

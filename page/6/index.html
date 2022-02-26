@@ -187,6 +187,131 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/SSL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/04/SSL/" class="post-title-link" itemprop="url">SSL</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-04 15:00:18 / Modified: 15:10:51" itemprop="dateCreated datePublished" datetime="2021-12-04T15:00:18+08:00">2021-12-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://s2.loli.net/2021/12/04/vDsWVg24TJExnti.png" alt="20211204150221"></p>
+<p>http是超文本传输协议，服务器和浏览器之间的数据传输使用的是明文传输，所以很不安全。</p>
+<p>https就是在http的基础上增加安全套接字层SSL(sercue socket layer)，使用SSL对服务器和浏览器之间的数据传输进行加密。</p>
+<p>第一阶段：建立安全能力</p>
+<p>客户端-client_hello：</p>
+<ul>
+<li>客户端可以支持的SSL最高版本号;</li>
+<li>客户端生成的32字节的随机数;</li>
+<li>会话标识符ID;</li>
+<li>客户端可以支持的密码套件列表;</li>
+<li>客户端可以支持的压缩方法列表。</li>
+</ul>
+<p>服务端-server_hello：</p>
+<ul>
+<li>SSL版本号，取收到的客户端SSL版本和服务端支持的最高版本中的较低者;</li>
+<li>服务端生成的32字节的随机数;</li>
+<li>会话标识符ID;</li>
+<li>从收到的客户端密码套件列表中选择一个密码套件(包含密钥交换算法、对称加密算法、摘要算法);</li>
+<li>从收到的客户端压缩方法列表中选择一种压缩方法。</li>
+</ul>
+<p>第二阶段：服务端验证和密钥交换</p>
+<p>服务端-certificate：</p>
+<ul>
+<li>含有公钥信息的服务端数字证书或到CA的完整证书链。</li>
+</ul>
+<p>服务端-server_key_exchange：</p>
+<ul>
+<li>可选，根据密钥协商算法而定，如果传送给客户端的服务端证书数据不足以按照第一阶段选定的密钥交换算法协商密钥，该步骤不足密钥协商元素。</li>
+</ul>
+<p>服务端-certificate_request：</p>
+<ul>
+<li>可选，请求验证客户端证书信息，单向数据认证(只认证服务端)无此步骤。</li>
+</ul>
+<p>服务端-server_hello_done：</p>
+<ul>
+<li>通知客户端版本号和加密套件协商结束。</li>
+</ul>
+<p>第三阶段：客户端验证和密钥交换</p>
+<p>客户端-certificate：</p>
+<ul>
+<li>可选，客户端数字证书，双向数据认证中服务端要求验证客户端身份合法性。</li>
+</ul>
+<p>客户端-client_key_exchange：</p>
+<ul>
+<li>客户端交换密钥，视密钥交换算法而定，密钥协商参数或pre-master key(服务端公钥加密)。</li>
+</ul>
+<p>客户端-certificate_verify：</p>
+<ul>
+<li>可选，客户端将已交互的握手消息、会话密钥的摘要值用客户端私钥加密发送给服务端。</li>
+</ul>
+<p>第四阶段：完成</p>
+<p>客户端-change_cipher_spec：</p>
+<ul>
+<li>改变密码格式信息，告诉服务端之后的报文消息用会话密钥加密。</li>
+</ul>
+<p>客户端-finished：</p>
+<ul>
+<li>向服务端宣布握手协议完成。</li>
+</ul>
+<p>服务端-change_cipher_spec：</p>
+<ul>
+<li>改变密码格式信息，告诉客户端之后的报文消息用会话密钥加密。</li>
+</ul>
+<p>服务端-finished：</p>
+<ul>
+<li>向客户端宣布握手协议完成。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -849,68 +974,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/12/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951012/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/12/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951012/" class="post-title-link" itemprop="url">实验记录1012</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-10-12 15:03:39 / Modified: 17:10:00" itemprop="dateCreated datePublished" datetime="2021-10-12T15:03:39+08:00">2021-10-12</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>先对CIR做滑动平均滤波，然后在做PCA降维，得到的呼吸结果。</p>
-<p><img src="https://i.loli.net/2021/10/12/vTUS6tgoYzJaHhi.png" alt="20211012150346"></p>
-<p>数据编号：20211010_140604</p>
-<p>发射端放在肚子附近：20211012_170451</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -980,7 +1043,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-count">110</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
