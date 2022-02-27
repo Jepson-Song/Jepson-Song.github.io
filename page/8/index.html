@@ -187,6 +187,80 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/24/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950824/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/08/24/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950824/" class="post-title-link" itemprop="url">实验记录0824</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-08-24 22:33:53" itemprop="dateCreated datePublished" datetime="2021-08-24T22:33:53+08:00">2021-08-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-25 10:25:18" itemprop="dateModified" datetime="2021-08-25T10:25:18+08:00">2021-08-25</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="采集了6个动作的数据"><a href="#采集了6个动作的数据" class="headerlink" title="采集了6个动作的数据"></a>采集了6个动作的数据</h2><p><img src="https://i.loli.net/2021/08/24/hbB5s1pdzQIYD46.png" alt="20210824223442"></p>
+<p>之后把这6组数据的pos算出来，进行轨迹识别。</p>
+<h2 id="用HMM对轨迹进行分类"><a href="#用HMM对轨迹进行分类" class="headerlink" title="用HMM对轨迹进行分类"></a>用HMM对轨迹进行分类</h2><p>TODO:</p>
+<ol>
+<li>把采集到的训练数据的pos计算出来</li>
+<li>对数据集进行增强，按照每1秒一段切分（0.9s重叠每个动作大概可以切出1000个数据）</li>
+<li>对数据集进行处理，初始位置移动到坐标原点</li>
+<li>还可以继续进行数据增强，比如把轨迹进行旋转等</li>
+<li>用HMMM训练和分类</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/23/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950823/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -910,72 +984,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/25/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950725/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/07/25/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950725/" class="post-title-link" itemprop="url">实验记录0725</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-07-25 17:12:00 / Modified: 19:59:50" itemprop="dateCreated datePublished" datetime="2021-07-25T17:12:00+08:00">2021-07-25</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>20℃<br><img src="https://i.loli.net/2021/07/25/ZCjRvyaxMOSK6pF.png" alt="20210725172935"></p>
-<p>26℃<br><img src="https://i.loli.net/2021/07/25/dzCymheBcDvAa3E.png" alt="20210725195329"></p>
-<ol>
-<li><p>明天可以重测一下发射单和接收端初始的偏移距离，因为修正了一个bug</p>
-</li>
-<li><p>可能需要找到一个比较好的纠正跳波长问题的算</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1045,7 +1053,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">112</span>
+          <span class="site-state-item-count">113</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
