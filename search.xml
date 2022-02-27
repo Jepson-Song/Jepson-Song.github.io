@@ -848,6 +848,13 @@
 <p>从操作系统的本身来讲，以上存储区在内存中的分布是如下形式(从低地址到高地址)：.text 段 –&gt; .data 段 –&gt; .bss 段 –&gt; 堆 –&gt; unused –&gt; 栈 –&gt; env</p>
 <p>程序实例：</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">说明：C++ 中不再区分初始化和未初始化的全局变量、静态变量的存储区，如果非要区分下述程序标注在了括号中</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> g_var = <span class="number">0</span>; <span class="comment">// g_var 在全局区（.data 段）</span></span><br><span class="line"><span class="keyword">char</span> *gp_var;  <span class="comment">// gp_var 在全局区（.bss 段）</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> var;                    <span class="comment">// var 在栈区</span></span><br><span class="line">    <span class="keyword">char</span> *p_var;                <span class="comment">// p_var 在栈区</span></span><br><span class="line">    <span class="keyword">char</span> arr[] = <span class="string">&quot;abc&quot;</span>;         <span class="comment">// arr 为数组变量，存储在栈区；&quot;abc&quot;为字符串常量，存储在常量区</span></span><br><span class="line">    <span class="keyword">char</span> *p_var1 = <span class="string">&quot;123456&quot;</span>;    <span class="comment">// p_var1 在栈区；&quot;123456&quot;为字符串常量，存储在常量区</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> s_var = <span class="number">0</span>;       <span class="comment">// s_var 为静态变量，存在静态存储区（.data 段）</span></span><br><span class="line">    p_var = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">10</span>); <span class="comment">// 分配得来的 10 个字节的区域在堆区</span></span><br><span class="line">    <span class="built_in">free</span>(p_var);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>补充总结：</p>
+<p>在理解C/C++内存分区时，常会碰到如下术语：数据区，堆，栈，静态存储区，静态区，常量区，常变量区，全局区，字符串常量区，静态常量区，静态变量区，文字常量区，代码区等等，初学者被搞得云里雾里。在这里，尝试捋清楚以上分区的关系。</p>
+<p>数据区包括：堆，栈，静态存储区。</p>
+<p>静态存储区包括：常量区（静态常量区），全局区（全局变量区）和静态变量区（静态区）。</p>
+<p>常量区包括：字符串常量区和常变量区。</p>
+<p>代码区：存放程序编译后的二进制代码，不可寻址区。</p>
 ]]></content>
       <tags>
         <tag>知识点</tag>
@@ -856,7 +863,11 @@
   <entry>
     <title>刷题记录</title>
     <url>/2022/02/15/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h2 id="02-24"><a href="#02-24" class="headerlink" title="02/24"></a>02/24</h2><p>3.无重复字符的最长子串</p>
+    <content><![CDATA[<h2 id="02-26"><a href="#02-26" class="headerlink" title="02/26"></a>02/26</h2><p>剑指 Offer II 051. 节点之和最大的路径</p>
+<p>409.最长回文串</p>
+<p>5.最长回文子串</p>
+<p>214.最短回文串*</p>
+<h2 id="02-24"><a href="#02-24" class="headerlink" title="02/24"></a>02/24</h2><p>3.无重复字符的最长子串</p>
 <p>剑指 Offer II 016. 不含重复字符的最长子字符串</p>
 <p>49.字母异位词分组</p>
 <p>30.串联所有单词的子串</p>
