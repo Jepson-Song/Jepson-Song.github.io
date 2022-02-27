@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="指针和引用的区别 指针所指向的内存空间在程序运行过程中可以改变，而引用所绑定的对象一旦绑定就不能改变。（是否可变）  指针本身在内存中占有内存空间，引用相当于变量的别名，在内存中不占内存空间。（是否占内存）  指针可以为空，但是引用必须绑定对象。（是否可为空）  指针可以有多级，但是引用只能一级。（是否能为多级）">
+  <meta name="description" content="指针和引用的区别 指针所指向的内存空间在程序运行过程中可以改变，而引用所绑定的对象一旦绑定就不能改变。（是否可变）  指针本身在内存中占有内存空间，引用相当于变量的别名，在内存中不占内存空间。（是否占内存） *引用的实现实际上是占用内存空间的，但程序把它按照不占用内存空间来处理。 实际在内存空间上，引用本身也占用一块内存，里面存储着所引用的变量的地址，大小与指针相同，字面上也表现为unsigned">
 <meta property="og:type" content="article">
 <meta property="og:title" content="指针和引用的区别">
 <meta property="og:url" content="http://example.com/2022/02/22/%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
 <meta property="og:site_name" content="Jepson&#39;s Blog">
-<meta property="og:description" content="指针和引用的区别 指针所指向的内存空间在程序运行过程中可以改变，而引用所绑定的对象一旦绑定就不能改变。（是否可变）  指针本身在内存中占有内存空间，引用相当于变量的别名，在内存中不占内存空间。（是否占内存）  指针可以为空，但是引用必须绑定对象。（是否可为空）  指针可以有多级，但是引用只能一级。（是否能为多级）">
+<meta property="og:description" content="指针和引用的区别 指针所指向的内存空间在程序运行过程中可以改变，而引用所绑定的对象一旦绑定就不能改变。（是否可变）  指针本身在内存中占有内存空间，引用相当于变量的别名，在内存中不占内存空间。（是否占内存） *引用的实现实际上是占用内存空间的，但程序把它按照不占用内存空间来处理。 实际在内存空间上，引用本身也占用一块内存，里面存储着所引用的变量的地址，大小与指针相同，字面上也表现为unsigned">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-02-22T01:24:56.000Z">
-<meta property="article:modified_time" content="2022-02-22T01:27:31.972Z">
+<meta property="article:modified_time" content="2022-02-27T14:57:54.474Z">
 <meta property="article:author" content="Jepson">
 <meta property="article:tag" content="知识点">
 <meta name="twitter:card" content="summary">
@@ -215,10 +215,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-02-22 09:24:56 / Modified: 09:27:31" itemprop="dateCreated datePublished" datetime="2022-02-22T09:24:56+08:00">2022-02-22</time>
+              <time title="Created: 2022-02-22 09:24:56" itemprop="dateCreated datePublished" datetime="2022-02-22T09:24:56+08:00">2022-02-22</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-27 22:57:54" itemprop="dateModified" datetime="2022-02-27T22:57:54+08:00">2022-02-27</time>
+              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -242,6 +248,8 @@
 <li><p>指针所指向的内存空间在程序运行过程中可以改变，而引用所绑定的对象一旦绑定就不能改变。（是否可变）</p>
 </li>
 <li><p>指针本身在内存中占有内存空间，引用相当于变量的别名，在内存中不占内存空间。（是否占内存）</p>
+<p>*引用的实现实际上是占用内存空间的，但程序把它按照不占用内存空间来处理。</p>
+<p>实际在内存空间上，引用本身也占用一块内存，里面存储着所引用的变量的地址，大小与指针相同，字面上也表现为unsigned long int型。只是经过编译器处理后，访问这块内存时将直接转而访问其指向的内存。因此在程序中无法读取到这块内存本身。</p>
 </li>
 <li><p>指针可以为空，但是引用必须绑定对象。（是否可为空）</p>
 </li>
@@ -365,7 +373,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">112</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -3018,6 +3018,8 @@ double findMedian() - 返回目前所有元素的中位数。
 <li><p>指针所指向的内存空间在程序运行过程中可以改变，而引用所绑定的对象一旦绑定就不能改变。（是否可变）</p>
 </li>
 <li><p>指针本身在内存中占有内存空间，引用相当于变量的别名，在内存中不占内存空间。（是否占内存）</p>
+<p>*引用的实现实际上是占用内存空间的，但程序把它按照不占用内存空间来处理。</p>
+<p>实际在内存空间上，引用本身也占用一块内存，里面存储着所引用的变量的地址，大小与指针相同，字面上也表现为unsigned long int型。只是经过编译器处理后，访问这块内存时将直接转而访问其指向的内存。因此在程序中无法读取到这块内存本身。</p>
 </li>
 <li><p>指针可以为空，但是引用必须绑定对象。（是否可为空）</p>
 </li>
@@ -3277,6 +3279,26 @@ double findMedian() - 返回目前所有元素的中位数。
 <p> 而对于POST，浏览器先发送header，服务器响应100， 浏览器再继续发送data，服务器响应200 （返回数据）。</p>
 </li>
 </ol>
+]]></content>
+      <tags>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>指针数组与数组指针</title>
+    <url>/2022/02/27/%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84%E4%B8%8E%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88/</url>
+    <content><![CDATA[<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> *p[<span class="number">10</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in"><span class="keyword">int</span></span> (*p)[<span class="number">10</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> *<span class="title">p</span><span class="params">(<span class="keyword">int</span>)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">int</span> <span class="params">(*p)</span><span class="params">(<span class="keyword">int</span>)</span></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>int *p[10]表示指针数组，强调数组概念，是一个数组变量，数组大小为10，数组内每个元素都是指向int类型的指针变量。</p>
+</li>
+<li><p>int (*p)[10]表示数组指针，强调是指针，只有一个变量，是指针类型，不过指向的是一个int类型的数组，这个数组大小是10。</p>
+</li>
+<li><p>int *p(int)是函数声明，函数名是p，参数是int类型的，返回值是int *类型的。</p>
+</li>
+<li><p>int (*p)(int)是函数指针，强调是指针，该指针指向的函数具有int类型参数，并且返回值是int类型的。</p>
+</li>
+</ul>
 ]]></content>
       <tags>
         <tag>知识点</tag>
