@@ -187,6 +187,91 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/14/%E9%87%8D%E8%BD%BD%EF%BC%8C%E8%A6%86%E7%9B%96%EF%BC%8C%E9%87%8D%E5%86%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/14/%E9%87%8D%E8%BD%BD%EF%BC%8C%E8%A6%86%E7%9B%96%EF%BC%8C%E9%87%8D%E5%86%99/" class="post-title-link" itemprop="url">重载，覆盖，重写</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-14 22:35:45 / Modified: 22:42:40" itemprop="dateCreated datePublished" datetime="2022-02-14T22:35:45+08:00">2022-02-14</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ol>
+<li><p>重载：是指同一可访问区内被声明几个具有不同参数列（参数的类型、个数、顺序）的同名函数，根据参数列表确定调用哪个函数，重载不关心函数返回类型。</p>
+ <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> tmp)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">float</span> tmp)</span></span>;        <span class="comment">// 重载 参数类型不同（相对于上一个函数）</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> tmp, <span class="keyword">float</span> tmp1)</span></span>; <span class="comment">// 重载 参数个数不同（相对于上一个函数）</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">float</span> tmp, <span class="keyword">int</span> tmp1)</span></span>; <span class="comment">// 重载 参数顺序不同（相对于上一个函数）</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> tmp)</span></span>;            <span class="comment">// error: &#x27;int A::fun(int)&#x27; cannot be overloaded 错误：注意重载不关心函数返回类型</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+<li><p>隐藏：是指派生类的函数屏蔽了与其同名的基类函数，只要同名函数，不管参数列表是否相同，基类函数都会被隐藏。</p>
+ <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> tmp, <span class="keyword">float</span> tmp1)</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::fun(int tmp, float tmp1)&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derive</span> :</span> <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> tmp)</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derive::fun(int tmp)&quot;</span> &lt;&lt; endl; &#125; <span class="comment">// 隐藏基类中的同名函数</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Derive ex;</span><br><span class="line">    ex.<span class="built_in">fun</span>(<span class="number">1</span>);       <span class="comment">// Derive::fun(int tmp)</span></span><br><span class="line">    ex.<span class="built_in">fun</span>(<span class="number">1</span>, <span class="number">0.01</span>); <span class="comment">// error: candidate expects 1 argument, 2 provided</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 说明：上述代码中 ex.fun(1, 0.01); 出现错误，说明派生类中将基类的同名函数隐藏了。若是想调用基类中的同名函数，可以加上类型名指明 ex.Base::fun(1, 0.01);，这样就可以调用基类中的同名函数。</p>
+</li>
+<li><p>重写(覆盖)：虚函数的应用。是指派生类中存在重新定义的函数。函数名、参数列表、返回值类型都必须同基类中被重写的函数一致，只有函数体不同。派生类调用时会调用派生类的重写函数，不会调用被重写函数。重写的基类中被重写的函数必须有 virtual 修饰。</p>
+ <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> tmp)</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::fun(int tmp) : &quot;</span> &lt;&lt; tmp &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span> :</span> <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> tmp)</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derived::fun(int tmp) : &quot;</span> &lt;&lt; tmp &lt;&lt; endl; &#125; <span class="comment">// 重写基类中的 fun 函数</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Base *p = <span class="keyword">new</span> <span class="built_in">Derived</span>();</span><br><span class="line">    p-&gt;<span class="built_in">fun</span>(<span class="number">3</span>); <span class="comment">// Derived::fun(int) : 3</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>重写和重载的区别：</p>
+<ol>
+<li><p>范围区别：对于类中函数的重载或者重写而言，重载发生在同一个类的内部，重写发生在不同的类之间（子类和父类之间）。</p>
+</li>
+<li><p>参数区别：重载的函数需要与原函数有相同的函数名、不同的参数列表，不关注函数的返回值类型；重写的函数的函数名、参数列表和返回值类型都需要和原函数相同，父类中被重写的函数需要有 virtual 修饰。</p>
+</li>
+<li><p>virtual 关键字：重写的函数基类中必须有 virtual关键字的修饰，重载的函数可以有 virtual 关键字的修饰也可以没有。</p>
+</li>
+</ol>
+<p>隐藏和重写，重载的区别：</p>
+<ol>
+<li><p>范围区别：隐藏与重载范围不同，隐藏发生在不同类中。</p>
+</li>
+<li><p>参数区别：隐藏函数和被隐藏函数参数列表可以相同，也可以不同，但函数名一定相同；当参数不同时，无论基类中的函数是否被 virtual 修饰，基类函数都是被隐藏，而不是重写。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/14/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -971,71 +1056,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/15/%E7%BD%91%E9%A1%B5%E6%89%93%E5%BC%80%E6%89%80%E7%BB%8F%E5%8E%86%E7%9A%84%E8%BF%87%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/15/%E7%BD%91%E9%A1%B5%E6%89%93%E5%BC%80%E6%89%80%E7%BB%8F%E5%8E%86%E7%9A%84%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">网页打开所经历的过程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-12-15 21:24:14 / Modified: 21:43:19" itemprop="dateCreated datePublished" datetime="2021-12-15T21:24:14+08:00">2021-12-15</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-DNS解析"><a href="#1-DNS解析" class="headerlink" title="1.DNS解析"></a>1.DNS解析</h2><h3 id="输入网址后，浏览器会先在自己的缓存中查找网址对应的ip"><a href="#输入网址后，浏览器会先在自己的缓存中查找网址对应的ip" class="headerlink" title="输入网址后，浏览器会先在自己的缓存中查找网址对应的ip"></a>输入网址后，浏览器会先在自己的缓存中查找网址对应的ip</h3><h3 id="如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）"><a href="#如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）" class="headerlink" title="如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）"></a>如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）</h3><h3 id="如果还没找到，会向路由器缓存中查找"><a href="#如果还没找到，会向路由器缓存中查找" class="headerlink" title="如果还没找到，会向路由器缓存中查找"></a>如果还没找到，会向路由器缓存中查找</h3><h3 id="如果还没有，就向DNS服务器查找"><a href="#如果还没有，就向DNS服务器查找" class="headerlink" title="如果还没有，就向DNS服务器查找"></a>如果还没有，就向DNS服务器查找</h3><h3 id="如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端"><a href="#如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端" class="headerlink" title="如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端"></a>如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端</h3><h3 id="客户端拿到ip后更新自己的缓存并与服务器建立连接"><a href="#客户端拿到ip后更新自己的缓存并与服务器建立连接" class="headerlink" title="客户端拿到ip后更新自己的缓存并与服务器建立连接"></a>客户端拿到ip后更新自己的缓存并与服务器建立连接</h3><h2 id="2-网络通信"><a href="#2-网络通信" class="headerlink" title="2.网络通信"></a>2.网络通信</h2><h3 id="TCP三次握手建立链接"><a href="#TCP三次握手建立链接" class="headerlink" title="TCP三次握手建立链接"></a>TCP三次握手建立链接</h3><p><img src="https://s2.loli.net/2021/12/15/82Kq4HfkiRjMYGP.png" alt="20211215213744"></p>
-<h3 id="四次挥手释放链接"><a href="#四次挥手释放链接" class="headerlink" title="四次挥手释放链接"></a>四次挥手释放链接</h3><p><img src="https://s2.loli.net/2021/12/15/ehx1bui5gIOnC7L.png" alt="20211215213754"></p>
-<p>为什么“握手”是三次，“挥手”却要四次？</p>
-<p>TCP建立连接时之所以只需要”三次握手”，是因为在第二次”握手”过程中，服务器端发送给客户端的TCP报文是以SYN与ACK作为标志位的。SYN是请求连接标志，表示服务器端同意建立连接；ACK是确认报文，表示告诉客户端，服务器端收到了它的请求报文。</p>
-<p>即SYN建立连接报文与ACK确认接收报文是在同一次”握手”当中传输的，所以”三次握手”不多也不少，正好让双方明确彼此信息互通。</p>
-<p>TCP释放连接时之所以需要“四次挥手”,是因为FIN释放连接报文与ACK确认接收报文是分别由第二次和第三次”握手”传输的。为何建立连接时一起传输，释放连接时却要分开传输？</p>
-<p>建立连接时，被动方服务器端结束CLOSED阶段进入“握手”阶段并不需要任何准备，可以直接返回SYN和ACK报文，开始建立连接。释放连接时，被动方服务器，突然收到主动方客户端释放连接的请求时并不能立即释放连接，因为还有必要的数据需要处理，所以服务器先返回ACK确认收到报文，经过CLOSE-WAIT阶段准备好释放连接之后，才能返回FIN释放连接报文。</p>
-<h2 id="3-页面渲染"><a href="#3-页面渲染" class="headerlink" title="3.页面渲染"></a>3.页面渲染</h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1105,7 +1125,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">115</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

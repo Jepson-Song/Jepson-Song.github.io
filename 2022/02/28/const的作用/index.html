@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="效果比较好的数据有：    数据编号 备注    20211213_214603    20211213_210547    20211213_204805    20220103_195518 中间停了10s   20220103_200136 中间10s   20220103_201517 后半段人走开   20220103_202140 耳机架在桌子上，后半段走开了30-40s，再回来">
+  <meta name="description" content="const的作用 阻止一个变量被改变，可以使用const关键字。在定义该const变量时，通常需要对它进行初始化，因为以后就没有机会再去改变它了；  对指针来说，可以指定指针本身为const（指针常量：int* const p），也可以指定指针所指的数据为const（常量指针：const int* p），或二者同时指定为const（常指针常量：const int* const p）；  类的常函数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="实验记录0103">
-<meta property="og:url" content="http://example.com/2022/01/03/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950103/index.html">
+<meta property="og:title" content="const的作用">
+<meta property="og:url" content="http://example.com/2022/02/28/const%E7%9A%84%E4%BD%9C%E7%94%A8/index.html">
 <meta property="og:site_name" content="Jepson&#39;s Blog">
-<meta property="og:description" content="效果比较好的数据有：    数据编号 备注    20211213_214603    20211213_210547    20211213_204805    20220103_195518 中间停了10s   20220103_200136 中间10s   20220103_201517 后半段人走开   20220103_202140 耳机架在桌子上，后半段走开了30-40s，再回来">
+<meta property="og:description" content="const的作用 阻止一个变量被改变，可以使用const关键字。在定义该const变量时，通常需要对它进行初始化，因为以后就没有机会再去改变它了；  对指针来说，可以指定指针本身为const（指针常量：int* const p），也可以指定指针所指的数据为const（常量指针：const int* p），或二者同时指定为const（常指针常量：const int* const p）；  类的常函数">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-01-03T05:28:36.000Z">
-<meta property="article:modified_time" content="2022-01-08T09:00:15.482Z">
+<meta property="article:published_time" content="2022-02-28T08:19:09.000Z">
+<meta property="article:modified_time" content="2022-02-28T08:31:01.629Z">
 <meta property="article:author" content="Jepson">
-<meta property="article:tag" content="实验记录">
+<meta property="article:tag" content="知识点">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/01/03/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950103/">
+<link rel="canonical" href="http://example.com/2022/02/28/const%E7%9A%84%E4%BD%9C%E7%94%A8/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>实验记录0103 | Jepson's Blog</title>
+  <title>const的作用 | Jepson's Blog</title>
   
 
 
@@ -193,7 +193,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/03/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950103/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/28/const%E7%9A%84%E4%BD%9C%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -206,7 +206,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          实验记录0103
+          const的作用
         </h1>
 
         <div class="post-meta">
@@ -215,16 +215,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2022-01-03 13:28:36" itemprop="dateCreated datePublished" datetime="2022-01-03T13:28:36+08:00">2022-01-03</time>
+              <time title="Created: 2022-02-28 16:19:09 / Modified: 16:31:01" itemprop="dateCreated datePublished" datetime="2022-02-28T16:19:09+08:00">2022-02-28</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-01-08 17:00:15" itemprop="dateModified" datetime="2022-01-08T17:00:15+08:00">2022-01-08</time>
-              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -244,86 +238,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>效果比较好的数据有：</p>
-<table>
-<thead>
-<tr>
-<th>数据编号</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>20211213_214603</td>
-<td></td>
-</tr>
-<tr>
-<td>20211213_210547</td>
-<td></td>
-</tr>
-<tr>
-<td>20211213_204805</td>
-<td></td>
-</tr>
-<tr>
-<td>20220103_195518</td>
-<td>中间停了10s</td>
-</tr>
-<tr>
-<td>20220103_200136</td>
-<td>中间10s</td>
-</tr>
-<tr>
-<td>20220103_201517</td>
-<td>后半段人走开</td>
-</tr>
-<tr>
-<td>20220103_202140</td>
-<td>耳机架在桌子上，后半段走开了30-40s，再回来</td>
-</tr>
-<tr>
-<td>20220103_204606</td>
-<td>50多秒时人走开</td>
-</tr>
-<tr>
-<td>20220103_205434</td>
-<td>一直呼吸</td>
-</tr>
-<tr>
-<td>20220103_205952</td>
-<td>一直呼吸</td>
-</tr>
-<tr>
-<td>20220103_210435</td>
-<td>后面半段人走开</td>
-</tr>
-<tr>
-<td>20220103_211403</td>
-<td>中间人走开</td>
-</tr>
-<tr>
-<td>20220103_212938</td>
-<td>中间人走开</td>
-</tr>
-<tr>
-<td>20220104_090548</td>
-<td>一直呼吸</td>
-</tr>
-<tr>
-<td>20220104_091117</td>
-<td>中间人走开</td>
-</tr>
-</tbody></table>
-<h2 id="实验分析"><a href="#实验分析" class="headerlink" title="实验分析"></a>实验分析</h2><ul>
-<li>耳机戴在头上得到的结果要比放在桌子上的结果好。<br>分析：可能是由于人呼吸和心跳带动身体微小的动作会传递到头部，这样就会影响发射端，所以实验得到的波形可能不仅仅提取自反射信号，直达信号的变化很可能对实验结果有很大的影响。这也是该系统跟其它同类型的系统之间的一个区别，因为其它已有的测呼吸的工作大多是把发射端和接收端都放在人旁边，这样就只能从反射信号中提取信息，而我们的系统发射端是穿戴在任身体上的，呼吸和心跳的pattern会直接作用于发射端并通过直达信号反应出来。</li>
-</ul>
-<h2 id="后续的实验方向"><a href="#后续的实验方向" class="headerlink" title="后续的实验方向"></a>后续的实验方向</h2><ol>
-<li><p>结合直达信号和反射信号共同用于波形提取。可以考虑把直达信号左右一部分的路径和其它路径设置不同的权重再放到一起做pca。</p>
+        <h2 id="const的作用"><a href="#const的作用" class="headerlink" title="const的作用"></a>const的作用</h2><ol>
+<li><p>阻止一个变量被改变，可以使用const关键字。在定义该const变量时，通常需要对它进行初始化，因为以后就没有机会再去改变它了；</p>
 </li>
-<li><p>参数的调整。呼吸和心跳的snr阈值可能还需要进一步调整，用于识别出没有呼吸和心跳的场景。</p>
+<li><p>对指针来说，可以指定指针本身为const（指针常量：int* const p），也可以指定指针所指的数据为const（常量指针：const int* p），或二者同时指定为const（常指针常量：const int* const p）；</p>
 </li>
-<li><p>路径选择的方法可能还需要调试，目前的结果是百分比法（前10%）效果比阈值法要好一些。</p>
+<li><p>类的常函数可以访问const和非const的成员变量，但不能修改类的成员变量；</p>
+<p>this指针默认是指针常量，所以不能修改this指针的指向。在成员函数后面加const变成常函数，实际是修饰的是this指针，将this指针变成常指针常量，使其不能修改指向的值。</p>
 </li>
-<li><p>cir的长度和频率（现在是10）可能考虑一下是否需要调整。</p>
+<li><p>常对象只能调用常函数，非常对象可以调用常函数也可以调用非常函数；</p>
+</li>
+<li><p>const类型变量必须定义的时候进行初始化，因此也导致如果类的成员变量有const类型的变量，那么该变量必须在类的初始化列表中进行初始化；</p>
+</li>
+<li><p>const类型变量可以通过类型转换符const_cast将const类型转换为非const类型；</p>
+</li>
+<li><p>在一个函数声明中，const可以修饰形参，表明它是一个输入参数，在函数内部不能改变其值；</p>
+</li>
+<li><p>对于函数值传递的情况，因为参数传递是通过复制实参创建一个临时变量传递进函数的，函数内只能改变临时变量，但无法改变实参。则这个时候无论加不加const对实参不会产生任何影响。但是在引用或指针传递函数调用中，因为传进去的是一个引用或指针，这样函数内部可以改变引用或指针所指向的变量，这时const 才是实实在在地保护了实参所指向的变量。因为在编译阶段编译器对调用函数的选择是根据实参进行的，所以，只有引用传递和指针传递可以用是否加const来重载。一个拥有顶层const的形参无法和另一个没有顶层const的形参区分开来。</p>
 </li>
 </ol>
 
@@ -355,7 +286,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95/" rel="tag"><i class="fa fa-tag"></i> 实验记录</a>
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag"><i class="fa fa-tag"></i> 知识点</a>
           </div>
 
         
@@ -364,13 +295,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/12/26/%E6%AD%BB%E9%94%81/" rel="prev" title="死锁">
-      <i class="fa fa-chevron-left"></i> 死锁
+    <a href="/2022/02/28/static%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E7%94%A8%E6%B3%95/" rel="prev" title="static的作用和用法">
+      <i class="fa fa-chevron-left"></i> static的作用和用法
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/02/14/%E7%BC%96%E8%AF%91/" rel="next" title="编译">
-      编译 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -429,7 +357,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">实验分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E7%BB%AD%E7%9A%84%E5%AE%9E%E9%AA%8C%E6%96%B9%E5%90%91"><span class="nav-number">2.</span> <span class="nav-text">后续的实验方向</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#const%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">const的作用</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

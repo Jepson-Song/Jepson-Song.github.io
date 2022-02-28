@@ -187,6 +187,83 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/28/const%E7%9A%84%E4%BD%9C%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/28/const%E7%9A%84%E4%BD%9C%E7%94%A8/" class="post-title-link" itemprop="url">const的作用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-28 16:19:09 / Modified: 16:31:01" itemprop="dateCreated datePublished" datetime="2022-02-28T16:19:09+08:00">2022-02-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="const的作用"><a href="#const的作用" class="headerlink" title="const的作用"></a>const的作用</h2><ol>
+<li><p>阻止一个变量被改变，可以使用const关键字。在定义该const变量时，通常需要对它进行初始化，因为以后就没有机会再去改变它了；</p>
+</li>
+<li><p>对指针来说，可以指定指针本身为const（指针常量：int* const p），也可以指定指针所指的数据为const（常量指针：const int* p），或二者同时指定为const（常指针常量：const int* const p）；</p>
+</li>
+<li><p>类的常函数可以访问const和非const的成员变量，但不能修改类的成员变量；</p>
+<p>this指针默认是指针常量，所以不能修改this指针的指向。在成员函数后面加const变成常函数，实际是修饰的是this指针，将this指针变成常指针常量，使其不能修改指向的值。</p>
+</li>
+<li><p>常对象只能调用常函数，非常对象可以调用常函数也可以调用非常函数；</p>
+</li>
+<li><p>const类型变量必须定义的时候进行初始化，因此也导致如果类的成员变量有const类型的变量，那么该变量必须在类的初始化列表中进行初始化；</p>
+</li>
+<li><p>const类型变量可以通过类型转换符const_cast将const类型转换为非const类型；</p>
+</li>
+<li><p>在一个函数声明中，const可以修饰形参，表明它是一个输入参数，在函数内部不能改变其值；</p>
+</li>
+<li><p>对于函数值传递的情况，因为参数传递是通过复制实参创建一个临时变量传递进函数的，函数内只能改变临时变量，但无法改变实参。则这个时候无论加不加const对实参不会产生任何影响。但是在引用或指针传递函数调用中，因为传进去的是一个引用或指针，这样函数内部可以改变引用或指针所指向的变量，这时const 才是实实在在地保护了实参所指向的变量。因为在编译阶段编译器对调用函数的选择是根据实参进行的，所以，只有引用传递和指针传递可以用是否加const来重载。一个拥有顶层const的形参无法和另一个没有顶层const的形参区分开来。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/28/static%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E7%94%A8%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -917,80 +994,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/24/%E6%A1%B6%E6%8E%92%E5%BA%8F%E3%80%81%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F%E5%92%8C%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/24/%E6%A1%B6%E6%8E%92%E5%BA%8F%E3%80%81%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F%E5%92%8C%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">桶排序、计数排序和基数排序</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-24 10:44:44" itemprop="dateCreated datePublished" datetime="2022-02-24T10:44:44+08:00">2022-02-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-27 23:24:47" itemprop="dateModified" datetime="2022-02-27T23:24:47+08:00">2022-02-27</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h2><p>桶排序是一种用空间换取时间的排序，桶排序重要的是它的思想，而不是具体实现，时间复杂度最好可能是线性O(n)，桶排序不是基于比较的排序而是一种分配式的。</p>
-<p>桶排序的思想为：将待排序的序列分到若干个桶中，每个桶内的元素再进行个别排序。 当然桶排序选择的方案跟具体的数据有关系，桶排序是一个比较广泛的概念，并且计数排序是一种特殊的桶排序，基数排序也是建立在桶排序的基础上。在数据分布均匀且每个桶元素趋近一个时间复杂度能达到O(n),但是如果数据范围较大且相对集中就不太适合使用桶排序。</p>
-<p><img src="https://s2.loli.net/2022/02/24/VNs3kwxiMaE7KZT.png" alt="20220224104715"></p>
-<h2 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h2><p>计数排序是一种特殊的桶排序，每个桶的大小为1，每个桶不在用List表示，而通常用一个值用来计数。</p>
-<p>在设计具体算法的时候，先找到最小值min，再找最大值max。然后创建这个区间大小的数组，从min的位置开始计数，这样就可以最大程度的压缩空间，提高空间的使用效率。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">countSort</span><span class="params">(<span class="keyword">int</span> a[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> min=Integer.MAX_VALUE;<span class="keyword">int</span> max=Integer.MIN_VALUE;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;a.length;i++)<span class="comment">//找到max和min</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span>(a[i]&lt;min) </span><br><span class="line">      min=a[i];</span><br><span class="line">    <span class="keyword">if</span>(a[i]&gt;max)</span><br><span class="line">      max=a[i];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">int</span> count[]=<span class="keyword">new</span> <span class="keyword">int</span>[max-min+<span class="number">1</span>];<span class="comment">//对元素进行计数</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;a.length;i++)</span><br><span class="line">  &#123;</span><br><span class="line">    count[a[i]-min]++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//排序取值</span></span><br><span class="line">  <span class="keyword">int</span> index=<span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;count.length;i++)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">while</span> (count[i]--&gt;<span class="number">0</span>) &#123;</span><br><span class="line">      a[index++]=i+min;<span class="comment">//有min才是真正值</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h2><p>基数排序也称为卡片排序，基数排序的原理就是多次利用计数排序(计数排序是一种特殊的桶排序)，但是和前面的普通桶排序和计数排序有所区别的是，基数排序并不是将一个整体分配到一个桶中，而是将自身拆分成一个个组成的元素，每个元素分别顺序分配放入桶中、顺序收集，当从前往后或者从后往前每个位置都进行过这样顺序的分配、收集后，就获得了一个有序的数列。</p>
-<h3 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h3><p>基数排序就是进行d论计数排序，d是最大数字的长度。每一轮排序就是针对每个数字的某一位做计数排序，每一轮排序的结果是所有元素不一定有序，但是在这一位上是有序。然后在对下一位进行下一轮的计数排序，所有数字在该位上是有序的，该位相等的那些数字在上一位是有序的。所以一共进行d论计数排序之后，所有数字都是有序的。</p>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p><a target="_blank" rel="noopener" href="https://jepson-song.github.io/2021/12/01/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/">https://jepson-song.github.io/2021/12/01/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1060,7 +1063,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">114</span>
+          <span class="site-state-item-count">115</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
