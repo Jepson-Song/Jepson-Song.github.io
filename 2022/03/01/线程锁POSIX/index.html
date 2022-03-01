@@ -20,20 +20,21 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="效果比较好的数据有：    数据编号 备注    20211213_214603    20211213_210547    20211213_204805    20220103_195518 中间停了10s   20220103_200136 中间10s   20220103_201517 后半段人走开   20220103_202140 耳机架在桌子上，后半段走开了30-40s，再回来">
+  <meta name="description" content="互斥锁（mutex，互斥量） 互斥锁是用于控制多个线程对他们之间共享资源互斥访问的一个信号量。 互斥锁属于sleep-waiting类型的锁。例如在一个双核的机器上有两个线程A和B，它们分别运行在core 0和core 1上。假设线程A想要通过pthread_mutex_lock操作去得到一个临界区的锁，而此时这个锁正被线程B所持有，那么线程A就会被阻塞，此时会通过上下文切换将线程A置于等待队列">
 <meta property="og:type" content="article">
-<meta property="og:title" content="实验记录0103">
-<meta property="og:url" content="http://example.com/2022/01/03/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950103/index.html">
+<meta property="og:title" content="线程锁POSIX">
+<meta property="og:url" content="http://example.com/2022/03/01/%E7%BA%BF%E7%A8%8B%E9%94%81POSIX/index.html">
 <meta property="og:site_name" content="Jepson&#39;s Blog">
-<meta property="og:description" content="效果比较好的数据有：    数据编号 备注    20211213_214603    20211213_210547    20211213_204805    20220103_195518 中间停了10s   20220103_200136 中间10s   20220103_201517 后半段人走开   20220103_202140 耳机架在桌子上，后半段走开了30-40s，再回来">
+<meta property="og:description" content="互斥锁（mutex，互斥量） 互斥锁是用于控制多个线程对他们之间共享资源互斥访问的一个信号量。 互斥锁属于sleep-waiting类型的锁。例如在一个双核的机器上有两个线程A和B，它们分别运行在core 0和core 1上。假设线程A想要通过pthread_mutex_lock操作去得到一个临界区的锁，而此时这个锁正被线程B所持有，那么线程A就会被阻塞，此时会通过上下文切换将线程A置于等待队列">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-01-03T05:28:36.000Z">
-<meta property="article:modified_time" content="2022-01-08T09:00:15.482Z">
+<meta property="article:published_time" content="2022-03-01T14:22:56.000Z">
+<meta property="article:modified_time" content="2022-03-01T14:31:33.339Z">
 <meta property="article:author" content="Jepson">
-<meta property="article:tag" content="实验记录">
+<meta property="article:tag" content="八股文">
+<meta property="article:tag" content="操作系统">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/01/03/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950103/">
+<link rel="canonical" href="http://example.com/2022/03/01/%E7%BA%BF%E7%A8%8B%E9%94%81POSIX/">
 
 
 <script id="page-configurations">
@@ -46,7 +47,7 @@
   };
 </script>
 
-  <title>实验记录0103 | Jepson's Blog</title>
+  <title>线程锁POSIX | Jepson's Blog</title>
   
 
 
@@ -193,7 +194,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/03/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950103/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/%E7%BA%BF%E7%A8%8B%E9%94%81POSIX/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -206,7 +207,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          实验记录0103
+          线程锁POSIX
         </h1>
 
         <div class="post-meta">
@@ -215,16 +216,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2022-01-03 13:28:36" itemprop="dateCreated datePublished" datetime="2022-01-03T13:28:36+08:00">2022-01-03</time>
+              <time title="Created: 2022-03-01 22:22:56 / Modified: 22:31:33" itemprop="dateCreated datePublished" datetime="2022-03-01T22:22:56+08:00">2022-03-01</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-01-08 17:00:15" itemprop="dateModified" datetime="2022-01-08T17:00:15+08:00">2022-01-08</time>
-              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -244,88 +239,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>效果比较好的数据有：</p>
-<table>
-<thead>
-<tr>
-<th>数据编号</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>20211213_214603</td>
-<td></td>
-</tr>
-<tr>
-<td>20211213_210547</td>
-<td></td>
-</tr>
-<tr>
-<td>20211213_204805</td>
-<td></td>
-</tr>
-<tr>
-<td>20220103_195518</td>
-<td>中间停了10s</td>
-</tr>
-<tr>
-<td>20220103_200136</td>
-<td>中间10s</td>
-</tr>
-<tr>
-<td>20220103_201517</td>
-<td>后半段人走开</td>
-</tr>
-<tr>
-<td>20220103_202140</td>
-<td>耳机架在桌子上，后半段走开了30-40s，再回来</td>
-</tr>
-<tr>
-<td>20220103_204606</td>
-<td>50多秒时人走开</td>
-</tr>
-<tr>
-<td>20220103_205434</td>
-<td>一直呼吸</td>
-</tr>
-<tr>
-<td>20220103_205952</td>
-<td>一直呼吸</td>
-</tr>
-<tr>
-<td>20220103_210435</td>
-<td>后面半段人走开</td>
-</tr>
-<tr>
-<td>20220103_211403</td>
-<td>中间人走开</td>
-</tr>
-<tr>
-<td>20220103_212938</td>
-<td>中间人走开</td>
-</tr>
-<tr>
-<td>20220104_090548</td>
-<td>一直呼吸</td>
-</tr>
-<tr>
-<td>20220104_091117</td>
-<td>中间人走开</td>
-</tr>
-</tbody></table>
-<h2 id="实验分析"><a href="#实验分析" class="headerlink" title="实验分析"></a>实验分析</h2><ul>
-<li>耳机戴在头上得到的结果要比放在桌子上的结果好。<br>分析：可能是由于人呼吸和心跳带动身体微小的动作会传递到头部，这样就会影响发射端，所以实验得到的波形可能不仅仅提取自反射信号，直达信号的变化很可能对实验结果有很大的影响。这也是该系统跟其它同类型的系统之间的一个区别，因为其它已有的测呼吸的工作大多是把发射端和接收端都放在人旁边，这样就只能从反射信号中提取信息，而我们的系统发射端是穿戴在任身体上的，呼吸和心跳的pattern会直接作用于发射端并通过直达信号反应出来。</li>
+        <ul>
+<li><p>互斥锁（mutex，互斥量）</p>
+<p>互斥锁是用于控制多个线程对他们之间共享资源互斥访问的一个信号量。</p>
+<p>互斥锁属于sleep-waiting类型的锁。例如在一个双核的机器上有两个线程A和B，它们分别运行在core 0和core 1上。假设线程A想要通过pthread_mutex_lock操作去得到一个临界区的锁，而此时这个锁正被线程B所持有，那么线程A就会被阻塞，此时会通过上下文切换将线程A置于等待队列中，此时core 0就可以运行其他的任务（如线程C）。</p>
+</li>
+<li><p>条件锁（cond，条件变量）</p>
+<p>条件锁就是所谓的条件变量，某一个线程因为某个条件为满足时可以使用条件变量使改程序处于阻塞状态。一旦条件满足以“信号量”的方式唤醒一个因为该条件而被阻塞的线程。最为常见就是在线程池中，起初没有任务时任务队列为空，此时线程池中的线程因为“任务队列为空”这个条件处于阻塞状态。一旦有任务进来，就会以信号量的方式唤醒一个线程来处理这个任务，这个过程中就使用到了条件变量。</p>
+</li>
+<li><p>自旋锁（spin）</p>
+<p>自旋锁属于busy-waiting类型的锁，当线程A请求自旋锁，如果自旋锁已经被线程B所持有，那么线程A就会一直在core 0上进行忙等待并不停的进行锁请求，检查该自旋锁是否已经被线程B释放，直到得到这个锁为止。因为自旋锁不会引起调用者睡眠，所以自旋锁的效率远高于互斥锁。</p>
+</li>
+<li><p>读写锁</p>
+<p>可以有多个读线程同时获取读的锁，而只有一个线程可以获取写的锁。读锁和写锁互斥，写锁和写锁互斥。</p>
+</li>
 </ul>
-<h2 id="后续的实验方向"><a href="#后续的实验方向" class="headerlink" title="后续的实验方向"></a>后续的实验方向</h2><ol>
-<li><p>结合直达信号和反射信号共同用于波形提取。可以考虑把直达信号左右一部分的路径和其它路径设置不同的权重再放到一起做pca。</p>
-</li>
-<li><p>参数的调整。呼吸和心跳的snr阈值可能还需要进一步调整，用于识别出没有呼吸和心跳的场景。</p>
-</li>
-<li><p>路径选择的方法可能还需要调试，目前的结果是百分比法（前10%）效果比阈值法要好一些。</p>
-</li>
-<li><p>cir的长度和频率（现在是10）可能考虑一下是否需要调整。</p>
-</li>
-</ol>
 
     </div>
 
@@ -355,7 +283,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%95/" rel="tag"><i class="fa fa-tag"></i> 实验记录</a>
+              <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" rel="tag"><i class="fa fa-tag"></i> 八股文</a>
+              <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" rel="tag"><i class="fa fa-tag"></i> 操作系统</a>
           </div>
 
         
@@ -364,13 +293,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/12/26/%E6%AD%BB%E9%94%81/" rel="prev" title="死锁">
-      <i class="fa fa-chevron-left"></i> 死锁
+    <a href="/2022/03/01/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E4%B8%83%E7%A7%8D%E6%96%B9%E5%BC%8F/" rel="prev" title="进程间通信的七种方式">
+      <i class="fa fa-chevron-left"></i> 进程间通信的七种方式
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/02/14/%E7%BC%96%E8%AF%91/" rel="next" title="编译">
-      编译 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -429,7 +355,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">实验分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E7%BB%AD%E7%9A%84%E5%AE%9E%E9%AA%8C%E6%96%B9%E5%90%91"><span class="nav-number">2.</span> <span class="nav-text">后续的实验方向</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
