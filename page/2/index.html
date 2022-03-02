@@ -187,6 +187,93 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/26/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/26/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" class="post-title-link" itemprop="url">HTTP状态码</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-26 09:19:57 / Modified: 09:26:25" itemprop="dateCreated datePublished" datetime="2022-02-26T09:19:57+08:00">2022-02-26</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>http状态码的由三位数字和原因短语组成，数字的第一位数字表示响应的类别，后面两位无类别。</p>
+<table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1XX</td>
+<td>临时状态码，表示正在处理请求</td>
+</tr>
+<tr>
+<td>2XX</td>
+<td>请求处理成功</td>
+</tr>
+<tr>
+<td>3XX</td>
+<td>重定向，表示要完成请求需要进一步操作</td>
+</tr>
+<tr>
+<td>4XX</td>
+<td>请求错误，错误的原因在客户端，比如请求的参数错误或者url过长等</td>
+</tr>
+<tr>
+<td>5XX</td>
+<td>服务器错误，比如服务不可用或者服务器内部出错</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/25/%E5%AD%97%E8%8A%82TikTok%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -863,80 +950,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/%E5%AE%9E%E4%BE%8B%E5%8C%96%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/21/%E5%AE%9E%E4%BE%8B%E5%8C%96%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">实例化一个对象的过程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-21 19:32:51 / Modified: 19:34:25" itemprop="dateCreated datePublished" datetime="2022-02-21T19:32:51+08:00">2022-02-21</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li><p>分配空间</p>
-<p> 创建类对象首先要为该对象分配内存空间。不同的对象，为其分配空间的时机未必相同。全局对象、静态对象、分配在栈区域内的对象，在编译阶段进行内存分配；存储在堆空间的对象，是在运行阶段进行内存分配。</p>
-</li>
-<li><p>初始化</p>
-<p> 首先明确一点：初始化不同于赋值。初始化发生在赋值之前，初始化随对象的创建而进行，而赋值是在对象创建好后，为其赋上相应的值。这一点可以联想下上一个问题中提到：初始化列表先于构造函数体内的代码执行，初始化列表执行的是数据成员的初始化过程，这个可以从成员对象的构造函数被调用看的出来。</p>
-</li>
-<li><p>赋值</p>
-<p> 对象初始化完成后，可以对其进行赋值。对于一个类的对象，其成员变量的赋值过程发生在类的构造函数的函数体中。当执行完该函数体，也就意味着类对象的实例化过程完成了。（总结：构造函数实现了对象的初始化和赋值两个过程，对象的初始化是通过初始化列表来完成，而对象的赋值则才是通过构造函数的函数体来实现。）</p>
-</li>
-</ol>
-<p>注：对于拥有虚函数的类的对象，还需要给虚表指针赋值。</p>
-<pre><code>没有继承关系的类，分配完内存后，首先给虚表指针赋值，然后再列表初始化以及执行构造函数的函数体，即上述中的初始化和赋值操作。
-
-有继承关系的类，分配内存之后，首先进行基类的构造过程，然后给该派生类的虚表指针赋值，最后再列表初始化以及执行构造函数的函数体，即上述中的初始化和赋值操作。
-</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1006,14 +1019,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-count">119</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
