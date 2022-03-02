@@ -28,7 +28,7 @@
 <meta property="og:description" content="互斥锁（mutex，互斥量） 互斥锁是用于控制多个线程对他们之间共享资源互斥访问的一个信号量。 互斥锁属于sleep-waiting类型的锁。例如在一个双核的机器上有两个线程A和B，它们分别运行在core 0和core 1上。假设线程A想要通过pthread_mutex_lock操作去得到一个临界区的锁，而此时这个锁正被线程B所持有，那么线程A就会被阻塞，此时会通过上下文切换将线程A置于等待队列">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-03-01T14:22:56.000Z">
-<meta property="article:modified_time" content="2022-03-01T14:31:33.339Z">
+<meta property="article:modified_time" content="2022-03-01T14:33:03.763Z">
 <meta property="article:author" content="Jepson">
 <meta property="article:tag" content="八股文">
 <meta property="article:tag" content="操作系统">
@@ -218,7 +218,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-03-01 22:22:56 / Modified: 22:31:33" itemprop="dateCreated datePublished" datetime="2022-03-01T22:22:56+08:00">2022-03-01</time>
+              <time title="Created: 2022-03-01 22:22:56 / Modified: 22:33:03" itemprop="dateCreated datePublished" datetime="2022-03-01T22:22:56+08:00">2022-03-01</time>
             </span>
 
           
@@ -246,6 +246,7 @@
 </li>
 <li><p>条件锁（cond，条件变量）</p>
 <p>条件锁就是所谓的条件变量，某一个线程因为某个条件为满足时可以使用条件变量使改程序处于阻塞状态。一旦条件满足以“信号量”的方式唤醒一个因为该条件而被阻塞的线程。最为常见就是在线程池中，起初没有任务时任务队列为空，此时线程池中的线程因为“任务队列为空”这个条件处于阻塞状态。一旦有任务进来，就会以信号量的方式唤醒一个线程来处理这个任务，这个过程中就使用到了条件变量。</p>
+<p>互斥锁实现的是线程的互斥，条件锁实现的是线程的同步。</p>
 </li>
 <li><p>自旋锁（spin）</p>
 <p>自旋锁属于busy-waiting类型的锁，当线程A请求自旋锁，如果自旋锁已经被线程B所持有，那么线程A就会一直在core 0上进行忙等待并不停的进行锁请求，检查该自旋锁是否已经被线程B释放，直到得到这个锁为止。因为自旋锁不会引起调用者睡眠，所以自旋锁的效率远高于互斥锁。</p>
@@ -296,7 +297,10 @@
     <a href="/2022/03/01/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E4%B8%83%E7%A7%8D%E6%96%B9%E5%BC%8F/" rel="prev" title="进程间通信的七种方式">
       <i class="fa fa-chevron-left"></i> 进程间通信的七种方式
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/02/%E9%A1%B5%E8%A1%A8%E5%92%8C%E5%BF%AB%E8%A1%A8/" rel="next" title="页表和快表">
+      页表和快表 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -368,7 +372,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">117</span>
+          <span class="site-state-item-count">118</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
