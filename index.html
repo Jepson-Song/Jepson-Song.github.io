@@ -187,6 +187,155 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/03/STL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/03/STL/" class="post-title-link" itemprop="url">STL</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-03 20:24:00 / Modified: 21:01:30" itemprop="dateCreated datePublished" datetime="2022-03-03T20:24:00+08:00">2022-03-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <table>
+<thead>
+<tr>
+<th>STL</th>
+<th>类型</th>
+<th>名称</th>
+<th>底层实现</th>
+<th>特性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>vector</td>
+<td>顺序型容器</td>
+<td>变长数组</td>
+<td>数组</td>
+<td>O(1)查找O(n)插入</td>
+</tr>
+<tr>
+<td>list</td>
+<td>顺序型容器</td>
+<td>链表</td>
+<td>双向链表</td>
+<td>O(n)查找O(1)插入</td>
+</tr>
+<tr>
+<td>deque</td>
+<td>顺序型容器</td>
+<td>双端队列</td>
+<td>类似二维数组</td>
+<td>由若干段大小相等的连续内存组成，不同段之间可能不连续，数组中每个节点都指向一段内存</td>
+</tr>
+<tr>
+<td>map</td>
+<td>有序关联型容器</td>
+<td>映射</td>
+<td>红黑树</td>
+<td>按照key值排序，key不重复</td>
+</tr>
+<tr>
+<td>mutimap</td>
+<td>有序关联型容器</td>
+<td>多重映射</td>
+<td>红黑树</td>
+<td>按照key值排序，key可重复</td>
+</tr>
+<tr>
+<td>set</td>
+<td>有序关联型容器</td>
+<td>集合</td>
+<td>红黑树</td>
+<td>按照key值排序，key不重复</td>
+</tr>
+<tr>
+<td>mutiset</td>
+<td>有序关联型容器</td>
+<td>多重集合</td>
+<td>红黑树</td>
+<td>按照key值排序，key可重复</td>
+</tr>
+<tr>
+<td>unordered_map</td>
+<td>无序关联型容器</td>
+<td>无序映射</td>
+<td>哈希表</td>
+<td>不排序，用链表法解决哈希冲突（哈希桶）</td>
+</tr>
+<tr>
+<td>stack</td>
+<td>容器适配器</td>
+<td>栈</td>
+<td>deque</td>
+<td>先进后出</td>
+</tr>
+<tr>
+<td>queue</td>
+<td>容器适配器</td>
+<td>队列</td>
+<td>deque</td>
+<td>先进先出</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>容器支持迭代器，容器适配器不支持迭代器。</p>
+</li>
+<li><p>map中的基本元素就是对组pair。</p>
+</li>
+<li><p>pair是用一个结构体实现的，结构体主要的两个成员变量first和second，分别存储两个数据。</p>
+</li>
+<li><p>map中的pair第一个元素为key(键值)，起索引作用，就相当于数组下标，第二个元素为value(实值)。map所有元素会根据键值大小自动排序</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/02/%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -891,88 +1040,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/26/FTP%E7%9A%84%E4%B8%BB%E5%8A%A8%E6%A8%A1%E5%BC%8F%E5%92%8C%E8%A2%AB%E5%8A%A8%E6%A8%A1%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/26/FTP%E7%9A%84%E4%B8%BB%E5%8A%A8%E6%A8%A1%E5%BC%8F%E5%92%8C%E8%A2%AB%E5%8A%A8%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">FTP的主动模式和被动模式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-26 09:47:26 / Modified: 10:07:18" itemprop="dateCreated datePublished" datetime="2022-02-26T09:47:26+08:00">2022-02-26</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="FTP主动模式"><a href="#FTP主动模式" class="headerlink" title="FTP主动模式"></a>FTP主动模式</h3><p><img src="https://s2.loli.net/2022/02/26/GS76hwuCjb9i3QF.png" alt="20220226094738"></p>
-<ol>
-<li><p>在主动模式下，客户端命令端口为N，数据端口为N+1，服务器端命令端口为21，数据端口为20。</p>
-<p> 第一步，客户端使用端口N连接FTP服务器的命令端口21，建立控制连接并告诉服务器我这边开启了数据端口N+1。</p>
-<p> 第二步，在控制连接建立成功后，服务器会使用数据端口20，主动连接客户端的N+1端口以建立数据连接。这就是FTP主动模式的连接过程。</p>
-<p> 我们可以看到，在这条红色的数据连接建立的过程中，服务器是主动的连接客户端的，所以称这种模式为主动模式。</p>
-</li>
-<li><p>主动模式的利弊</p>
-<p> 主动模式对FTP服务器的管理有利，因为FTP服务器只需要开启21端口的“准入”和20端口的“准出”即可。</p>
-<p> 但这种模式对客户端的管理不利，因为FTP服务器20端口连接客户端的数据端口时，有可能被客户端的防火墙拦截掉。</p>
-</li>
-</ol>
-<h3 id="FTP被动模式"><a href="#FTP被动模式" class="headerlink" title="FTP被动模式"></a>FTP被动模式</h3><p><img src="https://s2.loli.net/2022/02/26/CrznktXQZPiyAqg.png" alt="20220226094949"></p>
-<ol>
-<li><p>在被动模式下，客户端命令端口为N，数据端口为N+1，服务器端命令端口为21，数据端口为P。</p>
-<p> 第一步，客户端的命令端口N主动连接服务器命令端口21，并发送PASV命令，告诉服务器用“被动模式”，控制连接建立成功后，服务器开启一个数据端口P，通过PORT命令将P端口告诉客户端。</p>
-<p> 第二步，客户端的数据端口N+1去连接服务器的数据端口P，建立数据连接。</p>
-<p> 我们可以看到，在这条红色的数据连接建立的过程中，服务器是被动的等待客户端来连接的，所以称这种模式为被动模式。</p>
-</li>
-<li><p>被动模式利弊</p>
-<p> 被动模式对FTP客户端的管理有利，因为客户端的命令端口和数据端口都是“准出”，windows防火墙对于“准出”一般是不拦截的，所以客户端不需要任何多余的配置就可以连接FTP服务器了。</p>
-<p> 但对服务器端的管理不利。因为客户端数据端口连到FTP服务器的数据端口P时，很有可能被服务器端的防火墙阻塞掉。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1042,14 +1109,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-count">120</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
