@@ -81,45 +81,6 @@
       </tags>
   </entry>
   <entry>
-    <title>GET和POST</title>
-    <url>/2022/02/26/GET%E5%92%8CPOST/</url>
-    <content><![CDATA[<ol>
-<li><p>报文上的区别</p>
-<p> GET 和 POST 只是 HTTP 协议中两种请求方式，所以在传输上，没有区别，因为HTTP 协议是基于 TCP/IP 的应用层协议<br> 报文格式上，不带参数时，最大区别仅仅是第一行方法名不同，一个是GET，一个是POST。</p>
-<p> 带参数时报文的区别呢？在约定中，GET方法的参数应该放在url中，POST方法参数应该放在body中。</p>
-<p> 举个例子，如果参数是 name=qiming.c, age=22。</p>
-<p> GET 方法简约版报文可能是这样的：</p>
-<pre><code> GET /index.php?name=qiming.c&amp;age=22 HTTP/1.1
- Host: localhost
-</code></pre>
-<p> POST 方法简约版报文可能是这样的：</p>
-<pre><code> POST /index.php HTTP/1.1
- Host: localhost
- Content-Type: application/x-www-form-urlencoded name=qiming. c&amp;age=22
-</code></pre>
-</li>
-<li><p>传输数据的大小</p>
-<p> 在HTTP规范中，没有对URL的长度和传输的数据大小进行限制。但是在实际开发过程中，对于GET，特定的浏览器和服务器对URL的长度有限制。因此，在使用GET请求时，传输数据会受到URL长度的限制。</p>
-<p> 对于POST，由于不是URL传值，理论上是不会受限制的，但是实际上各个服务器会规定对POST提交数据大小进行限制，Apache、IIS都有各自的配置。</p>
-</li>
-<li><p>安全性</p>
-<p> POST的安全性比GET的高。比如，在进行登录操作，通过GET请求，用户名和密码都会暴露再URL上，因为登录页面有可能被浏览器缓存以及其他人查看浏览器的历史记录的原因，此时的用户名和密码就很容易被他人拿到了。除此之外，GET请求提交的数据还可能会造成Cross-site request frogery攻击。</p>
-</li>
-</ol>
-<p>深入理解</p>
-<ol>
-<li><p>GET和POST都是http请求方式，底层都是TCP/IP协议；通常GET 产生一个TCP数据包；POST产生两个TCP数据包（但firefox是发送一个数据包），</p>
-</li>
-<li><p>对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）表示成功；</p>
-<p> 而对于POST，浏览器先发送header，服务器响应100， 浏览器再继续发送data，服务器响应200 （返回数据）。</p>
-</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>知识点</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>HTTP状态码</title>
     <url>/2022/02/26/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/</url>
     <content><![CDATA[<p>http状态码的由三位数字和原因短语组成，数字的第一位数字表示响应的类别，后面两位无类别。</p>
@@ -173,63 +134,42 @@
       </tags>
   </entry>
   <entry>
-    <title>MVCC+NextKeyLocks</title>
-    <url>/2022/02/17/MVCC-NextKeyLocks/</url>
-    <content><![CDATA[<h2 id="多版本并发控制"><a href="#多版本并发控制" class="headerlink" title="多版本并发控制"></a>多版本并发控制</h2><p>多版本并发控制（Multi-Version Concurrency Control, MVCC）是 MySQL 的 InnoDB 存储引擎实现隔离级别的一种具体方式，用于实现提交读和可重复读这两种隔离级别。而未提交读隔离级别总是读取最新的数据行，要求很低，无需使用 MVCC。可串行化隔离级别需要对所有读取的行都加锁，单纯使用 MVCC 无法实现。</p>
-<h3 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h3><p>在封锁一节中提到，加锁能解决多个事务同时执行时出现的并发一致性问题。在实际场景中读操作往往多于写操作，因此又引入了读写锁来避免不必要的加锁操作，例如读和读没有互斥关系。读写锁中读和写操作仍然是互斥的，而 MVCC 利用了多版本的思想，写操作更新最新的版本快照，而读操作去读旧版本快照，没有互斥关系，这一点和 CopyOnWrite 类似。</p>
-<p>在 MVCC 中事务的修改操作（DELETE、INSERT、UPDATE）会为数据行新增一个版本快照。</p>
-<p>脏读和不可重复读最根本的原因是事务读取到其它事务未提交的修改。在事务进行读取操作时，为了解决脏读和不可重复读问题，MVCC 规定只能读取已经提交的快照。当然一个事务可以读取自身未提交的快照，这不算是脏读。</p>
-<h3 id="版本号"><a href="#版本号" class="headerlink" title="版本号"></a>版本号</h3><ul>
-<li>系统版本号 SYS_ID：是一个递增的数字，每开始一个新的事务，系统版本号就会自动递增。</li>
-<li>事务版本号 TRX_ID ：事务开始时的系统版本号。</li>
-</ul>
-<h3 id="Undo-日志"><a href="#Undo-日志" class="headerlink" title="Undo 日志"></a>Undo 日志</h3><p>MVCC 的多版本指的是多个版本的快照，快照存储在 Undo 日志中，该日志通过回滚指针 ROLL_PTR 把一个数据行的所有快照连接起来。</p>
-<p>例如在 MySQL 创建一个表 t，包含主键 id 和一个字段 x。我们先插入一个数据行，然后对该数据行执行两次更新操作。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> t(id, x) <span class="keyword">VALUES</span>(<span class="number">1</span>, &quot;a&quot;);</span><br><span class="line">UPDATE t <span class="keyword">SET</span> x<span class="operator">=</span>&quot;b&quot; <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="number">1</span>;</span><br><span class="line">UPDATE t <span class="keyword">SET</span> x<span class="operator">=</span>&quot;c&quot; <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
-<p>因为没有使用 <code>START TRANSACTION</code> 将上面的操作当成一个事务来执行，根据 MySQL 的 AUTOCOMMIT 机制，每个操作都会被当成一个事务来执行，所以上面的操作总共涉及到三个事务。快照中除了记录事务版本号 TRX_ID 和操作之外，还记录了一个 bit 的 DEL 字段，用于标记是否被删除。</p>
-<div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/image-20191208164808217.png"/> </div><br>
-
-<p>INSERT、UPDATE、DELETE 操作会创建一个日志，并将事务版本号 TRX_ID  写入。DELETE 可以看成是一个特殊的 UPDATE，还会额外将 DEL 字段设置为 1。</p>
-<h3 id="ReadView"><a href="#ReadView" class="headerlink" title="ReadView"></a>ReadView</h3><p>MVCC 维护了一个 ReadView 结构，主要包含了当前系统未提交的事务列表 TRX_IDs {TRX_ID_1, TRX_ID_2, …}，还有该列表的最小值 TRX_ID_MIN 和 TRX_ID_MAX。</p>
-<div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/image-20191208171445674.png"/> </div><br>
-
-<p>在进行 SELECT 操作时，根据数据行快照的 TRX_ID 与 TRX_ID_MIN 和 TRX_ID_MAX 之间的关系，从而判断数据行快照是否可以使用：</p>
-<ul>
-<li><p>TRX_ID &lt; TRX_ID_MIN，表示该数据行快照时在当前所有未提交事务之前进行更改的，因此可以使用。</p>
+    <title>GET和POST</title>
+    <url>/2022/02/26/GET%E5%92%8CPOST/</url>
+    <content><![CDATA[<ol>
+<li><p>报文上的区别</p>
+<p> GET 和 POST 只是 HTTP 协议中两种请求方式，所以在传输上，没有区别，因为HTTP 协议是基于 TCP/IP 的应用层协议<br> 报文格式上，不带参数时，最大区别仅仅是第一行方法名不同，一个是GET，一个是POST。</p>
+<p> 带参数时报文的区别呢？在约定中，GET方法的参数应该放在url中，POST方法参数应该放在body中。</p>
+<p> 举个例子，如果参数是 name=qiming.c, age=22。</p>
+<p> GET 方法简约版报文可能是这样的：</p>
+<pre><code> GET /index.php?name=qiming.c&amp;age=22 HTTP/1.1
+ Host: localhost
+</code></pre>
+<p> POST 方法简约版报文可能是这样的：</p>
+<pre><code> POST /index.php HTTP/1.1
+ Host: localhost
+ Content-Type: application/x-www-form-urlencoded name=qiming. c&amp;age=22
+</code></pre>
 </li>
-<li><p>TRX_ID &gt; TRX_ID_MAX，表示该数据行快照是在事务启动之后被更改的，因此不可使用。</p>
+<li><p>传输数据的大小</p>
+<p> 在HTTP规范中，没有对URL的长度和传输的数据大小进行限制。但是在实际开发过程中，对于GET，特定的浏览器和服务器对URL的长度有限制。因此，在使用GET请求时，传输数据会受到URL长度的限制。</p>
+<p> 对于POST，由于不是URL传值，理论上是不会受限制的，但是实际上各个服务器会规定对POST提交数据大小进行限制，Apache、IIS都有各自的配置。</p>
 </li>
-<li><p>TRX_ID_MIN &lt;= TRX_ID &lt;= TRX_ID_MAX，需要根据隔离级别再进行判断：</p>
-<ul>
-<li>提交读：如果 TRX_ID  在 TRX_IDs  列表中，表示该数据行快照对应的事务还未提交，则该快照不可使用。否则表示已经提交，可以使用。</li>
-<li>可重复读：都不可以使用。因为如果可以使用的话，那么其它事务也可以读到这个数据行快照并进行修改，那么当前事务再去读这个数据行得到的值就会发生改变，也就是出现了不可重复读问题。</li>
-</ul>
+<li><p>安全性</p>
+<p> POST的安全性比GET的高。比如，在进行登录操作，通过GET请求，用户名和密码都会暴露再URL上，因为登录页面有可能被浏览器缓存以及其他人查看浏览器的历史记录的原因，此时的用户名和密码就很容易被他人拿到了。除此之外，GET请求提交的数据还可能会造成Cross-site request frogery攻击。</p>
 </li>
-</ul>
-<p>在数据行快照不可使用的情况下，需要沿着 Undo Log 的回滚指针 ROLL_PTR  找到下一个快照，再进行上面的判断。</p>
-<h3 id="快照读与当前读"><a href="#快照读与当前读" class="headerlink" title="快照读与当前读"></a>快照读与当前读</h3><h4 id="1-快照读"><a href="#1-快照读" class="headerlink" title="1. 快照读"></a>1. 快照读</h4><p>MVCC 的 SELECT 操作是快照中的数据，不需要进行加锁操作。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="keyword">table</span> ...;</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-当前读"><a href="#2-当前读" class="headerlink" title="2. 当前读"></a>2. 当前读</h4><p>MVCC 其它会对数据库进行修改的操作（INSERT、UPDATE、DELETE）需要进行加锁操作，从而读取最新的数据。可以看到 MVCC 并不是完全不用加锁，而只是避免了 SELECT 的加锁操作。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">INSERT</span>;</span><br><span class="line">UPDATE;</span><br><span class="line"><span class="keyword">DELETE</span>;</span><br></pre></td></tr></table></figure>
-
-<p>在进行 SELECT 操作时，可以强制指定进行加锁操作。以下第一个语句需要加 S 锁，第二个需要加 X 锁。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> ? lock <span class="keyword">in</span> share mode;</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> ? <span class="keyword">for</span> update;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Next-Key-Locks"><a href="#Next-Key-Locks" class="headerlink" title="Next-Key Locks"></a>Next-Key Locks</h2><p>Next-Key Locks 是 MySQL 的 InnoDB 存储引擎的一种锁实现。</p>
-<p>MVCC 不能解决幻影读问题，Next-Key Locks 就是为了解决这个问题而存在的。在可重复读（REPEATABLE READ）隔离级别下，使用 MVCC + Next-Key Locks 可以解决幻读问题。</p>
-<h3 id="Record-Locks"><a href="#Record-Locks" class="headerlink" title="Record Locks"></a>Record Locks</h3><p>锁定一个记录上的索引，而不是记录本身。</p>
-<p>如果表没有设置索引，InnoDB 会自动在主键上创建隐藏的聚簇索引，因此 Record Locks 依然可以使用。</p>
-<h3 id="Gap-Locks"><a href="#Gap-Locks" class="headerlink" title="Gap Locks"></a>Gap Locks</h3><p>锁定索引之间的间隙，但是不包含索引本身。例如当一个事务执行以下语句，其它事务就不能在 t.c 中插入 15。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> c <span class="keyword">FROM</span> t <span class="keyword">WHERE</span> c <span class="keyword">BETWEEN</span> <span class="number">10</span> <span class="keyword">and</span> <span class="number">20</span> <span class="keyword">FOR</span> UPDATE;</span><br></pre></td></tr></table></figure>
-
-<h3 id="Next-Key-Locks-1"><a href="#Next-Key-Locks-1" class="headerlink" title="Next-Key Locks"></a>Next-Key Locks</h3><p>它是 Record Locks 和 Gap Locks 的结合，不仅锁定一个记录上的索引，也锁定索引之间的间隙。它锁定一个前开后闭区间，例如一个索引包含以下值：10, 11, 13, and 20，那么就需要锁定以下区间：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">(<span class="operator">-</span>∞, <span class="number">10</span>]</span><br><span class="line">(<span class="number">10</span>, <span class="number">11</span>]</span><br><span class="line">(<span class="number">11</span>, <span class="number">13</span>]</span><br><span class="line">(<span class="number">13</span>, <span class="number">20</span>]</span><br><span class="line">(<span class="number">20</span>, <span class="operator">+</span>∞)</span><br></pre></td></tr></table></figure>
+</ol>
+<p>深入理解</p>
+<ol>
+<li><p>GET和POST都是http请求方式，底层都是TCP/IP协议；通常GET 产生一个TCP数据包；POST产生两个TCP数据包（但firefox是发送一个数据包），</p>
+</li>
+<li><p>对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）表示成功；</p>
+<p> 而对于POST，浏览器先发送header，服务器响应100， 浏览器再继续发送data，服务器响应200 （返回数据）。</p>
+</li>
+</ol>
 ]]></content>
       <tags>
-        <tag>八股文</tag>
-        <tag>数据库</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -308,102 +248,63 @@
       </tags>
   </entry>
   <entry>
-    <title>STL</title>
-    <url>/2022/03/03/STL/</url>
-    <content><![CDATA[<table>
-<thead>
-<tr>
-<th>STL</th>
-<th>类型</th>
-<th>名称</th>
-<th>底层实现</th>
-<th>特性</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>vector</td>
-<td>顺序型容器</td>
-<td>变长数组</td>
-<td>数组</td>
-<td>O(1)查找O(n)插入</td>
-</tr>
-<tr>
-<td>list</td>
-<td>顺序型容器</td>
-<td>链表</td>
-<td>双向链表</td>
-<td>O(n)查找O(1)插入</td>
-</tr>
-<tr>
-<td>deque</td>
-<td>顺序型容器</td>
-<td>双端队列</td>
-<td>类似二维数组</td>
-<td>由若干段大小相等的连续内存组成，不同段之间可能不连续，数组中每个节点都指向一段内存</td>
-</tr>
-<tr>
-<td>map</td>
-<td>有序关联型容器</td>
-<td>映射</td>
-<td>红黑树</td>
-<td>按照key值排序，key不重复</td>
-</tr>
-<tr>
-<td>mutimap</td>
-<td>有序关联型容器</td>
-<td>多重映射</td>
-<td>红黑树</td>
-<td>按照key值排序，key可重复</td>
-</tr>
-<tr>
-<td>set</td>
-<td>有序关联型容器</td>
-<td>集合</td>
-<td>红黑树</td>
-<td>按照key值排序，key不重复</td>
-</tr>
-<tr>
-<td>mutiset</td>
-<td>有序关联型容器</td>
-<td>多重集合</td>
-<td>红黑树</td>
-<td>按照key值排序，key可重复</td>
-</tr>
-<tr>
-<td>unordered_map</td>
-<td>无序关联型容器</td>
-<td>无序映射</td>
-<td>哈希表</td>
-<td>不排序，用链表法解决哈希冲突（哈希桶）</td>
-</tr>
-<tr>
-<td>stack</td>
-<td>容器适配器</td>
-<td>栈</td>
-<td>deque</td>
-<td>先进后出</td>
-</tr>
-<tr>
-<td>queue</td>
-<td>容器适配器</td>
-<td>队列</td>
-<td>deque</td>
-<td>先进先出</td>
-</tr>
-</tbody></table>
+    <title>MVCC+NextKeyLocks</title>
+    <url>/2022/02/17/MVCC-NextKeyLocks/</url>
+    <content><![CDATA[<h2 id="多版本并发控制"><a href="#多版本并发控制" class="headerlink" title="多版本并发控制"></a>多版本并发控制</h2><p>多版本并发控制（Multi-Version Concurrency Control, MVCC）是 MySQL 的 InnoDB 存储引擎实现隔离级别的一种具体方式，用于实现提交读和可重复读这两种隔离级别。而未提交读隔离级别总是读取最新的数据行，要求很低，无需使用 MVCC。可串行化隔离级别需要对所有读取的行都加锁，单纯使用 MVCC 无法实现。</p>
+<h3 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h3><p>在封锁一节中提到，加锁能解决多个事务同时执行时出现的并发一致性问题。在实际场景中读操作往往多于写操作，因此又引入了读写锁来避免不必要的加锁操作，例如读和读没有互斥关系。读写锁中读和写操作仍然是互斥的，而 MVCC 利用了多版本的思想，写操作更新最新的版本快照，而读操作去读旧版本快照，没有互斥关系，这一点和 CopyOnWrite 类似。</p>
+<p>在 MVCC 中事务的修改操作（DELETE、INSERT、UPDATE）会为数据行新增一个版本快照。</p>
+<p>脏读和不可重复读最根本的原因是事务读取到其它事务未提交的修改。在事务进行读取操作时，为了解决脏读和不可重复读问题，MVCC 规定只能读取已经提交的快照。当然一个事务可以读取自身未提交的快照，这不算是脏读。</p>
+<h3 id="版本号"><a href="#版本号" class="headerlink" title="版本号"></a>版本号</h3><ul>
+<li>系统版本号 SYS_ID：是一个递增的数字，每开始一个新的事务，系统版本号就会自动递增。</li>
+<li>事务版本号 TRX_ID ：事务开始时的系统版本号。</li>
+</ul>
+<h3 id="Undo-日志"><a href="#Undo-日志" class="headerlink" title="Undo 日志"></a>Undo 日志</h3><p>MVCC 的多版本指的是多个版本的快照，快照存储在 Undo 日志中，该日志通过回滚指针 ROLL_PTR 把一个数据行的所有快照连接起来。</p>
+<p>例如在 MySQL 创建一个表 t，包含主键 id 和一个字段 x。我们先插入一个数据行，然后对该数据行执行两次更新操作。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> t(id, x) <span class="keyword">VALUES</span>(<span class="number">1</span>, &quot;a&quot;);</span><br><span class="line">UPDATE t <span class="keyword">SET</span> x<span class="operator">=</span>&quot;b&quot; <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="number">1</span>;</span><br><span class="line">UPDATE t <span class="keyword">SET</span> x<span class="operator">=</span>&quot;c&quot; <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>因为没有使用 <code>START TRANSACTION</code> 将上面的操作当成一个事务来执行，根据 MySQL 的 AUTOCOMMIT 机制，每个操作都会被当成一个事务来执行，所以上面的操作总共涉及到三个事务。快照中除了记录事务版本号 TRX_ID 和操作之外，还记录了一个 bit 的 DEL 字段，用于标记是否被删除。</p>
+<div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/image-20191208164808217.png"/> </div><br>
+
+<p>INSERT、UPDATE、DELETE 操作会创建一个日志，并将事务版本号 TRX_ID  写入。DELETE 可以看成是一个特殊的 UPDATE，还会额外将 DEL 字段设置为 1。</p>
+<h3 id="ReadView"><a href="#ReadView" class="headerlink" title="ReadView"></a>ReadView</h3><p>MVCC 维护了一个 ReadView 结构，主要包含了当前系统未提交的事务列表 TRX_IDs {TRX_ID_1, TRX_ID_2, …}，还有该列表的最小值 TRX_ID_MIN 和 TRX_ID_MAX。</p>
+<div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/image-20191208171445674.png"/> </div><br>
+
+<p>在进行 SELECT 操作时，根据数据行快照的 TRX_ID 与 TRX_ID_MIN 和 TRX_ID_MAX 之间的关系，从而判断数据行快照是否可以使用：</p>
 <ul>
-<li><p>容器支持迭代器，容器适配器不支持迭代器。</p>
+<li><p>TRX_ID &lt; TRX_ID_MIN，表示该数据行快照时在当前所有未提交事务之前进行更改的，因此可以使用。</p>
 </li>
-<li><p>map中的基本元素就是对组pair。</p>
+<li><p>TRX_ID &gt; TRX_ID_MAX，表示该数据行快照是在事务启动之后被更改的，因此不可使用。</p>
 </li>
-<li><p>pair是用一个结构体实现的，结构体主要的两个成员变量first和second，分别存储两个数据。</p>
-</li>
-<li><p>map中的pair第一个元素为key(键值)，起索引作用，就相当于数组下标，第二个元素为value(实值)。map所有元素会根据键值大小自动排序</p>
+<li><p>TRX_ID_MIN &lt;= TRX_ID &lt;= TRX_ID_MAX，需要根据隔离级别再进行判断：</p>
+<ul>
+<li>提交读：如果 TRX_ID  在 TRX_IDs  列表中，表示该数据行快照对应的事务还未提交，则该快照不可使用。否则表示已经提交，可以使用。</li>
+<li>可重复读：都不可以使用。因为如果可以使用的话，那么其它事务也可以读到这个数据行快照并进行修改，那么当前事务再去读这个数据行得到的值就会发生改变，也就是出现了不可重复读问题。</li>
+</ul>
 </li>
 </ul>
+<p>在数据行快照不可使用的情况下，需要沿着 Undo Log 的回滚指针 ROLL_PTR  找到下一个快照，再进行上面的判断。</p>
+<h3 id="快照读与当前读"><a href="#快照读与当前读" class="headerlink" title="快照读与当前读"></a>快照读与当前读</h3><h4 id="1-快照读"><a href="#1-快照读" class="headerlink" title="1. 快照读"></a>1. 快照读</h4><p>MVCC 的 SELECT 操作是快照中的数据，不需要进行加锁操作。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="keyword">table</span> ...;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-当前读"><a href="#2-当前读" class="headerlink" title="2. 当前读"></a>2. 当前读</h4><p>MVCC 其它会对数据库进行修改的操作（INSERT、UPDATE、DELETE）需要进行加锁操作，从而读取最新的数据。可以看到 MVCC 并不是完全不用加锁，而只是避免了 SELECT 的加锁操作。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">INSERT</span>;</span><br><span class="line">UPDATE;</span><br><span class="line"><span class="keyword">DELETE</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在进行 SELECT 操作时，可以强制指定进行加锁操作。以下第一个语句需要加 S 锁，第二个需要加 X 锁。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> ? lock <span class="keyword">in</span> share mode;</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> ? <span class="keyword">for</span> update;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Next-Key-Locks"><a href="#Next-Key-Locks" class="headerlink" title="Next-Key Locks"></a>Next-Key Locks</h2><p>Next-Key Locks 是 MySQL 的 InnoDB 存储引擎的一种锁实现。</p>
+<p>MVCC 不能解决幻影读问题，Next-Key Locks 就是为了解决这个问题而存在的。在可重复读（REPEATABLE READ）隔离级别下，使用 MVCC + Next-Key Locks 可以解决幻读问题。</p>
+<h3 id="Record-Locks"><a href="#Record-Locks" class="headerlink" title="Record Locks"></a>Record Locks</h3><p>锁定一个记录上的索引，而不是记录本身。</p>
+<p>如果表没有设置索引，InnoDB 会自动在主键上创建隐藏的聚簇索引，因此 Record Locks 依然可以使用。</p>
+<h3 id="Gap-Locks"><a href="#Gap-Locks" class="headerlink" title="Gap Locks"></a>Gap Locks</h3><p>锁定索引之间的间隙，但是不包含索引本身。例如当一个事务执行以下语句，其它事务就不能在 t.c 中插入 15。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> c <span class="keyword">FROM</span> t <span class="keyword">WHERE</span> c <span class="keyword">BETWEEN</span> <span class="number">10</span> <span class="keyword">and</span> <span class="number">20</span> <span class="keyword">FOR</span> UPDATE;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Next-Key-Locks-1"><a href="#Next-Key-Locks-1" class="headerlink" title="Next-Key Locks"></a>Next-Key Locks</h3><p>它是 Record Locks 和 Gap Locks 的结合，不仅锁定一个记录上的索引，也锁定索引之间的间隙。它锁定一个前开后闭区间，例如一个索引包含以下值：10, 11, 13, and 20，那么就需要锁定以下区间：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">(<span class="operator">-</span>∞, <span class="number">10</span>]</span><br><span class="line">(<span class="number">10</span>, <span class="number">11</span>]</span><br><span class="line">(<span class="number">11</span>, <span class="number">13</span>]</span><br><span class="line">(<span class="number">13</span>, <span class="number">20</span>]</span><br><span class="line">(<span class="number">20</span>, <span class="operator">+</span>∞)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
-        <tag>c++</tag>
+        <tag>八股文</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -490,24 +391,6 @@
       </tags>
   </entry>
   <entry>
-    <title>const</title>
-    <url>/2021/11/30/const/</url>
-    <content><![CDATA[<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><p>const是只读类型的变量，值不能修改，只能在定义的时候赋值。</p>
-<p>形式为const int a = 1;</p>
-<h2 id="常量指针和指针常量"><a href="#常量指针和指针常量" class="headerlink" title="常量指针和指针常量"></a>常量指针和指针常量</h2><p><strong>常量指针</strong>又叫<strong>底层const</strong>，形式为const int *p = &a;</p>
-<p>特点：不能使用该指针修改指向的值，但是可以修改指针指向的地址。</p>
-<p>即，初始化后不可以*p=2，但是可以p=&b;</p>
-<p><strong>指针常量</strong>又叫<strong>顶层const</strong>，形式为int* const p = &a;</p>
-<p>特点：能使用该指针修改指向的值，但是不可以修改指针指向的地址。</p>
-<p>即，初始化后可以*p=2，但是不能p=&b;</p>
-<p>还有一种叫做<strong>常指针常量</strong>的，形式为const int* const a = &b;</p>
-<p>是常量指针和指针常量的综合，既不可以修改指针指向的地址也不可以修改指针指向的值。</p>
-]]></content>
-      <tags>
-        <tag>知识点</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>const的作用</title>
     <url>/2022/02/28/const%E7%9A%84%E4%BD%9C%E7%94%A8/</url>
     <content><![CDATA[<h2 id="const的作用"><a href="#const的作用" class="headerlink" title="const的作用"></a>const的作用</h2><ol>
@@ -535,6 +418,24 @@
       </tags>
   </entry>
   <entry>
+    <title>const</title>
+    <url>/2021/11/30/const/</url>
+    <content><![CDATA[<h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><p>const是只读类型的变量，值不能修改，只能在定义的时候赋值。</p>
+<p>形式为const int a = 1;</p>
+<h2 id="常量指针和指针常量"><a href="#常量指针和指针常量" class="headerlink" title="常量指针和指针常量"></a>常量指针和指针常量</h2><p><strong>常量指针</strong>又叫<strong>底层const</strong>，形式为const int *p = &a;</p>
+<p>特点：不能使用该指针修改指向的值，但是可以修改指针指向的地址。</p>
+<p>即，初始化后不可以*p=2，但是可以p=&b;</p>
+<p><strong>指针常量</strong>又叫<strong>顶层const</strong>，形式为int* const p = &a;</p>
+<p>特点：能使用该指针修改指向的值，但是不可以修改指针指向的地址。</p>
+<p>即，初始化后可以*p=2，但是不能p=&b;</p>
+<p>还有一种叫做<strong>常指针常量</strong>的，形式为const int* const a = &b;</p>
+<p>是常量指针和指针常量的综合，既不可以修改指针指向的地址也不可以修改指针指向的值。</p>
+]]></content>
+      <tags>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>github图片看不了</title>
     <url>/2021/04/08/github%E5%9B%BE%E7%89%87%E7%9C%8B%E4%B8%8D%E4%BA%86/</url>
     <content><![CDATA[<h2 id="改host"><a href="#改host" class="headerlink" title="改host"></a>改host</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">140.82.113.3      github.com</span><br><span class="line">140.82.114.20     gist.github.com</span><br><span class="line"></span><br><span class="line">151.101.184.133    assets-cdn.github.com</span><br><span class="line">151.101.184.133    raw.githubusercontent.com</span><br><span class="line">151.101.184.133    gist.githubusercontent.com</span><br><span class="line">151.101.184.133    cloud.githubusercontent.com</span><br><span class="line">151.101.184.133    camo.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars0.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars0.githubusercontent.com</span><br><span class="line">199.232.28.133     avatars1.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars1.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars2.githubusercontent.com</span><br><span class="line">199.232.28.133     avatars2.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars3.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars3.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars4.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars4.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars5.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars5.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars6.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars6.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars7.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars7.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars8.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars8.githubusercontent.com</span><br></pre></td></tr></table></figure>
@@ -545,6 +446,24 @@
       <tags>
         <tag>教程</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2021/03/29/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>git报错10054</title>
@@ -587,24 +506,6 @@
       <tags>
         <tag>算法</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2021/03/29/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>new和malloc</title>
@@ -735,6 +636,12 @@
     <content><![CDATA[<h1 id="this-is-test2"><a href="#this-is-test2" class="headerlink" title="this is test2"></a>this is test2</h1>]]></content>
   </entry>
   <entry>
+    <title>testPic</title>
+    <url>/2021/03/29/testPic/</url>
+    <content><![CDATA[<h1 id="this-is-a-test-for-picture"><a href="#this-is-a-test-for-picture" class="headerlink" title="this is a test for picture"></a>this is a test for picture</h1><p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210329152430.png" alt="20210329152430"></p>
+]]></content>
+  </entry>
+  <entry>
     <title>七层网络模型</title>
     <url>/2021/04/13/%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/</url>
     <content><![CDATA[<p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210413144030.png" alt="20210413144030"></p>
@@ -752,12 +659,6 @@
       <tags>
         <tag>知识点</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>testPic</title>
-    <url>/2021/03/29/testPic/</url>
-    <content><![CDATA[<h1 id="this-is-a-test-for-picture"><a href="#this-is-a-test-for-picture" class="headerlink" title="this is a test for picture"></a>this is a test for picture</h1><p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210329152430.png" alt="20210329152430"></p>
-]]></content>
   </entry>
   <entry>
     <title>不同层常用的网络协议</title>
@@ -1173,6 +1074,19 @@
       </tags>
   </entry>
   <entry>
+    <title>区间dp</title>
+    <url>/2021/12/01/%E5%8C%BA%E9%97%B4dp/</url>
+    <content><![CDATA[<h2 id="1-先枚举区间长度"><a href="#1-先枚举区间长度" class="headerlink" title="1.先枚举区间长度"></a>1.先枚举区间长度</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> len=<span class="number">3</span>;len&lt;=n;len++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i+len<span class="number">-1</span>&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> j = i+len<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k=i+<span class="number">1</span>;k&lt;=j<span class="number">-1</span>;k++)&#123;</span><br><span class="line">            dp[i][j] = <span class="built_in">max</span>(dp[i][j], a[k]*a[i]*a[j]+dp[i][k]+dp[k][j]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种比较好理解。</p>
+<h2 id="2-先枚举区间边界"><a href="#2-先枚举区间边界" class="headerlink" title="2.先枚举区间边界"></a>2.先枚举区间边界</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=n<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=i+<span class="number">1</span>;j&lt;=n<span class="number">-1</span>;j++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k=i+<span class="number">1</span>;k&lt;=j<span class="number">-1</span>;k++)&#123;</span><br><span class="line">            dp[i][j] = <span class="built_in">max</span>(dp[i][j], a[k]*a[i]*a[j]+dp[i][k]+dp[k][j]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种方式在枚举左边界的时候需要逆序枚举，因为区间dp要保证所有小区间都被计算过了才能计算大区间，如果i正向枚举的话，会导致dp[k][j]没有被计算过，因为k&gt;i，而反向枚举i即可保证所有的dp[k][j]都被计算过。</p>
+]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>刷题记录</title>
     <url>/2022/02/15/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<h2 id="03-03"><a href="#03-03" class="headerlink" title="03/03"></a>03/03</h2><p>322.零钱兑换</p>
@@ -1428,19 +1342,6 @@
       </tags>
   </entry>
   <entry>
-    <title>区间dp</title>
-    <url>/2021/12/01/%E5%8C%BA%E9%97%B4dp/</url>
-    <content><![CDATA[<h2 id="1-先枚举区间长度"><a href="#1-先枚举区间长度" class="headerlink" title="1.先枚举区间长度"></a>1.先枚举区间长度</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> len=<span class="number">3</span>;len&lt;=n;len++)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i+len<span class="number">-1</span>&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> j = i+len<span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k=i+<span class="number">1</span>;k&lt;=j<span class="number">-1</span>;k++)&#123;</span><br><span class="line">            dp[i][j] = <span class="built_in">max</span>(dp[i][j], a[k]*a[i]*a[j]+dp[i][k]+dp[k][j]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这种比较好理解。</p>
-<h2 id="2-先枚举区间边界"><a href="#2-先枚举区间边界" class="headerlink" title="2.先枚举区间边界"></a>2.先枚举区间边界</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=n<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=i+<span class="number">1</span>;j&lt;=n<span class="number">-1</span>;j++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k=i+<span class="number">1</span>;k&lt;=j<span class="number">-1</span>;k++)&#123;</span><br><span class="line">            dp[i][j] = <span class="built_in">max</span>(dp[i][j], a[k]*a[i]*a[j]+dp[i][k]+dp[k][j]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这种方式在枚举左边界的时候需要逆序枚举，因为区间dp要保证所有小区间都被计算过了才能计算大区间，如果i正向枚举的话，会导致dp[k][j]没有被计算过，因为k&gt;i，而反向枚举i即可保证所有的dp[k][j]都被计算过。</p>
-]]></content>
-      <tags>
-        <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>十大排序算法</title>
     <url>/2022/02/24/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</url>
     <content><![CDATA[<p><img src="https://s2.loli.net/2022/02/24/GDViCKSkOUqLPtY.png" alt="20220224105819"></p>
@@ -1486,23 +1387,6 @@
 ]]></content>
       <tags>
         <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>多态</title>
-    <url>/2022/02/15/%E5%A4%9A%E6%80%81/</url>
-    <content><![CDATA[<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>多态就是不同继承类的对象，对同一消息做出不同的响应，基类的指针指向或绑定到派生类的对象，使得基类指针呈现不同的表现方式。在基类的函数前加上 virtual 关键字，在派生类中重写该函数，运行时将会根据对象的实际类型来调用相应的函数。如果对象类型是派生类，就调用派生类的函数；如果对象类型是基类，就调用基类的函数。<br>实现方法：多态是通过虚函数实现的，虚函数的地址保存在虚函数表中，虚函数表的地址保存在含有虚函数的类的实例对象的内存空间中。</p>
-<h2 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h2><p>在类中用 virtual 关键字声明的函数叫做虚函数；<br>存在虚函数的类都有一个虚函数表，当创建一个该类的对象时，该对象有一个指向虚函数表的虚表指针（虚函数表和类对应的，虚表指针是和对象对应）；<br>当基类指针指向派生类对象，基类指针调用虚函数时，基类指针指向派生类的虚表指针，由于该虚表指针指向派生类虚函数表，通过遍历虚表，寻找相应的虚函数。</p>
-<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::fun()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::fun1()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::fun2()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derive</span> :</span> <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derive::fun()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">D_fun1</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derive::D_fun1()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">D_fun2</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derive::D_fun2()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Base *p = <span class="keyword">new</span> <span class="built_in">Derive</span>();</span><br><span class="line">    p-&gt;<span class="built_in">fun</span>(); <span class="comment">// Derive::fun() 调用派生类中的虚函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>基类的虚函数表如下：</p>
-<p><img src="https://s2.loli.net/2022/02/15/Hexf8Qkly71Fqn2.png" alt="20220215171346"></p>
-<p>派生类的对象虚函数表如下：</p>
-<p><img src="https://s2.loli.net/2022/02/15/YqVBLIPJpWHlM2y.png" alt="20220215171352"></p>
-<p>简单解释：当基类的指针指向派生类的对象时，通过派生类的对象的虚表指针找到虚函数表（派生类的对象虚函数表），进而找到相应的虚函数 Derive::f() 进行调用。</p>
-]]></content>
-      <tags>
-        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1580,6 +1464,23 @@
 ]]></content>
       <tags>
         <tag>面经</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>多态</title>
+    <url>/2022/02/15/%E5%A4%9A%E6%80%81/</url>
+    <content><![CDATA[<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>多态就是不同继承类的对象，对同一消息做出不同的响应，基类的指针指向或绑定到派生类的对象，使得基类指针呈现不同的表现方式。在基类的函数前加上 virtual 关键字，在派生类中重写该函数，运行时将会根据对象的实际类型来调用相应的函数。如果对象类型是派生类，就调用派生类的函数；如果对象类型是基类，就调用基类的函数。<br>实现方法：多态是通过虚函数实现的，虚函数的地址保存在虚函数表中，虚函数表的地址保存在含有虚函数的类的实例对象的内存空间中。</p>
+<h2 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h2><p>在类中用 virtual 关键字声明的函数叫做虚函数；<br>存在虚函数的类都有一个虚函数表，当创建一个该类的对象时，该对象有一个指向虚函数表的虚表指针（虚函数表和类对应的，虚表指针是和对象对应）；<br>当基类指针指向派生类对象，基类指针调用虚函数时，基类指针指向派生类的虚表指针，由于该虚表指针指向派生类虚函数表，通过遍历虚表，寻找相应的虚函数。</p>
+<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::fun()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::fun1()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::fun2()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derive</span> :</span> <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derive::fun()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">D_fun1</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derive::D_fun1()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">D_fun2</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derive::D_fun2()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Base *p = <span class="keyword">new</span> <span class="built_in">Derive</span>();</span><br><span class="line">    p-&gt;<span class="built_in">fun</span>(); <span class="comment">// Derive::fun() 调用派生类中的虚函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>基类的虚函数表如下：</p>
+<p><img src="https://s2.loli.net/2022/02/15/Hexf8Qkly71Fqn2.png" alt="20220215171346"></p>
+<p>派生类的对象虚函数表如下：</p>
+<p><img src="https://s2.loli.net/2022/02/15/YqVBLIPJpWHlM2y.png" alt="20220215171352"></p>
+<p>简单解释：当基类的指针指向派生类的对象时，通过派生类的对象的虚表指针找到虚函数表（派生类的对象虚函数表），进而找到相应的虚函数 Derive::f() 进行调用。</p>
+]]></content>
+      <tags>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1880,16 +1781,6 @@
       </tags>
   </entry>
   <entry>
-    <title>实验记录0717</title>
-    <url>/2021/07/17/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950717/</url>
-    <content><![CDATA[<p>重写了一下计算位置解方程的代码，目前距离能测出来，但是位置解不出来，方程组无解。<br>数据编号：20210717_213221</p>
-<p><img src="https://i.loli.net/2021/07/17/CY8cOrpKDBnjQ2J.png" alt="20210717213808"></p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>实验记录0716</title>
     <url>/2021/07/16/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950716/</url>
     <content><![CDATA[<h2 id="收发压电陶瓷之间的初始距离校准。（0距离，ni一次开关机之内）"><a href="#收发压电陶瓷之间的初始距离校准。（0距离，ni一次开关机之内）" class="headerlink" title="收发压电陶瓷之间的初始距离校准。（0距离，ni一次开关机之内）"></a>收发压电陶瓷之间的初始距离校准。（0距离，ni一次开关机之内）</h2><p>第一次：</p>
@@ -1942,6 +1833,26 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录0718</title>
+    <url>/2021/07/18/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950718/</url>
+    <content><![CDATA[<p>好像找到方程组无解的原因了，应该是因为三个接收端在同一条直线上了。需要重新布置一下实验环境，让三个压电陶瓷不在同一条直线上。</p>
+<p><img src="https://i.loli.net/2021/07/18/UTolOQvcKEqmxWy.png" alt="20210718163148"></p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实验记录0717</title>
+    <url>/2021/07/17/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950717/</url>
+    <content><![CDATA[<p>重写了一下计算位置解方程的代码，目前距离能测出来，但是位置解不出来，方程组无解。<br>数据编号：20210717_213221</p>
+<p><img src="https://i.loli.net/2021/07/17/CY8cOrpKDBnjQ2J.png" alt="20210717213808"></p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录0719</title>
     <url>/2021/07/19/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950719/</url>
     <content><![CDATA[<ol>
@@ -1955,16 +1866,6 @@
 <li><p>把采集数据，测距，定位三个功能独立开了，每个按钮只负责一个功能。</p>
 </li>
 </ol>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录0718</title>
-    <url>/2021/07/18/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950718/</url>
-    <content><![CDATA[<p>好像找到方程组无解的原因了，应该是因为三个接收端在同一条直线上了。需要重新布置一下实验环境，让三个压电陶瓷不在同一条直线上。</p>
-<p><img src="https://i.loli.net/2021/07/18/UTolOQvcKEqmxWy.png" alt="20210718163148"></p>
 ]]></content>
       <tags>
         <tag>实验记录</tag>
@@ -2091,6 +1992,17 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录0726</title>
+    <url>/2021/07/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950726/</url>
+    <content><![CDATA[<p><img src="https://i.loli.net/2021/07/26/C2WaSTFlHUcdn9s.png" alt="20210726131049"></p>
+<p>突然发现用相位的测距结果反而比不用相位的波动大。。</p>
+<p><img src="https://i.loli.net/2021/07/26/sN9Ak6Pz2HLWXFg.png" alt="20210726155435"></p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录0725</title>
     <url>/2021/07/25/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950725/</url>
     <content><![CDATA[<p>20℃<br><img src="https://i.loli.net/2021/07/25/ZCjRvyaxMOSK6pF.png" alt="20210725172935"></p>
@@ -2107,17 +2019,6 @@
       </tags>
   </entry>
   <entry>
-    <title>实验记录0726</title>
-    <url>/2021/07/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950726/</url>
-    <content><![CDATA[<p><img src="https://i.loli.net/2021/07/26/C2WaSTFlHUcdn9s.png" alt="20210726131049"></p>
-<p>突然发现用相位的测距结果反而比不用相位的波动大。。</p>
-<p><img src="https://i.loli.net/2021/07/26/sN9Ak6Pz2HLWXFg.png" alt="20210726155435"></p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>实验记录0731</title>
     <url>/2021/07/31/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950731/</url>
     <content><![CDATA[<h2 id="不用相位和用相位比较，数据编号：20210722-202008"><a href="#不用相位和用相位比较，数据编号：20210722-202008" class="headerlink" title="不用相位和用相位比较，数据编号：20210722_202008"></a>不用相位和用相位比较，数据编号：20210722_202008</h2><p><img src="https://i.loli.net/2021/07/31/4zMu8SJ3E6gOn7o.png" alt="20210731135923"></p>
@@ -2127,14 +2028,6 @@
 <h2 id="是否使用相位比较"><a href="#是否使用相位比较" class="headerlink" title="是否使用相位比较"></a>是否使用相位比较</h2><p><img src="https://i.loli.net/2021/07/31/ScTqszZluoDk1Bp.png" alt="20210731170010"></p>
 <p>上面的是用了相位，下面的没用相位，结果还是没用相位的波动更小一点。</p>
 ]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录0805</title>
-    <url>/2021/08/05/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950805/</url>
-    <content><![CDATA[<h2 id="Pos按钮"><a href="#Pos按钮" class="headerlink" title="Pos按钮"></a>Pos按钮</h2><h3 id="功能：根据距离数据计算前两点坐标pos1和pos2"><a href="#功能：根据距离数据计算前两点坐标pos1和pos2" class="headerlink" title="功能：根据距离数据计算前两点坐标pos1和pos2"></a>功能：根据距离数据计算前两点坐标pos1和pos2</h3><h3 id="输入：dis文件（或者dis-cor文件）"><a href="#输入：dis文件（或者dis-cor文件）" class="headerlink" title="输入：dis文件（或者dis_cor文件）"></a>输入：dis文件（或者dis_cor文件）</h3><h3 id="输出：pos文件（或者pos-cor文件），内部数据每一行nin-nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离"><a href="#输出：pos文件（或者pos-cor文件），内部数据每一行nin-nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离" class="headerlink" title="输出：pos文件（或者pos_cor文件），内部数据每一行nin*nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离"></a>输出：pos文件（或者pos_cor文件），内部数据每一行nin*nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离</h3><h2 id="Dir按钮"><a href="#Dir按钮" class="headerlink" title="Dir按钮"></a>Dir按钮</h2><h3 id="功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir"><a href="#功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir" class="headerlink" title="功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir"></a>功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir</h3><h3 id="输入：pos文件（或者pos-cor文件）"><a href="#输入：pos文件（或者pos-cor文件）" class="headerlink" title="输入：pos文件（或者pos_cor文件）"></a>输入：pos文件（或者pos_cor文件）</h3><h3 id="输出：dir文件（或者dir-cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量"><a href="#输出：dir文件（或者dir-cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量" class="headerlink" title="输出：dir文件（或者dir_cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量"></a>输出：dir文件（或者dir_cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量</h3>]]></content>
       <tags>
         <tag>实验记录</tag>
       </tags>
@@ -2235,6 +2128,14 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录0805</title>
+    <url>/2021/08/05/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950805/</url>
+    <content><![CDATA[<h2 id="Pos按钮"><a href="#Pos按钮" class="headerlink" title="Pos按钮"></a>Pos按钮</h2><h3 id="功能：根据距离数据计算前两点坐标pos1和pos2"><a href="#功能：根据距离数据计算前两点坐标pos1和pos2" class="headerlink" title="功能：根据距离数据计算前两点坐标pos1和pos2"></a>功能：根据距离数据计算前两点坐标pos1和pos2</h3><h3 id="输入：dis文件（或者dis-cor文件）"><a href="#输入：dis文件（或者dis-cor文件）" class="headerlink" title="输入：dis文件（或者dis_cor文件）"></a>输入：dis文件（或者dis_cor文件）</h3><h3 id="输出：pos文件（或者pos-cor文件），内部数据每一行nin-nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离"><a href="#输出：pos文件（或者pos-cor文件），内部数据每一行nin-nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离" class="headerlink" title="输出：pos文件（或者pos_cor文件），内部数据每一行nin*nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离"></a>输出：pos文件（或者pos_cor文件），内部数据每一行nin*nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离</h3><h2 id="Dir按钮"><a href="#Dir按钮" class="headerlink" title="Dir按钮"></a>Dir按钮</h2><h3 id="功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir"><a href="#功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir" class="headerlink" title="功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir"></a>功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir</h3><h3 id="输入：pos文件（或者pos-cor文件）"><a href="#输入：pos文件（或者pos-cor文件）" class="headerlink" title="输入：pos文件（或者pos_cor文件）"></a>输入：pos文件（或者pos_cor文件）</h3><h3 id="输出：dir文件（或者dir-cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量"><a href="#输出：dir文件（或者dir-cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量" class="headerlink" title="输出：dir文件（或者dir_cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量"></a>输出：dir文件（或者dir_cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量</h3>]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录0806</title>
     <url>/2021/08/06/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950806/</url>
     <content><![CDATA[<h2 id="6DoF设计"><a href="#6DoF设计" class="headerlink" title="6DoF设计"></a>6DoF设计</h2><p><img src="https://i.loli.net/2021/08/06/uLwXkANxpcHF6BM.png" alt="20210806110016"></p>
@@ -2272,6 +2173,26 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录0823</title>
+    <url>/2021/08/23/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950823/</url>
+    <content><![CDATA[<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><ol>
+<li><p>提高计算速度。现在每秒只能计算一帧，至少提到每秒10帧。</p>
+<ul>
+<li>优化解方程</li>
+<li>减小帧长，20~40ms</li>
+</ul>
+</li>
+<li><p>用轨迹来判断动作。根据过去3~5s的轨迹来判断当前在做什么动作。</p>
+</li>
+<li><p>再增加部署2个接收端，一共8个接收端。</p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录0807</title>
     <url>/2021/08/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950807/</url>
     <content><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>感觉上面的思路可能想复杂了，可能没必要把动作划分的那么细，应该只要分别出移动和转动就可以了，因为只有移动会导致轴点改变，而转动不会改变轴点位置。</p>
@@ -2292,26 +2213,6 @@
 <p>俯仰数据：20210808_202031</p>
 <p>旋转数据：20210808_202544</p>
 <p>倾斜数据：20210808_202641</p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录0823</title>
-    <url>/2021/08/23/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950823/</url>
-    <content><![CDATA[<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><ol>
-<li><p>提高计算速度。现在每秒只能计算一帧，至少提到每秒10帧。</p>
-<ul>
-<li>优化解方程</li>
-<li>减小帧长，20~40ms</li>
-</ul>
-</li>
-<li><p>用轨迹来判断动作。根据过去3~5s的轨迹来判断当前在做什么动作。</p>
-</li>
-<li><p>再增加部署2个接收端，一共8个接收端。</p>
-</li>
-</ol>
 ]]></content>
       <tags>
         <tag>实验记录</tag>
@@ -2365,43 +2266,6 @@
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>牛顿迭代就一定会用到雅可比矩阵，雅可比矩阵就一定会用到符号计算，用到符号计算就一定会很慢。。</p>
 <p><img src="https://i.loli.net/2021/08/26/TauQpWYhcdfrKGU.png" alt="20210826202638"></p>
 <p><img src="https://i.loli.net/2021/08/26/GQZ3nkTUK4odzAr.png" alt="20210826202715"></p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录1008</title>
-    <url>/2021/10/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951008/</url>
-    <content><![CDATA[<p><img src="https://i.loli.net/2021/10/08/jt2qzDFK9uLiTNU.png" alt="20211008123140"><br>（左边是cir右边是dcir）</p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录1012</title>
-    <url>/2021/10/12/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951012/</url>
-    <content><![CDATA[<p>先对CIR做滑动平均滤波，然后在做PCA降维，得到的呼吸结果。</p>
-<p><img src="https://i.loli.net/2021/10/12/vTUS6tgoYzJaHhi.png" alt="20211012150346"></p>
-<p>数据编号：20211010_140604</p>
-<p>发射端放在肚子附近：20211012_170451</p>
-]]></content>
-      <tags>
-        <tag>实验记录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>实验记录1015</title>
-    <url>/2021/10/15/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951015/</url>
-    <content><![CDATA[<p>发射端距离身体十几厘米：20211014_103041</p>
-<p><img src="https://i.loli.net/2021/10/15/CYOQKIJ91GlMoNX.png" alt="20211015110858"></p>
-<p>这个数据还不错：20211015_123426<br><img src="https://i.loli.net/2021/10/15/8V6OMJUa2WSP9dI.png" alt="20211015123542"></p>
-<p>20211015_123946<br><img src="https://i.loli.net/2021/10/15/UnR4d2KDhAVlqYi.png" alt="20211015124113"></p>
-<p>发射端放到耳机上就不太好了：20211015_130101<br><img src="https://i.loli.net/2021/10/15/iHRTZQvMa7yIGpq.png" alt="20211015130229"></p>
-<p>发射端在耳机上，20211015_130834，SNR阈值设置为0.9效果还不错<br><img src="https://i.loli.net/2021/10/15/V4fqxD51rvb6dgU.png" alt="20211015131249"></p>
-<h2 id="六个接收端"><a href="#六个接收端" class="headerlink" title="六个接收端"></a>六个接收端</h2><p>数据编号：20211015_184816 降维后的第三个特征向量还可以</p>
-<p><img src="https://i.loli.net/2021/10/15/BhZlSYc5goHdTj4.png" alt="20211015185038"></p>
 ]]></content>
       <tags>
         <tag>实验记录</tag>
@@ -2575,6 +2439,43 @@
       </tags>
   </entry>
   <entry>
+    <title>实验记录1008</title>
+    <url>/2021/10/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951008/</url>
+    <content><![CDATA[<p><img src="https://i.loli.net/2021/10/08/jt2qzDFK9uLiTNU.png" alt="20211008123140"><br>（左边是cir右边是dcir）</p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实验记录1012</title>
+    <url>/2021/10/12/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951012/</url>
+    <content><![CDATA[<p>先对CIR做滑动平均滤波，然后在做PCA降维，得到的呼吸结果。</p>
+<p><img src="https://i.loli.net/2021/10/12/vTUS6tgoYzJaHhi.png" alt="20211012150346"></p>
+<p>数据编号：20211010_140604</p>
+<p>发射端放在肚子附近：20211012_170451</p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>实验记录1015</title>
+    <url>/2021/10/15/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951015/</url>
+    <content><![CDATA[<p>发射端距离身体十几厘米：20211014_103041</p>
+<p><img src="https://i.loli.net/2021/10/15/CYOQKIJ91GlMoNX.png" alt="20211015110858"></p>
+<p>这个数据还不错：20211015_123426<br><img src="https://i.loli.net/2021/10/15/8V6OMJUa2WSP9dI.png" alt="20211015123542"></p>
+<p>20211015_123946<br><img src="https://i.loli.net/2021/10/15/UnR4d2KDhAVlqYi.png" alt="20211015124113"></p>
+<p>发射端放到耳机上就不太好了：20211015_130101<br><img src="https://i.loli.net/2021/10/15/iHRTZQvMa7yIGpq.png" alt="20211015130229"></p>
+<p>发射端在耳机上，20211015_130834，SNR阈值设置为0.9效果还不错<br><img src="https://i.loli.net/2021/10/15/V4fqxD51rvb6dgU.png" alt="20211015131249"></p>
+<h2 id="六个接收端"><a href="#六个接收端" class="headerlink" title="六个接收端"></a>六个接收端</h2><p>数据编号：20211015_184816 降维后的第三个特征向量还可以</p>
+<p><img src="https://i.loli.net/2021/10/15/BhZlSYc5goHdTj4.png" alt="20211015185038"></p>
+]]></content>
+      <tags>
+        <tag>实验记录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>实验记录1213</title>
     <url>/2021/12/13/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951213/</url>
     <content><![CDATA[<p>数据编号：20211213_205317</p>
@@ -2674,6 +2575,25 @@
       </tags>
   </entry>
   <entry>
+    <title>希尔排序</title>
+    <url>/2022/02/24/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[<h2 id="排序原理"><a href="#排序原理" class="headerlink" title="排序原理"></a>排序原理</h2><p>希尔排序是把记录按下标的一定增量分组，对每组使用直接插入排序算法排序；随着增量逐渐减少，每组包含的关键词越来越多，当增量减至1时，整个文件恰被分成一组，算法便终止。</p>
+<p>简单插入排序很循规蹈矩，不管数组分布是怎么样的，依然一步一步的对元素进行比较，移动，插入，比如[5,4,3,2,1,0]这种倒序序列，数组末端的0要回到首位置很是费劲，比较和移动元素均需n-1次。</p>
+<p>而希尔排序在数组中采用跳跃式分组的策略，通过某个增量将数组元素划分为若干组，然后分组进行插入排序，随后逐步缩小增量，继续按组进行插入排序操作，直至增量为1。希尔排序通过这种策略使得整个数组在初始阶段达到从宏观上看基本有序，小的基本在前，大的基本在后。然后缩小增量，到增量为1时，其实多数情况下只需微调即可，不会涉及过多的数据移动。</p>
+<p>好像有人证明希尔排序的时间复杂度是O(n^1.3)</p>
+<p><img src="https://s2.loli.net/2022/02/24/gjkAKLSPoGYuCRV.png" alt="20220224103652"></p>
+<p>动图：</p>
+<p><img src="https://s2.loli.net/2022/02/24/ZWMs3SkyAr1mu4I.png" alt="20220224103635"></p>
+<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>希尔排序的核心就是通过步长比较大的那几次插入排序保证了数组是基本有序的，然后再进行步长小的插入排序时不需要进行过多的比较和交换。</p>
+<p>在进行每一轮插入排序时，遇到第一个非逆序时就直接break就行了，我认为这才是希尔排序比简单插入排序快的原因。而网上大量博客都没说清楚，甚至代码里都没有这个break，这样性能可能还没有普通插入排序高。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">sortArray</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = nums.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> d=n/<span class="number">2</span>;d&gt;=<span class="number">1</span>;d/=<span class="number">2</span>)&#123; <span class="comment">// 步长d，共分为d组</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=d;i&lt;n;i++)&#123;  <span class="comment">// 对每个元素进行组内插入排序</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i;j&gt;=d;j-=d)&#123; <span class="comment">// 组内插入排序</span></span><br><span class="line">                <span class="keyword">if</span>(nums[j-d]&gt;nums[j]) <span class="built_in">swap</span>(nums[j-d], nums[j]);</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">break</span>; <span class="comment">// 希尔排序的核心就是这个break，遇到非逆序时就break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> nums;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>刷题</tag>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>并发一致性</title>
     <url>/2022/02/16/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7/</url>
     <content><![CDATA[<h2 id="并发一致性问题"><a href="#并发一致性问题" class="headerlink" title="并发一致性问题"></a>并发一致性问题</h2><p>在并发环境下，事务的隔离性很难保证，因此会出现很多并发一致性问题。</p>
@@ -2704,21 +2624,14 @@
       </tags>
   </entry>
   <entry>
-    <title>希尔排序</title>
-    <url>/2022/02/24/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/</url>
-    <content><![CDATA[<h2 id="排序原理"><a href="#排序原理" class="headerlink" title="排序原理"></a>排序原理</h2><p>希尔排序是把记录按下标的一定增量分组，对每组使用直接插入排序算法排序；随着增量逐渐减少，每组包含的关键词越来越多，当增量减至1时，整个文件恰被分成一组，算法便终止。</p>
-<p>简单插入排序很循规蹈矩，不管数组分布是怎么样的，依然一步一步的对元素进行比较，移动，插入，比如[5,4,3,2,1,0]这种倒序序列，数组末端的0要回到首位置很是费劲，比较和移动元素均需n-1次。</p>
-<p>而希尔排序在数组中采用跳跃式分组的策略，通过某个增量将数组元素划分为若干组，然后分组进行插入排序，随后逐步缩小增量，继续按组进行插入排序操作，直至增量为1。希尔排序通过这种策略使得整个数组在初始阶段达到从宏观上看基本有序，小的基本在前，大的基本在后。然后缩小增量，到增量为1时，其实多数情况下只需微调即可，不会涉及过多的数据移动。</p>
-<p>好像有人证明希尔排序的时间复杂度是O(n^1.3)</p>
-<p><img src="https://s2.loli.net/2022/02/24/gjkAKLSPoGYuCRV.png" alt="20220224103652"></p>
-<p>动图：</p>
-<p><img src="https://s2.loli.net/2022/02/24/ZWMs3SkyAr1mu4I.png" alt="20220224103635"></p>
-<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>希尔排序的核心就是通过步长比较大的那几次插入排序保证了数组是基本有序的，然后再进行步长小的插入排序时不需要进行过多的比较和交换。</p>
-<p>在进行每一轮插入排序时，遇到第一个非逆序时就直接break就行了，我认为这才是希尔排序比简单插入排序快的原因。而网上大量博客都没说清楚，甚至代码里都没有这个break，这样性能可能还没有普通插入排序高。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">sortArray</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = nums.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> d=n/<span class="number">2</span>;d&gt;=<span class="number">1</span>;d/=<span class="number">2</span>)&#123; <span class="comment">// 步长d，共分为d组</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=d;i&lt;n;i++)&#123;  <span class="comment">// 对每个元素进行组内插入排序</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i;j&gt;=d;j-=d)&#123; <span class="comment">// 组内插入排序</span></span><br><span class="line">                <span class="keyword">if</span>(nums[j-d]&gt;nums[j]) <span class="built_in">swap</span>(nums[j-d], nums[j]);</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">break</span>; <span class="comment">// 希尔排序的核心就是这个break，遇到非逆序时就break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> nums;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <title>手写优先队列</title>
+    <url>/2022/02/16/%E6%89%8B%E5%86%99%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/</url>
+    <content><![CDATA[<h2 id="优先队列"><a href="#优先队列" class="headerlink" title="优先队列"></a>优先队列</h2><p>用数组实现大/小顶堆，子节点=父节点*2或者*2+1。</p>
+<p>用数组构造二叉树，push元素时先存到最后一个节点，然后从最后一个节点迭代与父节点比较交换，一直到第一个节点或者停止交换。</p>
+<p>pop时直接交换第一个节点和最后一个节点，然后从第一个节点迭代与两个子节点中较大/小的那个比较交换，一直到最后一层节点或者停止交换。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a[<span class="number">10010</span>];</span><br><span class="line"><span class="keyword">int</span> siz;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">    a[++siz] = x;</span><br><span class="line">    <span class="keyword">int</span> son = siz;</span><br><span class="line">    <span class="keyword">int</span> par = son/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">while</span>(par&gt;=<span class="number">1</span>)&#123; </span><br><span class="line">        <span class="keyword">if</span>(a[son]&gt;a[par])&#123; <span class="comment">// 小顶堆为 &lt; </span></span><br><span class="line">            <span class="built_in">swap</span>(a[son], a[par]);</span><br><span class="line">            son = par;</span><br><span class="line">            par = son/<span class="number">2</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">top</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a[<span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span></span>&#123;</span><br><span class="line">    a[<span class="number">1</span>] = a[siz--];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> par = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> son = par*<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">while</span>(son&lt;=siz)&#123;</span><br><span class="line">        <span class="keyword">if</span>(son+<span class="number">1</span>&lt;=siz&amp;&amp;a[son+<span class="number">1</span>]&gt;a[son])&#123; <span class="comment">// 小顶堆为 &lt; </span></span><br><span class="line">            son ++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(a[son]&gt;a[par])&#123; <span class="comment">// 小顶堆为 &lt; </span></span><br><span class="line">            <span class="built_in">swap</span>(a[son], a[par]);</span><br><span class="line">            par = son;</span><br><span class="line">            son = par*<span class="number">2</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    siz = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        cin&gt;&gt;x;</span><br><span class="line">        <span class="built_in">push</span>(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        cout&lt;&lt;<span class="built_in">top</span>()&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line">        <span class="built_in">pop</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
-        <tag>刷题</tag>
         <tag>算法</tag>
       </tags>
   </entry>
@@ -2783,18 +2696,6 @@
       <tags>
         <tag>算法</tag>
         <tag>c</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>手写优先队列</title>
-    <url>/2022/02/16/%E6%89%8B%E5%86%99%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/</url>
-    <content><![CDATA[<h2 id="优先队列"><a href="#优先队列" class="headerlink" title="优先队列"></a>优先队列</h2><p>用数组实现大/小顶堆，子节点=父节点*2或者*2+1。</p>
-<p>用数组构造二叉树，push元素时先存到最后一个节点，然后从最后一个节点迭代与父节点比较交换，一直到第一个节点或者停止交换。</p>
-<p>pop时直接交换第一个节点和最后一个节点，然后从第一个节点迭代与两个子节点中较大/小的那个比较交换，一直到最后一层节点或者停止交换。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a[<span class="number">10010</span>];</span><br><span class="line"><span class="keyword">int</span> siz;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">    a[++siz] = x;</span><br><span class="line">    <span class="keyword">int</span> son = siz;</span><br><span class="line">    <span class="keyword">int</span> par = son/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">while</span>(par&gt;=<span class="number">1</span>)&#123; </span><br><span class="line">        <span class="keyword">if</span>(a[son]&gt;a[par])&#123; <span class="comment">// 小顶堆为 &lt; </span></span><br><span class="line">            <span class="built_in">swap</span>(a[son], a[par]);</span><br><span class="line">            son = par;</span><br><span class="line">            par = son/<span class="number">2</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">top</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a[<span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span></span>&#123;</span><br><span class="line">    a[<span class="number">1</span>] = a[siz--];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> par = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> son = par*<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">while</span>(son&lt;=siz)&#123;</span><br><span class="line">        <span class="keyword">if</span>(son+<span class="number">1</span>&lt;=siz&amp;&amp;a[son+<span class="number">1</span>]&gt;a[son])&#123; <span class="comment">// 小顶堆为 &lt; </span></span><br><span class="line">            son ++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(a[son]&gt;a[par])&#123; <span class="comment">// 小顶堆为 &lt; </span></span><br><span class="line">            <span class="built_in">swap</span>(a[son], a[par]);</span><br><span class="line">            par = son;</span><br><span class="line">            son = par*<span class="number">2</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    siz = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        cin&gt;&gt;x;</span><br><span class="line">        <span class="built_in">push</span>(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        cout&lt;&lt;<span class="built_in">top</span>()&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line">        <span class="built_in">pop</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>算法</tag>
       </tags>
   </entry>
   <entry>
@@ -3197,31 +3098,6 @@
       </tags>
   </entry>
   <entry>
-    <title>线程锁POSIX</title>
-    <url>/2022/03/01/%E7%BA%BF%E7%A8%8B%E9%94%81POSIX/</url>
-    <content><![CDATA[<ul>
-<li><p>互斥锁（mutex，互斥量）</p>
-<p>互斥锁是用于控制多个线程对他们之间共享资源互斥访问的一个信号量。</p>
-<p>互斥锁属于sleep-waiting类型的锁。例如在一个双核的机器上有两个线程A和B，它们分别运行在core 0和core 1上。假设线程A想要通过pthread_mutex_lock操作去得到一个临界区的锁，而此时这个锁正被线程B所持有，那么线程A就会被阻塞，此时会通过上下文切换将线程A置于等待队列中，此时core 0就可以运行其他的任务（如线程C）。</p>
-</li>
-<li><p>条件锁（cond，条件变量）</p>
-<p>条件锁就是所谓的条件变量，某一个线程因为某个条件为满足时可以使用条件变量使改程序处于阻塞状态。一旦条件满足以“信号量”的方式唤醒一个因为该条件而被阻塞的线程。最为常见就是在线程池中，起初没有任务时任务队列为空，此时线程池中的线程因为“任务队列为空”这个条件处于阻塞状态。一旦有任务进来，就会以信号量的方式唤醒一个线程来处理这个任务，这个过程中就使用到了条件变量。</p>
-<p>互斥锁实现的是线程的互斥，条件锁实现的是线程的同步。</p>
-</li>
-<li><p>自旋锁（spin）</p>
-<p>自旋锁属于busy-waiting类型的锁，当线程A请求自旋锁，如果自旋锁已经被线程B所持有，那么线程A就会一直在core 0上进行忙等待并不停的进行锁请求，检查该自旋锁是否已经被线程B释放，直到得到这个锁为止。因为自旋锁不会引起调用者睡眠，所以自旋锁的效率远高于互斥锁。</p>
-</li>
-<li><p>读写锁</p>
-<p>可以有多个读线程同时获取读的锁，而只有一个线程可以获取写的锁。读锁和写锁互斥，写锁和写锁互斥。</p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>八股文</tag>
-        <tag>操作系统</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>继承方式</title>
     <url>/2021/12/20/%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F/</url>
     <content><![CDATA[<p>不同的继承方式会影响基类成员在派生类中的访问权限。</p>
@@ -3256,6 +3132,31 @@
       </tags>
   </entry>
   <entry>
+    <title>线程锁POSIX</title>
+    <url>/2022/03/01/%E7%BA%BF%E7%A8%8B%E9%94%81POSIX/</url>
+    <content><![CDATA[<ul>
+<li><p>互斥锁（mutex，互斥量）</p>
+<p>互斥锁是用于控制多个线程对他们之间共享资源互斥访问的一个信号量。</p>
+<p>互斥锁属于sleep-waiting类型的锁。例如在一个双核的机器上有两个线程A和B，它们分别运行在core 0和core 1上。假设线程A想要通过pthread_mutex_lock操作去得到一个临界区的锁，而此时这个锁正被线程B所持有，那么线程A就会被阻塞，此时会通过上下文切换将线程A置于等待队列中，此时core 0就可以运行其他的任务（如线程C）。</p>
+</li>
+<li><p>条件锁（cond，条件变量）</p>
+<p>条件锁就是所谓的条件变量，某一个线程因为某个条件为满足时可以使用条件变量使改程序处于阻塞状态。一旦条件满足以“信号量”的方式唤醒一个因为该条件而被阻塞的线程。最为常见就是在线程池中，起初没有任务时任务队列为空，此时线程池中的线程因为“任务队列为空”这个条件处于阻塞状态。一旦有任务进来，就会以信号量的方式唤醒一个线程来处理这个任务，这个过程中就使用到了条件变量。</p>
+<p>互斥锁实现的是线程的互斥，条件锁实现的是线程的同步。</p>
+</li>
+<li><p>自旋锁（spin）</p>
+<p>自旋锁属于busy-waiting类型的锁，当线程A请求自旋锁，如果自旋锁已经被线程B所持有，那么线程A就会一直在core 0上进行忙等待并不停的进行锁请求，检查该自旋锁是否已经被线程B释放，直到得到这个锁为止。因为自旋锁不会引起调用者睡眠，所以自旋锁的效率远高于互斥锁。</p>
+</li>
+<li><p>读写锁</p>
+<p>可以有多个读线程同时获取读的锁，而只有一个线程可以获取写的锁。读锁和写锁互斥，写锁和写锁互斥。</p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>八股文</tag>
+        <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>编译</title>
     <url>/2022/02/14/%E7%BC%96%E8%AF%91/</url>
     <content><![CDATA[<p>编译过程分为四个过程：预处理、编译、汇编、链接。</p>
@@ -3271,21 +3172,6 @@
 <p>静态链接：浪费空间，每个可执行程序都会有目标文件的一个副本，这样如果目标文件进行了更新操作，就需要重新进行编译链接生成可执行程序（更新困难）；优点就是执行的时候运行速度快，因为可执行程序具备了程序运行的所有内容。</p>
 <p>动态链接：节省内存、更新方便，但是动态链接是在程序运行时，每次执行都需要链接，相比静态链接会有一定的性能损失。</p>
 ]]></content>
-      <tags>
-        <tag>知识点</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>网页打开所经历的过程</title>
-    <url>/2021/12/15/%E7%BD%91%E9%A1%B5%E6%89%93%E5%BC%80%E6%89%80%E7%BB%8F%E5%8E%86%E7%9A%84%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[<h2 id="1-DNS解析"><a href="#1-DNS解析" class="headerlink" title="1.DNS解析"></a>1.DNS解析</h2><h3 id="输入网址后，浏览器会先在自己的缓存中查找网址对应的ip"><a href="#输入网址后，浏览器会先在自己的缓存中查找网址对应的ip" class="headerlink" title="输入网址后，浏览器会先在自己的缓存中查找网址对应的ip"></a>输入网址后，浏览器会先在自己的缓存中查找网址对应的ip</h3><h3 id="如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）"><a href="#如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）" class="headerlink" title="如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）"></a>如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）</h3><h3 id="如果还没找到，会向路由器缓存中查找"><a href="#如果还没找到，会向路由器缓存中查找" class="headerlink" title="如果还没找到，会向路由器缓存中查找"></a>如果还没找到，会向路由器缓存中查找</h3><h3 id="如果还没有，就向DNS服务器查找"><a href="#如果还没有，就向DNS服务器查找" class="headerlink" title="如果还没有，就向DNS服务器查找"></a>如果还没有，就向DNS服务器查找</h3><h3 id="如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端"><a href="#如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端" class="headerlink" title="如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端"></a>如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端</h3><h3 id="客户端拿到ip后更新自己的缓存并与服务器建立连接"><a href="#客户端拿到ip后更新自己的缓存并与服务器建立连接" class="headerlink" title="客户端拿到ip后更新自己的缓存并与服务器建立连接"></a>客户端拿到ip后更新自己的缓存并与服务器建立连接</h3><h2 id="2-网络通信"><a href="#2-网络通信" class="headerlink" title="2.网络通信"></a>2.网络通信</h2><h3 id="TCP三次握手建立链接"><a href="#TCP三次握手建立链接" class="headerlink" title="TCP三次握手建立链接"></a>TCP三次握手建立链接</h3><p><img src="https://s2.loli.net/2021/12/15/82Kq4HfkiRjMYGP.png" alt="20211215213744"></p>
-<h3 id="四次挥手释放链接"><a href="#四次挥手释放链接" class="headerlink" title="四次挥手释放链接"></a>四次挥手释放链接</h3><p><img src="https://s2.loli.net/2021/12/15/ehx1bui5gIOnC7L.png" alt="20211215213754"></p>
-<p>为什么“握手”是三次，“挥手”却要四次？</p>
-<p>TCP建立连接时之所以只需要”三次握手”，是因为在第二次”握手”过程中，服务器端发送给客户端的TCP报文是以SYN与ACK作为标志位的。SYN是请求连接标志，表示服务器端同意建立连接；ACK是确认报文，表示告诉客户端，服务器端收到了它的请求报文。</p>
-<p>即SYN建立连接报文与ACK确认接收报文是在同一次”握手”当中传输的，所以”三次握手”不多也不少，正好让双方明确彼此信息互通。</p>
-<p>TCP释放连接时之所以需要“四次挥手”,是因为FIN释放连接报文与ACK确认接收报文是分别由第二次和第三次”握手”传输的。为何建立连接时一起传输，释放连接时却要分开传输？</p>
-<p>建立连接时，被动方服务器端结束CLOSED阶段进入“握手”阶段并不需要任何准备，可以直接返回SYN和ACK报文，开始建立连接。释放连接时，被动方服务器，突然收到主动方客户端释放连接的请求时并不能立即释放连接，因为还有必要的数据需要处理，所以服务器先返回ACK确认收到报文，经过CLOSE-WAIT阶段准备好释放连接之后，才能返回FIN释放连接报文。</p>
-<h2 id="3-页面渲染"><a href="#3-页面渲染" class="headerlink" title="3.页面渲染"></a>3.页面渲染</h2>]]></content>
       <tags>
         <tag>知识点</tag>
       </tags>
@@ -3320,6 +3206,21 @@
       </tags>
   </entry>
   <entry>
+    <title>网页打开所经历的过程</title>
+    <url>/2021/12/15/%E7%BD%91%E9%A1%B5%E6%89%93%E5%BC%80%E6%89%80%E7%BB%8F%E5%8E%86%E7%9A%84%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<h2 id="1-DNS解析"><a href="#1-DNS解析" class="headerlink" title="1.DNS解析"></a>1.DNS解析</h2><h3 id="输入网址后，浏览器会先在自己的缓存中查找网址对应的ip"><a href="#输入网址后，浏览器会先在自己的缓存中查找网址对应的ip" class="headerlink" title="输入网址后，浏览器会先在自己的缓存中查找网址对应的ip"></a>输入网址后，浏览器会先在自己的缓存中查找网址对应的ip</h3><h3 id="如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）"><a href="#如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）" class="headerlink" title="如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）"></a>如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）</h3><h3 id="如果还没找到，会向路由器缓存中查找"><a href="#如果还没找到，会向路由器缓存中查找" class="headerlink" title="如果还没找到，会向路由器缓存中查找"></a>如果还没找到，会向路由器缓存中查找</h3><h3 id="如果还没有，就向DNS服务器查找"><a href="#如果还没有，就向DNS服务器查找" class="headerlink" title="如果还没有，就向DNS服务器查找"></a>如果还没有，就向DNS服务器查找</h3><h3 id="如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端"><a href="#如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端" class="headerlink" title="如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端"></a>如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端</h3><h3 id="客户端拿到ip后更新自己的缓存并与服务器建立连接"><a href="#客户端拿到ip后更新自己的缓存并与服务器建立连接" class="headerlink" title="客户端拿到ip后更新自己的缓存并与服务器建立连接"></a>客户端拿到ip后更新自己的缓存并与服务器建立连接</h3><h2 id="2-网络通信"><a href="#2-网络通信" class="headerlink" title="2.网络通信"></a>2.网络通信</h2><h3 id="TCP三次握手建立链接"><a href="#TCP三次握手建立链接" class="headerlink" title="TCP三次握手建立链接"></a>TCP三次握手建立链接</h3><p><img src="https://s2.loli.net/2021/12/15/82Kq4HfkiRjMYGP.png" alt="20211215213744"></p>
+<h3 id="四次挥手释放链接"><a href="#四次挥手释放链接" class="headerlink" title="四次挥手释放链接"></a>四次挥手释放链接</h3><p><img src="https://s2.loli.net/2021/12/15/ehx1bui5gIOnC7L.png" alt="20211215213754"></p>
+<p>为什么“握手”是三次，“挥手”却要四次？</p>
+<p>TCP建立连接时之所以只需要”三次握手”，是因为在第二次”握手”过程中，服务器端发送给客户端的TCP报文是以SYN与ACK作为标志位的。SYN是请求连接标志，表示服务器端同意建立连接；ACK是确认报文，表示告诉客户端，服务器端收到了它的请求报文。</p>
+<p>即SYN建立连接报文与ACK确认接收报文是在同一次”握手”当中传输的，所以”三次握手”不多也不少，正好让双方明确彼此信息互通。</p>
+<p>TCP释放连接时之所以需要“四次挥手”,是因为FIN释放连接报文与ACK确认接收报文是分别由第二次和第三次”握手”传输的。为何建立连接时一起传输，释放连接时却要分开传输？</p>
+<p>建立连接时，被动方服务器端结束CLOSED阶段进入“握手”阶段并不需要任何准备，可以直接返回SYN和ACK报文，开始建立连接。释放连接时，被动方服务器，突然收到主动方客户端释放连接的请求时并不能立即释放连接，因为还有必要的数据需要处理，所以服务器先返回ACK确认收到报文，经过CLOSE-WAIT阶段准备好释放连接之后，才能返回FIN释放连接报文。</p>
+<h2 id="3-页面渲染"><a href="#3-页面渲染" class="headerlink" title="3.页面渲染"></a>3.页面渲染</h2>]]></content>
+      <tags>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>虚函数</title>
     <url>/2021/04/13/%E8%99%9A%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>多态是在不同继承关系的类对象，去调同一函数，产生了不同的行为。</p>
@@ -3336,6 +3237,20 @@
 ]]></content>
       <tags>
         <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>讨论0218</title>
+    <url>/2022/02/18/%E8%AE%A8%E8%AE%BA0218/</url>
+    <content><![CDATA[<p>目前的瓶颈：应用场景</p>
+<p>有源方案的问题：头上只有两个点，测朝向有局限性</p>
+<p>无源方案的问题：只做头部朝向的分类，太小了</p>
+<p>都存在的问题：呼吸和心跳融不进头部朝向</p>
+<p>卖技术：一个技术能在很多场景应用</p>
+<p>卖故事：把一个应用场景的故事讲的很好</p>
+]]></content>
+      <tags>
+        <tag>讨论</tag>
       </tags>
   </entry>
   <entry>
@@ -3368,17 +3283,22 @@
       </tags>
   </entry>
   <entry>
-    <title>讨论0218</title>
-    <url>/2022/02/18/%E8%AE%A8%E8%AE%BA0218/</url>
-    <content><![CDATA[<p>目前的瓶颈：应用场景</p>
-<p>有源方案的问题：头上只有两个点，测朝向有局限性</p>
-<p>无源方案的问题：只做头部朝向的分类，太小了</p>
-<p>都存在的问题：呼吸和心跳融不进头部朝向</p>
-<p>卖技术：一个技术能在很多场景应用</p>
-<p>卖故事：把一个应用场景的故事讲的很好</p>
+    <title>读者写者问题</title>
+    <url>/2022/02/17/%E8%AF%BB%E8%80%85%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>允许多个进程同时对数据进行读操作，但是不允许读和写以及写和写操作同时发生。</p>
+<p>一个整型变量 count 记录在对数据进行读操作的进程数量，一个互斥量 count_mutex 用于对 count 加锁，一个互斥量 data_mutex 用于对读写的数据加锁。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> samephore;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">down</span><span class="params">(<span class="keyword">int</span>* x)</span></span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">up</span><span class="params">(<span class="keyword">int</span>* y)</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">samephore count_mutex = <span class="number">1</span>;</span><br><span class="line">samephore data_mutex = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reader</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count ++;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">1</span>) <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">        <span class="comment">//read</span></span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count --;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">0</span>) <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">writer</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="comment">//write</span></span><br><span class="line">        <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此解法中读者是优先的，当存在读者时，写者将被延迟，且只要有一个读者活跃，随后而来的读者都将被允许访问此文件，从而导致写者长时间等待，并有可能出现写者饥饿现象。</p>
+<p>增加信号量并修改此程序，让写者与读者平等：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">samephore s = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reader</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">down</span>(&amp;s);</span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count ++;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">1</span>) <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;s);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//read</span></span><br><span class="line">        </span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count --;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">0</span>) <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">writer</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">down</span>(&amp;s);</span><br><span class="line">        <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="comment">//write</span></span><br><span class="line">        <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>假设进程队列：R1、W1、W2、R2、R3</p>
+<p>当R1刚刚执行完V(s)，W1进程若调度会卡在P(writeblock)，而W2R2R3想要运行，均会卡在P(s)，当R1读完，V(writeblock)完成，W1可以运行，以此类推，R1W1W2R2R3按顺序调度。</p>
 ]]></content>
       <tags>
-        <tag>讨论</tag>
+        <tag>八股文</tag>
+        <tag>操作系统</tag>
       </tags>
   </entry>
   <entry>
@@ -3400,25 +3320,6 @@
 <p>headphone positioning -&gt; Head movement recognition -&gt; Head posture tracking</p>
 <p>\subsection{headphone positioning}</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>读者写者问题</title>
-    <url>/2022/02/17/%E8%AF%BB%E8%80%85%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p>允许多个进程同时对数据进行读操作，但是不允许读和写以及写和写操作同时发生。</p>
-<p>一个整型变量 count 记录在对数据进行读操作的进程数量，一个互斥量 count_mutex 用于对 count 加锁，一个互斥量 data_mutex 用于对读写的数据加锁。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> samephore;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">down</span><span class="params">(<span class="keyword">int</span>* x)</span></span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">up</span><span class="params">(<span class="keyword">int</span>* y)</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">samephore count_mutex = <span class="number">1</span>;</span><br><span class="line">samephore data_mutex = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reader</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count ++;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">1</span>) <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">        <span class="comment">//read</span></span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count --;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">0</span>) <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">writer</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="comment">//write</span></span><br><span class="line">        <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>此解法中读者是优先的，当存在读者时，写者将被延迟，且只要有一个读者活跃，随后而来的读者都将被允许访问此文件，从而导致写者长时间等待，并有可能出现写者饥饿现象。</p>
-<p>增加信号量并修改此程序，让写者与读者平等：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">samephore s = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reader</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">down</span>(&amp;s);</span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count ++;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">1</span>) <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;s);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//read</span></span><br><span class="line">        </span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count --;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">0</span>) <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">writer</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">down</span>(&amp;s);</span><br><span class="line">        <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="comment">//write</span></span><br><span class="line">        <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>假设进程队列：R1、W1、W2、R2、R3</p>
-<p>当R1刚刚执行完V(s)，W1进程若调度会卡在P(writeblock)，而W2R2R3想要运行，均会卡在P(s)，当R1读完，V(writeblock)完成，W1可以运行，以此类推，R1W1W2R2R3按顺序调度。</p>
-]]></content>
-      <tags>
-        <tag>八股文</tag>
-        <tag>操作系统</tag>
-      </tags>
   </entry>
   <entry>
     <title>进程的同步和互斥</title>
@@ -3569,24 +3470,6 @@ double findMedian() - 返回目前所有元素的中位数。
       </tags>
   </entry>
   <entry>
-    <title>项目</title>
-    <url>/2021/08/02/%E9%A1%B9%E7%9B%AE/</url>
-    <content><![CDATA[<h2 id="新冠疫情项目"><a href="#新冠疫情项目" class="headerlink" title="新冠疫情项目"></a>新冠疫情项目</h2><ol>
-<li><p>距离管控</p>
-<p>因为疫情环境下为了避免人们互相传播病毒，所以人数比较多的场合一般都需要人们保持一个最低的社交距离。</p>
-<p>假设每个人都随身携带手机，那么可以把手机的位置当做人的位置。</p>
-<p>手机开启蓝牙功能，实时搜索环境中的蓝牙信号，根据一些测距算法完成与其他用户的测距，最简单的测距算法比如RSSI或者一些复杂的测距算法。如果测得的距离小于社交距离则提醒用户。</p>
-</li>
-<li><p>轨迹追踪 –&gt; 密切接触者排查</p>
-<p>如果不在环境中部署锚点很难实现绝对的位置测量，但是这个项目的应用场景不一定要实现绝对的轨迹追踪，更重要的是用户都接触过哪些人，所以只需要用蓝牙记录下用户移动过程中搜索到的所有其他蓝牙设备，假设蓝牙设备和用户身份一一对应，那么就可以用这种方式来排查密切接触者。</p>
-</li>
-</ol>
-<h3 id="2021-8-5完成申请书"><a href="#2021-8-5完成申请书" class="headerlink" title="2021/8/5完成申请书"></a>2021/8/5完成申请书</h3>]]></content>
-      <tags>
-        <tag>项目</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>页表和快表</title>
     <url>/2022/03/02/%E9%A1%B5%E8%A1%A8%E5%92%8C%E5%BF%AB%E8%A1%A8/</url>
     <content><![CDATA[<h2 id="页表"><a href="#页表" class="headerlink" title="页表"></a>页表</h2><ul>
@@ -3638,6 +3521,24 @@ double findMedian() - 返回目前所有元素的中位数。
 ]]></content>
       <tags>
         <tag>刷题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>项目</title>
+    <url>/2021/08/02/%E9%A1%B9%E7%9B%AE/</url>
+    <content><![CDATA[<h2 id="新冠疫情项目"><a href="#新冠疫情项目" class="headerlink" title="新冠疫情项目"></a>新冠疫情项目</h2><ol>
+<li><p>距离管控</p>
+<p>因为疫情环境下为了避免人们互相传播病毒，所以人数比较多的场合一般都需要人们保持一个最低的社交距离。</p>
+<p>假设每个人都随身携带手机，那么可以把手机的位置当做人的位置。</p>
+<p>手机开启蓝牙功能，实时搜索环境中的蓝牙信号，根据一些测距算法完成与其他用户的测距，最简单的测距算法比如RSSI或者一些复杂的测距算法。如果测得的距离小于社交距离则提醒用户。</p>
+</li>
+<li><p>轨迹追踪 –&gt; 密切接触者排查</p>
+<p>如果不在环境中部署锚点很难实现绝对的位置测量，但是这个项目的应用场景不一定要实现绝对的轨迹追踪，更重要的是用户都接触过哪些人，所以只需要用蓝牙记录下用户移动过程中搜索到的所有其他蓝牙设备，假设蓝牙设备和用户身份一一对应，那么就可以用这种方式来排查密切接触者。</p>
+</li>
+</ol>
+<h3 id="2021-8-5完成申请书"><a href="#2021-8-5完成申请书" class="headerlink" title="2021/8/5完成申请书"></a>2021/8/5完成申请书</h3>]]></content>
+      <tags>
+        <tag>项目</tag>
       </tags>
   </entry>
 </search>
