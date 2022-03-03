@@ -187,6 +187,111 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/20/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950720/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/20/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950720/" class="post-title-link" itemprop="url">实验记录0720</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-07-20 10:35:10" itemprop="dateCreated datePublished" datetime="2021-07-20T10:35:10+08:00">2021-07-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-07-24 16:18:01" itemprop="dateModified" datetime="2021-07-24T16:18:01+08:00">2021-07-24</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="测距的锯齿问题"><a href="#测距的锯齿问题" class="headerlink" title="测距的锯齿问题"></a>测距的锯齿问题</h2><p><img src="https://i.loli.net/2021/07/20/qcRVyKobepILfw8.png" alt="20210720103532"></p>
+<p><img src="https://i.loli.net/2021/07/20/vpi5AmwbPxCdkfZ.png" alt="20210720103650"></p>
+<h2 id="存在的问题："><a href="#存在的问题：" class="headerlink" title="存在的问题："></a>存在的问题：</h2><ol>
+<li><p>ai1对应的压电陶瓷接收端采集的数据计算出来的距离波动总是比其他的大。</p>
+<p> <img src="https://i.loli.net/2021/07/20/z2yomi4XgdFQZnu.png" alt="20210720215558"></p>
+</li>
+<li><p>发射端追踪还是不够准确</p>
+<p> <img src="https://i.loli.net/2021/07/20/oU9aDwK2kSrsHCL.png" alt="20210720215605"></p>
+<p> 数据编号：20210720_164407</p>
+</li>
+</ol>
+<h2 id="要做的事："><a href="#要做的事：" class="headerlink" title="要做的事："></a>要做的事：</h2><ol>
+<li><p>解决ai1接收端数据波动大的问题。</p>
+<p> 把ai0和ai1的插头交换之后，还是ai1对应的数据波动大，说明可能是ai1这个接口有问题。（数据编号：20210720_165731）</p>
+<p> 把ai1换成ai3之后，数据波动就没那么大，所以证明应该是ai1这个接口有问题，以后左边使用ai0 ai3 ai2这三个接口。（数据编号：20210720_170841）</p>
+<p> <img src="https://i.loli.net/2021/07/20/ETsHDiQmVUM6k3K.png" alt="20210720215634"></p>
+</li>
+<li><p> 增加一个功能，使得在gui界面上能够选择是用原始距离定位还是用修正后的距离定位。</p>
+</li>
+</ol>
+<h2 id="实验记录："><a href="#实验记录：" class="headerlink" title="实验记录："></a>实验记录：</h2><ol>
+<li><p>切换端口后的实验。.把ai1换到ai3上，解决了ai1计算的距离波动大的问题。</p>
+<p> <img src="https://i.loli.net/2021/07/20/hFQiMf3m67IvCsd.png" alt="20210720215659"></p>
+<p> 数据编号：20210720_171347</p>
+</li>
+<li><p> 增加了两个单选按钮，实现可以在gui界面上选择用原始距离还是修正距离来计算位置。</p>
+</li>
+<li><p> 测量了房间的长度，大概是3.865m</p>
+</li>
+<li><p>头戴耳机进行了实验，数据编号：20210720_213700。</p>
+<p> <img src="https://i.loli.net/2021/07/20/z9DZd6l7x8GLXmO.png" alt="20210720215715"></p>
+</li>
+</ol>
+<h2 id="存在的问题：-1"><a href="#存在的问题：-1" class="headerlink" title="存在的问题："></a>存在的问题：</h2><ol>
+<li><p>接收端离得太远会导致测距结果不精准，波动大。</p>
+<p> 还可以增大电压么？</p>
+<p> 或者不放那么远，不在会议室做就在工位上做？</p>
+</li>
+<li><p> 画向量图的时候2D视图里向量跟三角形面不垂直。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/19/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950719/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -860,67 +965,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/02/git%E6%8A%A5%E9%94%9910054/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/02/git%E6%8A%A5%E9%94%9910054/" class="post-title-link" itemprop="url">git报错10054</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-05-02 10:59:35 / Modified: 11:51:06" itemprop="dateCreated datePublished" datetime="2021-05-02T10:59:35+08:00">2021-05-02</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Git-Push时报错-Connection-was-reset-errno-10054"><a href="#Git-Push时报错-Connection-was-reset-errno-10054" class="headerlink" title="Git Push时报错 Connection was reset, errno 10054"></a>Git Push时报错 Connection was reset, errno 10054</h2><p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210502110023.png" alt="20210502110023"></p>
-<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>git config –global –unset-all remote.origin.proxy</p>
-<h2 id="smms图床"><a href="#smms图床" class="headerlink" title="smms图床"></a>smms图床</h2><p><img src="https://i.loli.net/2021/05/02/mpuaDew8O7jF9qh.png" alt="20210502115036"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -990,14 +1034,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-count">120</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
