@@ -187,6 +187,176 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/07/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/07/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE/" class="post-title-link" itemprop="url">科研项目</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-07 22:14:12 / Modified: 22:31:04" itemprop="dateCreated datePublished" datetime="2022-03-07T22:14:12+08:00">2022-03-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="基于超声波的驾驶员头部朝向追踪和生命体征监控系统"><a href="#基于超声波的驾驶员头部朝向追踪和生命体征监控系统" class="headerlink" title="基于超声波的驾驶员头部朝向追踪和生命体征监控系统"></a>基于超声波的驾驶员头部朝向追踪和生命体征监控系统</h2><h2 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h2><ul>
+<li><p>头部朝向追踪</p>
+<p>方案：基于超声波测距和定位算法。</p>
+<p>应用：估计驾驶员的意图用于智能驾驶。</p>
+</li>
+<li><p>声明体征监控</p>
+<p>方案：对2*8通道超声信号的主成分分析，从中提取驾驶员的呼吸和心跳信息。</p>
+<p>应用：检测驾驶员疲劳驾驶和危险动作识别。</p>
+</li>
+</ul>
+<h2 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h2><ul>
+<li><p>声波信号的多径问题</p>
+<p>原因：由于环境中物体的反射，无线信号普遍存在的多径问题，即从发射端到达接收端会有多个不同的路径，包括直达径和多个反射径。</p>
+<p>解决方案：采用Zadoff-Chu序列来调制超声信号，zc信号具有很好的多径分辨能力。</p>
+</li>
+<li><p>直达径被遮挡问题</p>
+<p>原因：超声波测距和定位算法基于直达径信号传播时间的估计，如果直达径被遮挡，那么测得的就是反射径的距离，无法用于定位。</p>
+<p>解决方案：理论上只需要三个接收端就可以根据三点定位算法完成发射端定位，通过布置更多的接收端保证头部不管怎样旋转都至少与三个接收端之间的直达径不被遮挡。</p>
+</li>
+<li><p>只能定位头部的两个坐标</p>
+<p>原因：理论上至少需要知道物体上三个点的坐标才能确定其在三维空间中的朝向，但是生活中大多数设备都只支持双声道，而且实验用的数据采集卡也只支持两发，所以只能完成两个点的定位。</p>
+<p>解决方案：提出“轴点”的假设，因为驾驶员在驾驶过程中头部动作十分有限，而且不会有复杂的动作，所以可以根据两个发射端的轨迹估计出驾驶员的动作，进而推算出轴点的位置。</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/07/%E7%BC%96%E8%AF%91%E5%99%A8%E9%A1%B9%E7%9B%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/07/%E7%BC%96%E8%AF%91%E5%99%A8%E9%A1%B9%E7%9B%AE/" class="post-title-link" itemprop="url">编译器项目</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-07 16:53:55 / Modified: 21:30:27" itemprop="dateCreated datePublished" datetime="2022-03-07T16:53:55+08:00">2022-03-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="基于C0文法的编译器设计与开发"><a href="#基于C0文法的编译器设计与开发" class="headerlink" title="基于C0文法的编译器设计与开发"></a>基于C0文法的编译器设计与开发</h2><h3 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h3><p>大三时编译原理课程，报名参加了试点班。试点班就是不用参加平常的理论课和实验课，只需要用一学期的时间开发出一个编译器。但是一共三四十名学生报名参加了试点班，最后我的成绩是最高的。</p>
+<p>在上编译原理这门课之前对编译器可以说是一无所知，所以一开始上手很困难。老师给了我们一本编译原理的书，就是号称编译原理三大圣经之一的龙书，然后给了我们一个编译原理的网课让我们自学。看了一段时间书和网课然后慢慢开始一点点上手实践。</p>
+<h3 id="项目流程"><a href="#项目流程" class="headerlink" title="项目流程"></a>项目流程</h3><p>编译器开发主要分为四大块：词法分析、语法分析、中间代码生成和汇编代码生成。</p>
+<ul>
+<li>词法分析主要是将源代码的字符串划分为token，每个token都包含了一个划分出来的词以及这个词的类型。</li>
+<li>语法分析就是按照定义好的语法规则将词法分析生成的tokens转换成抽象语法树的过程。</li>
+<li>中间代码生成式在语法分析的过程中，将语法树转换成四元组的形式，使用四元组主要是为了方便后续汇编代码生成。</li>
+<li>汇编代码生成就是将四元组转化成对应的汇编代码，比如我采用的mips指令集。</li>
+</ul>
+<h3 id="项目的难点"><a href="#项目的难点" class="headerlink" title="项目的难点"></a>项目的难点</h3><ul>
+<li><p>寄存器优化</p>
+<p>  不进行优化的方案就是，每次对变量进行操作的时候，都需要先将变量从内存读到寄存器，然后在寄存器上对变量进行操作，操作完成后再将变量写回寄存器，所以每次使用一个变量都会带来两次寄存器读写，这是很耗时间的，尤其是当对一个变量进行反复修改，就得不断的反复从内存读出写入。</p>
+<p>  所以最好的解决方案是，给每个变量都分配一个寄存器，等到程序结束的时候再一起写回。但是实际中寄存器的数量是很有限的，以mips指令集为例，一般只有32位寄存器，除去一些有特殊用处的能够使用的寄存器可能只有十几二十几个，而一段代码内部的变量可能有很多，所以没办法给每个变量都分配一个寄存器。</p>
+<p>  可以尽可能多的把寄存器分配给变量，但是当寄存器用完了而又来了新变量时，就必须做出一个抉择就是要把哪个旧的变量踢出寄存器。这个选择做的好坏非常影响编译器的性能。</p>
+<p>  当时对这方面的算法了解不多，所以采取了一个比较简单的算法，就是引用计数法。即每次使用一个变量都对将它的计数器加一，然后需要踢出变量的时候就优先踢出计数器次数最小的那个。这种方法再大多数情况下是有效的，但是有些极端情况比如寄存器震荡等。</p>
+<p>  后来慢慢接触到其它知识后，了解到这个问题其实跟很多其它问题类似，比如内存的页面置换等。有一些很好的算法，比如LRU等，这也是这个编译器后续可以继续优化的方向。</p>
+</li>
+<li><p>函数调用时的压栈和出栈设计</p>
+<p>每个函数都在内存中对应着一段栈帧，栈帧由栈顶和栈底两个寄存器确定，mips里叫做sp和fp。</p>
+<p>调用函数时，先将函数参数压栈压栈，再将返回地址压栈，再将栈底位置压栈，然后将栈底指向栈顶也就是当前位置，之后就是新函数的栈帧。</p>
+<p>函数调用结束后，出栈的顺序跟入栈的顺序相反，先让栈顶指向栈底，意味着将该函数的栈帧取消，再将栈底移到它指向的值，即回到上一个栈底的位置，从而恢复上一个函数的栈帧，然后再将放回地址出栈，让指令寄存器回到返回地址处继续执行程序。</p>
+</li>
+<li><p>多重for循坏的线性化</p>
+<p>通过mips的label和jump指令将for循环展开</p>
+</li>
+</ul>
+<h3 id="后续的优化方向"><a href="#后续的优化方向" class="headerlink" title="后续的优化方向"></a>后续的优化方向</h3><ul>
+<li>增加一些功能，比如多维数组、结构体等。</li>
+<li>改进寄存器优化算法</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/04/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -904,166 +1074,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/28/const%E7%9A%84%E4%BD%9C%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/28/const%E7%9A%84%E4%BD%9C%E7%94%A8/" class="post-title-link" itemprop="url">const的作用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-28 16:19:09 / Modified: 16:31:01" itemprop="dateCreated datePublished" datetime="2022-02-28T16:19:09+08:00">2022-02-28</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="const的作用"><a href="#const的作用" class="headerlink" title="const的作用"></a>const的作用</h2><ol>
-<li><p>阻止一个变量被改变，可以使用const关键字。在定义该const变量时，通常需要对它进行初始化，因为以后就没有机会再去改变它了；</p>
-</li>
-<li><p>对指针来说，可以指定指针本身为const（指针常量：int* const p），也可以指定指针所指的数据为const（常量指针：const int* p），或二者同时指定为const（常指针常量：const int* const p）；</p>
-</li>
-<li><p>类的常函数可以访问const和非const的成员变量，但不能修改类的成员变量；</p>
-<p>this指针默认是指针常量，所以不能修改this指针的指向。在成员函数后面加const变成常函数，实际是修饰的是this指针，将this指针变成常指针常量，使其不能修改指向的值。</p>
-</li>
-<li><p>常对象只能调用常函数，非常对象可以调用常函数也可以调用非常函数；</p>
-</li>
-<li><p>const类型变量必须定义的时候进行初始化，因此也导致如果类的成员变量有const类型的变量，那么该变量必须在类的初始化列表中进行初始化；</p>
-</li>
-<li><p>const类型变量可以通过类型转换符const_cast将const类型转换为非const类型；</p>
-</li>
-<li><p>在一个函数声明中，const可以修饰形参，表明它是一个输入参数，在函数内部不能改变其值；</p>
-</li>
-<li><p>对于函数值传递的情况，因为参数传递是通过复制实参创建一个临时变量传递进函数的，函数内只能改变临时变量，但无法改变实参。则这个时候无论加不加const对实参不会产生任何影响。但是在引用或指针传递函数调用中，因为传进去的是一个引用或指针，这样函数内部可以改变引用或指针所指向的变量，这时const 才是实实在在地保护了实参所指向的变量。因为在编译阶段编译器对调用函数的选择是根据实参进行的，所以，只有引用传递和指针传递可以用是否加const来重载。一个拥有顶层const的形参无法和另一个没有顶层const的形参区分开来。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/28/static%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E7%94%A8%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/28/static%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E7%94%A8%E6%B3%95/" class="post-title-link" itemprop="url">static的作用和用法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-28 15:45:08 / Modified: 15:52:48" itemprop="dateCreated datePublished" datetime="2022-02-28T15:45:08+08:00">2022-02-28</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="static的用法和作用"><a href="#static的用法和作用" class="headerlink" title="static的用法和作用"></a>static的用法和作用</h2><ol>
-<li><p>隐藏</p>
-<p>当同时编译多个文件时，所有未加static前缀的全局变量和函数都具有全局可见性。</p>
-<p>加static的全局变量只有本文件内能访问。</p>
-</li>
-<li><p>保持变量内容的持久</p>
-<p> （static变量中的记忆功能和全局生存期）</p>
-<p> 存储在静态数据区的变量会在程序刚开始运行时就完成初始化，也是唯一的一次初始化。共有两种变量存储在静态存储区：全局变量和static变量，只不过和全局变量比起来，static可以控制变量的可见范围，说到底static还是用来隐藏的。</p>
-</li>
-<li><p>默认初始化为0</p>
-<p> 其实全局变量也具备这一属性，因为全局变量也存储在静态数据区。在静态数据区，内存中所有的字节默认值都是0x00，某些时候这一特点可以减少程序员的工作量。</p>
-</li>
-<li><p>类成员声明为static</p>
-<ul>
-<li>函数体内static变量的作用范围为该函数体，不同于auto变量，该变量的内存只被分配一次，因此其值在下次调用时仍维持上次的值</li>
-<li>在模块内的static全局变量可以被模块内所有函数访问，但不能被模块外其它函数访问；</li>
-<li>在模块内的static函数只可被这一模块内的其它函数调用，这个函数的使用范围被限制在声明它的模块内；</li>
-<li>在类中的static成员变量属于整个类所拥有，对类的所有对象只有一份拷贝；</li>
-<li>在类中的static成员函数属于整个类所拥有，这个函数不接收this指针，因而只能访问类的static成员变量。</li>
-<li>static类对象必须要在类外进行初始化，static修饰的变量先于对象存在，所以static修饰的变量要在类外初始化；</li>
-<li>由于static修饰的类成员属于类，不属于对象，因此static类成员函数是没有this指针的，this指针是指向本对象的指针。正因为没有this指针，所以static类成员函数不能访问非static的类成员，只能访问 static修饰的类成员；</li>
-<li>static成员函数不能被virtual修饰，static成员不属于任何对象或实例，所以加上virtual没有任何实际意义；静态成员函数没有this指针，虚函数的实现是为每一个对象分配一个vptr指针，而vptr是通过this指针调用的，所以不能为virtual；虚函数的调用关系，this-&gt;vptr-&gt;ctable-&gt;virtual function</li>
-</ul>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1133,7 +1143,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">123</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
