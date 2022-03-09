@@ -1089,7 +1089,10 @@
   <entry>
     <title>刷题记录</title>
     <url>/2022/02/15/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h2 id="03-08"><a href="#03-08" class="headerlink" title="03/08"></a>03/08</h2><p>18.四数之和</p>
+    <content><![CDATA[<h2 id="03-09"><a href="#03-09" class="headerlink" title="03/09"></a>03/09</h2><p>120.三角形最小路径和</p>
+<p>329.矩阵中的最长递增路径</p>
+<p>343.整数拆分</p>
+<h2 id="03-08"><a href="#03-08" class="headerlink" title="03/08"></a>03/08</h2><p>18.四数之和</p>
 <h2 id="03-06"><a href="#03-06" class="headerlink" title="03/06"></a>03/06</h2><p>131.分割回文串</p>
 <p>132.分割回文串 II</p>
 <p>233.数字 1 的个数</p>
@@ -3903,8 +3906,10 @@ double findMedian() - 返回目前所有元素的中位数。
 </li>
 <li><p>介绍了飞书的一个黑科技，进入一个房间会电脑可以自动连上这个房间的投屏，问是怎么实现的</p>
 <ul>
-<li>诶，这个答得不好，说了半天wifi、NFC、蓝牙之类的，愣是没想起来自己做的超声，麻了</li>
-<li>面试官提醒超声之后问怎么实现的</li>
+<li><p>诶，这个答得不好，说了半天wifi、NFC、蓝牙之类的，愣是没想起来自己做的超声，麻了</p>
+</li>
+<li><p>面试官提醒超声之后问怎么实现的</p>
+</li>
 </ul>
 </li>
 <li><p>对安卓开发的兴趣，后续是否愿意从事这个方向</p>
@@ -3947,6 +3952,92 @@ double findMedian() - 返回目前所有元素的中位数。
 ]]></content>
       <tags>
         <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>I/O模型</title>
+    <url>/2022/03/09/I-O%E6%A8%A1%E5%9E%8B/</url>
+    <content><![CDATA[<h2 id="阻塞I-O"><a href="#阻塞I-O" class="headerlink" title="阻塞I/O"></a>阻塞I/O</h2><p>程序发起一次IO操作后就会一直等待，直到IO成功或者失败才能返回，期间不能做其它事情。</p>
+<h2 id="非阻塞I-O"><a href="#非阻塞I-O" class="headerlink" title="非阻塞I/O"></a>非阻塞I/O</h2><p>程序发起一次IO后，不断地进行轮询，直到获得数据。</p>
+<h2 id="I-O多路复用"><a href="#I-O多路复用" class="headerlink" title="I/O多路复用"></a>I/O多路复用</h2><p>也是阻塞型IO，但是不同的是IO多路复用可以同时阻塞多个IO，并对多个IO进行轮询监控，直到有一个IO的数据可用。</p>
+<p>select时间复杂度O(n)，有数量限制；poll时间复杂度O(n)，没有数量限制，因为是用链表实现的；epoll时间复杂度O(1)，是事件驱动的而不是轮询。</p>
+<p>epoll使用回调机制而不是轮询，就是当文件描述符就绪后主动通知。</p>
+<p>对回调函数调用：调用程序发出对回调函数的调用后，不等函数执行完毕，立即返回并继续执行。这样，调用程序执和被调用函数同时在执行。当被调函数执行完毕后，被调函数会反过来调用某个事先指定函数，以通知调用程序：函数调用结束。这个过程称为回调（Callback），这正是回调函数名称的由来。</p>
+<h2 id="信号驱动I-O"><a href="#信号驱动I-O" class="headerlink" title="信号驱动I/O"></a>信号驱动I/O</h2><p>利用系统的信号机制，由内核告诉进程哪一个IO已经完成。</p>
+<h2 id="异步I-O"><a href="#异步I-O" class="headerlink" title="异步I/O"></a>异步I/O</h2><p>异步IO是指程序发起IO操作之后就去干其它事情，而不需要等待IO结果。</p>
+<p>跟信号驱动IO优点像，但区别是信号驱动IO在内核提醒IO完成之后还要程序完成数据从内核态到用户态的拷贝，而异步IO是在数据拷贝完成之后才通知的程序。</p>
+]]></content>
+      <tags>
+        <tag>知识点</tag>
+        <tag>八股文</tag>
+        <tag>操作系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>函数指针</title>
+    <url>/2022/03/09/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/</url>
+    <content><![CDATA[<h2 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h2><p>函数指针就是指向函数的指针。</p>
+<h2 id="函数指针的作用"><a href="#函数指针的作用" class="headerlink" title="函数指针的作用"></a>函数指针的作用</h2><ol>
+<li><p>实现多态</p>
+<ul>
+<li><p>比如c++面向对象编程里的虚函数。</p>
+</li>
+<li><p>以及面向过程编程的多态指的是，具体执行哪个函数不是在编译时决定的，而是在函数运行时根据函数指针的值来决定的。</p>
+</li>
+</ul>
+</li>
+<li><p>回调函数</p>
+<p>函数指针作为某个函数的参数，通过函数参数调用的函数就是回调函数。</p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>知识点</tag>
+        <tag>八股文</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>文件描述符</title>
+    <url>/2022/03/09/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/</url>
+    <content><![CDATA[<h2 id="描述符表"><a href="#描述符表" class="headerlink" title="描述符表"></a>描述符表</h2><ul>
+<li><p>Linux中一切都被抽象成文件，设备也是文件，socket、惯导、消息队列等都是文件。</p>
+</li>
+<li><p>每个进程都有独立的描述符表。</p>
+</li>
+<li><p>件描述符就是一个整形变量，表示文件在描述符表中的下标。</p>
+</li>
+<li><p>每打开一个文件，就会将这个文件的描述符表中。每个进程都有三个默认文件描述符，分别是0（标准输入），1（标准输出），2（标准错误）。</p>
+</li>
+<li><p>文件描述符一般是调用open()函数返回，调用close()函数会收回对应的文件描述符。</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/03/09/XcuYRK6FqzA4fPk.png" alt="20220309205905"></p>
+<h2 id="文件表"><a href="#文件表" class="headerlink" title="文件表"></a>文件表</h2><ul>
+<li><p>所有进程共享同一个文件表。</p>
+</li>
+<li><p>文件表记录了文件的一些信息，比如文件位置、引用计数以及指向v-node表的指针等。</p>
+</li>
+<li><p>所有打开的文件都有一个文件位置，表示下一次读或写的起始位置。 seek, read, write 函数都可以修改该文件位置。</p>
+</li>
+<li><p>所有进程共享同一个文件表。文件表中的一个表项可能会被多个描述符指向，引用计数用来表示当前有多少个描述符指向该文件表表项。当调用 close() 函数时，系统会将描述符对应的文件表表项的引用计数减1，然后如果引用计数已经为0，则系统会删除此文件表表项。</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/03/09/lV3DtfpJ5e2HIc7.png" alt="20220309211335"></p>
+<h2 id="v-node表"><a href="#v-node表" class="headerlink" title="v-node表"></a>v-node表</h2><ul>
+<li><p>所有进程共享同一个 v-node 表。</p>
+</li>
+<li><p>一个 v-node 表的表项对应于一个文件。它记录了文件的元数据信息。包括文件权限，文件大小，文件类型等信息。</p>
+</li>
+<li><p>当对同一个文件调用多次 open() 函数，那么会产生多个文件表表项，但是只有一个 v-node 表表项。</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/03/09/PQ2cds8KZJM7eNf.png" alt="20220309211619"></p>
+<p><img src="https://s2.loli.net/2022/03/09/I6jGfuCw2BXqHKr.png" alt="20220309212229"></p>
+]]></content>
+      <tags>
+        <tag>知识点</tag>
+        <tag>八股文</tag>
+        <tag>操作系统</tag>
       </tags>
   </entry>
 </search>

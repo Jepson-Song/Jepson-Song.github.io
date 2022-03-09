@@ -187,6 +187,236 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/26/%E6%AD%BB%E9%94%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/26/%E6%AD%BB%E9%94%81/" class="post-title-link" itemprop="url">死锁</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-26 11:18:14" itemprop="dateCreated datePublished" datetime="2021-12-26T11:18:14+08:00">2021-12-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-19 21:48:13" itemprop="dateModified" datetime="2022-02-19T21:48:13+08:00">2022-02-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>如果一个进程集合中的每个进程都在等待只能由该进程集合中的其他进程才能引发的事件，那么该进程集合就是死锁的。</p>
+<h3 id="死锁的条件（四个同时满足）"><a href="#死锁的条件（四个同时满足）" class="headerlink" title="死锁的条件（四个同时满足）"></a>死锁的条件（四个同时满足）</h3><ol>
+<li><p>互斥：每个资源要么已经分配给一个进程，要么就是可用的；</p>
+</li>
+<li><p>占有和等待：进程因请求资源而阻塞时，对已获得的资源保持不放；</p>
+</li>
+<li><p>不可抢占：已经分配的资源不能强制被抢占，只能进程自己释放；</p>
+</li>
+<li><p>环路等待：存在一种进程资源的循环等待链。</p>
+</li>
+</ol>
+<h3 id="死锁的处理策略"><a href="#死锁的处理策略" class="headerlink" title="死锁的处理策略"></a>死锁的处理策略</h3><ol>
+<li><p>死锁预防：破坏死锁的四个条件之一</p>
+<p> 破环互斥条件：允许资源共享；</p>
+<p> 破环占有和等待条件：一次性分配所有资源，只要缺少一个资源，其它资源也都不给他分配；</p>
+<p> 破坏不可抢占：请求新资源得不到时，释放已经保持占有的资源，待以后重新申请；</p>
+<p> 破坏环路等待：采用顺序资源分配法，给每个资源编号，进程申请资源的时候按照编号顺序申请，释放的时候则相反；</p>
+</li>
+<li><p>死锁避免：死锁避免事先预防策略，但是是采用资源动态分配的过程中，防止系统进入不安全状态，以避免死锁。</p>
+<p> 预防死锁的几种策略，会严重地损害系统性能。因此在避免死锁时，要施加较弱的限制，从而获得 较满意的系统性能。由于在避免死锁的策略中，允许进程动态地申请资源。因而，系统在进行资源分配之前预先计算资源分配的安全性。若此次分配不会导致系统进入不安全的状态，则将资源分配给进程；否则，进程等待。其中最具有代表性的避免死锁算法是银行家算法。</p>
+<p> 银行家算法：首先需要定义状态和安全状态的概念。系统的状态是当前给进程分配的资源情况。因此，状态包含两个向量Resource（系统中每种资源的总量）和Available（未分配给进程的每种资源的总量）及两个矩阵Claim（表示进程对资源的需求）和Allocation（表示当前分配给进程的资源）。安全状态是指至少有一个资源分配序列不会导致死锁。当进程请求一组资源时，假设同意该请求，从而改变了系统的状态，然后确定其结果是否还处于安全状态。如果是，同意这个请求；如果不是，阻塞该进程知道同意该请求后系统状态仍然是安全的。</p>
+</li>
+<li><p>死锁检测与解除：</p>
+<p> 检测死锁：利用死锁原理化简资源分配图检测死锁的存在</p>
+<p> 死锁解除：资源剥夺、撤销进程、进程回退</p>
+<pre><code> 剥夺资源：从其它进程剥夺足够数量的资源给死锁进程，以解除死锁状态；
+
+ 撤消进程：可以直接撤消死锁进程或撤消代价最小的进程，直至有足够的资源可用，死锁状态.消除为止；所谓代价是指优先级、运行代价、进程的重要性和价值等。
+</code></pre>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/23/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/23/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">智能指针</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-23 11:04:38 / Modified: 12:22:47" itemprop="dateCreated datePublished" datetime="2021-12-23T11:04:38+08:00">2021-12-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h2><p>因为c++没有自动的内存回收机制，所以程序员每次在new一个对象的时候都需要手动delete，但是有的时候会忘记delete，或者因为程序分支等原因delete没有执行，就会使得对象没有释放而导致内存泄漏。</p>
+<p>智能指针（shared_ptr）是一个类，存储了指向一个对象的指针，通过引用计数的方式记录有多少个智能指针对象共享同一个指针，它在指针没有被使用时会自动释放其内存。</p>
+<h2 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h2><p>每次创建智能指针对象时，初始化其指针，引用计数设为1；</p>
+<p>当智能指针对象成为另一个智能指针对象的副本时，执行拷贝构造函数，并将引用计数加1；</p>
+<p>当执行赋值语句时，左操作数的引用计数减1，右操作数的引用计数加1；</p>
+<p>当执行析构函数时，引用计数减1；</p>
+<p>当引用计数为0时，释放内部指针指向的对象的空间。</p>
+<h2 id="循环引用"><a href="#循环引用" class="headerlink" title="循环引用"></a>循环引用</h2><p>智能指针存在的一个经典问题就是循环引用问题，如下。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="built_in">Node</span>(T data = <span class="built_in">T</span>()) :_data(data), <span class="built_in">Pnext</span>(<span class="literal">NULL</span>), <span class="built_in">Ppre</span>(<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	~<span class="built_in">Node</span>()</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;Call ~Node()&quot;</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	shared_ptr&lt;Node&gt; Pnext;</span><br><span class="line">	shared_ptr&lt;Node&gt; Ppre;</span><br><span class="line">	T _data;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testShared_Ptr</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	shared_ptr&lt;Node&lt;<span class="keyword">int</span>&gt;&gt;<span class="built_in">sp1</span>(<span class="keyword">new</span> Node&lt;<span class="keyword">int</span>&gt;(<span class="number">1</span>));</span><br><span class="line">	shared_ptr&lt;Node&lt;<span class="keyword">int</span>&gt;&gt;<span class="built_in">sp2</span>(<span class="keyword">new</span> Node&lt;<span class="keyword">int</span>&gt;(<span class="number">2</span>));</span><br><span class="line">	cout &lt;&lt; sp1.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//1</span></span><br><span class="line">	cout &lt;&lt; sp2.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//1</span></span><br><span class="line">	sp1-&gt;Pnext = sp2;</span><br><span class="line">	sp2-&gt;Ppre = sp1;</span><br><span class="line">	cout &lt;&lt; sp1.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//2</span></span><br><span class="line">	cout &lt;&lt; sp2.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//2</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*Node&lt;int&gt; *a = new Node&lt;int&gt;(3);</span></span><br><span class="line"><span class="comment">    delete a;</span></span><br><span class="line"><span class="comment">    shared_ptr&lt;Node&lt;int&gt;&gt; c(new Node&lt;int&gt;(4));*/</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">testShared_Ptr</span>();                                                                                                                            </span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;testShared_pte()函数运行结束&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在函数testShared_Ptr执行完之后，会先释放sp2，所以sp2的引用计数减1变为1，然后释放sp1的内存，sp1的引用计数也减1变为1。因为sp1中有对sp2的指针，sp2中也有sp1的指针，所以导致二者的引用计数都没有办法变为0，于是导致二者的内存空间都不会释放。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/21/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951221/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/21/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951221/" class="post-title-link" itemprop="url">实验记录1221</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-21 14:57:17 / Modified: 19:46:25" itemprop="dateCreated datePublished" datetime="2021-12-21T14:57:17+08:00">2021-12-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>用CIR虚部做PCA效果更好</p>
+<p>呼吸：</p>
+<p><img src="https://s2.loli.net/2021/12/21/W5AoQdFGH94CTsZ.png" alt="20211221145747"></p>
+<p>心跳：</p>
+<p><img src="https://s2.loli.net/2021/12/21/Tp1HgViDaFe5WlS.png" alt="20211221150024"></p>
+<p>实部和虚部分别独立做PCA再将结果相减：（效果又好了一点）</p>
+<p><img src="https://s2.loli.net/2021/12/21/51CL9mc6FfYwMXz.png" alt="20211221190046"></p>
+<p>数据编号：20211213_214603</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/20/%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -740,271 +970,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/SSL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/04/SSL/" class="post-title-link" itemprop="url">SSL</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-12-04 15:00:18 / Modified: 15:10:51" itemprop="dateCreated datePublished" datetime="2021-12-04T15:00:18+08:00">2021-12-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://s2.loli.net/2021/12/04/vDsWVg24TJExnti.png" alt="20211204150221"></p>
-<p>http是超文本传输协议，服务器和浏览器之间的数据传输使用的是明文传输，所以很不安全。</p>
-<p>https就是在http的基础上增加安全套接字层SSL(sercue socket layer)，使用SSL对服务器和浏览器之间的数据传输进行加密。</p>
-<p>第一阶段：建立安全能力</p>
-<p>客户端-client_hello：</p>
-<ul>
-<li>客户端可以支持的SSL最高版本号;</li>
-<li>客户端生成的32字节的随机数;</li>
-<li>会话标识符ID;</li>
-<li>客户端可以支持的密码套件列表;</li>
-<li>客户端可以支持的压缩方法列表。</li>
-</ul>
-<p>服务端-server_hello：</p>
-<ul>
-<li>SSL版本号，取收到的客户端SSL版本和服务端支持的最高版本中的较低者;</li>
-<li>服务端生成的32字节的随机数;</li>
-<li>会话标识符ID;</li>
-<li>从收到的客户端密码套件列表中选择一个密码套件(包含密钥交换算法、对称加密算法、摘要算法);</li>
-<li>从收到的客户端压缩方法列表中选择一种压缩方法。</li>
-</ul>
-<p>第二阶段：服务端验证和密钥交换</p>
-<p>服务端-certificate：</p>
-<ul>
-<li>含有公钥信息的服务端数字证书或到CA的完整证书链。</li>
-</ul>
-<p>服务端-server_key_exchange：</p>
-<ul>
-<li>可选，根据密钥协商算法而定，如果传送给客户端的服务端证书数据不足以按照第一阶段选定的密钥交换算法协商密钥，该步骤不足密钥协商元素。</li>
-</ul>
-<p>服务端-certificate_request：</p>
-<ul>
-<li>可选，请求验证客户端证书信息，单向数据认证(只认证服务端)无此步骤。</li>
-</ul>
-<p>服务端-server_hello_done：</p>
-<ul>
-<li>通知客户端版本号和加密套件协商结束。</li>
-</ul>
-<p>第三阶段：客户端验证和密钥交换</p>
-<p>客户端-certificate：</p>
-<ul>
-<li>可选，客户端数字证书，双向数据认证中服务端要求验证客户端身份合法性。</li>
-</ul>
-<p>客户端-client_key_exchange：</p>
-<ul>
-<li>客户端交换密钥，视密钥交换算法而定，密钥协商参数或pre-master key(服务端公钥加密)。</li>
-</ul>
-<p>客户端-certificate_verify：</p>
-<ul>
-<li>可选，客户端将已交互的握手消息、会话密钥的摘要值用客户端私钥加密发送给服务端。</li>
-</ul>
-<p>第四阶段：完成</p>
-<p>客户端-change_cipher_spec：</p>
-<ul>
-<li>改变密码格式信息，告诉服务端之后的报文消息用会话密钥加密。</li>
-</ul>
-<p>客户端-finished：</p>
-<ul>
-<li>向服务端宣布握手协议完成。</li>
-</ul>
-<p>服务端-change_cipher_spec：</p>
-<ul>
-<li>改变密码格式信息，告诉客户端之后的报文消息用会话密钥加密。</li>
-</ul>
-<p>服务端-finished：</p>
-<ul>
-<li>向客户端宣布握手协议完成。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/04/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" class="post-title-link" itemprop="url">优先队列</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-12-04 10:30:29 / Modified: 10:37:54" itemprop="dateCreated datePublished" datetime="2021-12-04T10:30:29+08:00">2021-12-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>C++ STL里的优先队列priority_queue底层时用堆实现的。</p>
-<p>使用时简单的小顶堆/大顶堆可以如下定义：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">priority_queue&lt;<span class="keyword">int</span>,vector&lt;<span class="keyword">int</span>&gt;,greater&lt;<span class="keyword">int</span>&gt; &gt; q;  <span class="comment">//小顶堆</span></span><br><span class="line"></span><br><span class="line">priority_queue&lt;<span class="keyword">int</span>,vector&lt;<span class="keyword">int</span>&gt;,less&lt;<span class="keyword">int</span>&gt; &gt; q;  <span class="comment">//大顶堆</span></span><br></pre></td></tr></table></figure>
-
-<p>但是greater和less只适用于简单的元素类型，对于复杂元素（比如自定义的结构体）需要重载运算符&lt;。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">int</span> dis;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &lt;(<span class="keyword">const</span> node &amp;a) <span class="keyword">const</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.dis&lt;dis; <span class="comment">// 小顶堆</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/03/%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/03/%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">最短路算法总结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-12-03 16:01:50 / Modified: 18:52:49" itemprop="dateCreated datePublished" datetime="2021-12-03T16:01:50+08:00">2021-12-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>算法变革：BFS-&gt;Dijkstra-&gt;A*</p>
-<h2 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a>BFS</h2><p>1162. 地图分析</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BFS</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x, y, z;</span><br><span class="line">    <span class="keyword">int</span> nx, ny, nz;</span><br><span class="line">    <span class="keyword">while</span>(!que.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        z = que.<span class="built_in">front</span>();</span><br><span class="line">        que.<span class="built_in">pop</span>();</span><br><span class="line">        vis[z] = <span class="literal">true</span>;</span><br><span class="line">        x = z/n;</span><br><span class="line">        y = z%n;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;i++)&#123;</span><br><span class="line">            nx = x+dir[i][<span class="number">0</span>];</span><br><span class="line">            ny = y+dir[i][<span class="number">1</span>];</span><br><span class="line">            nz = nx*n+ny;</span><br><span class="line">            <span class="keyword">if</span>(nx&gt;=<span class="number">0</span>&amp;&amp;nx&lt;n&amp;&amp;ny&gt;=<span class="number">0</span>&amp;&amp;ny&lt;n&amp;&amp;!mp[nx][ny]&amp;&amp;!vis[nz]&amp;&amp;dis[nz]&gt;dis[z]+<span class="number">1</span>)&#123;</span><br><span class="line">                dis[nz] = dis[z] + <span class="number">1</span>;</span><br><span class="line">                que.<span class="built_in">push</span>(nz);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ans = dis[z];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>BFS只能用来解决无权图的最短路问题。</p>
-<h2 id="Dijkstra"><a href="#Dijkstra" class="headerlink" title="Dijkstra"></a>Dijkstra</h2><p>743. 网络延迟时间</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> mx = <span class="number">0</span>;</span><br><span class="line">    dis[<span class="number">0</span>] = <span class="number">0x3f3f3f3f</span>; </span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=m;i++)&#123;</span><br><span class="line">        mx = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vis[j]&amp;&amp;dis[j]&lt;dis[mx])&#123;</span><br><span class="line">                mx = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(mx==<span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        vis[mx] = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vis[j]&amp;&amp;dis[j]&gt;dis[mx]+mp[mx][j])&#123;</span><br><span class="line">                dis[j] = dis[mx] + mp[mx][j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, dis[mx]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Dijkstra可以解决带权图的最短路问题，但是普通版Dijkstra的时间复杂度是O(N^2)的，可以使用堆优化来降低复杂度。</p>
-<h3 id="堆优化Dijkstra"><a href="#堆优化Dijkstra" class="headerlink" title="堆优化Dijkstra"></a>堆优化Dijkstra</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">int</span> dis;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &lt;(<span class="keyword">const</span> node &amp;a) <span class="keyword">const</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.dis&lt;dis;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    priority_queue&lt;node&gt; que;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(dis[j]==<span class="number">0</span>)&#123;</span><br><span class="line">            que.<span class="built_in">push</span>(node&#123;j,<span class="number">0</span>&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(!que.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        node tmp = que.<span class="built_in">top</span>();</span><br><span class="line">        <span class="keyword">int</span> u = tmp.num;</span><br><span class="line">        que.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">if</span>(vis[u]) <span class="keyword">continue</span>;</span><br><span class="line">        vis[u] = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vis[j]&amp;&amp;dis[j]&gt;dis[u]+mp[u][j])&#123;</span><br><span class="line">                dis[j] = dis[u] + mp[u][j];</span><br><span class="line">                que.<span class="built_in">push</span>(node&#123;j,dis[j]&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, dis[u]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>堆优化就是把每次寻找优先级最高的节点的操作用一个小顶堆代替，复杂度为O(nlogn)。</p>
-<h2 id="BestFirst-最佳优先搜索"><a href="#BestFirst-最佳优先搜索" class="headerlink" title="BestFirst(最佳优先搜索)"></a>BestFirst(最佳优先搜索)</h2><p>BestFirst就是把未搜索节点的优先级定义为该节点与目标节点之间的<strong>估计距离</strong>，如果这个估计距离刚好是真实距离，则BestFirst可以很快搜索到目标节点，但是大多数情况下估计距离时不准确的。这个估计距离是非常启发式的，比如曼哈顿距离等。如果估计距离设定的不准确，那么很可能得到的最短路是错误的。</p>
-<h2 id="A"><a href="#A" class="headerlink" title="A*"></a>A*</h2><p>A*结合了Dijkstra和BestFirst，关键的区别也是对未搜索节点的优先级定义。A*将优先级定义为：f(n) = g(n) + h(n)。其中g(n)是该节点到其实节点的距离，h(n)是一个启发式函数表示该节点到目标节点之间的估计距离。</p>
-<p>在极端情况下，如果h(n)=0则A*退化为Dijkstra，如果g(n)=0则A*退化为BestFirst。</p>
-<p>如果h(n)小于该节点到目标节点的实际距离，则A*一定能找到最短路，但是h(n)越小，搜索的节点就越多，导致算法就越慢；</p>
-<p>如果h(n)刚好等于该节点到目标节点的实际距离，则A*会以很快的速度找到最短路，但是在现实中很难找到这样的h(n);</p>
-<p>如果h(n)大于该节点到目标节点的实际距离，则A*不一定能找到最短路，不过此时算法的速度会很快。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1074,7 +1039,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">130</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

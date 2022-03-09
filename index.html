@@ -187,6 +187,237 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/09/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/09/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/" class="post-title-link" itemprop="url">文件描述符</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-09 20:58:26 / Modified: 21:22:59" itemprop="dateCreated datePublished" datetime="2022-03-09T20:58:26+08:00">2022-03-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="描述符表"><a href="#描述符表" class="headerlink" title="描述符表"></a>描述符表</h2><ul>
+<li><p>Linux中一切都被抽象成文件，设备也是文件，socket、惯导、消息队列等都是文件。</p>
+</li>
+<li><p>每个进程都有独立的描述符表。</p>
+</li>
+<li><p>件描述符就是一个整形变量，表示文件在描述符表中的下标。</p>
+</li>
+<li><p>每打开一个文件，就会将这个文件的描述符表中。每个进程都有三个默认文件描述符，分别是0（标准输入），1（标准输出），2（标准错误）。</p>
+</li>
+<li><p>文件描述符一般是调用open()函数返回，调用close()函数会收回对应的文件描述符。</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/03/09/XcuYRK6FqzA4fPk.png" alt="20220309205905"></p>
+<h2 id="文件表"><a href="#文件表" class="headerlink" title="文件表"></a>文件表</h2><ul>
+<li><p>所有进程共享同一个文件表。</p>
+</li>
+<li><p>文件表记录了文件的一些信息，比如文件位置、引用计数以及指向v-node表的指针等。</p>
+</li>
+<li><p>所有打开的文件都有一个文件位置，表示下一次读或写的起始位置。 seek, read, write 函数都可以修改该文件位置。</p>
+</li>
+<li><p>所有进程共享同一个文件表。文件表中的一个表项可能会被多个描述符指向，引用计数用来表示当前有多少个描述符指向该文件表表项。当调用 close() 函数时，系统会将描述符对应的文件表表项的引用计数减1，然后如果引用计数已经为0，则系统会删除此文件表表项。</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/03/09/lV3DtfpJ5e2HIc7.png" alt="20220309211335"></p>
+<h2 id="v-node表"><a href="#v-node表" class="headerlink" title="v-node表"></a>v-node表</h2><ul>
+<li><p>所有进程共享同一个 v-node 表。</p>
+</li>
+<li><p>一个 v-node 表的表项对应于一个文件。它记录了文件的元数据信息。包括文件权限，文件大小，文件类型等信息。</p>
+</li>
+<li><p>当对同一个文件调用多次 open() 函数，那么会产生多个文件表表项，但是只有一个 v-node 表表项。</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/03/09/PQ2cds8KZJM7eNf.png" alt="20220309211619"></p>
+<p><img src="https://s2.loli.net/2022/03/09/I6jGfuCw2BXqHKr.png" alt="20220309212229"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/09/I-O%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/09/I-O%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">I/O模型</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-09 19:47:47 / Modified: 20:50:16" itemprop="dateCreated datePublished" datetime="2022-03-09T19:47:47+08:00">2022-03-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="阻塞I-O"><a href="#阻塞I-O" class="headerlink" title="阻塞I/O"></a>阻塞I/O</h2><p>程序发起一次IO操作后就会一直等待，直到IO成功或者失败才能返回，期间不能做其它事情。</p>
+<h2 id="非阻塞I-O"><a href="#非阻塞I-O" class="headerlink" title="非阻塞I/O"></a>非阻塞I/O</h2><p>程序发起一次IO后，不断地进行轮询，直到获得数据。</p>
+<h2 id="I-O多路复用"><a href="#I-O多路复用" class="headerlink" title="I/O多路复用"></a>I/O多路复用</h2><p>也是阻塞型IO，但是不同的是IO多路复用可以同时阻塞多个IO，并对多个IO进行轮询监控，直到有一个IO的数据可用。</p>
+<p>select时间复杂度O(n)，有数量限制；poll时间复杂度O(n)，没有数量限制，因为是用链表实现的；epoll时间复杂度O(1)，是事件驱动的而不是轮询。</p>
+<p>epoll使用回调机制而不是轮询，就是当文件描述符就绪后主动通知。</p>
+<p>对回调函数调用：调用程序发出对回调函数的调用后，不等函数执行完毕，立即返回并继续执行。这样，调用程序执和被调用函数同时在执行。当被调函数执行完毕后，被调函数会反过来调用某个事先指定函数，以通知调用程序：函数调用结束。这个过程称为回调（Callback），这正是回调函数名称的由来。</p>
+<h2 id="信号驱动I-O"><a href="#信号驱动I-O" class="headerlink" title="信号驱动I/O"></a>信号驱动I/O</h2><p>利用系统的信号机制，由内核告诉进程哪一个IO已经完成。</p>
+<h2 id="异步I-O"><a href="#异步I-O" class="headerlink" title="异步I/O"></a>异步I/O</h2><p>异步IO是指程序发起IO操作之后就去干其它事情，而不需要等待IO结果。</p>
+<p>跟信号驱动IO优点像，但区别是信号驱动IO在内核提醒IO完成之后还要程序完成数据从内核态到用户态的拷贝，而异步IO是在数据拷贝完成之后才通知的程序。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/09/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/09/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">函数指针</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-09 17:00:31 / Modified: 17:07:24" itemprop="dateCreated datePublished" datetime="2022-03-09T17:00:31+08:00">2022-03-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h2><p>函数指针就是指向函数的指针。</p>
+<h2 id="函数指针的作用"><a href="#函数指针的作用" class="headerlink" title="函数指针的作用"></a>函数指针的作用</h2><ol>
+<li><p>实现多态</p>
+<ul>
+<li><p>比如c++面向对象编程里的虚函数。</p>
+</li>
+<li><p>以及面向过程编程的多态指的是，具体执行哪个函数不是在编译时决定的，而是在函数运行时根据函数指针的值来决定的。</p>
+</li>
+</ul>
+</li>
+<li><p>回调函数</p>
+<p>函数指针作为某个函数的参数，通过函数参数调用的函数就是回调函数。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/08/%E5%AD%97%E8%8A%82TikTok%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%89%E9%9D%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -218,7 +449,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-09 09:05:58" itemprop="dateModified" datetime="2022-03-09T09:05:58+08:00">2022-03-09</time>
+                <time title="Modified: 2022-03-09 09:07:03" itemprop="dateModified" datetime="2022-03-09T09:07:03+08:00">2022-03-09</time>
               </span>
 
           
@@ -285,8 +516,10 @@
 </li>
 <li><p>介绍了飞书的一个黑科技，进入一个房间会电脑可以自动连上这个房间的投屏，问是怎么实现的</p>
 <ul>
-<li>诶，这个答得不好，说了半天wifi、NFC、蓝牙之类的，愣是没想起来自己做的超声，麻了</li>
-<li>面试官提醒超声之后问怎么实现的</li>
+<li><p>诶，这个答得不好，说了半天wifi、NFC、蓝牙之类的，愣是没想起来自己做的超声，麻了</p>
+</li>
+<li><p>面试官提醒超声之后问怎么实现的</p>
+</li>
 </ul>
 </li>
 <li><p>对安卓开发的兴趣，后续是否愿意从事这个方向</p>
@@ -853,313 +1086,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/03/STL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/03/STL/" class="post-title-link" itemprop="url">STL</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-03-03 20:24:00 / Modified: 21:14:27" itemprop="dateCreated datePublished" datetime="2022-03-03T20:24:00+08:00">2022-03-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <table>
-<thead>
-<tr>
-<th>STL</th>
-<th>类型</th>
-<th>名称</th>
-<th>底层实现</th>
-<th>特性</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>vector</td>
-<td>顺序型容器</td>
-<td>变长数组</td>
-<td>数组</td>
-<td>O(1)查找O(n)插入</td>
-</tr>
-<tr>
-<td>list</td>
-<td>顺序型容器</td>
-<td>链表</td>
-<td>双向链表</td>
-<td>O(n)查找O(1)插入</td>
-</tr>
-<tr>
-<td>deque</td>
-<td>顺序型容器</td>
-<td>双端队列</td>
-<td>类似二维数组</td>
-<td>由若干段大小相等的连续内存组成，不同段之间可能不连续，数组中每个节点都指向一段内存</td>
-</tr>
-<tr>
-<td>map</td>
-<td>有序关联型容器</td>
-<td>映射</td>
-<td>红黑树</td>
-<td>按照key值排序，key不重复</td>
-</tr>
-<tr>
-<td>mutimap</td>
-<td>有序关联型容器</td>
-<td>多重映射</td>
-<td>红黑树</td>
-<td>按照key值排序，key可重复</td>
-</tr>
-<tr>
-<td>set</td>
-<td>有序关联型容器</td>
-<td>集合</td>
-<td>红黑树</td>
-<td>按照key值排序，key不重复</td>
-</tr>
-<tr>
-<td>mutiset</td>
-<td>有序关联型容器</td>
-<td>多重集合</td>
-<td>红黑树</td>
-<td>按照key值排序，key可重复</td>
-</tr>
-<tr>
-<td>unordered_map</td>
-<td>无序关联型容器</td>
-<td>无序映射</td>
-<td>哈希表</td>
-<td>不排序，用链表法解决哈希冲突（哈希桶）</td>
-</tr>
-<tr>
-<td>stack</td>
-<td>容器适配器</td>
-<td>栈</td>
-<td>deque</td>
-<td>先进后出</td>
-</tr>
-<tr>
-<td>queue</td>
-<td>容器适配器</td>
-<td>队列</td>
-<td>deque</td>
-<td>先进先出</td>
-</tr>
-</tbody></table>
-<ul>
-<li><p>容器支持迭代器，容器适配器不支持迭代器。</p>
-</li>
-<li><p>map中的基本元素就是对组pair。</p>
-</li>
-<li><p>pair是用一个结构体实现的，结构体主要的两个成员变量first和second，分别存储两个数据。</p>
-</li>
-<li><p>map中的pair第一个元素为key(键值)，起索引作用，就相当于数组下标，第二个元素为value(实值)。map所有元素会根据键值大小自动排序</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/02/%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/02/%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">买卖股票问题总结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-03-02 15:22:14 / Modified: 15:31:17" itemprop="dateCreated datePublished" datetime="2022-03-02T15:22:14+08:00">2022-03-02</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>leetcode上买卖股票问题一共有六道题，六道题十分相似，只要掌握一个算法稍作修改就可以都AC掉，现做一个总结。</p>
-<h2 id="买卖股票的最佳时机"><a href="#买卖股票的最佳时机" class="headerlink" title="买卖股票的最佳时机"></a>买卖股票的最佳时机</h2><p>只能买卖一次</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        buy = <span class="built_in">max</span>(buy, <span class="number">0</span>-prices[i]);</span><br><span class="line">        sell = <span class="built_in">max</span>(sell, prices[i]+buy);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="买卖股票的最佳时机-II"><a href="#买卖股票的最佳时机-II" class="headerlink" title="买卖股票的最佳时机 II"></a>买卖股票的最佳时机 II</h2><p>可以买卖多次</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        buy = <span class="built_in">max</span>(buy, sell-prices[i]);</span><br><span class="line">        sell = <span class="built_in">max</span>(sell, prices[i]+buy);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="买卖股票的最佳时机-III"><a href="#买卖股票的最佳时机-III" class="headerlink" title="买卖股票的最佳时机 III"></a>买卖股票的最佳时机 III</h2><p>只能买卖两次</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> buy2 = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell2 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        buy = <span class="built_in">max</span>(buy, <span class="number">0</span>-prices[i]);</span><br><span class="line">        sell = <span class="built_in">max</span>(sell, prices[i]+buy);</span><br><span class="line">        buy2 = <span class="built_in">max</span>(buy2, sell-prices[i]);</span><br><span class="line">        sell2 = <span class="built_in">max</span>(sell2, prices[i]+buy2);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="买卖股票的最佳时机-IV"><a href="#买卖股票的最佳时机-IV" class="headerlink" title="买卖股票的最佳时机 IV"></a>买卖股票的最佳时机 IV</h2><p>只能买卖K次</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span> k, vector&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy[k+<span class="number">1</span>], sell[k+<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=k;i++)&#123;</span><br><span class="line">        buy[i] = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">        sell[i] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=k;j++)&#123;</span><br><span class="line">            buy[j] = <span class="built_in">max</span>(buy[j], sell[j<span class="number">-1</span>]-prices[i]);</span><br><span class="line">            sell[j] = <span class="built_in">max</span>(sell[j], prices[i]+buy[j]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell[k];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="最佳买卖股票时机含冷冻期"><a href="#最佳买卖股票时机含冷冻期" class="headerlink" title="最佳买卖股票时机含冷冻期"></a>最佳买卖股票时机含冷冻期</h2><p>有一天冷冻期，卖了之后隔一个天才能再买</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> sell2 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        buy = <span class="built_in">max</span>(buy, sell2-prices[i]);</span><br><span class="line"></span><br><span class="line">        sell2 = sell;</span><br><span class="line">        sell = <span class="built_in">max</span>(sell, prices[i]+buy);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="买卖股票的最佳时机含手续费"><a href="#买卖股票的最佳时机含手续费" class="headerlink" title="买卖股票的最佳时机含手续费"></a>买卖股票的最佳时机含手续费</h2><p>每次买卖需要交手续费fee（同一次买卖只交一次）</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; prices, <span class="keyword">int</span> fee)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        buy = <span class="built_in">max</span>(buy, sell-prices[i]-fee);</span><br><span class="line">        sell = <span class="built_in">max</span>(sell, prices[i]+buy);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/02/%E9%A1%B5%E8%A1%A8%E5%92%8C%E5%BF%AB%E8%A1%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/02/%E9%A1%B5%E8%A1%A8%E5%92%8C%E5%BF%AB%E8%A1%A8/" class="post-title-link" itemprop="url">页表和快表</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-03-02 08:59:23 / Modified: 09:16:01" itemprop="dateCreated datePublished" datetime="2022-03-02T08:59:23+08:00">2022-03-02</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="页表"><a href="#页表" class="headerlink" title="页表"></a>页表</h2><ul>
-<li><p>页表是将逻辑地址转换为物理地址。</p>
-</li>
-<li><p>页表内存储的是页号和块号的映射。</p>
-</li>
-<li><p>逻辑地址整除页长得到的商就是页号，余数就是页面偏移量。</p>
-</li>
-<li><p>通过页表将页号转换为块号，在用块号和页面偏移量即可得到数据在内存中的物理地址。</p>
-</li>
-<li><p>当请求的页面不在内存中时（页表中还有状态位等信息表示页面是否在内存中），发生缺页中断将需要的页面调入内存，如果内存没有多余的空间则使用页面置换算法替换掉内存中的某个页。</p>
-</li>
-</ul>
-<p><img src="https://s2.loli.net/2022/03/02/3oqNDV2jnAOx5EL.png" alt="20220302085955"></p>
-<h2 id="快表"><a href="#快表" class="headerlink" title="快表"></a>快表</h2><ul>
-<li><p>快表是一种比内存快很多的高速缓存存储器</p>
-</li>
-<li><p>快表存储的是一些常用的的页号，相当于页表的cache，如果快表命中了则不需要再访问页表。</p>
-</li>
-<li><p>快表中的页一定在内存中，页表中的页不一定在内存中。</p>
-</li>
-<li><p>快表命中了只需要访问一次内存，没命中则需要访问两次内存（访问页表一次加访问数据一次）。</p>
-</li>
-</ul>
-<p><img src="https://s2.loli.net/2022/03/02/9LqQ8Ycj6S7oEhF.png" alt="20220302091110"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1229,7 +1155,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">130</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

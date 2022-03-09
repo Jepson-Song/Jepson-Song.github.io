@@ -187,6 +187,271 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/SSL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/04/SSL/" class="post-title-link" itemprop="url">SSL</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-04 15:00:18 / Modified: 15:10:51" itemprop="dateCreated datePublished" datetime="2021-12-04T15:00:18+08:00">2021-12-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://s2.loli.net/2021/12/04/vDsWVg24TJExnti.png" alt="20211204150221"></p>
+<p>http是超文本传输协议，服务器和浏览器之间的数据传输使用的是明文传输，所以很不安全。</p>
+<p>https就是在http的基础上增加安全套接字层SSL(sercue socket layer)，使用SSL对服务器和浏览器之间的数据传输进行加密。</p>
+<p>第一阶段：建立安全能力</p>
+<p>客户端-client_hello：</p>
+<ul>
+<li>客户端可以支持的SSL最高版本号;</li>
+<li>客户端生成的32字节的随机数;</li>
+<li>会话标识符ID;</li>
+<li>客户端可以支持的密码套件列表;</li>
+<li>客户端可以支持的压缩方法列表。</li>
+</ul>
+<p>服务端-server_hello：</p>
+<ul>
+<li>SSL版本号，取收到的客户端SSL版本和服务端支持的最高版本中的较低者;</li>
+<li>服务端生成的32字节的随机数;</li>
+<li>会话标识符ID;</li>
+<li>从收到的客户端密码套件列表中选择一个密码套件(包含密钥交换算法、对称加密算法、摘要算法);</li>
+<li>从收到的客户端压缩方法列表中选择一种压缩方法。</li>
+</ul>
+<p>第二阶段：服务端验证和密钥交换</p>
+<p>服务端-certificate：</p>
+<ul>
+<li>含有公钥信息的服务端数字证书或到CA的完整证书链。</li>
+</ul>
+<p>服务端-server_key_exchange：</p>
+<ul>
+<li>可选，根据密钥协商算法而定，如果传送给客户端的服务端证书数据不足以按照第一阶段选定的密钥交换算法协商密钥，该步骤不足密钥协商元素。</li>
+</ul>
+<p>服务端-certificate_request：</p>
+<ul>
+<li>可选，请求验证客户端证书信息，单向数据认证(只认证服务端)无此步骤。</li>
+</ul>
+<p>服务端-server_hello_done：</p>
+<ul>
+<li>通知客户端版本号和加密套件协商结束。</li>
+</ul>
+<p>第三阶段：客户端验证和密钥交换</p>
+<p>客户端-certificate：</p>
+<ul>
+<li>可选，客户端数字证书，双向数据认证中服务端要求验证客户端身份合法性。</li>
+</ul>
+<p>客户端-client_key_exchange：</p>
+<ul>
+<li>客户端交换密钥，视密钥交换算法而定，密钥协商参数或pre-master key(服务端公钥加密)。</li>
+</ul>
+<p>客户端-certificate_verify：</p>
+<ul>
+<li>可选，客户端将已交互的握手消息、会话密钥的摘要值用客户端私钥加密发送给服务端。</li>
+</ul>
+<p>第四阶段：完成</p>
+<p>客户端-change_cipher_spec：</p>
+<ul>
+<li>改变密码格式信息，告诉服务端之后的报文消息用会话密钥加密。</li>
+</ul>
+<p>客户端-finished：</p>
+<ul>
+<li>向服务端宣布握手协议完成。</li>
+</ul>
+<p>服务端-change_cipher_spec：</p>
+<ul>
+<li>改变密码格式信息，告诉客户端之后的报文消息用会话密钥加密。</li>
+</ul>
+<p>服务端-finished：</p>
+<ul>
+<li>向客户端宣布握手协议完成。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/04/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" class="post-title-link" itemprop="url">优先队列</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-04 10:30:29 / Modified: 10:37:54" itemprop="dateCreated datePublished" datetime="2021-12-04T10:30:29+08:00">2021-12-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>C++ STL里的优先队列priority_queue底层时用堆实现的。</p>
+<p>使用时简单的小顶堆/大顶堆可以如下定义：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">priority_queue&lt;<span class="keyword">int</span>,vector&lt;<span class="keyword">int</span>&gt;,greater&lt;<span class="keyword">int</span>&gt; &gt; q;  <span class="comment">//小顶堆</span></span><br><span class="line"></span><br><span class="line">priority_queue&lt;<span class="keyword">int</span>,vector&lt;<span class="keyword">int</span>&gt;,less&lt;<span class="keyword">int</span>&gt; &gt; q;  <span class="comment">//大顶堆</span></span><br></pre></td></tr></table></figure>
+
+<p>但是greater和less只适用于简单的元素类型，对于复杂元素（比如自定义的结构体）需要重载运算符&lt;。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">int</span> dis;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &lt;(<span class="keyword">const</span> node &amp;a) <span class="keyword">const</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.dis&lt;dis; <span class="comment">// 小顶堆</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/03/%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/03/%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">最短路算法总结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-03 16:01:50 / Modified: 18:52:49" itemprop="dateCreated datePublished" datetime="2021-12-03T16:01:50+08:00">2021-12-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>算法变革：BFS-&gt;Dijkstra-&gt;A*</p>
+<h2 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a>BFS</h2><p>1162. 地图分析</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BFS</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x, y, z;</span><br><span class="line">    <span class="keyword">int</span> nx, ny, nz;</span><br><span class="line">    <span class="keyword">while</span>(!que.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        z = que.<span class="built_in">front</span>();</span><br><span class="line">        que.<span class="built_in">pop</span>();</span><br><span class="line">        vis[z] = <span class="literal">true</span>;</span><br><span class="line">        x = z/n;</span><br><span class="line">        y = z%n;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;i++)&#123;</span><br><span class="line">            nx = x+dir[i][<span class="number">0</span>];</span><br><span class="line">            ny = y+dir[i][<span class="number">1</span>];</span><br><span class="line">            nz = nx*n+ny;</span><br><span class="line">            <span class="keyword">if</span>(nx&gt;=<span class="number">0</span>&amp;&amp;nx&lt;n&amp;&amp;ny&gt;=<span class="number">0</span>&amp;&amp;ny&lt;n&amp;&amp;!mp[nx][ny]&amp;&amp;!vis[nz]&amp;&amp;dis[nz]&gt;dis[z]+<span class="number">1</span>)&#123;</span><br><span class="line">                dis[nz] = dis[z] + <span class="number">1</span>;</span><br><span class="line">                que.<span class="built_in">push</span>(nz);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ans = dis[z];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>BFS只能用来解决无权图的最短路问题。</p>
+<h2 id="Dijkstra"><a href="#Dijkstra" class="headerlink" title="Dijkstra"></a>Dijkstra</h2><p>743. 网络延迟时间</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> mx = <span class="number">0</span>;</span><br><span class="line">    dis[<span class="number">0</span>] = <span class="number">0x3f3f3f3f</span>; </span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=m;i++)&#123;</span><br><span class="line">        mx = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vis[j]&amp;&amp;dis[j]&lt;dis[mx])&#123;</span><br><span class="line">                mx = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(mx==<span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        vis[mx] = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vis[j]&amp;&amp;dis[j]&gt;dis[mx]+mp[mx][j])&#123;</span><br><span class="line">                dis[j] = dis[mx] + mp[mx][j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, dis[mx]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Dijkstra可以解决带权图的最短路问题，但是普通版Dijkstra的时间复杂度是O(N^2)的，可以使用堆优化来降低复杂度。</p>
+<h3 id="堆优化Dijkstra"><a href="#堆优化Dijkstra" class="headerlink" title="堆优化Dijkstra"></a>堆优化Dijkstra</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">int</span> dis;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &lt;(<span class="keyword">const</span> node &amp;a) <span class="keyword">const</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.dis&lt;dis;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    priority_queue&lt;node&gt; que;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(dis[j]==<span class="number">0</span>)&#123;</span><br><span class="line">            que.<span class="built_in">push</span>(node&#123;j,<span class="number">0</span>&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(!que.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        node tmp = que.<span class="built_in">top</span>();</span><br><span class="line">        <span class="keyword">int</span> u = tmp.num;</span><br><span class="line">        que.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">if</span>(vis[u]) <span class="keyword">continue</span>;</span><br><span class="line">        vis[u] = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vis[j]&amp;&amp;dis[j]&gt;dis[u]+mp[u][j])&#123;</span><br><span class="line">                dis[j] = dis[u] + mp[u][j];</span><br><span class="line">                que.<span class="built_in">push</span>(node&#123;j,dis[j]&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, dis[u]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>堆优化就是把每次寻找优先级最高的节点的操作用一个小顶堆代替，复杂度为O(nlogn)。</p>
+<h2 id="BestFirst-最佳优先搜索"><a href="#BestFirst-最佳优先搜索" class="headerlink" title="BestFirst(最佳优先搜索)"></a>BestFirst(最佳优先搜索)</h2><p>BestFirst就是把未搜索节点的优先级定义为该节点与目标节点之间的<strong>估计距离</strong>，如果这个估计距离刚好是真实距离，则BestFirst可以很快搜索到目标节点，但是大多数情况下估计距离时不准确的。这个估计距离是非常启发式的，比如曼哈顿距离等。如果估计距离设定的不准确，那么很可能得到的最短路是错误的。</p>
+<h2 id="A"><a href="#A" class="headerlink" title="A*"></a>A*</h2><p>A*结合了Dijkstra和BestFirst，关键的区别也是对未搜索节点的优先级定义。A*将优先级定义为：f(n) = g(n) + h(n)。其中g(n)是该节点到其实节点的距离，h(n)是一个启发式函数表示该节点到目标节点之间的估计距离。</p>
+<p>在极端情况下，如果h(n)=0则A*退化为Dijkstra，如果g(n)=0则A*退化为BestFirst。</p>
+<p>如果h(n)小于该节点到目标节点的实际距离，则A*一定能找到最短路，但是h(n)越小，搜索的节点就越多，导致算法就越慢；</p>
+<p>如果h(n)刚好等于该节点到目标节点的实际距离，则A*会以很快的速度找到最短路，但是在现实中很难找到这样的h(n);</p>
+<p>如果h(n)大于该节点到目标节点的实际距离，则A*不一定能找到最短路，不过此时算法的速度会很快。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/03/insert%E5%92%8Cerase/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -709,212 +974,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/12/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951012/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/12/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951012/" class="post-title-link" itemprop="url">实验记录1012</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-10-12 15:03:39 / Modified: 17:10:00" itemprop="dateCreated datePublished" datetime="2021-10-12T15:03:39+08:00">2021-10-12</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>先对CIR做滑动平均滤波，然后在做PCA降维，得到的呼吸结果。</p>
-<p><img src="https://i.loli.net/2021/10/12/vTUS6tgoYzJaHhi.png" alt="20211012150346"></p>
-<p>数据编号：20211010_140604</p>
-<p>发射端放在肚子附近：20211012_170451</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951008/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951008/" class="post-title-link" itemprop="url">实验记录1008</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-10-08 12:31:24 / Modified: 12:32:08" itemprop="dateCreated datePublished" datetime="2021-10-08T12:31:24+08:00">2021-10-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.loli.net/2021/10/08/jt2qzDFK9uLiTNU.png" alt="20211008123140"><br>（左边是cir右边是dcir）</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/23/%E8%AE%A8%E8%AE%BA0924/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/23/%E8%AE%A8%E8%AE%BA0924/" class="post-title-link" itemprop="url">讨论0924</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-09-23 14:31:17" itemprop="dateCreated datePublished" datetime="2021-09-23T14:31:17+08:00">2021-09-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-09-24 13:00:08" itemprop="dateModified" datetime="2021-09-24T13:00:08+08:00">2021-09-24</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="头部追踪系统"><a href="#头部追踪系统" class="headerlink" title="头部追踪系统"></a>头部追踪系统</h2><h3 id="系统组成"><a href="#系统组成" class="headerlink" title="系统组成"></a>系统组成</h3><ol>
-<li><p>耳机定位</p>
-<p>在环境中部署若干个接收端，在左右耳机各部署一个发射端。两发射端发射不同的zc超声信号，接收端接收信号。参考GPS卫星定位的思想，每次都选择信号质量最好的三个接收端来计算与耳机的距离，然后根据三个距离用牛顿迭代解方程计算出耳机的位置（自己手写了牛顿迭代的代码解决了matlab里solve函数计算太慢的问题）。</p>
-<p>存在的问题：</p>
-<ol>
-<li>计算距离时用相位好像比不用相位效果更差。因为不用相位的精度是声速除以采样率（96k）精度为3.5mm左右，但是用相位要把距离先对波长取整，而波长是8.5mm左右，虽然可以用相位进行补偿，但是实验看起来补偿效果不是太好，用相位的测得的距离波动更大一些。<br><img src="https://i.loli.net/2021/09/24/c4IuQTwvkZKHYxq.png" alt="20210924124649"></li>
-<li>计算位置过程中因为每次都要选择三个信号最好的接收端，导致一旦接收端切换位置就可能会出现比较大的偏移。</li>
-</ol>
-</li>
-<li><p>头部动作识别</p>
-<p>把头部的动作进行分类（目前分成了六类，分别是：前后移动，左右移动，上下移动，旋转，俯仰，倾斜），然后利用耳机的位置数据来判断头部正在做哪个动作。</p>
-<p>采用LSTM作为分类模型，用左右耳机的轨迹完成头部动作分类。每秒对耳机定位10次，把两耳机2s的轨迹作为训练数据，因为每个耳机的位置是3维，所以构造特征维度为6长度为20的数据输入LSTM训练，六分类的平均准确率达到了97%以上。</p>
-<p>构造了一个数据集，六类动作每一类大概1000条数据，训练LSTM的效果如下。</p>
-<p> <img src="https://i.loli.net/2021/09/23/nFxqM32AwKhY8I4.png" alt="20210923160403"></p>
-<p> <img src="https://i.loli.net/2021/09/23/6TagVw3t1yEWLpG.png" alt="20210923160347"></p>
-</li>
-<li><p>头部朝向计算</p>
-<p>左右耳机的位置可以看成左右耳的位置，但是只知道两个点的坐标没办法计算出头部的朝向。我们知道头部的动作近似是围绕着脖子处的一个轴点进行的，有的动作会导致轴点位置改变（比如前后左右上下移动），而有的动作不会导致轴点位置改变（比如旋转俯仰倾斜）。</p>
-<p>在第二步识别出头部动作的基础上，如果是转动类型的动作（旋转，俯仰，倾斜），则轴点不变，如果是移动类型的动作（前后移动，左右移动，上下移动），虽然轴点发生变化了，但是轴点与两耳的相对位置基本可以认为是不变的，所以可以直接根据两耳的位置推算出轴点的位置，这里暂时只考虑了这些简单动作，没考虑复杂的移动，比如低着头移动等。最后根据两耳位置和轴点位置即可得到头部的姿态。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -984,7 +1043,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">130</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
