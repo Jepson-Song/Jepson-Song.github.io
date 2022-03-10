@@ -20,21 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="并发一致性问题在并发环境下，事务的隔离性很难保证，因此会出现很多并发一致性问题。  丢失修改 丢失修改指一个事务的更新操作被另外一个事务的更新操作替换。一般在现实生活中常会遇到，例如：T1 和 T2 两个事务都对一个数据进行修改，T1 先修改并提交生效，T2 随后修改，T2 的修改覆盖了 T1 的修改。  读脏数据 读脏数据指在不同的事务下，当前事务可以读到另外事务未提交的数据。例如：T1 修改一">
+  <meta name="description" content="电话面  自我介绍  问华为的实习经历 做了什么工作，技术难题，工具开源 规则应用于十万行代码的性能？误报率？华为代码安全重复率啥的。。（这些都不了解。。）  问科研项目 系统架构，项目持续时间，从事的工作，硬件组成  团队介绍 原神等的云游戏，可能会跟硬件相关，中心云芯片，高通">
 <meta property="og:type" content="article">
-<meta property="og:title" content="并发一致性">
-<meta property="og:url" content="http://example.com/2022/02/16/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7/index.html">
+<meta property="og:title" content="阿里云游戏一面">
+<meta property="og:url" content="http://example.com/2022/03/10/%E9%98%BF%E9%87%8C%E4%BA%91%E6%B8%B8%E6%88%8F%E4%B8%80%E9%9D%A2/index.html">
 <meta property="og:site_name" content="Jepson&#39;s Blog">
-<meta property="og:description" content="并发一致性问题在并发环境下，事务的隔离性很难保证，因此会出现很多并发一致性问题。  丢失修改 丢失修改指一个事务的更新操作被另外一个事务的更新操作替换。一般在现实生活中常会遇到，例如：T1 和 T2 两个事务都对一个数据进行修改，T1 先修改并提交生效，T2 随后修改，T2 的修改覆盖了 T1 的修改。  读脏数据 读脏数据指在不同的事务下，当前事务可以读到另外事务未提交的数据。例如：T1 修改一">
+<meta property="og:description" content="电话面  自我介绍  问华为的实习经历 做了什么工作，技术难题，工具开源 规则应用于十万行代码的性能？误报率？华为代码安全重复率啥的。。（这些都不了解。。）  问科研项目 系统架构，项目持续时间，从事的工作，硬件组成  团队介绍 原神等的云游戏，可能会跟硬件相关，中心云芯片，高通">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-02-16T14:30:19.000Z">
-<meta property="article:modified_time" content="2022-02-16T14:48:59.747Z">
+<meta property="article:published_time" content="2022-03-10T11:50:31.000Z">
+<meta property="article:modified_time" content="2022-03-10T11:56:02.032Z">
 <meta property="article:author" content="Jepson">
-<meta property="article:tag" content="八股文">
-<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="面经">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/02/16/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7/">
+<link rel="canonical" href="http://example.com/2022/03/10/%E9%98%BF%E9%87%8C%E4%BA%91%E6%B8%B8%E6%88%8F%E4%B8%80%E9%9D%A2/">
 
 
 <script id="page-configurations">
@@ -47,7 +46,7 @@
   };
 </script>
 
-  <title>并发一致性 | Jepson's Blog</title>
+  <title>阿里云游戏一面 | Jepson's Blog</title>
   
 
 
@@ -194,7 +193,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/%E9%98%BF%E9%87%8C%E4%BA%91%E6%B8%B8%E6%88%8F%E4%B8%80%E9%9D%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -207,7 +206,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          并发一致性
+          阿里云游戏一面
         </h1>
 
         <div class="post-meta">
@@ -220,7 +219,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-16 22:30:19 / Modified: 22:48:59" itemprop="dateCreated datePublished" datetime="2022-02-16T22:30:19+08:00">2022-02-16</time>
+              <time title="Created: 2022-03-10 19:50:31 / Modified: 19:56:02" itemprop="dateCreated datePublished" datetime="2022-03-10T19:50:31+08:00">2022-03-10</time>
             </span>
 
           
@@ -241,18 +240,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="并发一致性问题"><a href="#并发一致性问题" class="headerlink" title="并发一致性问题"></a>并发一致性问题</h2><p>在并发环境下，事务的隔离性很难保证，因此会出现很多并发一致性问题。</p>
-<ol>
-<li><p>丢失修改<br> 丢失修改指一个事务的更新操作被另外一个事务的更新操作替换。一般在现实生活中常会遇到，例如：T1 和 T2 两个事务都对一个数据进行修改，T1 先修改并提交生效，T2 随后修改，T2 的修改覆盖了 T1 的修改。</p>
+        <ul>
+<li><p>电话面</p>
 </li>
-<li><p>读脏数据<br> 读脏数据指在不同的事务下，当前事务可以读到另外事务未提交的数据。例如：T1 修改一个数据但未提交，T2 随后读取这个数据。如果 T1 撤销了这次修改，那么 T2 读取的数据是脏数据。</p>
+<li><p>自我介绍</p>
 </li>
-<li><p>不可重复读<br> 不可重复读指在一个事务内多次读取同一数据集合。在这一事务还未结束前，另一事务也访问了该同一数据集合并做了修改，由于第二个事务的修改，第一次事务的两次读取的数据可能不一致。例如：T2 读取一个数据，T1 对该数据做了修改。如果 T2 再次读取这个数据，此时读取的结果和第一次读取的结果不同。</p>
+<li><p>问华为的实习经历</p>
+<p>做了什么工作，技术难题，工具开源</p>
+<p>规则应用于十万行代码的性能？误报率？华为代码安全重复率啥的。。（这些都不了解。。）</p>
 </li>
-<li><p>幻影读<br> 幻读本质上也属于不可重复读的情况，T1 读取某个范围的数据，T2 在这个范围内插入新的数据，T1 再次读取这个范围的数据，此时读取的结果和和第一次读取的结果不同。</p>
+<li><p>问科研项目</p>
+<p>系统架构，项目持续时间，从事的工作，硬件组成</p>
 </li>
-</ol>
-<p>产生并发不一致性问题的主要原因是破坏了事务的隔离性，解决方法是通过并发控制来保证隔离性。并发控制可以通过封锁来实现，但是封锁操作需要用户自己控制，相当复杂。数据库管理系统提供了事务的隔离级别，让用户以一种更轻松的方式处理并发一致性问题。</p>
+<li><p>团队介绍</p>
+<p>原神等的云游戏，可能会跟硬件相关，中心云芯片，高通</p>
+</li>
+</ul>
 
     </div>
 
@@ -282,8 +285,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" rel="tag"><i class="fa fa-tag"></i> 八股文</a>
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+              <a href="/tags/%E9%9D%A2%E7%BB%8F/" rel="tag"><i class="fa fa-tag"></i> 面经</a>
           </div>
 
         
@@ -292,13 +294,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/02/16/%E4%BA%8B%E5%8A%A1ACID/" rel="prev" title="事务ACID">
-      <i class="fa fa-chevron-left"></i> 事务ACID
+    <a href="/2022/03/10/%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5%E5%92%8C%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/" rel="prev" title="进程同步和线程同步">
+      <i class="fa fa-chevron-left"></i> 进程同步和线程同步
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/02/16/%E5%B0%81%E9%94%81/" rel="next" title="封锁">
-      封锁 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -357,7 +356,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">并发一致性问题</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
