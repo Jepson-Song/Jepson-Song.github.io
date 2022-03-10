@@ -187,6 +187,170 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/14/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/14/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">内存管理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-14 14:25:12" itemprop="dateCreated datePublished" datetime="2022-02-14T14:25:12+08:00">2022-02-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-27 13:30:20" itemprop="dateModified" datetime="2022-02-27T13:30:20+08:00">2022-02-27</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>C++ 内存分区：栈、堆、全局/静态存储区、常量存储区、代码区。</p>
+<ol>
+<li><p>栈：存放函数的局部变量、函数参数、返回地址等，由编译器自动分配和释放。</p>
+</li>
+<li><p>堆：动态申请的内存空间，就是由 malloc 分配的内存块，由程序员控制它的分配和释放，如果程序执行结束还没有释放，操作系统会自动回收。</p>
+</li>
+<li><p>全局区/静态存储区（.bss 段和 .data 段）：存放全局变量和静态变量，程序运行结束操作系统自动释放，在 C 语言中，未初始化的放在 .bss 段中，初始化的放在 .data 段中，C++ 中不再区分了。</p>
+</li>
+<li><p>常量存储区（.data 段）：存放的是常量，不允许修改，程序运行结束自动释放。</p>
+</li>
+<li><p>代码区（.text 段）：存放代码，不允许修改，但可以执行。编译后的二进制文件存放在这里。</p>
+</li>
+</ol>
+<p>说明：</p>
+<p>从操作系统的本身来讲，以上存储区在内存中的分布是如下形式(从低地址到高地址)：.text 段 –&gt; .data 段 –&gt; .bss 段 –&gt; 堆 –&gt; unused –&gt; 栈 –&gt; env</p>
+<p>程序实例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">说明：C++ 中不再区分初始化和未初始化的全局变量、静态变量的存储区，如果非要区分下述程序标注在了括号中</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> g_var = <span class="number">0</span>; <span class="comment">// g_var 在全局区（.data 段）</span></span><br><span class="line"><span class="keyword">char</span> *gp_var;  <span class="comment">// gp_var 在全局区（.bss 段）</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> var;                    <span class="comment">// var 在栈区</span></span><br><span class="line">    <span class="keyword">char</span> *p_var;                <span class="comment">// p_var 在栈区</span></span><br><span class="line">    <span class="keyword">char</span> arr[] = <span class="string">&quot;abc&quot;</span>;         <span class="comment">// arr 为数组变量，存储在栈区；&quot;abc&quot;为字符串常量，存储在常量区</span></span><br><span class="line">    <span class="keyword">char</span> *p_var1 = <span class="string">&quot;123456&quot;</span>;    <span class="comment">// p_var1 在栈区；&quot;123456&quot;为字符串常量，存储在常量区</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> s_var = <span class="number">0</span>;       <span class="comment">// s_var 为静态变量，存在静态存储区（.data 段）</span></span><br><span class="line">    p_var = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">10</span>); <span class="comment">// 分配得来的 10 个字节的区域在堆区</span></span><br><span class="line">    <span class="built_in">free</span>(p_var);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>补充总结：</p>
+<p>在理解C/C++内存分区时，常会碰到如下术语：数据区，堆，栈，静态存储区，静态区，常量区，常变量区，全局区，字符串常量区，静态常量区，静态变量区，文字常量区，代码区等等，初学者被搞得云里雾里。在这里，尝试捋清楚以上分区的关系。</p>
+<p>数据区包括：堆，栈，静态存储区。</p>
+<p>静态存储区包括：常量区（静态常量区），全局区（全局变量区）和静态变量区（静态区）。</p>
+<p>常量区包括：字符串常量区和常变量区。</p>
+<p>代码区：存放程序编译后的二进制代码，不可寻址区。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/14/%E7%BC%96%E8%AF%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/14/%E7%BC%96%E8%AF%91/" class="post-title-link" itemprop="url">编译</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-14 14:16:35" itemprop="dateCreated datePublished" datetime="2022-02-14T14:16:35+08:00">2022-02-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-16 08:42:46" itemprop="dateModified" datetime="2022-02-16T08:42:46+08:00">2022-02-16</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>编译过程分为四个过程：预处理、编译、汇编、链接。</p>
+<p>预处理：处理以 # 开头的指令；</p>
+<p>编译：将源码 .cpp 文件翻译成 .s 汇编代码；</p>
+<p>汇编：将汇编代码 .s 翻译成机器指令 .o 文件；</p>
+<p>链接：汇编程序生成的目标文件，即 .o 文件，并不会立即执行，因为可能会出现.cpp 文件中的函数引用了另一个.cpp 文件中定义的符号或者调用了某个库文件中的函数。那链接的目的就是将这些文件对应的目标文件连接成一个整体，从而生成可执行的程序 .exe 文件。</p>
+<p><img src="https://s2.loli.net/2022/02/14/4LIRCm5AlKTZufH.png" alt="20220214141659"></p>
+<p>链接分为两种：</p>
+<p>静态链接：代码从其所在的静态链接库中拷贝到最终的可执行程序中，在该程序被执行时，这些代码会被装入到该进程的虚拟地址空间中。</p>
+<p>动态链接：代码被放到动态链接库或共享对象的某个目标文件中，链接程序只是在最终的可执行程序中记录了共享对象的名字等一些信息。在程序执行时，动态链接库的全部内容会被映射到运行时相应进行的虚拟地址的空间。</p>
+<p>二者的优缺点：</p>
+<p>静态链接：浪费空间，每个可执行程序都会有目标文件的一个副本，这样如果目标文件进行了更新操作，就需要重新进行编译链接生成可执行程序（更新困难）；优点就是执行的时候运行速度快，因为可执行程序具备了程序运行的所有内容。</p>
+<p>动态链接：节省内存、更新方便，但是动态链接是在程序运行时，每次执行都需要链接，相比静态链接会有一定的性能损失。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/03/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950103/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -866,192 +1030,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/%E7%B4%A2%E5%BC%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/04/%E7%B4%A2%E5%BC%95/" class="post-title-link" itemprop="url">索引</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-12-04 16:15:26" itemprop="dateCreated datePublished" datetime="2021-12-04T16:15:26+08:00">2021-12-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-12-07 20:38:36" itemprop="dateModified" datetime="2021-12-07T20:38:36+08:00">2021-12-07</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>索引是对数据库表中一列或多列的值进行处理后的一种结构，使用索引可快速访问数据库表中的特定信息。</p>
-<h2 id="Hash索引"><a href="#Hash索引" class="headerlink" title="Hash索引"></a>Hash索引</h2><p>说到Hash，老铁们很容易联想到HashMap，没错，Hash索引的结构和HashMap相类似，键值 key 通过 Hash 映射找到桶 bucket。在这里桶（bucket）指的是一个能存储一条或多条记录的存储单位。一个桶的结构包含了一个内存指针数组，桶中的每行数据都会指向下一行，形成链表结构，当遇到 Hash 冲突时，会在桶中进行键值的查找。</p>
-<p>InnoDB中采用除法散列函数(取余法)，冲突机制采用链接法。</p>
-<h2 id="Hash索引和B-tree索引查询效率"><a href="#Hash索引和B-tree索引查询效率" class="headerlink" title="Hash索引和B+tree索引查询效率"></a>Hash索引和B+tree索引查询效率</h2><p>采用 Hash 进行检索效率非常高，基本上一次检索就可以找到数据，而 B+ 树需要自顶向下依次查找，多次访问节点才能找到数据，中间需要多次 I/O 操作，理论上来说 Hash 比 B+ tree更快。下图是引用网上的Hash索引图片和 B+tree 索引图片，便于直观的理解2种索引结构。</p>
-<h3 id="Hash索引-1"><a href="#Hash索引-1" class="headerlink" title="Hash索引"></a>Hash索引</h3><p><img src="https://s2.loli.net/2021/12/04/BOnpZRJCkog1e4U.png" alt="20211204161752"></p>
-<h3 id="B-树索引"><a href="#B-树索引" class="headerlink" title="B+树索引"></a>B+树索引</h3><p><img src="https://s2.loli.net/2021/12/04/LPS6OpWXoGTYDtB.png" alt="20211204161803"></p>
-<h2 id="Hash索引和B-tree索引的区别"><a href="#Hash索引和B-tree索引的区别" class="headerlink" title="Hash索引和B+tree索引的区别"></a>Hash索引和B+tree索引的区别</h2><ol>
-<li><p>在查询速度上，如果是等值查询，那么Hash索引明显有绝对优势，因为只需要经过一次 Hash 算法即可找到相应的键值，复杂度为O(1)；当然了，这个前提是键值都是唯一的。如果键值不是唯一(或存在Hash冲突)，就需要先找到该键所在位置，然后再根据链表往后扫描，直到找到相应的数据，这时候复杂度会变成O(n)，降低了Hash索引的查找效率。所以，Hash 索引通常不会用到重复值多的列上，比如列为性别、年龄的情况等（当然B+tree索引也不适合这种离散型低的字段上）；</p>
-</li>
-<li><p>Hash 索引是无序的，如果是范围查询检索，这时候 Hash 索引就无法起到作用，即使原先是有序的键值，经过 Hash 算法后，也会变成不连续的了。因此:</p>
-<ol>
-<li><p>Hash 索引只支持等值比较查询、无法索成范围查询检索，B+tree索引的叶子节点形成有序链表，便于范围查询。</p>
-</li>
-<li><p>Hash 索引无法做 like ‘xxx%’ 这样的部分模糊查询，因为需要对 完整 key 做 Hash 计算，定位bucket。而 B+tree 索引具有最左前缀匹配，可以进行部分模糊查询。</p>
-</li>
-<li><p>Hash索引中存放的是经过Hash计算之后的Hash值，而且Hash值的大小关系并不一定和Hash运算前的键值完全一样，所以数据库无法利用索引的数据来避免任何排序运算。B+tree 索引的叶子节点形成有序链表，可用于排序。</p>
-</li>
-</ol>
-</li>
-<li><p>Hash 索引不支持多列联合索引，对于联合索引来说，Hash 索引在计算 Hash 值的时候是将索引键合并后再一起计算 Hash 值，不会针对每个索引单独计算 Hash 值。因此如果用到联合索引的一个或者几个索引时，联合索引无法被利用；</p>
-</li>
-<li><p>因为存在哈希碰撞问题，在有大量重复键值情况下，哈希索引的效率极低。B+tree 所有查询都要找到叶子节点，性能稳定；</p>
-</li>
-</ol>
-<h2 id="场景区分"><a href="#场景区分" class="headerlink" title="场景区分"></a>场景区分</h2><ol>
-<li><p>大多数场景下，都会有组合查询，范围查询、排序、分组、模糊查询等查询特征，Hash 索引无法满足要求，建议数据库使用B+树索引。</p>
-</li>
-<li><p>在离散型高，数据基数大，且等值查询时候，Hash索引有优势。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/b%E6%A0%91%E5%92%8Cb+%E6%A0%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/04/b%E6%A0%91%E5%92%8Cb+%E6%A0%91/" class="post-title-link" itemprop="url">b树和b+树</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-12-04 16:01:04 / Modified: 16:11:57" itemprop="dateCreated datePublished" datetime="2021-12-04T16:01:04+08:00">2021-12-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="b树"><a href="#b树" class="headerlink" title="b树"></a>b树</h2><p>b树就是平衡M叉树。跟平衡二叉树类似，avl的非叶子节点只有一个关键字，b树的非叶子节点有M-1个关键字。M-1个关键字将数据划分为M段，每个儿子节点对应一段。b树的叶子结点和非叶子节点都存放数据。</p>
-<p><img src="https://s2.loli.net/2021/12/04/5de4ZTs6hIn9Rbw.png" alt="20211204160835"></p>
-<p>一个M阶的b树具有如下几个特征：</p>
-<ul>
-<li>定义任意非叶子结点最多只有M个儿子，且M&gt;2；</li>
-<li>根结点的儿子数为[2, M]；</li>
-<li>除根结点以外的非叶子结点的儿子数为[M/2, M]，向上取整；</li>
-<li>非叶子结点的关键字个数=儿子数-1；</li>
-<li>所有叶子结点位于同一层；</li>
-<li>k个关键字把节点拆成k+1段，分别指向k+1个儿子，同时满足查找树的大小关系。</li>
-</ul>
-<p>有关b树的一些特性，注意与后面的b+树区分：</p>
-<ul>
-<li>关键字集合分布在整颗树中；</li>
-<li>任何一个关键字出现且只出现在一个结点中；</li>
-<li>搜索有可能在非叶子结点结束；</li>
-<li>其搜索性能等价于在关键字全集内做一次二分查找；</li>
-</ul>
-<h2 id="b-树"><a href="#b-树" class="headerlink" title="b+树"></a>b+树</h2><p>b+树是b树的变体，区别是b+树非叶子节点有M个关键字，并且不在非叶子结点存储数据，同时b+树的叶子结点之间也有指针相连。</p>
-<p><img src="https://s2.loli.net/2021/12/04/YuMm2KXtR9BWk63.png" alt="20211204160733"></p>
-<p>M阶的b+树的特征：</p>
-<ul>
-<li>有M棵子树的非叶子结点中含有M个关键字（b树是M-1个），这些关键字不保存数据，只用来索引，所有数据都保存在叶子节点（b树是每个关键字都保存数据）。</li>
-<li>所有的叶子结点中包含了全部关键字的信息，及指向含这些关键字记录的指针，且叶子结点本身依关键字的大小自小而大顺序链接。</li>
-<li>所有的非叶子结点可以看成是索引部分，结点中仅含其子树中的最大（或最小）关键字。</li>
-<li>通常在b+树上有两个头指针，一个指向根结点，一个指向关键字最小的叶子结点。</li>
-<li>同一个数字会在不同节点中重复出现，根节点的最大元素就是b+树的最大元素。</li>
-</ul>
-<p>b+树相比于b树的查询优势：</p>
-<ul>
-<li>b+树的中间节点不保存数据，所以磁盘页能容纳更多节点元素，更“矮胖”；</li>
-<li>b+树查询必须查找到叶子节点，b树只要匹配到即可不用管元素位置，因此b+树查找更稳定（并不慢）；</li>
-<li>对于范围查找来说，b+树只需遍历叶子节点链表即可，b树却需要重复地中序遍历;</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1121,7 +1099,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-count">133</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

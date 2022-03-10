@@ -187,6 +187,149 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/04/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/04/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/" class="post-title-link" itemprop="url">系统调用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-04 17:02:45" itemprop="dateCreated datePublished" datetime="2022-03-04T17:02:45+08:00">2022-03-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-03-06 13:35:31" itemprop="dateModified" datetime="2022-03-06T13:35:31+08:00">2022-03-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h2><p>系统调用就是调用操作系统提供的一系列内核功能函数，因为内核总是对用户程序持不信任的态度，一些核心功能不能直接交由用户程序来实现执行。用户程序只能发出请求，然后内核调用相应的内核函数来帮着处理，将结果返回给应用程序。如此才能保证系统的稳定和安全。</p>
+<p>系统调用是给用户态下的程序使用的，但是用户程序并不直接使用系统调用，而是系统调用在用户态下的接口。这个用户接口就是操作系统提供的系统调用API，一般遵循POSIX标准。</p>
+<p>每一个系统调用都唯一分配了一个整数来标识，通常的做法就是将这个系统调用号放进eax寄存器，当执行到系统调用入口程序的时候就会根据eax的值去调用具体的系统调用程序，比如说eax中存放的是1那么就会去调用fork这个系统调用的相关函数。</p>
+<h3 id="系统调用的实现"><a href="#系统调用的实现" class="headerlink" title="系统调用的实现"></a>系统调用的实现</h3><ul>
+<li><p>参数</p>
+<p>  有些系统调用的是需要参数的，用户接口不真正干活，真正干活的是内核功能函数，但是需要的参数在用户态下，所以需要在用户接口部分向内核传递参数。传参有两种方法：</p>
+<ul>
+<li><p>直接传给寄存器，寄存器是通用的，在用户态将值传给寄存器，进入内核态之后就可以直接使用，这可以使用内联汇编来实现。</p>
+</li>
+<li><p>压栈，压栈有个问题，系统调用使用中断/陷阱来实现，这期间会换栈，在用户态下压栈的参数对内核来说似乎没什么用处。所以要想使用用户态下栈中的参数，必须要获得用户栈的地址，这个值在哪呢？没错，在内核栈中的上下文保存着，从内核栈中取出用户栈的栈顶esp值，就可以取到系统调用的参数了，xv6就是这样实现的。</p>
+</li>
+</ul>
+</li>
+<li><p>返回值</p>
+<p>  函数的调用约定中规定了返回值应该放在eax寄存器里面。而在系统调用的一开始我们将系统调用号传进了eax寄存器，然后中断时保存上下文，将eax压入内核栈，系统调用处理程序将最后结果放到eax寄存器中。</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/04/%E8%AF%AD%E6%B3%95%E7%B3%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/04/%E8%AF%AD%E6%B3%95%E7%B3%96/" class="post-title-link" itemprop="url">语法糖</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-04 16:45:32 / Modified: 16:47:13" itemprop="dateCreated datePublished" datetime="2022-03-04T16:45:32+08:00">2022-03-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>语法糖(syntactic sugar)，也译为糖衣语法，是由英国计算机科学家彼得·约翰·兰达（Peter J. Landin）发明的一个术语，指计算机语言中添加的某种语法，这种语法对语言的功能并没有影响，但是更方便程序员使用。通常来说使用语法糖能够增加程序的可读性，从而减少程序代码出错的机会。</p>
+<p>语法糖是指编程语言中可以更容易的表达一个操作的语法，它可以使程序员更加容易去使用这门语言：操作可以变得更加清晰、方便，或者更加符合程序员的编程习惯。</p>
+<p>具体来说，语法糖是指语言中的一个构件，当去掉该构件后并不影响语言的功能和表达能力。</p>
+<p>例如，C语言中的标记a[i]就是*(a+i)的语法糖。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/04/%E5%AD%97%E8%8A%82TikTok%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91%E4%BA%8C%E9%9D%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -921,159 +1064,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/27/%E5%AE%8F%E5%AE%9A%E4%B9%89%E5%92%8Ctypedef/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/27/%E5%AE%8F%E5%AE%9A%E4%B9%89%E5%92%8Ctypedef/" class="post-title-link" itemprop="url">宏定义和typedef</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-27 23:15:48" itemprop="dateCreated datePublished" datetime="2022-02-27T23:15:48+08:00">2022-02-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-28 10:15:55" itemprop="dateModified" datetime="2022-02-28T10:15:55+08:00">2022-02-28</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="宏定义和typedef区别"><a href="#宏定义和typedef区别" class="headerlink" title="宏定义和typedef区别"></a>宏定义和typedef区别</h2><ul>
-<li><p>宏主要用于定义常量及书写复杂的内容；typedef主要用于定义类型别名。</p>
-</li>
-<li><p>宏替换发生在编译阶段之前，属于文本插入替换；typedef是编译的一部分。</p>
-</li>
-<li><p>宏不检查类型；typedef会检查数据类型。</p>
-</li>
-<li><p>宏不是语句，不在在最后加分号；typedef是语句，要加分号标识结束。</p>
-</li>
-<li><p>注意对指针的操作，typedef char * p_char和#define p_char char *区别巨大。</p>
-<p>一个经典例子：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INT int*</span></span><br><span class="line">INT a,b;</span><br></pre></td></tr></table></figure>
-
-<p>这里a的类型是int*，而b的类型是int。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> * INT  </span><br><span class="line">INT a,b;</span><br></pre></td></tr></table></figure>
-
-<p>这里的a,b都是int *类型。</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/27/%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84%E4%B8%8E%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/27/%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84%E4%B8%8E%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">指针数组与数组指针</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-27 23:03:45 / Modified: 23:08:55" itemprop="dateCreated datePublished" datetime="2022-02-27T23:03:45+08:00">2022-02-27</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p[<span class="number">10</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in"><span class="keyword">int</span></span> (*p)[<span class="number">10</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> *<span class="title">p</span><span class="params">(<span class="keyword">int</span>)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">int</span> <span class="params">(*p)</span><span class="params">(<span class="keyword">int</span>)</span></span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>int *p[10]表示指针数组，强调数组概念，是一个数组变量，数组大小为10，数组内每个元素都是指向int类型的指针变量。</p>
-</li>
-<li><p>int (*p)[10]表示数组指针，强调是指针，只有一个变量，是指针类型，不过指向的是一个int类型的数组，这个数组大小是10。</p>
-</li>
-<li><p>int *p(int)是函数声明，函数名是p，参数是int类型的，返回值是int *类型的。</p>
-</li>
-<li><p>int (*p)(int)是函数指针，强调是指针，该指针指向的函数具有int类型参数，并且返回值是int类型的。</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1143,7 +1133,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-count">133</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -187,6 +187,147 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/23/%E6%9C%80%E9%95%BF%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97LIS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/23/%E6%9C%80%E9%95%BF%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97LIS/" class="post-title-link" itemprop="url">最长上升子序列LIS</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-23 22:12:23 / Modified: 22:22:16" itemprop="dateCreated datePublished" datetime="2022-02-23T22:12:23+08:00">2022-02-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>给定一个长度为 n 的数组 arr，求它的最长严格上升子序列的长度。<br>所谓子序列，指一个数组删掉一些数（也可以不删）之后，形成的新数组。例如 [1,5,3,7,3] 数组，其子序列有：[1,3,3]、[7] 等。但 [1,6]、[1,3,5] 则不是它的子序列。</p>
+<p> 。<br>数据范围： 0 &lt;= n &lt;= 1000<br>要求：时间复杂度 O(n^2)，空间复杂度 O(n)</p>
+<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><pre><code>输入：[6,3,1,5,2,3,7]
+返回值：4
+说明：该数组最长上升子序列为 [1,2,3,7] ，长度为4
+</code></pre>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>维护一个伪上升子序列，遍历数组中每一个值，二分找到伪上升子序列中第一个比它大的值，然后将其替换掉，如果没有则直接插入到伪上升子序列最后。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><ol>
+<li><p>手写二分</p>
+ <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">LIS</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; arr)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// write code here</span></span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> n = arr.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> b[n];</span><br><span class="line">    <span class="keyword">int</span> lb, rb;</span><br><span class="line">    lb = rb = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> l, r, mid;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        l = lb;</span><br><span class="line">        r = rb;</span><br><span class="line">        <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">            mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(b[mid]&gt;arr[i]) r = mid;</span><br><span class="line">            <span class="keyword">else</span> l = mid+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(l&gt;=lb&amp;&amp;l&lt;=rb<span class="number">-1</span>) b[l] = arr[i];</span><br><span class="line">        <span class="keyword">else</span> b[rb++] = arr[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> rb-lb;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>upper_bound</p>
+<p> upper_bound( begin,end,num)：从数组的begin位置到end-1位置二分查找第一个大于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。</p>
+<p> lower_bound( begin,end,num)：从数组的begin位置到end-1位置二分查找第一个大于或等于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。</p>
+ <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">LIS</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; a)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// write code here</span></span><br><span class="line">    <span class="keyword">int</span> n = a.<span class="built_in">size</span>();</span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; b;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> p = <span class="built_in">upper_bound</span>(b.<span class="built_in">begin</span>(), b.<span class="built_in">end</span>(),a[i])-b.<span class="built_in">begin</span>();</span><br><span class="line">        <span class="keyword">if</span>(p==b.<span class="built_in">size</span>()) b.<span class="built_in">push_back</span>(a[i]);</span><br><span class="line">        <span class="keyword">else</span> b[p] = a[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> b.<span class="built_in">size</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/23/BM65%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97%E4%BA%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/23/BM65%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97%E4%BA%8C/" class="post-title-link" itemprop="url">BM65最长公共子序列二</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-23 21:01:04 / Modified: 21:10:07" itemprop="dateCreated datePublished" datetime="2022-02-23T21:01:04+08:00">2022-02-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>给定两个字符串str1和str2，输出两个字符串的最长公共子序列。如果最长公共子序列为空，则返回”-1”。目前给出的数据，仅仅会存在一个最长的公共子序列</p>
+<p>数据范围：0 &lt;= |str1|,|str2| &lt;= 20000</p>
+<p>要求：空间复杂度 O(n^2)，时间复杂度 O(n^2)</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><pre><code>输入：&quot;1A2C3D4B56&quot;,&quot;B1D23A456A&quot;
+返回值：&quot;123456&quot;
+</code></pre>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>普通的最长公共子序列只需要返回长度，这道题需要返回子序列，而且受空间复杂度限制不能开二维string数组记录。</p>
+<p>需要用dp的结果倒推出子序列。</p>
+<p><img src="https://s2.loli.net/2022/02/23/PFUdSlp94ZRIf3N.png" alt="20220223210736"></p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">LCS</span><span class="params">(string s1, string s2)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// write code here</span></span><br><span class="line">    <span class="keyword">int</span> l1 = s1.<span class="built_in">length</span>();</span><br><span class="line">    <span class="keyword">int</span> l2 = s2.<span class="built_in">length</span>();</span><br><span class="line">    s1 = <span class="string">&quot;+&quot;</span>+s1;</span><br><span class="line">    s2 = <span class="string">&quot;-&quot;</span>+s2;</span><br><span class="line">    <span class="keyword">int</span> dp[l1+<span class="number">1</span>][l2+<span class="number">1</span>];</span><br><span class="line">    <span class="built_in">memset</span>(dp, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(dp));</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=l1;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=l2;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(s1[i]==s2[j])&#123;</span><br><span class="line">                dp[i][j] = dp[i<span class="number">-1</span>][j<span class="number">-1</span>] + <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                dp[i][j] = <span class="built_in">max</span>(dp[i<span class="number">-1</span>][j], dp[i][j<span class="number">-1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    string ans;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=l1,j=l2;dp[i][j]&gt;=<span class="number">1</span>;)&#123;</span><br><span class="line">        <span class="keyword">if</span>(s1[i]==s2[j])&#123;</span><br><span class="line">            ans = s1[i]+ans;</span><br><span class="line">            i--;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(dp[i<span class="number">-1</span>][j]&gt;dp[i][j<span class="number">-1</span>]) i--;</span><br><span class="line">            <span class="keyword">else</span> j--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(ans.<span class="built_in">length</span>()==<span class="number">0</span>) ans = <span class="string">&quot;-1&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/22/%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -833,195 +974,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/19/%E8%BF%9E%E7%BB%AD%E4%B8%AD%E5%80%BC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/19/%E8%BF%9E%E7%BB%AD%E4%B8%AD%E5%80%BC/" class="post-title-link" itemprop="url">连续中值</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-19 17:11:13 / Modified: 17:17:25" itemprop="dateCreated datePublished" datetime="2022-02-19T17:11:13+08:00">2022-02-19</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="连续中值"><a href="#连续中值" class="headerlink" title="连续中值"></a>连续中值</h2><p>随机产生数字并传递给一个方法。你能否完成这个方法，在每次产生新值时，寻找当前所有值的中间值（中位数）并保存。</p>
-<p>中位数是有序列表中间的数。如果列表长度是偶数，中位数则是中间两个数的平均值。</p>
-<p>例如，</p>
-<p>[2,3,4] 的中位数是 3</p>
-<p>[2,3] 的中位数是 (2 + 3) / 2 = 2.5</p>
-<p>设计一个支持以下两种操作的数据结构：</p>
-<pre><code>void addNum(int num) - 从数据流中添加一个整数到数据结构中。
-double findMedian() - 返回目前所有元素的中位数。
-</code></pre>
-<p>示例：</p>
-<p>addNum(1)<br>addNum(2)<br>findMedian() -&gt; 1.5<br>addNum(3)<br>findMedian() -&gt; 2</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>数组分两半，左边建大顶堆维护左半部分的最大值，右边建小顶堆维护右半部分的最小值，两个堆顶的均值就是数组的中值。每次插入数据的时候判断一下：</p>
-<pre><code>如果要插入的数据比右边小顶堆堆顶小，则插到左边；
-如果要插入的数据比左边大顶堆堆顶大，则插到右边；
-如果介于二者中间，也插到右边，
-</code></pre>
-<p>同时要保证右边的小顶堆长度最多比左边的大顶堆大1。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><pre><code><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">priority_queue&lt;<span class="keyword">int</span>, vector&lt;<span class="keyword">int</span>&gt;, less&lt;<span class="keyword">int</span>&gt; &gt;bigheap;</span><br><span class="line">priority_queue&lt;<span class="keyword">int</span>, vector&lt;<span class="keyword">int</span>&gt;, greater&lt;<span class="keyword">int</span>&gt; &gt;smallheap;</span><br><span class="line"></span><br><span class="line"><span class="built_in">MedianFinder</span>() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addNum</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(bigheap.<span class="built_in">size</span>()==<span class="number">0</span>&amp;&amp;smallheap.<span class="built_in">size</span>()&lt;=<span class="number">1</span>) smallheap.<span class="built_in">push</span>(num);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(num&lt;smallheap.<span class="built_in">top</span>()) bigheap.<span class="built_in">push</span>(num);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(num&gt;bigheap.<span class="built_in">top</span>()) smallheap.<span class="built_in">push</span>(num);</span><br><span class="line">    <span class="keyword">else</span> bigheap.<span class="built_in">push</span>(num);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(smallheap.<span class="built_in">size</span>()&gt;bigheap.<span class="built_in">size</span>()+<span class="number">1</span>)&#123;</span><br><span class="line">        bigheap.<span class="built_in">push</span>(smallheap.<span class="built_in">top</span>());</span><br><span class="line">        smallheap.<span class="built_in">pop</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(bigheap.<span class="built_in">size</span>()&gt;smallheap.<span class="built_in">size</span>())&#123;</span><br><span class="line">        smallheap.<span class="built_in">push</span>(bigheap.<span class="built_in">top</span>());</span><br><span class="line">        bigheap.<span class="built_in">pop</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">findMedian</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(smallheap.<span class="built_in">size</span>()&gt;bigheap.<span class="built_in">size</span>()) <span class="keyword">return</span> smallheap.<span class="built_in">top</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1.0</span>*(smallheap.<span class="built_in">top</span>()+bigheap.<span class="built_in">top</span>())/<span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/19/%E6%AD%BB%E9%94%81-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/19/%E6%AD%BB%E9%94%81-1/" class="post-title-link" itemprop="url">死锁</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-19 13:52:27" itemprop="dateCreated datePublished" datetime="2022-02-19T13:52:27+08:00">2022-02-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-02 15:45:05" itemprop="dateModified" datetime="2022-03-02T15:45:05+08:00">2022-03-02</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="死锁定义"><a href="#死锁定义" class="headerlink" title="死锁定义"></a>死锁定义</h2><p>线程死锁是指由于两个或者多个线程互相持有对方所需要的资源，导致这些线程处于等待状态，无法前往执行。</p>
-<h2 id="必要条件"><a href="#必要条件" class="headerlink" title="必要条件"></a>必要条件</h2><p>互斥：每个资源要么已经分配给了一个进程，要么就是可用的。</p>
-<p>占有和等待：已经得到了某个资源的进程可以再请求新的资源。</p>
-<p>不可抢占：已经分配给一个进程的资源不能强制性地被抢占，它只能被占有它的进程显式地释放。</p>
-<p>环路等待：有两个或者两个以上的进程组成一条环路，该环路中的每个进程都在等待下一个进程所占有的资源。</p>
-<h2 id="死锁的处理策略"><a href="#死锁的处理策略" class="headerlink" title="死锁的处理策略"></a>死锁的处理策略</h2><ol>
-<li><p>鸵鸟策略</p>
-<p>把头埋在沙子里，假装根本没发生问题。</p>
-<p> 因为解决死锁问题的代价很高，因此鸵鸟策略这种不采取任务措施的方案会获得更高的性能。</p>
-<p> 当发生死锁时不会对用户造成多大影响，或发生死锁的概率很低，可以采用鸵鸟策略。</p>
-<p> 大多数操作系统，包括 Unix，Linux 和 Windows，处理死锁问题的办法仅仅是忽略它。</p>
-</li>
-<li><p>死锁预防：破坏死锁的四个条件之一</p>
-<p> 破环互斥条件：允许资源共享；</p>
-<p> 破环占有和等待条件：一次性分配所有资源，只要缺少一个资源，其它资源也都不给他分配；</p>
-<p> 破坏不可抢占：请求新资源得不到时，释放已经保持占有的资源，待以后重新申请；</p>
-<p> 破坏环路等待：采用顺序资源分配法，给每个资源编号，进程申请资源的时候按照编号顺序申请，释放的时候则相反；</p>
-</li>
-<li><p>死锁检测与解除：</p>
-<p> 检测死锁：利用死锁原理化简资源分配图检测死锁的存在</p>
-<p> 死锁解除：资源剥夺、撤销进程、进程回退</p>
-<pre><code> 剥夺资源：从其它进程剥夺足够数量的资源给死锁进程，以解除死锁状态；
-
- 撤消进程：可以直接撤消死锁进程或撤消代价最小的进程，直至有足够的资源可用，死锁状态.消除为止；所谓代价是指优先级、运行代价、进程的重要性和价值等。
-</code></pre>
-</li>
-<li><p>死锁避免：死锁避免事先预防策略，但是是采用资源动态分配的过程中，防止系统进入不安全状态，以避免死锁。</p>
-<p> 预防死锁的几种策略，会严重地损害系统性能。因此在避免死锁时，要施加较弱的限制，从而获得 较满意的系统性能。由于在避免死锁的策略中，允许进程动态地申请资源。因而，系统在进行资源分配之前预先计算资源分配的安全性。若此次分配不会导致系统进入不安全的状态，则将资源分配给进程；否则，进程等待。其中最具有代表性的避免死锁算法是银行家算法。</p>
-<p> 银行家算法：首先需要定义状态和安全状态的概念。系统的状态是当前给进程分配的资源情况。因此，状态包含两个向量Resource（系统中每种资源的总量）和Available（未分配给进程的每种资源的总量）及两个矩阵Claim（表示进程对资源的需求）和Allocation（表示当前分配给进程的资源）。安全状态是指至少有一个资源分配序列不会导致死锁。当进程请求一组资源时，假设同意该请求，从而改变了系统的状态，然后确定其结果是否还处于安全状态。如果是，同意这个请求；如果不是，阻塞该进程知道同意该请求后系统状态仍然是安全的。</p>
-</li>
-</ol>
-<h2 id="银行家算法"><a href="#银行家算法" class="headerlink" title="银行家算法"></a>银行家算法</h2><p>银行家算法是仿照银行发放贷款时采用的控制方式而设计的一种死锁避免算法，该算法的策略是实现动态避免死锁。</p>
-<h3 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h3><p>银行家算法的基本思想是：分配资源之前，判断系统是否安全，如果安全才会进行资源分配。</p>
-<p>我们把操作系统看做是银行家，操作系统管理的资源相当于银行家的资金，线程向操作系统请求分配资源就是用户向银行家要贷款。</p>
-<p>算法在每次分配资源前需要要求： request &lt; available &amp;&amp; request &lt; needing;</p>
-<h3 id="算法实例"><a href="#算法实例" class="headerlink" title="算法实例"></a>算法实例</h3><p>系统中有R1，R2，R3三种资源，在time0时刻，5个线程T0，T1，T2，T3，T4对资源占用和需求的情况如下表，此时系统的可用资源向量为(3,3,2)。求T0时刻系统是否存在安全序列？</p>
-<p><img src="https://s2.loli.net/2022/02/19/VkdnsuegCWtRB3Y.png" alt="20220219142642"></p>
-<p>我们假设每个线程执行时间为一个时刻。</p>
-<p>1、在time0时刻，available(3,3,2) &gt; T1.needing(1,2,2)； 所以T1可以执行，T1执行完毕之后available = T1.allocated(2,0,0) + available(3,3,2) = (5,3,2);</p>
-<p><img src="https://s2.loli.net/2022/02/19/VSrsExfi6GpQ78u.png" alt="20220219142719"></p>
-<p>2、进入time1时刻，available(5,3,2) &gt; T3.needing(0,1,1)；所以T3可以执行，T3执行完毕之后available = T3.allocated(2,1,1)+available(5,3,2) = (7,4,3)；</p>
-<p><img src="https://s2.loli.net/2022/02/19/Yw83SBZubGzjMct.png" alt="20220219142727"></p>
-<p>3、进入time2时刻，available(7,4,3) &gt; T4.needing(4,3,1)；所以T4可以执行，T4执行完毕之后available = T4.allocated(0,0,2) + available(7,4,3) = (7,4,5)；</p>
-<p><img src="https://s2.loli.net/2022/02/19/C7XSQbAgKFu2Bwc.png" alt="20220219142735"></p>
-<p>4、进入time3时刻，available(7,4,5) &gt; T2.needing(6,0,0)；所以T2可以执行，T2指向完毕之后available = T2.allocated(3,0,2) + available(7,4,5) = (10,4,7)；</p>
-<p><img src="https://s2.loli.net/2022/02/19/gkcsiXuh7IjYG46.png" alt="20220219142741"></p>
-<p>5、进入time4时刻，因为available(10,4,7) &gt; T0.needing(7,4,3)；所以执行T0。完成安全序列。</p>
-<p>上面只是安全序列的一个例子，可能还存在其他安全序列。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1091,7 +1043,7 @@ double findMedian() - 返回目前所有元素的中位数。
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-count">133</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
