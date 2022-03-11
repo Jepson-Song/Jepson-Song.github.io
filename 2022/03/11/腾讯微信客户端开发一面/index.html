@@ -21,15 +21,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Jepson&#39;s Blog">
-<meta property="og:url" content="http://example.com/archives/page/12/index.html">
+  <meta name="description" content="上来先手撕三道代码， 题目不难，都算是经典题，但是给的时间稍微有点儿少，而且一上来就撕代码有点儿懵，导致一道很简单的链表翻转题没做好。。  第一题是链表k个一组翻转  一上来有点懵，边界老是处理不好，写了十分钟没写出来就去做后面两道题了，后面两道题比较简单，一会儿就写完了又回来接着做这个。 老是处理不好边界，索性直接把链表存到数组里，在数组里处理，结果最后面试让解释一下代码的时候还是解释的不太清">
+<meta property="og:type" content="article">
+<meta property="og:title" content="腾讯微信客户端开发一面">
+<meta property="og:url" content="http://example.com/2022/03/11/%E8%85%BE%E8%AE%AF%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2/index.html">
 <meta property="og:site_name" content="Jepson&#39;s Blog">
+<meta property="og:description" content="上来先手撕三道代码， 题目不难，都算是经典题，但是给的时间稍微有点儿少，而且一上来就撕代码有点儿懵，导致一道很简单的链表翻转题没做好。。  第一题是链表k个一组翻转  一上来有点懵，边界老是处理不好，写了十分钟没写出来就去做后面两道题了，后面两道题比较简单，一会儿就写完了又回来接着做这个。 老是处理不好边界，索性直接把链表存到数组里，在数组里处理，结果最后面试让解释一下代码的时候还是解释的不太清">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-11T04:13:36.000Z">
+<meta property="article:modified_time" content="2022-03-11T04:38:22.237Z">
 <meta property="article:author" content="Jepson">
+<meta property="article:tag" content="面经">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/archives/page/12/">
+<link rel="canonical" href="http://example.com/2022/03/11/%E8%85%BE%E8%AE%AF%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2/">
 
 
 <script id="page-configurations">
@@ -37,12 +42,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Archive | Jepson's Blog</title>
+  <title>腾讯微信客户端开发一面 | Jepson's Blog</title>
   
 
 
@@ -182,235 +187,167 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        
-        <span class="collection-header">Great! 135 posts in total. Keep on posting.</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/11/%E8%85%BE%E8%AE%AF%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          腾讯微信客户端开发一面
+        </h1>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-11 12:13:36 / Modified: 12:38:22" itemprop="dateCreated datePublished" datetime="2022-03-11T12:13:36+08:00">2022-03-11</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2021</span>
+        <ul>
+<li><p>上来先手撕三道代码， 题目不难，都算是经典题，但是给的时间稍微有点儿少，而且一上来就撕代码有点儿懵，导致一道很简单的链表翻转题没做好。。</p>
+</li>
+<li><p>第一题是链表k个一组翻转</p>
+<ul>
+<li>一上来有点懵，边界老是处理不好，写了十分钟没写出来就去做后面两道题了，后面两道题比较简单，一会儿就写完了又回来接着做这个。</li>
+<li>老是处理不好边界，索性直接把链表存到数组里，在数组里处理，结果最后面试让解释一下代码的时候还是解释的不太清楚。。</li>
+</ul>
+</li>
+<li><p>第二题是把数组的前k个移到最后</p>
+<ul>
+<li>开了个临时数组存，面试官问不定长数组会有什么问题，如果数组很长那么存在哪里</li>
+<li>问有没有更小内存开销的方法，问复杂度（这里答得有点儿混乱）</li>
+<li>堆栈的区别</li>
+<li>为什么要有堆和栈</li>
+</ul>
+</li>
+<li><p>第三题是最大子数组</p>
+</li>
+<li><p>问ACM竞赛经历，团队几人，怎么分配工作，过几题能拿牌</p>
+</li>
+<li><p>问编译器项目，非常详细，一步一步地问</p>
+<ul>
+<li>词法分析怎么实现的，有没有比字符串匹配更好的方法，答了字典树，又问字典树为什么更好之类的</li>
+<li>文法分析，抽象语法树，递归实现，有没有比递归实现更好的方式，答了可以模仿字典树（这里答的不好，面试官说循环递归的问题字典树解决不了，就建不起来这棵树），除了递归和字典树之外还有没有什么方案（不知道。。）</li>
+<li>汇编代码生成是干什么的，为什么是四元式，解释了一下操作数操作符操作结果之类的。</li>
+</ul>
+</li>
+<li><p>虚拟内存，为什么要有虚拟内存，怎么实现的，页表，页和块</p>
+</li>
+<li><p>进程间通信有哪些，管道是什么，套接字是什么，共享内存是什么，哪个最快（答了共享内存，不知道对不对）</p>
+</li>
+<li><p>线程同步方式，信号是什么</p>
+</li>
+<li><p>为什么要有线程，进程是什么</p>
+</li>
+<li><p>B+树是什么，有什么特性（答了叶子结点之间有指针），有什么好处（答了查找比较快和擅长范围查找）</p>
+</li>
+<li><p>TCP和UDP，区别，适用于哪些场景</p>
+</li>
+<li><p>HTTPS是什么，SSL具体怎么实现，为什么，对称加密和非对称加密的区别</p>
+</li>
+<li><p>问科研项目</p>
+<ul>
+<li>持续时间，几个人在做，具体怎么实现，除了超声还有什么方式，wifi可以吗，红外可以吗，摄像头人脸识别怎么样，呼吸和心跳是怎么测得的等等</li>
+</ul>
+</li>
+<li><p>问了开发的app，觉得哪个最好，讲了一下</p>
+</li>
+<li><p>工作地点是广州，对于工作地点有没有想法</p>
+</li>
+<li><p>反问环节</p>
+<ul>
+<li>问了面试官觉得我表现怎么样，有哪些方面可以提高，面试官说原理性的东西可以提高一下，比如做的编译器的原理细节等，思考更深入一点儿</li>
+</ul>
+</li>
+</ul>
+<p>总结：问了一个半小时多，是这么多面试里最久的，期间网络很差，换手机热点也很差，断线好几次，后来直接把摄像头关了。面试官问的特别详细，特别深，特别喜欢问为什么。</p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
+        
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-07-15T21:10:44+08:00"
-              content="2021-07-15">
-          07-15
-        </time>
-      </div>
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/07/15/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950715/" itemprop="url">
-            <span itemprop="name">实验记录0715</span>
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://github.com/Jepson-Song">
+            <span class="icon">
+              <i class="fab fa-github"></i>
+            </span>
+
+            <span class="label">GItHub</span>
           </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-07-14T16:53:15+08:00"
-              content="2021-07-14">
-          07-14
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/07/14/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950714/" itemprop="url">
-            <span itemprop="name">实验记录0714</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-07-13T19:26:04+08:00"
-              content="2021-07-13">
-          07-13
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/07/13/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950713/" itemprop="url">
-            <span itemprop="name">实验记录0713</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-07-07T10:59:46+08:00"
-              content="2021-07-07">
-          07-07
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/07/07/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950707/" itemprop="url">
-            <span itemprop="name">实验记录0707</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-05-18T19:53:29+08:00"
-              content="2021-05-18">
-          05-18
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/05/18/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950518/" itemprop="url">
-            <span itemprop="name">实验记录0518</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-05-02T10:59:35+08:00"
-              content="2021-05-02">
-          05-02
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/05/02/git%E6%8A%A5%E9%94%9910054/" itemprop="url">
-            <span itemprop="name">git报错10054</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-04-27T13:46:45+08:00"
-              content="2021-04-27">
-          04-27
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/04/27/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950427/" itemprop="url">
-            <span itemprop="name">实验记录0427</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-04-26T16:21:39+08:00"
-              content="2021-04-26">
-          04-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/04/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950426/" itemprop="url">
-            <span itemprop="name">实验记录0426</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-04-20T21:24:51+08:00"
-              content="2021-04-20">
-          04-20
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/04/20/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950420/" itemprop="url">
-            <span itemprop="name">实验记录0420</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-04-14T21:38:19+08:00"
-              content="2021-04-14">
-          04-14
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/04/14/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950414/" itemprop="url">
-            <span itemprop="name">实验记录0414</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-
+        </div>
     </div>
   </div>
-  
-  
-  
 
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E7%BB%8F/" rel="tag"><i class="fa fa-tag"></i> 面经</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/10/%E9%98%BF%E9%87%8C%E4%BA%91%E6%B8%B8%E6%88%8F%E4%B8%80%E9%9D%A2/" rel="prev" title="阿里云游戏一面">
+      <i class="fa fa-chevron-left"></i> 阿里云游戏一面
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
   
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/page/11/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/archives/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/archives/page/13/">13</a><a class="page-number" href="/archives/page/14/">14</a><a class="extend next" rel="next" href="/archives/page/13/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
-  </nav>
+  
+  
 
 
 

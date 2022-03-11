@@ -597,6 +597,124 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/11/%E8%85%BE%E8%AE%AF%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/11/%E8%85%BE%E8%AE%AF%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2/" class="post-title-link" itemprop="url">腾讯微信客户端开发一面</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-11 12:13:36 / Modified: 12:38:22" itemprop="dateCreated datePublished" datetime="2022-03-11T12:13:36+08:00">2022-03-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li><p>上来先手撕三道代码， 题目不难，都算是经典题，但是给的时间稍微有点儿少，而且一上来就撕代码有点儿懵，导致一道很简单的链表翻转题没做好。。</p>
+</li>
+<li><p>第一题是链表k个一组翻转</p>
+<ul>
+<li>一上来有点懵，边界老是处理不好，写了十分钟没写出来就去做后面两道题了，后面两道题比较简单，一会儿就写完了又回来接着做这个。</li>
+<li>老是处理不好边界，索性直接把链表存到数组里，在数组里处理，结果最后面试让解释一下代码的时候还是解释的不太清楚。。</li>
+</ul>
+</li>
+<li><p>第二题是把数组的前k个移到最后</p>
+<ul>
+<li>开了个临时数组存，面试官问不定长数组会有什么问题，如果数组很长那么存在哪里</li>
+<li>问有没有更小内存开销的方法，问复杂度（这里答得有点儿混乱）</li>
+<li>堆栈的区别</li>
+<li>为什么要有堆和栈</li>
+</ul>
+</li>
+<li><p>第三题是最大子数组</p>
+</li>
+<li><p>问ACM竞赛经历，团队几人，怎么分配工作，过几题能拿牌</p>
+</li>
+<li><p>问编译器项目，非常详细，一步一步地问</p>
+<ul>
+<li>词法分析怎么实现的，有没有比字符串匹配更好的方法，答了字典树，又问字典树为什么更好之类的</li>
+<li>文法分析，抽象语法树，递归实现，有没有比递归实现更好的方式，答了可以模仿字典树（这里答的不好，面试官说循环递归的问题字典树解决不了，就建不起来这棵树），除了递归和字典树之外还有没有什么方案（不知道。。）</li>
+<li>汇编代码生成是干什么的，为什么是四元式，解释了一下操作数操作符操作结果之类的。</li>
+</ul>
+</li>
+<li><p>虚拟内存，为什么要有虚拟内存，怎么实现的，页表，页和块</p>
+</li>
+<li><p>进程间通信有哪些，管道是什么，套接字是什么，共享内存是什么，哪个最快（答了共享内存，不知道对不对）</p>
+</li>
+<li><p>线程同步方式，信号是什么</p>
+</li>
+<li><p>为什么要有线程，进程是什么</p>
+</li>
+<li><p>B+树是什么，有什么特性（答了叶子结点之间有指针），有什么好处（答了查找比较快和擅长范围查找）</p>
+</li>
+<li><p>TCP和UDP，区别，适用于哪些场景</p>
+</li>
+<li><p>HTTPS是什么，SSL具体怎么实现，为什么，对称加密和非对称加密的区别</p>
+</li>
+<li><p>问科研项目</p>
+<ul>
+<li>持续时间，几个人在做，具体怎么实现，除了超声还有什么方式，wifi可以吗，红外可以吗，摄像头人脸识别怎么样，呼吸和心跳是怎么测得的等等</li>
+</ul>
+</li>
+<li><p>问了开发的app，觉得哪个最好，讲了一下</p>
+</li>
+<li><p>工作地点是广州，对于工作地点有没有想法</p>
+</li>
+<li><p>反问环节</p>
+<ul>
+<li>问了面试官觉得我表现怎么样，有哪些方面可以提高，面试官说原理性的东西可以提高一下，比如做的编译器的原理细节等，思考更深入一点儿</li>
+</ul>
+</li>
+</ul>
+<p>总结：问了一个半小时多，是这么多面试里最久的，期间网络很差，换手机热点也很差，断线好几次，后来直接把摄像头关了。面试官问的特别详细，特别深，特别喜欢问为什么。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/%E9%98%BF%E9%87%8C%E4%BA%91%E6%B8%B8%E6%88%8F%E4%B8%80%E9%9D%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1120,80 +1238,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/09/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/09/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">函数指针</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-03-09 17:00:31 / Modified: 17:07:24" itemprop="dateCreated datePublished" datetime="2022-03-09T17:00:31+08:00">2022-03-09</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h2><p>函数指针就是指向函数的指针。</p>
-<h2 id="函数指针的作用"><a href="#函数指针的作用" class="headerlink" title="函数指针的作用"></a>函数指针的作用</h2><ol>
-<li><p>实现多态</p>
-<ul>
-<li><p>比如c++面向对象编程里的虚函数。</p>
-</li>
-<li><p>以及面向过程编程的多态指的是，具体执行哪个函数不是在编译时决定的，而是在函数运行时根据函数指针的值来决定的。</p>
-</li>
-</ul>
-</li>
-<li><p>回调函数</p>
-<p>函数指针作为某个函数的参数，通过函数参数调用的函数就是回调函数。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1264,7 +1308,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">134</span>
+          <span class="site-state-item-count">135</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
