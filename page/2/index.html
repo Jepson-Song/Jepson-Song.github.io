@@ -188,6 +188,105 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/10/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7-1/" class="post-title-link" itemprop="url">并发一致性</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-10 09:43:52 / Modified: 09:59:28" itemprop="dateCreated datePublished" datetime="2022-03-10T09:43:52+08:00">2022-03-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <table>
+<thead>
+<tr>
+<th>问题</th>
+<th>原因</th>
+<th>封锁级别</th>
+<th>解决方法</th>
+<th>隔离级别</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>丢失修改</td>
+<td>一个写操作被另一个写操作覆盖，第一个写操作丢失</td>
+<td>一级封锁协议</td>
+<td>写操作加X锁，且X锁不共存</td>
+<td>未提交读</td>
+</tr>
+<tr>
+<td>读脏数据</td>
+<td>读操作读到数据后写操作回滚，则读操作读到脏数据</td>
+<td>二级封锁协议</td>
+<td>在一级的基础上，读操作加S锁，读完后立刻释放S锁</td>
+<td>提交读</td>
+</tr>
+<tr>
+<td>不可重复读</td>
+<td>读操作读完数据后，写操作修改数据，读操作再次读取数据发现不一致</td>
+<td>三级封锁协议</td>
+<td>在二级的基础上，读操作加的S锁不立刻释放，直到事务结束之后再释放</td>
+<td>可重复读</td>
+</tr>
+<tr>
+<td>幻读</td>
+<td>一般是在操作范围数据时，比如求和或者取平均值，有其它事务在区间内插入或者删除</td>
+<td>/</td>
+<td>加间隙锁</td>
+<td>/</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/09/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%88%86%E7%B1%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -924,157 +1023,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/03/STL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/03/STL/" class="post-title-link" itemprop="url">STL</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-03-03 20:24:00 / Modified: 21:14:27" itemprop="dateCreated datePublished" datetime="2022-03-03T20:24:00+08:00">2022-03-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <table>
-<thead>
-<tr>
-<th>STL</th>
-<th>类型</th>
-<th>名称</th>
-<th>底层实现</th>
-<th>特性</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>vector</td>
-<td>顺序型容器</td>
-<td>变长数组</td>
-<td>数组</td>
-<td>O(1)查找O(n)插入</td>
-</tr>
-<tr>
-<td>list</td>
-<td>顺序型容器</td>
-<td>链表</td>
-<td>双向链表</td>
-<td>O(n)查找O(1)插入</td>
-</tr>
-<tr>
-<td>deque</td>
-<td>顺序型容器</td>
-<td>双端队列</td>
-<td>类似二维数组</td>
-<td>由若干段大小相等的连续内存组成，不同段之间可能不连续，数组中每个节点都指向一段内存</td>
-</tr>
-<tr>
-<td>map</td>
-<td>有序关联型容器</td>
-<td>映射</td>
-<td>红黑树</td>
-<td>按照key值排序，key不重复</td>
-</tr>
-<tr>
-<td>mutimap</td>
-<td>有序关联型容器</td>
-<td>多重映射</td>
-<td>红黑树</td>
-<td>按照key值排序，key可重复</td>
-</tr>
-<tr>
-<td>set</td>
-<td>有序关联型容器</td>
-<td>集合</td>
-<td>红黑树</td>
-<td>按照key值排序，key不重复</td>
-</tr>
-<tr>
-<td>mutiset</td>
-<td>有序关联型容器</td>
-<td>多重集合</td>
-<td>红黑树</td>
-<td>按照key值排序，key可重复</td>
-</tr>
-<tr>
-<td>unordered_map</td>
-<td>无序关联型容器</td>
-<td>无序映射</td>
-<td>哈希表</td>
-<td>不排序，用链表法解决哈希冲突（哈希桶）</td>
-</tr>
-<tr>
-<td>stack</td>
-<td>容器适配器</td>
-<td>栈</td>
-<td>deque</td>
-<td>先进后出</td>
-</tr>
-<tr>
-<td>queue</td>
-<td>容器适配器</td>
-<td>队列</td>
-<td>deque</td>
-<td>先进先出</td>
-</tr>
-</tbody></table>
-<ul>
-<li><p>容器支持迭代器，容器适配器不支持迭代器。</p>
-</li>
-<li><p>map中的基本元素就是对组pair。</p>
-</li>
-<li><p>pair是用一个结构体实现的，结构体主要的两个成员变量first和second，分别存储两个数据。</p>
-</li>
-<li><p>map中的pair第一个元素为key(键值)，起索引作用，就相当于数组下标，第二个元素为value(实值)。map所有元素会根据键值大小自动排序</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1145,7 +1093,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">138</span>
+          <span class="site-state-item-count">139</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
