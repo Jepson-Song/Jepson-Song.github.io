@@ -188,6 +188,74 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/%E5%8F%8B%E5%85%83%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/21/%E5%8F%8B%E5%85%83%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">友元函数</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-21 19:40:41 / Modified: 20:07:03" itemprop="dateCreated datePublished" datetime="2022-02-21T19:40:41+08:00">2022-02-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="友元函数的作用"><a href="#友元函数的作用" class="headerlink" title="友元函数的作用"></a>友元函数的作用</h2><p>友元提供了不同类的成员函数之间、类的成员函数与一般函数之间进行数据共享的机制。通过友元，一个不同函数或另一个类中的成员函数可以访问类中的私有成员和保护成员。</p>
+<h2 id="private-public-protected的访问范围"><a href="#private-public-protected的访问范围" class="headerlink" title="private,public,protected的访问范围"></a>private,public,protected的访问范围</h2><p>private: 只能由该类中的函数、其友元函数访问,不能被任何其他访问，该类的对象也不能访问</p>
+<p>protected: 可以被该类中的函数、子类的函数、以及其友元函数访问,但不能被该类的对象访问</p>
+<p>public: 可以被该类中的函数、子类的函数、其友元函数访问,也可以由该类的对象访问</p>
+<p>注：友元函数包括两种：设为友元的全局函数，设为友元类中的成员函数</p>
+<h2 id="类的继承后方法属性变化"><a href="#类的继承后方法属性变化" class="headerlink" title="类的继承后方法属性变化"></a>类的继承后方法属性变化</h2><p>使用private继承,父类的所有方法在子类中变为private;</p>
+<p>使用protected继承,父类的protected和public方法在子类中变为protected,private方法不变;</p>
+<p>使用public继承,父类中的方法属性不发生改变;</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/%E5%AE%9E%E4%BE%8B%E5%8C%96%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -991,72 +1059,6 @@ double findMedian() - 返回目前所有元素的中位数。
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/18/%E8%AE%A8%E8%AE%BA0218/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/18/%E8%AE%A8%E8%AE%BA0218/" class="post-title-link" itemprop="url">讨论0218</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-18 13:23:32 / Modified: 13:26:52" itemprop="dateCreated datePublished" datetime="2022-02-18T13:23:32+08:00">2022-02-18</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>目前的瓶颈：应用场景</p>
-<p>有源方案的问题：头上只有两个点，测朝向有局限性</p>
-<p>无源方案的问题：只做头部朝向的分类，太小了</p>
-<p>都存在的问题：呼吸和心跳融不进头部朝向</p>
-<p>卖技术：一个技术能在很多场景应用</p>
-<p>卖故事：把一个应用场景的故事讲的很好</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1127,7 +1129,7 @@ double findMedian() - 返回目前所有元素的中位数。
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-count">140</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

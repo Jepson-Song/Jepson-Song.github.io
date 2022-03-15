@@ -188,6 +188,88 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E4%BA%8B%E5%8A%A1ACID/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/16/%E4%BA%8B%E5%8A%A1ACID/" class="post-title-link" itemprop="url">事务ACID</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-16 22:27:30 / Modified: 22:29:59" itemprop="dateCreated datePublished" datetime="2022-02-16T22:27:30+08:00">2022-02-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>事务指的是满足 ACID 特性的一组操作，可以通过 Commit 提交一个事务，也可以使用 Rollback 进行回滚。</p>
+<h2 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h2><ol>
+<li><p>原子性（Atomicity）</p>
+<p> 事务被视为不可分割的最小单元，事务的所有操作要么全部提交成功，要么全部失败回滚。</p>
+<p> 回滚可以用回滚日志（Undo Log）来实现，回滚日志记录着事务所执行的修改操作，在回滚时反向执行这些修改操作即可。</p>
+</li>
+<li><p>一致性（Consistency）</p>
+<p> 数据库在事务执行前后都保持一致性状态。在一致性状态下，所有事务对同一个数据的读取结果都是相同的。</p>
+</li>
+<li><p>隔离性（Isolation）</p>
+<p> 一个事务所做的修改在最终提交以前，对其它事务是不可见的。</p>
+</li>
+<li><p>持久性（Durability）</p>
+<p> 一旦事务提交，则其所做的修改将会永远保存到数据库中。即使系统发生崩溃，事务执行的结果也不能丢失。</p>
+<p> 系统发生崩溃可以用重做日志（Redo Log）进行恢复，从而实现持久性。与回滚日志记录数据的逻辑修改不同，重做日志记录的是数据页的物理修改。</p>
+</li>
+</ol>
+<p>事务的 ACID 特性概念简单，但不是很好理解，主要是因为这几个特性不是一种平级关系：</p>
+<p>只有满足一致性，事务的执行结果才是正确的。</p>
+<p>在无并发的情况下，事务串行执行，隔离性一定能够满足。此时只要能满足原子性，就一定能满足一致性。</p>
+<p>在并发的情况下，多个事务并行执行，事务不仅要满足原子性，还需要满足隔离性，才能满足一致性。</p>
+<p>事务满足持久化是为了能应对系统崩溃的情况。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E6%9F%B1%E7%8A%B6%E5%9B%BE%E4%B8%AD%E6%9C%80%E5%A4%A7%E7%9A%84%E7%9F%A9%E5%BD%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1222,103 +1304,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/26/%E6%AD%BB%E9%94%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/26/%E6%AD%BB%E9%94%81/" class="post-title-link" itemprop="url">死锁</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-12-26 11:18:14" itemprop="dateCreated datePublished" datetime="2021-12-26T11:18:14+08:00">2021-12-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-19 21:48:13" itemprop="dateModified" datetime="2022-02-19T21:48:13+08:00">2022-02-19</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>如果一个进程集合中的每个进程都在等待只能由该进程集合中的其他进程才能引发的事件，那么该进程集合就是死锁的。</p>
-<h3 id="死锁的条件（四个同时满足）"><a href="#死锁的条件（四个同时满足）" class="headerlink" title="死锁的条件（四个同时满足）"></a>死锁的条件（四个同时满足）</h3><ol>
-<li><p>互斥：每个资源要么已经分配给一个进程，要么就是可用的；</p>
-</li>
-<li><p>占有和等待：进程因请求资源而阻塞时，对已获得的资源保持不放；</p>
-</li>
-<li><p>不可抢占：已经分配的资源不能强制被抢占，只能进程自己释放；</p>
-</li>
-<li><p>环路等待：存在一种进程资源的循环等待链。</p>
-</li>
-</ol>
-<h3 id="死锁的处理策略"><a href="#死锁的处理策略" class="headerlink" title="死锁的处理策略"></a>死锁的处理策略</h3><ol>
-<li><p>死锁预防：破坏死锁的四个条件之一</p>
-<p> 破环互斥条件：允许资源共享；</p>
-<p> 破环占有和等待条件：一次性分配所有资源，只要缺少一个资源，其它资源也都不给他分配；</p>
-<p> 破坏不可抢占：请求新资源得不到时，释放已经保持占有的资源，待以后重新申请；</p>
-<p> 破坏环路等待：采用顺序资源分配法，给每个资源编号，进程申请资源的时候按照编号顺序申请，释放的时候则相反；</p>
-</li>
-<li><p>死锁避免：死锁避免事先预防策略，但是是采用资源动态分配的过程中，防止系统进入不安全状态，以避免死锁。</p>
-<p> 预防死锁的几种策略，会严重地损害系统性能。因此在避免死锁时，要施加较弱的限制，从而获得 较满意的系统性能。由于在避免死锁的策略中，允许进程动态地申请资源。因而，系统在进行资源分配之前预先计算资源分配的安全性。若此次分配不会导致系统进入不安全的状态，则将资源分配给进程；否则，进程等待。其中最具有代表性的避免死锁算法是银行家算法。</p>
-<p> 银行家算法：首先需要定义状态和安全状态的概念。系统的状态是当前给进程分配的资源情况。因此，状态包含两个向量Resource（系统中每种资源的总量）和Available（未分配给进程的每种资源的总量）及两个矩阵Claim（表示进程对资源的需求）和Allocation（表示当前分配给进程的资源）。安全状态是指至少有一个资源分配序列不会导致死锁。当进程请求一组资源时，假设同意该请求，从而改变了系统的状态，然后确定其结果是否还处于安全状态。如果是，同意这个请求；如果不是，阻塞该进程知道同意该请求后系统状态仍然是安全的。</p>
-</li>
-<li><p>死锁检测与解除：</p>
-<p> 检测死锁：利用死锁原理化简资源分配图检测死锁的存在</p>
-<p> 死锁解除：资源剥夺、撤销进程、进程回退</p>
-<pre><code> 剥夺资源：从其它进程剥夺足够数量的资源给死锁进程，以解除死锁状态；
-
- 撤消进程：可以直接撤消死锁进程或撤消代价最小的进程，直至有足够的资源可用，死锁状态.消除为止；所谓代价是指优先级、运行代价、进程的重要性和价值等。
-</code></pre>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1389,7 +1374,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-count">140</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
