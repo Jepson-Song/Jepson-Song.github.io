@@ -810,6 +810,93 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/15/%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/15/%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/" class="post-title-link" itemprop="url">左值与右值</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-15 09:53:53 / Modified: 10:11:03" itemprop="dateCreated datePublished" datetime="2022-03-15T09:53:53+08:00">2022-03-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="左值与左值引用"><a href="#左值与左值引用" class="headerlink" title="左值与左值引用"></a>左值与左值引用</h2><h3 id="左值"><a href="#左值" class="headerlink" title="左值"></a>左值</h3><p>左值就是在内存中有确定存储位置，有变量名，表达式结束后依然存在的值。</p>
+<h3 id="左值引用"><a href="#左值引用" class="headerlink" title="左值引用"></a>左值引用</h3><p>左值引用就是绑定到左值上的引用。</p>
+<h3 id="左值引用的绑定"><a href="#左值引用的绑定" class="headerlink" title="左值引用的绑定"></a>左值引用的绑定</h3><p>非常量左值引用只能绑定到非常量左值上；</p>
+<p>常量左值引用可以绑定到非常量左值、常量左值、非常量右值、常量右值等所有的值类型。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a=<span class="number">10</span>;              <span class="comment">//非常量左值（有确定存储地址，也有变量名）</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> a1=<span class="number">10</span>;       <span class="comment">//常量左值（有确定存储地址，也有变量名）</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> a2=<span class="number">20</span>;       <span class="comment">//常量左值（有确定存储地址，也有变量名）</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">//非常量左值引用</span></span><br><span class="line"><span class="keyword">int</span> &amp;b1=a;            <span class="comment">//正确，a是一个非常量左值，可以被非常量左值引用绑定</span></span><br><span class="line"><span class="keyword">int</span> &amp;b2=a1;           <span class="comment">//错误，a1是一个常量左值，不可以被非常量左值引用绑定</span></span><br><span class="line"><span class="keyword">int</span> &amp;b3=<span class="number">10</span>;           <span class="comment">//错误，10是一个非常量右值，不可以被非常量左值引用绑定</span></span><br><span class="line"><span class="keyword">int</span> &amp;b4=a1+a2;        <span class="comment">//错误，（a1+a2）是一个常量右值，不可以被非常量左值引用绑定</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//常量左值引用</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;c1=a;      <span class="comment">//正确，a是一个非常量左值，可以被非常量右值引用绑定</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;c2=a1;     <span class="comment">//正确，a1是一个常量左值，可以被非常量右值引用绑定</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;c3=a+a1;   <span class="comment">//正确，（a+a1）是一个非常量右值，可以被常量左值引用绑定</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;c4=a1+a2;  <span class="comment">//正确，（a1+a2）是一个常量右值，可以被常量左值引用绑定</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="右值与右值引用"><a href="#右值与右值引用" class="headerlink" title="右值与右值引用"></a>右值与右值引用</h2><h3 id="右值"><a href="#右值" class="headerlink" title="右值"></a>右值</h3><p>右值就是在内存没有确定存储地址、没有变量名，表达式结束就会销毁的值。</p>
+<h3 id="右值引用"><a href="#右值引用" class="headerlink" title="右值引用"></a>右值引用</h3><p>右值引用就是在内存中没有确定存储位置，没有变量名，表达式结束后就会销毁的值。</p>
+<h3 id="右值引用的绑定"><a href="#右值引用的绑定" class="headerlink" title="右值引用的绑定"></a>右值引用的绑定</h3><p>非常量右值引用只能绑定到非常量右值上；</p>
+<p>常量右值引用可以绑定到非常量右值、常量右值上。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a=<span class="number">10</span>;             <span class="comment">//非常量左值（有确定存储地址，也有变量名）</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> a1=<span class="number">20</span>;      <span class="comment">//常量左值（有确定存储地址，也有变量名）</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> a2=<span class="number">20</span>;      <span class="comment">//常量左值（有确定存储地址，也有变量名）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//非常量右值引用</span></span><br><span class="line"><span class="keyword">int</span> &amp;&amp;b1=a;            <span class="comment">//错误，a是一个非常量左值，不可以被非常量右值引用绑定</span></span><br><span class="line"><span class="keyword">int</span> &amp;&amp;b2=a1;           <span class="comment">//错误,a1是一个常量左值，不可以被非常量右值引用绑定</span></span><br><span class="line"><span class="keyword">int</span> &amp;&amp;b3=<span class="number">10</span>;           <span class="comment">//正确，10是一个非常量右值，可以被非常量右值引用绑定</span></span><br><span class="line"><span class="keyword">int</span> &amp;&amp;b4=a1+a2;        <span class="comment">//错误,（a1+a2）是一个常量右值，不可以被非常量右值引用绑定</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//常量右值引用</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;&amp;c1=a;      <span class="comment">//错误，a是一个非常量左值，不可以被常量右值引用绑定</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;&amp;c2=a1;     <span class="comment">//错误,a1是一个常量左值，不可以被常量右值引用绑定</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;&amp;c3=a+a1;   <span class="comment">//正确，（a+a1）是一个非常量右值，可以被常量右值引用绑定</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;&amp;c4=a1+a2;  <span class="comment">//正确,（a1+a2）是一个常量右值，可以被常量右值引用绑定</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><ol>
+<li><p>左值引用绑定到有确定存储空间以及变量名的对象上，表达式结束后对象依然存在；右值引用绑定到要求转换的表达式、字面常量、返回右值的表达式等临时对象上，赋值表达式结束后就对象就会被销毁。</p>
+</li>
+<li><p>左值引用后可以利用别名修改左值对象；右值引用绑定的值不能修改。</p>
+</li>
+</ol>
+<h2 id="move函数"><a href="#move函数" class="headerlink" title="move函数"></a>move函数</h2><p>从上述可以发现，常量左值引用可以绑定到右值上，但右值引用不能绑定任何类型的左值，若想利用右值引用绑定左值该怎么办呢？<br>C++11中提供了一个标准库move函数获得绑定到左值上的右值引用，即直接调用std::move告诉编译器将左值像对待同类型右值一样处理，但是被调用后的左值将不能再被使用。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a=<span class="number">10</span>;                 <span class="comment">//非常量左值（有确定存储地址，也有变量名）</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> a1=<span class="number">20</span>;          <span class="comment">//常量左值（有确定存储地址，也有变量名）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//非常量右值引用</span></span><br><span class="line"><span class="keyword">int</span> &amp;&amp;d1=std::<span class="built_in">move</span>(a);    <span class="comment">//正确，将非常量左值a转换为非常量右值，可以被非常量右值引用绑定</span></span><br><span class="line"><span class="keyword">int</span> &amp;&amp;d2=std::<span class="built_in">move</span>(a1);    <span class="comment">//错误,将常量左值a1转换为常量右值，不可以被非常量右值引用绑定</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//常量右值引用</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;&amp;c1=std::<span class="built_in">move</span>(a);      <span class="comment">//正确，将非常量左值a转换为非常量右值，可以被常量右值引用绑定</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;&amp;c2=std::<span class="built_in">move</span>(a1);     <span class="comment">//正确,将常量左值a1转换为常量右值，可以被常量右值引用绑定</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="引入右值引用的原因"><a href="#引入右值引用的原因" class="headerlink" title="引入右值引用的原因"></a>引入右值引用的原因</h2><ol>
+<li><p>替代需要销毁对象的拷贝，提高效率：某些情况下，需要拷贝一个对象然后将其销毁，如：临时类对象的拷贝就要先将旧内存的资源拷贝到新内存，然后释放旧内存，引入右值引用后，就可以让新对象直接使用旧内存并且销毁原对象，这样就减少了内存和运算资源的使用，从而提高了运行效率；</p>
+</li>
+<li><p>移动含有不能共享资源的类对象：像IO、unique_ptr这样的类包含不能被共享的资源（如：IO缓冲、指针），因此，这些类对象不能拷贝但可以移动。这种情况，需要先调用std::move将左值强制转换为右值，再进行右值引用。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/12/CV/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1180,79 +1267,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/09/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%88%86%E7%B1%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/09/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%88%86%E7%B1%BB/" class="post-title-link" itemprop="url">操作系统的分类</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-03-09 22:35:48 / Modified: 22:39:11" itemprop="dateCreated datePublished" datetime="2022-03-09T22:35:48+08:00">2022-03-09</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://s2.loli.net/2022/03/09/FN65Kiw2grop1fT.png" alt="20220309223559"></p>
-<h2 id="单道批处理系统"><a href="#单道批处理系统" class="headerlink" title="单道批处理系统"></a>单道批处理系统</h2><p>每次从一个IO缓存中，向内存读入一道程序并只有一道程序运行。只有该程序运行结束后才能读入下一道程序。</p>
-<p>CPU有大量的时间在空闲等待I/O完成。</p>
-<h2 id="多道批处理系统"><a href="#多道批处理系统" class="headerlink" title="多道批处理系统"></a>多道批处理系统</h2><p>每次读入多道程序，并能并发执行（由操作系统控制，中断的概念），共享计算机资源，CPU和其他资源保持“忙碌”状态。</p>
-<p>缺点：美没有人机交互。</p>
-<h2 id="分时操作系统"><a href="#分时操作系统" class="headerlink" title="分时操作系统"></a>分时操作系统</h2><p>计算机以时间片为单位轮流为各个用户/作业服务（平均主义）。</p>
-<p>优点：用户请求可以被即时响应，解决了人机交互问题。允许多个用户用时使用一台计算机，并且用户对计算机的操作相互独立。</p>
-<p>缺点：不能有限处理一些紧急任务，操作系统对各个用户/作业都是完全公平的，循环地为每个用户/作业服务一个时间片，不区分任务地紧急性。</p>
-<h2 id="实时操作系统"><a href="#实时操作系统" class="headerlink" title="实时操作系统"></a>实时操作系统</h2><p>在实时操作系统地控制下，计算机系统接收到外部信号后及时进行处理，并且要在严格地时间内容处理完时间。</p>
-<p>特点：及时性和可靠性</p>
-<p>优点：能优先响应一些紧急任务，无需排队。</p>
-<h2 id="网络操作系统"><a href="#网络操作系统" class="headerlink" title="网络操作系统"></a>网络操作系统</h2><p>使网络上各计算机能够方便、有效地共享网络资源并为网络用户提供所需的各种服务的软件与协议的集合。</p>
-<h2 id="分布式操作系统"><a href="#分布式操作系统" class="headerlink" title="分布式操作系统"></a>分布式操作系统</h2><p>简单来说就是有一堆计算机，各自物理硬件上是独立的，通过网络相连，互相通信，通过统一的“中间件”进行协调，共享资源，协同分工完成一件任务的计算机集群。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1323,7 +1337,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">137</span>
+          <span class="site-state-item-count">138</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

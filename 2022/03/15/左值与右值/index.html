@@ -21,20 +21,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="STL 类型 名称 底层实现 特性    vector 顺序型容器 变长数组 数组 O(1)查找O(n)插入   list 顺序型容器 链表 双向链表 O(n)查找O(1)插入   deque 顺序型容器 双端队列 类似二维数组 由若干段大小相等的连续内存组成，不同段之间可能不连续，数组中每个节点都指向一段内存   map 有序关联型容器 映射 红黑树 按照key值排序，key不重复   m">
+  <meta name="description" content="左值与左值引用左值左值就是在内存中有确定存储位置，有变量名，表达式结束后依然存在的值。 左值引用左值引用就是绑定到左值上的引用。 左值引用的绑定非常量左值引用只能绑定到非常量左值上； 常量左值引用可以绑定到非常量左值、常量左值、非常量右值、常量右值等所有的值类型。 12345678910111213141516int a&#x3D;10;              &#x2F;&#x2F;非常量左值（有确定存储地址，也有变量名">
 <meta property="og:type" content="article">
-<meta property="og:title" content="STL">
-<meta property="og:url" content="http://example.com/2022/03/03/STL/index.html">
+<meta property="og:title" content="左值与右值">
+<meta property="og:url" content="http://example.com/2022/03/15/%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/index.html">
 <meta property="og:site_name" content="Jepson&#39;s Blog">
-<meta property="og:description" content="STL 类型 名称 底层实现 特性    vector 顺序型容器 变长数组 数组 O(1)查找O(n)插入   list 顺序型容器 链表 双向链表 O(n)查找O(1)插入   deque 顺序型容器 双端队列 类似二维数组 由若干段大小相等的连续内存组成，不同段之间可能不连续，数组中每个节点都指向一段内存   map 有序关联型容器 映射 红黑树 按照key值排序，key不重复   m">
+<meta property="og:description" content="左值与左值引用左值左值就是在内存中有确定存储位置，有变量名，表达式结束后依然存在的值。 左值引用左值引用就是绑定到左值上的引用。 左值引用的绑定非常量左值引用只能绑定到非常量左值上； 常量左值引用可以绑定到非常量左值、常量左值、非常量右值、常量右值等所有的值类型。 12345678910111213141516int a&#x3D;10;              &#x2F;&#x2F;非常量左值（有确定存储地址，也有变量名">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-03-03T12:24:00.000Z">
-<meta property="article:modified_time" content="2022-03-03T13:14:27.813Z">
+<meta property="article:published_time" content="2022-03-15T01:53:53.000Z">
+<meta property="article:modified_time" content="2022-03-15T02:11:03.414Z">
 <meta property="article:author" content="Jepson">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/03/03/STL/">
+<link rel="canonical" href="http://example.com/2022/03/15/%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/">
 
 
 <script id="page-configurations">
@@ -47,7 +47,7 @@
   };
 </script>
 
-  <title>STL | Jepson's Blog</title>
+  <title>左值与右值 | Jepson's Blog</title>
   
 
 
@@ -194,7 +194,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/03/STL/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/15/%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -207,7 +207,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          STL
+          左值与右值
         </h1>
 
         <div class="post-meta">
@@ -220,7 +220,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-03-03 20:24:00 / Modified: 21:14:27" itemprop="dateCreated datePublished" datetime="2022-03-03T20:24:00+08:00">2022-03-03</time>
+              <time title="Created: 2022-03-15 09:53:53 / Modified: 10:11:03" itemprop="dateCreated datePublished" datetime="2022-03-15T09:53:53+08:00">2022-03-15</time>
             </span>
 
           
@@ -241,97 +241,33 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <table>
-<thead>
-<tr>
-<th>STL</th>
-<th>类型</th>
-<th>名称</th>
-<th>底层实现</th>
-<th>特性</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>vector</td>
-<td>顺序型容器</td>
-<td>变长数组</td>
-<td>数组</td>
-<td>O(1)查找O(n)插入</td>
-</tr>
-<tr>
-<td>list</td>
-<td>顺序型容器</td>
-<td>链表</td>
-<td>双向链表</td>
-<td>O(n)查找O(1)插入</td>
-</tr>
-<tr>
-<td>deque</td>
-<td>顺序型容器</td>
-<td>双端队列</td>
-<td>类似二维数组</td>
-<td>由若干段大小相等的连续内存组成，不同段之间可能不连续，数组中每个节点都指向一段内存</td>
-</tr>
-<tr>
-<td>map</td>
-<td>有序关联型容器</td>
-<td>映射</td>
-<td>红黑树</td>
-<td>按照key值排序，key不重复</td>
-</tr>
-<tr>
-<td>mutimap</td>
-<td>有序关联型容器</td>
-<td>多重映射</td>
-<td>红黑树</td>
-<td>按照key值排序，key可重复</td>
-</tr>
-<tr>
-<td>set</td>
-<td>有序关联型容器</td>
-<td>集合</td>
-<td>红黑树</td>
-<td>按照key值排序，key不重复</td>
-</tr>
-<tr>
-<td>mutiset</td>
-<td>有序关联型容器</td>
-<td>多重集合</td>
-<td>红黑树</td>
-<td>按照key值排序，key可重复</td>
-</tr>
-<tr>
-<td>unordered_map</td>
-<td>无序关联型容器</td>
-<td>无序映射</td>
-<td>哈希表</td>
-<td>不排序，用链表法解决哈希冲突（哈希桶）</td>
-</tr>
-<tr>
-<td>stack</td>
-<td>容器适配器</td>
-<td>栈</td>
-<td>deque</td>
-<td>先进后出</td>
-</tr>
-<tr>
-<td>queue</td>
-<td>容器适配器</td>
-<td>队列</td>
-<td>deque</td>
-<td>先进先出</td>
-</tr>
-</tbody></table>
-<ul>
-<li><p>容器支持迭代器，容器适配器不支持迭代器。</p>
+        <h2 id="左值与左值引用"><a href="#左值与左值引用" class="headerlink" title="左值与左值引用"></a>左值与左值引用</h2><h3 id="左值"><a href="#左值" class="headerlink" title="左值"></a>左值</h3><p>左值就是在内存中有确定存储位置，有变量名，表达式结束后依然存在的值。</p>
+<h3 id="左值引用"><a href="#左值引用" class="headerlink" title="左值引用"></a>左值引用</h3><p>左值引用就是绑定到左值上的引用。</p>
+<h3 id="左值引用的绑定"><a href="#左值引用的绑定" class="headerlink" title="左值引用的绑定"></a>左值引用的绑定</h3><p>非常量左值引用只能绑定到非常量左值上；</p>
+<p>常量左值引用可以绑定到非常量左值、常量左值、非常量右值、常量右值等所有的值类型。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a=<span class="number">10</span>;              <span class="comment">//非常量左值（有确定存储地址，也有变量名）</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> a1=<span class="number">10</span>;       <span class="comment">//常量左值（有确定存储地址，也有变量名）</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> a2=<span class="number">20</span>;       <span class="comment">//常量左值（有确定存储地址，也有变量名）</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">//非常量左值引用</span></span><br><span class="line"><span class="keyword">int</span> &amp;b1=a;            <span class="comment">//正确，a是一个非常量左值，可以被非常量左值引用绑定</span></span><br><span class="line"><span class="keyword">int</span> &amp;b2=a1;           <span class="comment">//错误，a1是一个常量左值，不可以被非常量左值引用绑定</span></span><br><span class="line"><span class="keyword">int</span> &amp;b3=<span class="number">10</span>;           <span class="comment">//错误，10是一个非常量右值，不可以被非常量左值引用绑定</span></span><br><span class="line"><span class="keyword">int</span> &amp;b4=a1+a2;        <span class="comment">//错误，（a1+a2）是一个常量右值，不可以被非常量左值引用绑定</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//常量左值引用</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;c1=a;      <span class="comment">//正确，a是一个非常量左值，可以被非常量右值引用绑定</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;c2=a1;     <span class="comment">//正确，a1是一个常量左值，可以被非常量右值引用绑定</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;c3=a+a1;   <span class="comment">//正确，（a+a1）是一个非常量右值，可以被常量左值引用绑定</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;c4=a1+a2;  <span class="comment">//正确，（a1+a2）是一个常量右值，可以被常量左值引用绑定</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="右值与右值引用"><a href="#右值与右值引用" class="headerlink" title="右值与右值引用"></a>右值与右值引用</h2><h3 id="右值"><a href="#右值" class="headerlink" title="右值"></a>右值</h3><p>右值就是在内存没有确定存储地址、没有变量名，表达式结束就会销毁的值。</p>
+<h3 id="右值引用"><a href="#右值引用" class="headerlink" title="右值引用"></a>右值引用</h3><p>右值引用就是在内存中没有确定存储位置，没有变量名，表达式结束后就会销毁的值。</p>
+<h3 id="右值引用的绑定"><a href="#右值引用的绑定" class="headerlink" title="右值引用的绑定"></a>右值引用的绑定</h3><p>非常量右值引用只能绑定到非常量右值上；</p>
+<p>常量右值引用可以绑定到非常量右值、常量右值上。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a=<span class="number">10</span>;             <span class="comment">//非常量左值（有确定存储地址，也有变量名）</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> a1=<span class="number">20</span>;      <span class="comment">//常量左值（有确定存储地址，也有变量名）</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> a2=<span class="number">20</span>;      <span class="comment">//常量左值（有确定存储地址，也有变量名）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//非常量右值引用</span></span><br><span class="line"><span class="keyword">int</span> &amp;&amp;b1=a;            <span class="comment">//错误，a是一个非常量左值，不可以被非常量右值引用绑定</span></span><br><span class="line"><span class="keyword">int</span> &amp;&amp;b2=a1;           <span class="comment">//错误,a1是一个常量左值，不可以被非常量右值引用绑定</span></span><br><span class="line"><span class="keyword">int</span> &amp;&amp;b3=<span class="number">10</span>;           <span class="comment">//正确，10是一个非常量右值，可以被非常量右值引用绑定</span></span><br><span class="line"><span class="keyword">int</span> &amp;&amp;b4=a1+a2;        <span class="comment">//错误,（a1+a2）是一个常量右值，不可以被非常量右值引用绑定</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//常量右值引用</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;&amp;c1=a;      <span class="comment">//错误，a是一个非常量左值，不可以被常量右值引用绑定</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;&amp;c2=a1;     <span class="comment">//错误,a1是一个常量左值，不可以被常量右值引用绑定</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;&amp;c3=a+a1;   <span class="comment">//正确，（a+a1）是一个非常量右值，可以被常量右值引用绑定</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;&amp;c4=a1+a2;  <span class="comment">//正确,（a1+a2）是一个常量右值，可以被常量右值引用绑定</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><ol>
+<li><p>左值引用绑定到有确定存储空间以及变量名的对象上，表达式结束后对象依然存在；右值引用绑定到要求转换的表达式、字面常量、返回右值的表达式等临时对象上，赋值表达式结束后就对象就会被销毁。</p>
 </li>
-<li><p>map中的基本元素就是对组pair。</p>
+<li><p>左值引用后可以利用别名修改左值对象；右值引用绑定的值不能修改。</p>
 </li>
-<li><p>pair是用一个结构体实现的，结构体主要的两个成员变量first和second，分别存储两个数据。</p>
+</ol>
+<h2 id="move函数"><a href="#move函数" class="headerlink" title="move函数"></a>move函数</h2><p>从上述可以发现，常量左值引用可以绑定到右值上，但右值引用不能绑定任何类型的左值，若想利用右值引用绑定左值该怎么办呢？<br>C++11中提供了一个标准库move函数获得绑定到左值上的右值引用，即直接调用std::move告诉编译器将左值像对待同类型右值一样处理，但是被调用后的左值将不能再被使用。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a=<span class="number">10</span>;                 <span class="comment">//非常量左值（有确定存储地址，也有变量名）</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> a1=<span class="number">20</span>;          <span class="comment">//常量左值（有确定存储地址，也有变量名）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//非常量右值引用</span></span><br><span class="line"><span class="keyword">int</span> &amp;&amp;d1=std::<span class="built_in">move</span>(a);    <span class="comment">//正确，将非常量左值a转换为非常量右值，可以被非常量右值引用绑定</span></span><br><span class="line"><span class="keyword">int</span> &amp;&amp;d2=std::<span class="built_in">move</span>(a1);    <span class="comment">//错误,将常量左值a1转换为常量右值，不可以被非常量右值引用绑定</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//常量右值引用</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;&amp;c1=std::<span class="built_in">move</span>(a);      <span class="comment">//正确，将非常量左值a转换为非常量右值，可以被常量右值引用绑定</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;&amp;c2=std::<span class="built_in">move</span>(a1);     <span class="comment">//正确,将常量左值a1转换为常量右值，可以被常量右值引用绑定</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="引入右值引用的原因"><a href="#引入右值引用的原因" class="headerlink" title="引入右值引用的原因"></a>引入右值引用的原因</h2><ol>
+<li><p>替代需要销毁对象的拷贝，提高效率：某些情况下，需要拷贝一个对象然后将其销毁，如：临时类对象的拷贝就要先将旧内存的资源拷贝到新内存，然后释放旧内存，引入右值引用后，就可以让新对象直接使用旧内存并且销毁原对象，这样就减少了内存和运算资源的使用，从而提高了运行效率；</p>
 </li>
-<li><p>map中的pair第一个元素为key(键值)，起索引作用，就相当于数组下标，第二个元素为value(实值)。map所有元素会根据键值大小自动排序</p>
+<li><p>移动含有不能共享资源的类对象：像IO、unique_ptr这样的类包含不能被共享的资源（如：IO缓冲、指针），因此，这些类对象不能拷贝但可以移动。这种情况，需要先调用std::move将左值强制转换为右值，再进行右值引用。</p>
 </li>
-</ul>
+</ol>
 
     </div>
 
@@ -370,13 +306,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/02/%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" rel="prev" title="买卖股票问题总结">
-      <i class="fa fa-chevron-left"></i> 买卖股票问题总结
+    <a href="/2022/03/12/CV/" rel="prev" title="简历">
+      <i class="fa fa-chevron-left"></i> 简历
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/03/04/%E5%AD%97%E8%8A%82TikTok%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91%E4%BA%8C%E9%9D%A2/" rel="next" title="字节TikTok客户端开发二面">
-      字节TikTok客户端开发二面 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -436,6 +369,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">左值与左值引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC"><span class="nav-number">1.1.</span> <span class="nav-text">左值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">左值引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A6%E5%80%BC%E5%BC%95%E7%94%A8%E7%9A%84%E7%BB%91%E5%AE%9A"><span class="nav-number">1.3.</span> <span class="nav-text">左值引用的绑定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">右值与右值引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC"><span class="nav-number">2.1.</span> <span class="nav-text">右值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text">右值引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E7%9A%84%E7%BB%91%E5%AE%9A"><span class="nav-number">2.3.</span> <span class="nav-text">右值引用的绑定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%BA%E5%88%AB"><span class="nav-number">3.</span> <span class="nav-text">区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#move%E5%87%BD%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">move函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%85%A5%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">5.</span> <span class="nav-text">引入右值引用的原因</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
