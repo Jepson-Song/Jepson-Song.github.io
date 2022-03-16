@@ -188,6 +188,214 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/19/%E6%AD%BB%E9%94%81-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/19/%E6%AD%BB%E9%94%81-1/" class="post-title-link" itemprop="url">死锁</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-19 13:52:27" itemprop="dateCreated datePublished" datetime="2022-02-19T13:52:27+08:00">2022-02-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-03-02 15:45:05" itemprop="dateModified" datetime="2022-03-02T15:45:05+08:00">2022-03-02</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="死锁定义"><a href="#死锁定义" class="headerlink" title="死锁定义"></a>死锁定义</h2><p>线程死锁是指由于两个或者多个线程互相持有对方所需要的资源，导致这些线程处于等待状态，无法前往执行。</p>
+<h2 id="必要条件"><a href="#必要条件" class="headerlink" title="必要条件"></a>必要条件</h2><p>互斥：每个资源要么已经分配给了一个进程，要么就是可用的。</p>
+<p>占有和等待：已经得到了某个资源的进程可以再请求新的资源。</p>
+<p>不可抢占：已经分配给一个进程的资源不能强制性地被抢占，它只能被占有它的进程显式地释放。</p>
+<p>环路等待：有两个或者两个以上的进程组成一条环路，该环路中的每个进程都在等待下一个进程所占有的资源。</p>
+<h2 id="死锁的处理策略"><a href="#死锁的处理策略" class="headerlink" title="死锁的处理策略"></a>死锁的处理策略</h2><ol>
+<li><p>鸵鸟策略</p>
+<p>把头埋在沙子里，假装根本没发生问题。</p>
+<p> 因为解决死锁问题的代价很高，因此鸵鸟策略这种不采取任务措施的方案会获得更高的性能。</p>
+<p> 当发生死锁时不会对用户造成多大影响，或发生死锁的概率很低，可以采用鸵鸟策略。</p>
+<p> 大多数操作系统，包括 Unix，Linux 和 Windows，处理死锁问题的办法仅仅是忽略它。</p>
+</li>
+<li><p>死锁预防：破坏死锁的四个条件之一</p>
+<p> 破环互斥条件：允许资源共享；</p>
+<p> 破环占有和等待条件：一次性分配所有资源，只要缺少一个资源，其它资源也都不给他分配；</p>
+<p> 破坏不可抢占：请求新资源得不到时，释放已经保持占有的资源，待以后重新申请；</p>
+<p> 破坏环路等待：采用顺序资源分配法，给每个资源编号，进程申请资源的时候按照编号顺序申请，释放的时候则相反；</p>
+</li>
+<li><p>死锁检测与解除：</p>
+<p> 检测死锁：利用死锁原理化简资源分配图检测死锁的存在</p>
+<p> 死锁解除：资源剥夺、撤销进程、进程回退</p>
+<pre><code> 剥夺资源：从其它进程剥夺足够数量的资源给死锁进程，以解除死锁状态；
+
+ 撤消进程：可以直接撤消死锁进程或撤消代价最小的进程，直至有足够的资源可用，死锁状态.消除为止；所谓代价是指优先级、运行代价、进程的重要性和价值等。
+</code></pre>
+</li>
+<li><p>死锁避免：死锁避免事先预防策略，但是是采用资源动态分配的过程中，防止系统进入不安全状态，以避免死锁。</p>
+<p> 预防死锁的几种策略，会严重地损害系统性能。因此在避免死锁时，要施加较弱的限制，从而获得 较满意的系统性能。由于在避免死锁的策略中，允许进程动态地申请资源。因而，系统在进行资源分配之前预先计算资源分配的安全性。若此次分配不会导致系统进入不安全的状态，则将资源分配给进程；否则，进程等待。其中最具有代表性的避免死锁算法是银行家算法。</p>
+<p> 银行家算法：首先需要定义状态和安全状态的概念。系统的状态是当前给进程分配的资源情况。因此，状态包含两个向量Resource（系统中每种资源的总量）和Available（未分配给进程的每种资源的总量）及两个矩阵Claim（表示进程对资源的需求）和Allocation（表示当前分配给进程的资源）。安全状态是指至少有一个资源分配序列不会导致死锁。当进程请求一组资源时，假设同意该请求，从而改变了系统的状态，然后确定其结果是否还处于安全状态。如果是，同意这个请求；如果不是，阻塞该进程知道同意该请求后系统状态仍然是安全的。</p>
+</li>
+</ol>
+<h2 id="银行家算法"><a href="#银行家算法" class="headerlink" title="银行家算法"></a>银行家算法</h2><p>银行家算法是仿照银行发放贷款时采用的控制方式而设计的一种死锁避免算法，该算法的策略是实现动态避免死锁。</p>
+<h3 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h3><p>银行家算法的基本思想是：分配资源之前，判断系统是否安全，如果安全才会进行资源分配。</p>
+<p>我们把操作系统看做是银行家，操作系统管理的资源相当于银行家的资金，线程向操作系统请求分配资源就是用户向银行家要贷款。</p>
+<p>算法在每次分配资源前需要要求： request &lt; available &amp;&amp; request &lt; needing;</p>
+<h3 id="算法实例"><a href="#算法实例" class="headerlink" title="算法实例"></a>算法实例</h3><p>系统中有R1，R2，R3三种资源，在time0时刻，5个线程T0，T1，T2，T3，T4对资源占用和需求的情况如下表，此时系统的可用资源向量为(3,3,2)。求T0时刻系统是否存在安全序列？</p>
+<p><img src="https://s2.loli.net/2022/02/19/VkdnsuegCWtRB3Y.png" alt="20220219142642"></p>
+<p>我们假设每个线程执行时间为一个时刻。</p>
+<p>1、在time0时刻，available(3,3,2) &gt; T1.needing(1,2,2)； 所以T1可以执行，T1执行完毕之后available = T1.allocated(2,0,0) + available(3,3,2) = (5,3,2);</p>
+<p><img src="https://s2.loli.net/2022/02/19/VSrsExfi6GpQ78u.png" alt="20220219142719"></p>
+<p>2、进入time1时刻，available(5,3,2) &gt; T3.needing(0,1,1)；所以T3可以执行，T3执行完毕之后available = T3.allocated(2,1,1)+available(5,3,2) = (7,4,3)；</p>
+<p><img src="https://s2.loli.net/2022/02/19/Yw83SBZubGzjMct.png" alt="20220219142727"></p>
+<p>3、进入time2时刻，available(7,4,3) &gt; T4.needing(4,3,1)；所以T4可以执行，T4执行完毕之后available = T4.allocated(0,0,2) + available(7,4,3) = (7,4,5)；</p>
+<p><img src="https://s2.loli.net/2022/02/19/C7XSQbAgKFu2Bwc.png" alt="20220219142735"></p>
+<p>4、进入time3时刻，available(7,4,5) &gt; T2.needing(6,0,0)；所以T2可以执行，T2指向完毕之后available = T2.allocated(3,0,2) + available(7,4,5) = (10,4,7)；</p>
+<p><img src="https://s2.loli.net/2022/02/19/gkcsiXuh7IjYG46.png" alt="20220219142741"></p>
+<p>5、进入time4时刻，因为available(10,4,7) &gt; T0.needing(7,4,3)；所以执行T0。完成安全序列。</p>
+<p>上面只是安全序列的一个例子，可能还存在其他安全序列。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/18/%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/18/%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" class="post-title-link" itemprop="url">进程通信</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-18 16:41:42 / Modified: 16:44:20" itemprop="dateCreated datePublished" datetime="2022-02-18T16:41:42+08:00">2022-02-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="进程通信"><a href="#进程通信" class="headerlink" title="进程通信"></a>进程通信</h2><p>进程同步与进程通信很容易混淆，它们的区别在于：</p>
+<pre><code>进程同步：控制多个进程按一定顺序执行；
+
+进程通信：进程间传输信息。
+</code></pre>
+<p>进程通信是一种手段，而进程同步是一种目的。也可以说，为了能够达到进程同步的目的，需要让进程进行通信，传输一些进程同步所需要的信息。</p>
+<ol>
+<li><p>管道</p>
+<p> 它具有以下限制：</p>
+<p> 只支持半双工通信（单向交替传输）；<br> 只能在父子进程或者兄弟进程中使用。</p>
+</li>
+<li><p>FIFO</p>
+<p> 也称为命名管道，去除了管道只能在父子进程中使用的限制。</p>
+</li>
+<li><p>消息队列</p>
+<p> 相比于 FIFO，消息队列具有以下优点：</p>
+<pre><code> 消息队列可以独立于读写进程存在，从而避免了 FIFO 中同步管道的打开和关闭时可能产生的困难；
+
+ 避免了 FIFO 的同步阻塞问题，不需要进程自己提供同步方法；
+ 
+ 读进程可以根据消息类型有选择地接收消息，而不像 FIFO 那样只能默认地接收。
+</code></pre>
+</li>
+<li><p>信号量</p>
+<p> 它是一个计数器，用于为多个进程提供对共享数据对象的访问。</p>
+</li>
+<li><p>共享存储</p>
+<p> 允许多个进程共享一个给定的存储区。因为数据不需要在进程之间复制，所以这是最快的一种 IPC。</p>
+<p> 需要使用信号量用来同步对共享存储的访问。</p>
+<p> 多个进程可以将同一个文件映射到它们的地址空间从而实现共享内存。另外 XSI 共享内存不是使用文件，而是使用内存的匿名段。</p>
+</li>
+<li><p>套接字<br> 与其它通信机制不同的是，它可用于不同机器间的进程通信。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/18/%E8%AE%A8%E8%AE%BA0218/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1024,192 +1232,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E5%B0%81%E9%94%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/16/%E5%B0%81%E9%94%81/" class="post-title-link" itemprop="url">封锁</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-16 22:49:14 / Modified: 22:52:48" itemprop="dateCreated datePublished" datetime="2022-02-16T22:49:14+08:00">2022-02-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="封锁粒度"><a href="#封锁粒度" class="headerlink" title="封锁粒度"></a>封锁粒度</h2><p>MySQL 中提供了两种封锁粒度：行级锁以及表级锁。</p>
-<p>应该尽量只锁定需要修改的那部分数据，而不是所有的资源。锁定的数据量越少，发生锁争用的可能就越小，系统的并发程度就越高。</p>
-<p>但是加锁需要消耗资源，锁的各种操作（包括获取锁、释放锁、以及检查锁状态）都会增加系统开销。因此封锁粒度越小，系统开销就越大。</p>
-<p>在选择封锁粒度时，需要在锁开销和并发程度之间做一个权衡。</p>
-<h2 id="封锁类型"><a href="#封锁类型" class="headerlink" title="封锁类型"></a>封锁类型</h2><ol>
-<li><p>读写锁</p>
-<p> 互斥锁（Exclusive），简写为 X 锁，又称写锁。</p>
-<p> 共享锁（Shared），简写为 S 锁，又称读锁。</p>
-<p> 有以下两个规定：</p>
-<p> 一个事务对数据对象 A 加了 X 锁，就可以对 A 进行读取和更新。加锁期间其它事务不能对 A 加任何锁。</p>
-<p> 一个事务对数据对象 A 加了 S 锁，可以对 A 进行读取操作，但是不能进行更新操作。加锁期间其它事务能对 A 加 S 锁，但是不能加 X 锁。</p>
-</li>
-<li><p>意向锁</p>
-<p> 使用意向锁（Intention Locks）可以更容易地支持多粒度封锁。</p>
-<p> 在存在行级锁和表级锁的情况下，事务 T 想要对表 A 加 X 锁，就需要先检测是否有其它事务对表 A 或者表 A 中的任意一行加了锁，那么就需要对表 A 的每一行都检测一次，这是非常耗时的。</p>
-<p> 意向锁在原来的 X/S 锁之上引入了 IX/IS，IX/IS 都是表锁，用来表示一个事务想要在表中的某个数据行上加 X 锁或 S 锁。有以下两个规定：</p>
-<p> 一个事务在获得某个数据行对象的 S 锁之前，必须先获得表的 IS 锁或者更强的锁；</p>
-<p> 一个事务在获得某个数据行对象的 X 锁之前，必须先获得表的 IX 锁。</p>
-<p> 通过引入意向锁，事务 T 想要对表 A 加 X 锁，只需要先检测是否有其它事务对表 A 加了 X/IX/S/IS 锁，如果加了就表示有其它事务正在使用这个表或者表中某一行的锁，因此事务 T 加 X 锁失败。</p>
-<p> 解释如下：</p>
-<p> 任意 IS/IX 锁之间都是兼容的，因为它们只表示想要对表加锁，而不是真正加锁；<br> 这里兼容关系针对的是表级锁，而表级的 IX 锁和行级的 X 锁兼容，两个事务可以对两个数据行加 X 锁。（事务 T1 想要对数据行 R1 加 X 锁，事务 T2 想要对同一个表的数据行 R2 加 X 锁，两个事务都需要对该表加 IX 锁，但是 IX 锁是兼容的，并且 IX 锁与行级的 X 锁也是兼容的，因此两个事务都能加锁成功，对同一个表中的两个数据行做修改。）</p>
-</li>
-</ol>
-<h2 id="封锁协议"><a href="#封锁协议" class="headerlink" title="封锁协议"></a>封锁协议</h2><ol>
-<li><p>三级封锁协议</p>
-<ol>
-<li><p>一级封锁协议</p>
-<p> 事务 T 要修改数据 A 时必须加 X 锁，直到 T 结束才释放锁。</p>
-<p> 可以解决丢失修改问题，因为不能同时有两个事务对同一个数据进行修改，那么事务的修改就不会被覆盖。</p>
-</li>
-<li><p>二级封锁协议</p>
-<p> 在一级的基础上，要求读取数据 A 时必须加 S 锁，读取完马上释放 S 锁。</p>
-<p> 可以解决读脏数据问题，因为如果一个事务在对数据 A 进行修改，根据 1 级封锁协议，会加 X 锁，那么就不能再加 S 锁了，也就是不会读入数据。</p>
-</li>
-<li><p>三级封锁协议</p>
-<p> 在二级的基础上，要求读取数据 A 时必须加 S 锁，直到事务结束了才能释放 S 锁。</p>
-<p> 可以解决不可重复读的问题，因为读 A 时，其它事务不能对 A 加 X 锁，从而避免了在读的期间数据发生改变。</p>
-</li>
-</ol>
-</li>
-<li><p>两段锁协议<br> 加锁和解锁分为两个阶段进行。</p>
-<p> 可串行化调度是指，通过并发控制，使得并发执行的事务结果与某个串行执行的事务结果相同。串行执行的事务互不干扰，不会出现并发一致性问题。</p>
-<p> 事务遵循两段锁协议是保证可串行化调度的充分条件。例如以下操作满足两段锁协议，它是可串行化调度。</p>
-<pre><code> lock-x(A)...lock-s(B)...lock-s(C)...unlock(A)...unlock(C)...unlock(B)
-</code></pre>
-<p> 但不是必要条件，例如以下操作不满足两段锁协议，但它还是可串行化调度。</p>
-<pre><code> lock-x(A)...unlock(A)...lock-s(B)...unlock(B)...lock-s(C)...unlock(C)
-</code></pre>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/16/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7/" class="post-title-link" itemprop="url">并发一致性</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-16 22:30:19 / Modified: 22:48:59" itemprop="dateCreated datePublished" datetime="2022-02-16T22:30:19+08:00">2022-02-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="并发一致性问题"><a href="#并发一致性问题" class="headerlink" title="并发一致性问题"></a>并发一致性问题</h2><p>在并发环境下，事务的隔离性很难保证，因此会出现很多并发一致性问题。</p>
-<ol>
-<li><p>丢失修改<br> 丢失修改指一个事务的更新操作被另外一个事务的更新操作替换。一般在现实生活中常会遇到，例如：T1 和 T2 两个事务都对一个数据进行修改，T1 先修改并提交生效，T2 随后修改，T2 的修改覆盖了 T1 的修改。</p>
-</li>
-<li><p>读脏数据<br> 读脏数据指在不同的事务下，当前事务可以读到另外事务未提交的数据。例如：T1 修改一个数据但未提交，T2 随后读取这个数据。如果 T1 撤销了这次修改，那么 T2 读取的数据是脏数据。</p>
-</li>
-<li><p>不可重复读<br> 不可重复读指在一个事务内多次读取同一数据集合。在这一事务还未结束前，另一事务也访问了该同一数据集合并做了修改，由于第二个事务的修改，第一次事务的两次读取的数据可能不一致。例如：T2 读取一个数据，T1 对该数据做了修改。如果 T2 再次读取这个数据，此时读取的结果和第一次读取的结果不同。</p>
-</li>
-<li><p>幻影读<br> 幻读本质上也属于不可重复读的情况，T1 读取某个范围的数据，T2 在这个范围内插入新的数据，T1 再次读取这个范围的数据，此时读取的结果和和第一次读取的结果不同。</p>
-</li>
-</ol>
-<p>产生并发不一致性问题的主要原因是破坏了事务的隔离性，解决方法是通过并发控制来保证隔离性。并发控制可以通过封锁来实现，但是封锁操作需要用户自己控制，相当复杂。数据库管理系统提供了事务的隔离级别，让用户以一种更轻松的方式处理并发一致性问题。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1276,7 +1302,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-count">142</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

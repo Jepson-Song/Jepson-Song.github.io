@@ -188,6 +188,217 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/11/%E8%85%BE%E8%AE%AF%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/11/%E8%85%BE%E8%AE%AF%E5%BE%AE%E4%BF%A1%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%80%E9%9D%A2/" class="post-title-link" itemprop="url">腾讯微信客户端开发一面</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-11 12:13:36" itemprop="dateCreated datePublished" datetime="2022-03-11T12:13:36+08:00">2022-03-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-03-16 12:03:16" itemprop="dateModified" datetime="2022-03-16T12:03:16+08:00">2022-03-16</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>已通过</p>
+<hr>
+<ul>
+<li><p>上来先手撕三道代码， 题目不难，都算是经典题，但是给的时间稍微有点儿少，而且一上来就撕代码有点儿懵，导致一道很简单的链表翻转题没做好。。</p>
+</li>
+<li><p>第一题是链表k个一组翻转</p>
+<ul>
+<li>一上来有点懵，边界老是处理不好，写了十分钟没写出来就去做后面两道题了，后面两道题比较简单，一会儿就写完了又回来接着做这个。</li>
+<li>老是处理不好边界，索性直接把链表存到数组里，在数组里处理，结果最后面试让解释一下代码的时候还是解释的不太清楚。。</li>
+</ul>
+</li>
+<li><p>第二题是把数组的前k个移到最后</p>
+<ul>
+<li>开了个临时数组存，面试官问不定长数组会有什么问题，如果数组很长那么存在哪里</li>
+<li>问有没有更小内存开销的方法，问复杂度（这里答得有点儿混乱）</li>
+<li>堆栈的区别</li>
+<li>为什么要有堆和栈</li>
+</ul>
+</li>
+<li><p>第三题是最大子数组</p>
+</li>
+<li><p>问ACM竞赛经历，团队几人，怎么分配工作，过几题能拿牌</p>
+</li>
+<li><p>问编译器项目，非常详细，一步一步地问</p>
+<ul>
+<li>词法分析怎么实现的，有没有比字符串匹配更好的方法，答了字典树，又问字典树为什么更好之类的</li>
+<li>文法分析，抽象语法树，递归实现，有没有比递归实现更好的方式，答了可以模仿字典树（这里答的不好，面试官说循环递归的问题字典树解决不了，就建不起来这棵树），除了递归和字典树之外还有没有什么方案（不知道。。）</li>
+<li>汇编代码生成是干什么的，为什么是四元式，解释了一下操作数操作符操作结果之类的。</li>
+<li>寄存器优化怎么实现的，答了引用计数法，问还有哪些地方会用到（内存页面置换），然后问了一些内存页面置换的问题</li>
+</ul>
+</li>
+<li><p>虚拟内存，为什么要有虚拟内存，怎么实现的，页表，页和块</p>
+</li>
+<li><p>进程间通信有哪些，管道是什么，套接字是什么，共享内存是什么，哪个最快（答了共享内存，不知道对不对）</p>
+</li>
+<li><p>线程同步方式，信号是什么</p>
+</li>
+<li><p>为什么要有线程，进程是什么</p>
+</li>
+<li><p>B+树是什么，有什么特性（答了叶子结点之间有指针），有什么好处（答了查找比较快和擅长范围查找）</p>
+</li>
+<li><p>TCP和UDP，区别，适用于哪些场景</p>
+</li>
+<li><p>HTTPS是什么，SSL具体怎么实现，为什么，对称加密和非对称加密的区别</p>
+</li>
+<li><p>问科研项目</p>
+<ul>
+<li>持续时间，几个人在做，具体怎么实现，除了超声还有什么方式，wifi可以吗，红外可以吗，摄像头人脸识别怎么样，呼吸和心跳是怎么测得的等等</li>
+</ul>
+</li>
+<li><p>问了开发的app，觉得哪个最好，讲了一下</p>
+</li>
+<li><p>工作地点是广州，对于工作地点有没有想法</p>
+</li>
+<li><p>反问环节</p>
+<ul>
+<li>问了面试官觉得我表现怎么样，有哪些方面可以提高，面试官说原理性的东西可以提高一下，比如做的编译器的原理细节等，思考更深入一点儿</li>
+</ul>
+</li>
+</ul>
+<p>总结：问了一个半小时多，是这么多面试里最久的，期间网络很差，换手机热点也很差，断线好几次，后来直接把摄像头关了。面试官问的特别详细，特别深，特别喜欢问为什么。知识点八股文方面答的还行，但是手撕代码和问项目这两个部分出了不少问题，感觉要gg了。。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/%E9%98%BF%E9%87%8C%E4%BA%91%E6%B8%B8%E6%88%8F%E4%B8%80%E9%9D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/10/%E9%98%BF%E9%87%8C%E4%BA%91%E6%B8%B8%E6%88%8F%E4%B8%80%E9%9D%A2/" class="post-title-link" itemprop="url">阿里云游戏一面</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-10 19:50:31" itemprop="dateCreated datePublished" datetime="2022-03-10T19:50:31+08:00">2022-03-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-03-16 14:10:27" itemprop="dateModified" datetime="2022-03-16T14:10:27+08:00">2022-03-16</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>接到继续面试的电话了，应该算是过了吧</p>
+<hr>
+<ul>
+<li><p>电话面</p>
+</li>
+<li><p>自我介绍</p>
+</li>
+<li><p>问华为的实习经历</p>
+<p>做了什么工作，技术难题，工具开源</p>
+<p>规则应用于十万行代码的性能？误报率？华为代码安全重复率啥的。。（这些都不了解。。）</p>
+</li>
+<li><p>问科研项目</p>
+<p>系统架构，项目持续时间，从事的工作，硬件组成</p>
+</li>
+<li><p>团队介绍</p>
+<p>原神等的云游戏，可能会跟硬件相关，中心云芯片，高通</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5%E5%92%8C%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -896,189 +1107,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/07/%E7%BC%96%E8%AF%91%E5%99%A8%E9%A1%B9%E7%9B%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/07/%E7%BC%96%E8%AF%91%E5%99%A8%E9%A1%B9%E7%9B%AE/" class="post-title-link" itemprop="url">编译器项目</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-03-07 16:53:55" itemprop="dateCreated datePublished" datetime="2022-03-07T16:53:55+08:00">2022-03-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-08 09:31:55" itemprop="dateModified" datetime="2022-03-08T09:31:55+08:00">2022-03-08</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="基于C0文法的编译器设计与开发"><a href="#基于C0文法的编译器设计与开发" class="headerlink" title="基于C0文法的编译器设计与开发"></a>基于C0文法的编译器设计与开发</h2><h3 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h3><p>大三时编译原理课程，报名参加了试点班。试点班就是不用参加平常的理论课和实验课，只需要用一学期的时间开发出一个编译器。但是一共三四十名学生报名参加了试点班，最后我的成绩是最高的。</p>
-<p>在上编译原理这门课之前对编译器可以说是一无所知，所以一开始上手很困难。老师给了我们一本编译原理的书，就是号称编译原理三大圣经之一的龙书，然后给了我们一个编译原理的网课让我们自学。看了一段时间书和网课然后慢慢开始一点点上手实践。</p>
-<h3 id="项目流程"><a href="#项目流程" class="headerlink" title="项目流程"></a>项目流程</h3><p>编译器开发主要分为四大块：词法分析、语法分析、中间代码生成和汇编代码生成。</p>
-<ul>
-<li>词法分析主要是将源代码的字符串划分为token，每个token都包含了一个划分出来的词以及这个词的类型。</li>
-<li>语法分析就是按照定义好的语法规则将词法分析生成的tokens转换成抽象语法树的过程。</li>
-<li>中间代码生成式在语法分析的过程中，将语法树转换成四元组的形式，使用四元组主要是为了方便后续汇编代码生成。</li>
-<li>汇编代码生成就是将四元组转化成对应的汇编代码，比如我采用的mips指令集。</li>
-</ul>
-<h3 id="项目难点"><a href="#项目难点" class="headerlink" title="项目难点"></a>项目难点</h3><ul>
-<li><p>寄存器优化</p>
-<p>  不进行优化的方案就是，每次对变量进行操作的时候，都需要先将变量从内存读到寄存器，然后在寄存器上对变量进行操作，操作完成后再将变量写回寄存器，所以每次使用一个变量都会带来两次寄存器读写，这是很耗时间的，尤其是当对一个变量进行反复修改，就得不断的反复从内存读出写入。</p>
-<p>  所以最好的解决方案是，给每个变量都分配一个寄存器，等到程序结束的时候再一起写回。但是实际中寄存器的数量是很有限的，以mips指令集为例，一般只有32位寄存器，除去一些有特殊用处的能够使用的寄存器可能只有十几二十几个，而一段代码内部的变量可能有很多，所以没办法给每个变量都分配一个寄存器。</p>
-<p>  可以尽可能多的把寄存器分配给变量，但是当寄存器用完了而又来了新变量时，就必须做出一个抉择就是要把哪个旧的变量踢出寄存器。这个选择做的好坏非常影响编译器的性能。</p>
-<p>  当时对这方面的算法了解不多，所以采取了一个比较简单的算法，就是引用计数法。即每次使用一个变量都对将它的计数器加一，然后需要踢出变量的时候就优先踢出计数器次数最小的那个。这种方法再大多数情况下是有效的，但是有些极端情况比如寄存器震荡等。</p>
-<p>  后来慢慢接触到其它知识后，了解到这个问题其实跟很多其它问题类似，比如内存的页面置换等。有一些很好的算法，比如LRU等，这也是这个编译器后续可以继续优化的方向。</p>
-</li>
-<li><p>函数调用时的压栈和出栈设计</p>
-<p>每个函数都在内存中对应着一段栈帧，栈帧由栈顶和栈底两个寄存器确定，mips里叫做sp和fp。</p>
-<p>调用函数时，先将函数参数压栈压栈，再将返回地址压栈，再将栈底位置压栈，然后将栈底指向栈顶也就是当前位置，之后就是新函数的栈帧。</p>
-<p>函数调用结束后，出栈的顺序跟入栈的顺序相反，先让栈顶指向栈底，意味着将该函数的栈帧取消，再将栈底移到它指向的值，即回到上一个栈底的位置，从而恢复上一个函数的栈帧，然后再将放回地址出栈，让指令寄存器回到返回地址处继续执行程序。</p>
-</li>
-<li><p>多重for循坏的线性化</p>
-<p>通过mips的label和jump指令将for循环展开</p>
-</li>
-</ul>
-<h3 id="后续的优化方向"><a href="#后续的优化方向" class="headerlink" title="后续的优化方向"></a>后续的优化方向</h3><ul>
-<li>增加一些功能，比如多维数组、结构体等。</li>
-<li>改进寄存器优化算法，比如增加计数器衰减或者使用LRU算法等。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/04/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/04/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/" class="post-title-link" itemprop="url">系统调用</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-03-04 17:02:45" itemprop="dateCreated datePublished" datetime="2022-03-04T17:02:45+08:00">2022-03-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-06 13:35:31" itemprop="dateModified" datetime="2022-03-06T13:35:31+08:00">2022-03-06</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h2><p>系统调用就是调用操作系统提供的一系列内核功能函数，因为内核总是对用户程序持不信任的态度，一些核心功能不能直接交由用户程序来实现执行。用户程序只能发出请求，然后内核调用相应的内核函数来帮着处理，将结果返回给应用程序。如此才能保证系统的稳定和安全。</p>
-<p>系统调用是给用户态下的程序使用的，但是用户程序并不直接使用系统调用，而是系统调用在用户态下的接口。这个用户接口就是操作系统提供的系统调用API，一般遵循POSIX标准。</p>
-<p>每一个系统调用都唯一分配了一个整数来标识，通常的做法就是将这个系统调用号放进eax寄存器，当执行到系统调用入口程序的时候就会根据eax的值去调用具体的系统调用程序，比如说eax中存放的是1那么就会去调用fork这个系统调用的相关函数。</p>
-<h3 id="系统调用的实现"><a href="#系统调用的实现" class="headerlink" title="系统调用的实现"></a>系统调用的实现</h3><ul>
-<li><p>参数</p>
-<p>  有些系统调用的是需要参数的，用户接口不真正干活，真正干活的是内核功能函数，但是需要的参数在用户态下，所以需要在用户接口部分向内核传递参数。传参有两种方法：</p>
-<ul>
-<li><p>直接传给寄存器，寄存器是通用的，在用户态将值传给寄存器，进入内核态之后就可以直接使用，这可以使用内联汇编来实现。</p>
-</li>
-<li><p>压栈，压栈有个问题，系统调用使用中断/陷阱来实现，这期间会换栈，在用户态下压栈的参数对内核来说似乎没什么用处。所以要想使用用户态下栈中的参数，必须要获得用户栈的地址，这个值在哪呢？没错，在内核栈中的上下文保存着，从内核栈中取出用户栈的栈顶esp值，就可以取到系统调用的参数了，xv6就是这样实现的。</p>
-</li>
-</ul>
-</li>
-<li><p>返回值</p>
-<p>  函数的调用约定中规定了返回值应该放在eax寄存器里面。而在系统调用的一开始我们将系统调用号传进了eax寄存器，然后中断时保存上下文，将eax压入内核栈，系统调用处理程序将最后结果放到eax寄存器中。</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1145,7 +1177,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-count">142</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
