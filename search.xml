@@ -224,6 +224,50 @@
       </tags>
   </entry>
   <entry>
+    <title>阿里云游戏二面</title>
+    <url>/2022/03/18/%E9%98%BF%E9%87%8C%E4%BA%91%E6%B8%B8%E6%88%8F%E4%BA%8C%E9%9D%A2/</url>
+    <content><![CDATA[<ul>
+<li>技术终面</li>
+<li>一共大概30分钟，先一两分钟自我介绍一下</li>
+<li>科研项目<ul>
+<li>对MPUTT？协议有什么了解</li>
+</ul>
+</li>
+<li>ACM竞赛负责的角色</li>
+<li>华为实习<ul>
+<li>有什么成就</li>
+</ul>
+</li>
+<li>场景题<ul>
+<li>城市中点和点之间的最短路径，答了dijkstra</li>
+<li>假如是送快递或者送外卖，有多个目的地该怎么做，答了贪心，面试官说可能不是最优的</li>
+</ul>
+</li>
+<li>哪个基础知识掌握的最好<ul>
+<li>问了内存分配方面的支持</li>
+<li>怎么根据指针来计算空间大小</li>
+</ul>
+</li>
+<li>c/c++问题<ul>
+<li>数组a[10]，这个方括号是啥，是宏定义、运算符、函数还是关键字，猜了个运算符</li>
+<li>具体细节</li>
+</ul>
+</li>
+<li>对于开源软件的了解，读过源码吗</li>
+<li>以后的方向，有接触过这些方向的产品吗，打算什么时候接触</li>
+<li>还有什么想说的</li>
+<li>反问环节<ul>
+<li>问了面试流程</li>
+</ul>
+</li>
+</ul>
+<p>应该挂了，感觉面试官对我兴趣不大，一直在找项目和实习方面的难点和亮点，感觉没找到。</p>
+]]></content>
+      <tags>
+        <tag>面经</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>智能指针</title>
     <url>/2022/03/17/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88-1/</url>
     <content><![CDATA[<h2 id="shared-ptr"><a href="#shared-ptr" class="headerlink" title="shared_ptr"></a>shared_ptr</h2><p>多个shared_pt智能指针可以使用同一块堆内存，并且该类型只能指针在实现上采用的是引用计数机制。</p>

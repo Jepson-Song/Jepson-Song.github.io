@@ -188,6 +188,85 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/28/const%E7%9A%84%E4%BD%9C%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/28/const%E7%9A%84%E4%BD%9C%E7%94%A8/" class="post-title-link" itemprop="url">const的作用</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-28 16:19:09 / Modified: 16:31:01" itemprop="dateCreated datePublished" datetime="2022-02-28T16:19:09+08:00">2022-02-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="const的作用"><a href="#const的作用" class="headerlink" title="const的作用"></a>const的作用</h2><ol>
+<li><p>阻止一个变量被改变，可以使用const关键字。在定义该const变量时，通常需要对它进行初始化，因为以后就没有机会再去改变它了；</p>
+</li>
+<li><p>对指针来说，可以指定指针本身为const（指针常量：int* const p），也可以指定指针所指的数据为const（常量指针：const int* p），或二者同时指定为const（常指针常量：const int* const p）；</p>
+</li>
+<li><p>类的常函数可以访问const和非const的成员变量，但不能修改类的成员变量；</p>
+<p>this指针默认是指针常量，所以不能修改this指针的指向。在成员函数后面加const变成常函数，实际是修饰的是this指针，将this指针变成常指针常量，使其不能修改指向的值。</p>
+</li>
+<li><p>常对象只能调用常函数，非常对象可以调用常函数也可以调用非常函数；</p>
+</li>
+<li><p>const类型变量必须定义的时候进行初始化，因此也导致如果类的成员变量有const类型的变量，那么该变量必须在类的初始化列表中进行初始化；</p>
+</li>
+<li><p>const类型变量可以通过类型转换符const_cast将const类型转换为非const类型；</p>
+</li>
+<li><p>在一个函数声明中，const可以修饰形参，表明它是一个输入参数，在函数内部不能改变其值；</p>
+</li>
+<li><p>对于函数值传递的情况，因为参数传递是通过复制实参创建一个临时变量传递进函数的，函数内只能改变临时变量，但无法改变实参。则这个时候无论加不加const对实参不会产生任何影响。但是在引用或指针传递函数调用中，因为传进去的是一个引用或指针，这样函数内部可以改变引用或指针所指向的变量，这时const 才是实实在在地保护了实参所指向的变量。因为在编译阶段编译器对调用函数的选择是根据实参进行的，所以，只有引用传递和指针传递可以用是否加const来重载。一个拥有顶层const的形参无法和另一个没有顶层const的形参区分开来。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/28/static%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E7%94%A8%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -892,76 +971,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/24/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/24/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">希尔排序</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-24 10:32:29 / Modified: 10:46:22" itemprop="dateCreated datePublished" datetime="2022-02-24T10:32:29+08:00">2022-02-24</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="排序原理"><a href="#排序原理" class="headerlink" title="排序原理"></a>排序原理</h2><p>希尔排序是把记录按下标的一定增量分组，对每组使用直接插入排序算法排序；随着增量逐渐减少，每组包含的关键词越来越多，当增量减至1时，整个文件恰被分成一组，算法便终止。</p>
-<p>简单插入排序很循规蹈矩，不管数组分布是怎么样的，依然一步一步的对元素进行比较，移动，插入，比如[5,4,3,2,1,0]这种倒序序列，数组末端的0要回到首位置很是费劲，比较和移动元素均需n-1次。</p>
-<p>而希尔排序在数组中采用跳跃式分组的策略，通过某个增量将数组元素划分为若干组，然后分组进行插入排序，随后逐步缩小增量，继续按组进行插入排序操作，直至增量为1。希尔排序通过这种策略使得整个数组在初始阶段达到从宏观上看基本有序，小的基本在前，大的基本在后。然后缩小增量，到增量为1时，其实多数情况下只需微调即可，不会涉及过多的数据移动。</p>
-<p>好像有人证明希尔排序的时间复杂度是O(n^1.3)</p>
-<p><img src="https://s2.loli.net/2022/02/24/gjkAKLSPoGYuCRV.png" alt="20220224103652"></p>
-<p>动图：</p>
-<p><img src="https://s2.loli.net/2022/02/24/ZWMs3SkyAr1mu4I.png" alt="20220224103635"></p>
-<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>希尔排序的核心就是通过步长比较大的那几次插入排序保证了数组是基本有序的，然后再进行步长小的插入排序时不需要进行过多的比较和交换。</p>
-<p>在进行每一轮插入排序时，遇到第一个非逆序时就直接break就行了，我认为这才是希尔排序比简单插入排序快的原因。而网上大量博客都没说清楚，甚至代码里都没有这个break，这样性能可能还没有普通插入排序高。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">sortArray</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = nums.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> d=n/<span class="number">2</span>;d&gt;=<span class="number">1</span>;d/=<span class="number">2</span>)&#123; <span class="comment">// 步长d，共分为d组</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=d;i&lt;n;i++)&#123;  <span class="comment">// 对每个元素进行组内插入排序</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i;j&gt;=d;j-=d)&#123; <span class="comment">// 组内插入排序</span></span><br><span class="line">                <span class="keyword">if</span>(nums[j-d]&gt;nums[j]) <span class="built_in">swap</span>(nums[j-d], nums[j]);</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">break</span>; <span class="comment">// 希尔排序的核心就是这个break，遇到非逆序时就break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> nums;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1032,7 +1041,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">143</span>
+          <span class="site-state-item-count">144</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
