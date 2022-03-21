@@ -188,7 +188,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/28/const%E7%9A%84%E4%BD%9C%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/%E9%98%BF%E9%87%8C%E4%BA%91%E6%B8%B8%E6%88%8F%E4%B8%80%E9%9D%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -202,171 +202,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/28/const%E7%9A%84%E4%BD%9C%E7%94%A8/" class="post-title-link" itemprop="url">const的作用</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-28 16:19:09 / Modified: 16:31:01" itemprop="dateCreated datePublished" datetime="2022-02-28T16:19:09+08:00">2022-02-28</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="const的作用"><a href="#const的作用" class="headerlink" title="const的作用"></a>const的作用</h2><ol>
-<li><p>阻止一个变量被改变，可以使用const关键字。在定义该const变量时，通常需要对它进行初始化，因为以后就没有机会再去改变它了；</p>
-</li>
-<li><p>对指针来说，可以指定指针本身为const（指针常量：int* const p），也可以指定指针所指的数据为const（常量指针：const int* p），或二者同时指定为const（常指针常量：const int* const p）；</p>
-</li>
-<li><p>类的常函数可以访问const和非const的成员变量，但不能修改类的成员变量；</p>
-<p>this指针默认是指针常量，所以不能修改this指针的指向。在成员函数后面加const变成常函数，实际是修饰的是this指针，将this指针变成常指针常量，使其不能修改指向的值。</p>
-</li>
-<li><p>常对象只能调用常函数，非常对象可以调用常函数也可以调用非常函数；</p>
-</li>
-<li><p>const类型变量必须定义的时候进行初始化，因此也导致如果类的成员变量有const类型的变量，那么该变量必须在类的初始化列表中进行初始化；</p>
-</li>
-<li><p>const类型变量可以通过类型转换符const_cast将const类型转换为非const类型；</p>
-</li>
-<li><p>在一个函数声明中，const可以修饰形参，表明它是一个输入参数，在函数内部不能改变其值；</p>
-</li>
-<li><p>对于函数值传递的情况，因为参数传递是通过复制实参创建一个临时变量传递进函数的，函数内只能改变临时变量，但无法改变实参。则这个时候无论加不加const对实参不会产生任何影响。但是在引用或指针传递函数调用中，因为传进去的是一个引用或指针，这样函数内部可以改变引用或指针所指向的变量，这时const 才是实实在在地保护了实参所指向的变量。因为在编译阶段编译器对调用函数的选择是根据实参进行的，所以，只有引用传递和指针传递可以用是否加const来重载。一个拥有顶层const的形参无法和另一个没有顶层const的形参区分开来。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/28/static%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E7%94%A8%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/28/static%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E7%94%A8%E6%B3%95/" class="post-title-link" itemprop="url">static的作用和用法</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-28 15:45:08 / Modified: 15:52:48" itemprop="dateCreated datePublished" datetime="2022-02-28T15:45:08+08:00">2022-02-28</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="static的用法和作用"><a href="#static的用法和作用" class="headerlink" title="static的用法和作用"></a>static的用法和作用</h2><ol>
-<li><p>隐藏</p>
-<p>当同时编译多个文件时，所有未加static前缀的全局变量和函数都具有全局可见性。</p>
-<p>加static的全局变量只有本文件内能访问。</p>
-</li>
-<li><p>保持变量内容的持久</p>
-<p> （static变量中的记忆功能和全局生存期）</p>
-<p> 存储在静态数据区的变量会在程序刚开始运行时就完成初始化，也是唯一的一次初始化。共有两种变量存储在静态存储区：全局变量和static变量，只不过和全局变量比起来，static可以控制变量的可见范围，说到底static还是用来隐藏的。</p>
-</li>
-<li><p>默认初始化为0</p>
-<p> 其实全局变量也具备这一属性，因为全局变量也存储在静态数据区。在静态数据区，内存中所有的字节默认值都是0x00，某些时候这一特点可以减少程序员的工作量。</p>
-</li>
-<li><p>类成员声明为static</p>
-<ul>
-<li>函数体内static变量的作用范围为该函数体，不同于auto变量，该变量的内存只被分配一次，因此其值在下次调用时仍维持上次的值</li>
-<li>在模块内的static全局变量可以被模块内所有函数访问，但不能被模块外其它函数访问；</li>
-<li>在模块内的static函数只可被这一模块内的其它函数调用，这个函数的使用范围被限制在声明它的模块内；</li>
-<li>在类中的static成员变量属于整个类所拥有，对类的所有对象只有一份拷贝；</li>
-<li>在类中的static成员函数属于整个类所拥有，这个函数不接收this指针，因而只能访问类的static成员变量。</li>
-<li>static类对象必须要在类外进行初始化，static修饰的变量先于对象存在，所以static修饰的变量要在类外初始化；</li>
-<li>由于static修饰的类成员属于类，不属于对象，因此static类成员函数是没有this指针的，this指针是指向本对象的指针。正因为没有this指针，所以static类成员函数不能访问非static的类成员，只能访问 static修饰的类成员；</li>
-<li>static成员函数不能被virtual修饰，static成员不属于任何对象或实例，所以加上virtual没有任何实际意义；静态成员函数没有this指针，虚函数的实现是为每一个对象分配一个vptr指针，而vptr是通过this指针调用的，所以不能为virtual；虚函数的调用关系，this-&gt;vptr-&gt;ctable-&gt;virtual function</li>
-</ul>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/27/%E5%AE%8F%E5%AE%9A%E4%B9%89%E5%92%8Ctypedef/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/27/%E5%AE%8F%E5%AE%9A%E4%B9%89%E5%92%8Ctypedef/" class="post-title-link" itemprop="url">宏定义和typedef</a>
+            <a href="/2022/03/10/%E9%98%BF%E9%87%8C%E4%BA%91%E6%B8%B8%E6%88%8F%E4%B8%80%E9%9D%A2/" class="post-title-link" itemprop="url">阿里云游戏一面</a>
         </h2>
 
         <div class="post-meta">
@@ -378,14 +214,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2022-02-27 23:15:48" itemprop="dateCreated datePublished" datetime="2022-02-27T23:15:48+08:00">2022-02-27</time>
+              <time title="Created: 2022-03-10 19:50:31" itemprop="dateCreated datePublished" datetime="2022-03-10T19:50:31+08:00">2022-03-10</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-28 10:15:55" itemprop="dateModified" datetime="2022-02-28T10:15:55+08:00">2022-02-28</time>
+                <time title="Modified: 2022-03-16 14:10:27" itemprop="dateModified" datetime="2022-03-16T14:10:27+08:00">2022-03-16</time>
               </span>
 
           
@@ -399,95 +235,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="宏定义和typedef区别"><a href="#宏定义和typedef区别" class="headerlink" title="宏定义和typedef区别"></a>宏定义和typedef区别</h2><ul>
-<li><p>宏主要用于定义常量及书写复杂的内容；typedef主要用于定义类型别名。</p>
-</li>
-<li><p>宏替换发生在编译阶段之前，属于文本插入替换；typedef是编译的一部分。</p>
-</li>
-<li><p>宏不检查类型；typedef会检查数据类型。</p>
-</li>
-<li><p>宏不是语句，不在在最后加分号；typedef是语句，要加分号标识结束。</p>
-</li>
-<li><p>注意对指针的操作，typedef char * p_char和#define p_char char *区别巨大。</p>
-<p>一个经典例子：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INT int*</span></span><br><span class="line">INT a,b;</span><br></pre></td></tr></table></figure>
-
-<p>这里a的类型是int*，而b的类型是int。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> * INT  </span><br><span class="line">INT a,b;</span><br></pre></td></tr></table></figure>
-
-<p>这里的a,b都是int *类型。</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/27/%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84%E4%B8%8E%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/27/%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84%E4%B8%8E%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">指针数组与数组指针</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-27 23:03:45 / Modified: 23:08:55" itemprop="dateCreated datePublished" datetime="2022-02-27T23:03:45+08:00">2022-02-27</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p[<span class="number">10</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in"><span class="keyword">int</span></span> (*p)[<span class="number">10</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> *<span class="title">p</span><span class="params">(<span class="keyword">int</span>)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">int</span> <span class="params">(*p)</span><span class="params">(<span class="keyword">int</span>)</span></span></span><br></pre></td></tr></table></figure>
-
+          <p>接到继续面试的电话了，应该算是过了吧</p>
+<hr>
 <ul>
-<li><p>int *p[10]表示指针数组，强调数组概念，是一个数组变量，数组大小为10，数组内每个元素都是指向int类型的指针变量。</p>
+<li><p>电话面</p>
 </li>
-<li><p>int (*p)[10]表示数组指针，强调是指针，只有一个变量，是指针类型，不过指向的是一个int类型的数组，这个数组大小是10。</p>
+<li><p>自我介绍</p>
 </li>
-<li><p>int *p(int)是函数声明，函数名是p，参数是int类型的，返回值是int *类型的。</p>
+<li><p>问华为的实习经历</p>
+<p>做了什么工作，技术难题，工具开源</p>
+<p>规则应用于十万行代码的性能？误报率？华为代码安全重复率啥的。。（这些都不了解。。）</p>
 </li>
-<li><p>int (*p)(int)是函数指针，强调是指针，该指针指向的函数具有int类型参数，并且返回值是int类型的。</p>
+<li><p>问科研项目</p>
+<p>系统架构，项目持续时间，从事的工作，硬件组成</p>
+</li>
+<li><p>团队介绍</p>
+<p>原神等的云游戏，可能会跟硬件相关，中心云芯片，高通</p>
 </li>
 </ul>
 
@@ -509,7 +272,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/26/GET%E5%92%8CPOST/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5%E5%92%8C%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -523,7 +286,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/26/GET%E5%92%8CPOST/" class="post-title-link" itemprop="url">GET和POST</a>
+            <a href="/2022/03/10/%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5%E5%92%8C%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/" class="post-title-link" itemprop="url">进程同步和线程同步</a>
         </h2>
 
         <div class="post-meta">
@@ -536,7 +299,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-26 10:07:08 / Modified: 10:16:41" itemprop="dateCreated datePublished" datetime="2022-02-26T10:07:08+08:00">2022-02-26</time>
+              <time title="Created: 2022-03-10 16:17:23 / Modified: 16:38:11" itemprop="dateCreated datePublished" datetime="2022-03-10T16:17:23+08:00">2022-03-10</time>
             </span>
 
           
@@ -550,37 +313,62 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <ol>
-<li><p>报文上的区别</p>
-<p> GET 和 POST 只是 HTTP 协议中两种请求方式，所以在传输上，没有区别，因为HTTP 协议是基于 TCP/IP 的应用层协议<br> 报文格式上，不带参数时，最大区别仅仅是第一行方法名不同，一个是GET，一个是POST。</p>
-<p> 带参数时报文的区别呢？在约定中，GET方法的参数应该放在url中，POST方法参数应该放在body中。</p>
-<p> 举个例子，如果参数是 name=qiming.c, age=22。</p>
-<p> GET 方法简约版报文可能是这样的：</p>
-<pre><code> GET /index.php?name=qiming.c&amp;age=22 HTTP/1.1
- Host: localhost
-</code></pre>
-<p> POST 方法简约版报文可能是这样的：</p>
-<pre><code> POST /index.php HTTP/1.1
- Host: localhost
- Content-Type: application/x-www-form-urlencoded name=qiming. c&amp;age=22
-</code></pre>
+          <h2 id="进程同步"><a href="#进程同步" class="headerlink" title="进程同步"></a>进程同步</h2><ol>
+<li><p>管道</p>
+<p>管道分为命名管道和匿名管道，命名管道可以用于两个或任意多个进程间通信，匿名管道则只能用于有血缘关系（父子进程、兄弟进程、爷孙进程等）的进程间通信。Linux中的“|”命令就是匿名管道，表示把一个进程的输出作为另一个进程的输入。管道就是内核里的一段缓存，从管道一端写入的数据实际上是缓存在内核中，从另一端读取也就是从内核中读取这段数据。管道是半双工的，数据只能向一个方向流动，双方需要互相通信时，需要建立起两个管道。</p>
 </li>
-<li><p>传输数据的大小</p>
-<p> 在HTTP规范中，没有对URL的长度和传输的数据大小进行限制。但是在实际开发过程中，对于GET，特定的浏览器和服务器对URL的长度有限制。因此，在使用GET请求时，传输数据会受到URL长度的限制。</p>
-<p> 对于POST，由于不是URL传值，理论上是不会受限制的，但是实际上各个服务器会规定对POST提交数据大小进行限制，Apache、IIS都有各自的配置。</p>
+<li><p>消息队列</p>
+<p>多个不相干的进程可以通过一个消息队列来传递数据，且传递的是一个有意义的数据结构，而管道只能传递没有意义的字节流，还需要在接收端做解析。</p>
 </li>
-<li><p>安全性</p>
-<p> POST的安全性比GET的高。比如，在进行登录操作，通过GET请求，用户名和密码都会暴露再URL上，因为登录页面有可能被浏览器缓存以及其他人查看浏览器的历史记录的原因，此时的用户名和密码就很容易被他人拿到了。除此之外，GET请求提交的数据还可能会造成Cross-site request frogery攻击。</p>
+<li><p>共享内存</p>
+<p>共享内存就是映射一段能被其他进程所访问的内存，这段共享内存由一个进程创建，但多个进程都可以访问。共享内存是最快的一种IPC方式，因为没有内存拷贝的操作，但需要依靠互斥锁或信号量来实现同步。</p>
+</li>
+<li><p>socket</p>
+<p>可用于不同主机之间的进程间通信。</p>
+</li>
+<li><p>信号</p>
+<p>信号是Linux系统中的进程间通信方式，信号可以在任何时候发给某一进程，用于通知该进程某个事件已经发生。比如kill -9命令就可以向指定的进程发送一个终止信号从而杀死进程。</p>
+</li>
+<li><p>信号量</p>
+<p>信号量本质就是一个计数器，记录资源能被多少个进程同时访问，用来实现进程之间的互斥与同步，信号量的引入的是为了解决共享内存通信方式造成的进场安全问题。</p>
 </li>
 </ol>
-<p>深入理解</p>
-<ol>
-<li><p>GET和POST都是http请求方式，底层都是TCP/IP协议；通常GET 产生一个TCP数据包；POST产生两个TCP数据包（但firefox是发送一个数据包），</p>
+<h3 id="进程同步和进程通信"><a href="#进程同步和进程通信" class="headerlink" title="进程同步和进程通信"></a>进程同步和进程通信</h3><ul>
+<li><p>进程同步是进程之间按照一定顺序执行，进程通信是进程之间传输信息。</p>
 </li>
-<li><p>对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）表示成功；</p>
-<p> 而对于POST，浏览器先发送header，服务器响应100， 浏览器再继续发送data，服务器响应200 （返回数据）。</p>
+<li><p>进程通信是一种手段，而进程同步是目的。即为了达到进程同步的目的，需要让进程进行通信，传输一些同步所需要的信息。</p>
+</li>
+</ul>
+<h2 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h2><ol>
+<li><p>互斥锁</p>
+<p>互斥锁是线程同步最常用的一种方式，通过互斥锁可以锁定一个代码块，对于被锁定的这个代码块，所有的线程只能串行处理，不能并行处理。</p>
+</li>
+<li><p>读写锁</p>
+<p> 读写锁是互斥锁的升级版，所有线程的读操作都是并行的，只有写操作是串行的。程序中的读操作越多，读写锁性能就越高，相反，若程序中全是写操作，那么读写锁会退化成互斥锁。</p>
+</li>
+<li><p>条件变量</p>
+<p> 条件变量的主要作用不是处理线程同步，而是进行线程的阻塞。常常和互斥锁一起用在生产者和消费者模型中。举个例子：当任务队列为空时，消费者无法消费，使用条件变量把消费者线程阻塞住，等待生产者生产出任务后，再唤醒一个或多个被条件变量阻塞的消费者线程；反过来也可以控制生产者生产的上限，当任务队列达到一个上限值时用条件变量阻塞住生产者线程，直到消费者把任务消费后再唤醒被条件变量阻塞的生产者线程。</p>
+</li>
+<li><p>信号量</p>
+<p>信号量可以实现线程同步也可以实现进程同步，它允许多个线程在同一时刻访问同一资源，但是需要限制在同一时刻访问此资源的最大线程数目。信号量主要阻塞线程，不能完全保证线程安全，如果要保证线程安全，需要和互斥锁一起使用。信号量也可以用来实现生产者消费者模型，在用条件变量实现生产者消费者模型时需要自己做条件判断，而使用信号量就不需要。举个例子：初始化生产者的信号量为5，消费者的信号量为0，因为消费者信号量为0所以会被阻塞，生产者进行一次生产后会将自己的信号量减1，将消费者信号量加1，这时消费者解除阻塞，进行消费后再将自己的信号量减1生产者信号量加1。</p>
+</li>
+<li><p>自旋锁</p>
+<p>自旋锁与互斥锁类似，但它不是通过休眠使进程阻塞，而是在获取锁之前一直处于忙等（自旋）阻塞状态。自旋锁可用于一下情况：锁被持有的时间短，而且线程并不希望在重新调度上花费太多成本。</p>
+</li>
+<li><p>屏障</p>
+<p>屏障允许每个线程等待，直到所有的合作线程都到达某一点，然后从该点继续执行。pthread_join函数就是一种屏障，允许一个线程等待，直到另一个线程退出，但屏障允许任意数量的线程等待，直到所有的线程完成处理工作，而线程不需要退出，所有线程达到屏障后可以接着工作。</p>
 </li>
 </ol>
+<h3 id="信号量和互斥锁"><a href="#信号量和互斥锁" class="headerlink" title="信号量和互斥锁"></a>信号量和互斥锁</h3><ul>
+<li>互斥锁是由一个线程持有的，加锁和解锁操作在一个线程中执行。而信号量可以由不同线程进行PV操作。</li>
+<li>互斥锁用于控制多个线程对于一个共享资源的互斥访问，而信号量用于协调多个线程对于一系列资源的访问。</li>
+<li>信号量本质上是一个计数器，其正值代表资源的可用数量，负值代表还有多少个线程在等待资源。</li>
+</ul>
+<h3 id="条件变量和信号量"><a href="#条件变量和信号量" class="headerlink" title="条件变量和信号量"></a>条件变量和信号量</h3><ul>
+<li>信号量利用条件变量、互斥锁、计数器实现，计数器就是信号量的核心，信号量是条件变量的高级抽象。</li>
+<li>使用条件变量可以一次唤醒所有等待者，而这个信号量没有的功能，感觉是最大区别。</li>
+<li>信号量是有一个值（状态的），而条件变量是没有的，没有地方记录唤醒（发送信号）过多少次，也没有地方记录唤醒线程（wait返回）过多少次。从实现上来说一个信号量可以是用mutex + counter + condition variable实现的。因为信号量有一个状态，如果想精准的同步，那么信号量可能会有特殊的地方。信号量可以解决条件变量中存在的唤醒丢失问题。</li>
+</ul>
 
       
     </div>
@@ -600,7 +388,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/26/FTP%E7%9A%84%E4%B8%BB%E5%8A%A8%E6%A8%A1%E5%BC%8F%E5%92%8C%E8%A2%AB%E5%8A%A8%E6%A8%A1%E5%BC%8F/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -614,7 +402,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/26/FTP%E7%9A%84%E4%B8%BB%E5%8A%A8%E6%A8%A1%E5%BC%8F%E5%92%8C%E8%A2%AB%E5%8A%A8%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">FTP的主动模式和被动模式</a>
+            <a href="/2022/03/10/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7-1/" class="post-title-link" itemprop="url">并发一致性</a>
         </h2>
 
         <div class="post-meta">
@@ -627,7 +415,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-26 09:47:26 / Modified: 10:07:18" itemprop="dateCreated datePublished" datetime="2022-02-26T09:47:26+08:00">2022-02-26</time>
+              <time title="Created: 2022-03-10 09:43:52 / Modified: 09:59:28" itemprop="dateCreated datePublished" datetime="2022-03-10T09:43:52+08:00">2022-03-10</time>
             </span>
 
           
@@ -641,117 +429,43 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="FTP主动模式"><a href="#FTP主动模式" class="headerlink" title="FTP主动模式"></a>FTP主动模式</h3><p><img src="https://s2.loli.net/2022/02/26/GS76hwuCjb9i3QF.png" alt="20220226094738"></p>
-<ol>
-<li><p>在主动模式下，客户端命令端口为N，数据端口为N+1，服务器端命令端口为21，数据端口为20。</p>
-<p> 第一步，客户端使用端口N连接FTP服务器的命令端口21，建立控制连接并告诉服务器我这边开启了数据端口N+1。</p>
-<p> 第二步，在控制连接建立成功后，服务器会使用数据端口20，主动连接客户端的N+1端口以建立数据连接。这就是FTP主动模式的连接过程。</p>
-<p> 我们可以看到，在这条红色的数据连接建立的过程中，服务器是主动的连接客户端的，所以称这种模式为主动模式。</p>
-</li>
-<li><p>主动模式的利弊</p>
-<p> 主动模式对FTP服务器的管理有利，因为FTP服务器只需要开启21端口的“准入”和20端口的“准出”即可。</p>
-<p> 但这种模式对客户端的管理不利，因为FTP服务器20端口连接客户端的数据端口时，有可能被客户端的防火墙拦截掉。</p>
-</li>
-</ol>
-<h3 id="FTP被动模式"><a href="#FTP被动模式" class="headerlink" title="FTP被动模式"></a>FTP被动模式</h3><p><img src="https://s2.loli.net/2022/02/26/CrznktXQZPiyAqg.png" alt="20220226094949"></p>
-<ol>
-<li><p>在被动模式下，客户端命令端口为N，数据端口为N+1，服务器端命令端口为21，数据端口为P。</p>
-<p> 第一步，客户端的命令端口N主动连接服务器命令端口21，并发送PASV命令，告诉服务器用“被动模式”，控制连接建立成功后，服务器开启一个数据端口P，通过PORT命令将P端口告诉客户端。</p>
-<p> 第二步，客户端的数据端口N+1去连接服务器的数据端口P，建立数据连接。</p>
-<p> 我们可以看到，在这条红色的数据连接建立的过程中，服务器是被动的等待客户端来连接的，所以称这种模式为被动模式。</p>
-</li>
-<li><p>被动模式利弊</p>
-<p> 被动模式对FTP客户端的管理有利，因为客户端的命令端口和数据端口都是“准出”，windows防火墙对于“准出”一般是不拦截的，所以客户端不需要任何多余的配置就可以连接FTP服务器了。</p>
-<p> 但对服务器端的管理不利。因为客户端数据端口连到FTP服务器的数据端口P时，很有可能被服务器端的防火墙阻塞掉。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/26/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/26/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" class="post-title-link" itemprop="url">HTTP状态码</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-26 09:19:57 / Modified: 09:26:25" itemprop="dateCreated datePublished" datetime="2022-02-26T09:19:57+08:00">2022-02-26</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>http状态码的由三位数字和原因短语组成，数字的第一位数字表示响应的类别，后面两位无类别。</p>
-<table>
+          <table>
 <thead>
 <tr>
-<th>状态码</th>
+<th>问题</th>
 <th>原因</th>
+<th>封锁级别</th>
+<th>解决方法</th>
+<th>隔离级别</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>1XX</td>
-<td>临时状态码，表示正在处理请求</td>
+<td>丢失修改</td>
+<td>一个写操作被另一个写操作覆盖，第一个写操作丢失</td>
+<td>一级封锁协议</td>
+<td>写操作加X锁，且X锁不共存</td>
+<td>未提交读</td>
 </tr>
 <tr>
-<td>2XX</td>
-<td>请求处理成功</td>
+<td>读脏数据</td>
+<td>读操作读到数据后写操作回滚，则读操作读到脏数据</td>
+<td>二级封锁协议</td>
+<td>在一级的基础上，读操作加S锁，读完后立刻释放S锁</td>
+<td>提交读</td>
 </tr>
 <tr>
-<td>3XX</td>
-<td>重定向，表示要完成请求需要进一步操作</td>
+<td>不可重复读</td>
+<td>读操作读完数据后，写操作修改数据，读操作再次读取数据发现不一致</td>
+<td>三级封锁协议</td>
+<td>在二级的基础上，读操作加的S锁不立刻释放，直到事务结束之后再释放</td>
+<td>可重复读</td>
 </tr>
 <tr>
-<td>4XX</td>
-<td>请求错误，错误的原因在客户端，比如请求的参数错误或者url过长等</td>
-</tr>
-<tr>
-<td>5XX</td>
-<td>服务器错误，比如服务不可用或者服务器内部出错</td>
+<td>幻读</td>
+<td>一般是在操作范围数据时，比如求和或者取平均值，有其它事务在区间内插入或者删除</td>
+<td>/</td>
+<td>加间隙锁</td>
+<td>/</td>
 </tr>
 </tbody></table>
 
@@ -773,7 +487,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/24/%E6%88%91%E7%9A%84%E6%97%A5%E7%A8%8B%E5%AE%89%E6%8E%92%E8%A1%A8/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/09/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%88%86%E7%B1%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -787,7 +501,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/24/%E6%88%91%E7%9A%84%E6%97%A5%E7%A8%8B%E5%AE%89%E6%8E%92%E8%A1%A8/" class="post-title-link" itemprop="url">我的日程安排表</a>
+            <a href="/2022/03/09/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%88%86%E7%B1%BB/" class="post-title-link" itemprop="url">操作系统的分类</a>
         </h2>
 
         <div class="post-meta">
@@ -800,7 +514,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-24 22:35:16 / Modified: 22:39:33" itemprop="dateCreated datePublished" datetime="2022-02-24T22:35:16+08:00">2022-02-24</time>
+              <time title="Created: 2022-03-09 22:35:48 / Modified: 22:39:11" itemprop="dateCreated datePublished" datetime="2022-03-09T22:35:48+08:00">2022-03-09</time>
             </span>
 
           
@@ -814,72 +528,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>当 k 个日程安排有一些时间上的交叉时（例如 k 个日程安排都在同一时间内），就会产生 k 次预订。</p>
-<p>给你一些日程安排 [start, end) ，请你在每个日程安排添加后，返回一个整数 k ，表示所有先前日程安排会产生的最大 k 次预订。</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>插旗法：进入一个区间的时候将该点坐标对应的值+1，代表插上一面进入的🚩，离开时将该点坐标值-1，代表插上一面离开的🚩，在同一个点可以同时插进入的旗或离开的旗，因为这样并不形成区间重叠。</p>
-<p>通过计数器cnt可以得到当前重叠次数，如果不能重叠则cnt&gt;1就返回false（如我的日程安排表一），如果不能重叠三次就cnt&gt;2再返回false（如我的日程安排表二），如果要求最大重叠次数就返回cnt最大值（如我的日程安排表三）。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">map&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; rec;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">book</span><span class="params">(<span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line">    rec[start] ++;</span><br><span class="line">    rec[end] --;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;a: rec)&#123;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        if(cnt&gt;1)&#123;</span></span><br><span class="line"><span class="comment">            rec[start] --;</span></span><br><span class="line"><span class="comment">            rec[end] ++;</span></span><br><span class="line"><span class="comment">            return false;</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        cnt += a.second;</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, cnt);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/24/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/24/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">十大排序算法</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-24 10:57:58 / Modified: 10:59:18" itemprop="dateCreated datePublished" datetime="2022-02-24T10:57:58+08:00">2022-02-24</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://s2.loli.net/2022/02/24/GDViCKSkOUqLPtY.png" alt="20220224105819"></p>
-<p><img src="https://s2.loli.net/2022/02/24/njH3MlzIhiC7Nec.png" alt="20220224105839"></p>
+          <p><img src="https://s2.loli.net/2022/03/09/FN65Kiw2grop1fT.png" alt="20220309223559"></p>
+<h2 id="单道批处理系统"><a href="#单道批处理系统" class="headerlink" title="单道批处理系统"></a>单道批处理系统</h2><p>每次从一个IO缓存中，向内存读入一道程序并只有一道程序运行。只有该程序运行结束后才能读入下一道程序。</p>
+<p>CPU有大量的时间在空闲等待I/O完成。</p>
+<h2 id="多道批处理系统"><a href="#多道批处理系统" class="headerlink" title="多道批处理系统"></a>多道批处理系统</h2><p>每次读入多道程序，并能并发执行（由操作系统控制，中断的概念），共享计算机资源，CPU和其他资源保持“忙碌”状态。</p>
+<p>缺点：美没有人机交互。</p>
+<h2 id="分时操作系统"><a href="#分时操作系统" class="headerlink" title="分时操作系统"></a>分时操作系统</h2><p>计算机以时间片为单位轮流为各个用户/作业服务（平均主义）。</p>
+<p>优点：用户请求可以被即时响应，解决了人机交互问题。允许多个用户用时使用一台计算机，并且用户对计算机的操作相互独立。</p>
+<p>缺点：不能有限处理一些紧急任务，操作系统对各个用户/作业都是完全公平的，循环地为每个用户/作业服务一个时间片，不区分任务地紧急性。</p>
+<h2 id="实时操作系统"><a href="#实时操作系统" class="headerlink" title="实时操作系统"></a>实时操作系统</h2><p>在实时操作系统地控制下，计算机系统接收到外部信号后及时进行处理，并且要在严格地时间内容处理完时间。</p>
+<p>特点：及时性和可靠性</p>
+<p>优点：能优先响应一些紧急任务，无需排队。</p>
+<h2 id="网络操作系统"><a href="#网络操作系统" class="headerlink" title="网络操作系统"></a>网络操作系统</h2><p>使网络上各计算机能够方便、有效地共享网络资源并为网络用户提供所需的各种服务的软件与协议的集合。</p>
+<h2 id="分布式操作系统"><a href="#分布式操作系统" class="headerlink" title="分布式操作系统"></a>分布式操作系统</h2><p>简单来说就是有一堆计算机，各自物理硬件上是独立的，通过网络相连，互相通信，通过统一的“中间件”进行协调，共享资源，协同分工完成一件任务的计算机集群。</p>
 
       
     </div>
@@ -899,7 +560,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/24/%E6%A1%B6%E6%8E%92%E5%BA%8F%E3%80%81%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F%E5%92%8C%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/09/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -913,7 +574,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/24/%E6%A1%B6%E6%8E%92%E5%BA%8F%E3%80%81%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F%E5%92%8C%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">桶排序、计数排序和基数排序</a>
+            <a href="/2022/03/09/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/" class="post-title-link" itemprop="url">文件描述符</a>
         </h2>
 
         <div class="post-meta">
@@ -924,16 +585,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2022-02-24 10:44:44" itemprop="dateCreated datePublished" datetime="2022-02-24T10:44:44+08:00">2022-02-24</time>
+              <time title="Created: 2022-03-09 20:58:26 / Modified: 21:22:59" itemprop="dateCreated datePublished" datetime="2022-03-09T20:58:26+08:00">2022-03-09</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-27 23:24:47" itemprop="dateModified" datetime="2022-02-27T23:24:47+08:00">2022-02-27</time>
-              </span>
 
           
 
@@ -946,16 +601,40 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h2><p>桶排序是一种用空间换取时间的排序，桶排序重要的是它的思想，而不是具体实现，时间复杂度最好可能是线性O(n)，桶排序不是基于比较的排序而是一种分配式的。</p>
-<p>桶排序的思想为：将待排序的序列分到若干个桶中，每个桶内的元素再进行个别排序。 当然桶排序选择的方案跟具体的数据有关系，桶排序是一个比较广泛的概念，并且计数排序是一种特殊的桶排序，基数排序也是建立在桶排序的基础上。在数据分布均匀且每个桶元素趋近一个时间复杂度能达到O(n),但是如果数据范围较大且相对集中就不太适合使用桶排序。</p>
-<p><img src="https://s2.loli.net/2022/02/24/VNs3kwxiMaE7KZT.png" alt="20220224104715"></p>
-<h2 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h2><p>计数排序是一种特殊的桶排序，每个桶的大小为1，每个桶不在用List表示，而通常用一个值用来计数。</p>
-<p>在设计具体算法的时候，先找到最小值min，再找最大值max。然后创建这个区间大小的数组，从min的位置开始计数，这样就可以最大程度的压缩空间，提高空间的使用效率。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">countSort</span><span class="params">(<span class="keyword">int</span> a[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> min=Integer.MAX_VALUE;<span class="keyword">int</span> max=Integer.MIN_VALUE;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;a.length;i++)<span class="comment">//找到max和min</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span>(a[i]&lt;min) </span><br><span class="line">      min=a[i];</span><br><span class="line">    <span class="keyword">if</span>(a[i]&gt;max)</span><br><span class="line">      max=a[i];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">int</span> count[]=<span class="keyword">new</span> <span class="keyword">int</span>[max-min+<span class="number">1</span>];<span class="comment">//对元素进行计数</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;a.length;i++)</span><br><span class="line">  &#123;</span><br><span class="line">    count[a[i]-min]++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//排序取值</span></span><br><span class="line">  <span class="keyword">int</span> index=<span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;count.length;i++)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">while</span> (count[i]--&gt;<span class="number">0</span>) &#123;</span><br><span class="line">      a[index++]=i+min;<span class="comment">//有min才是真正值</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="基数排序"><a href="#基数排序" class="headerlink" title="基数排序"></a>基数排序</h2><p>基数排序也称为卡片排序，基数排序的原理就是多次利用计数排序(计数排序是一种特殊的桶排序)，但是和前面的普通桶排序和计数排序有所区别的是，基数排序并不是将一个整体分配到一个桶中，而是将自身拆分成一个个组成的元素，每个元素分别顺序分配放入桶中、顺序收集，当从前往后或者从后往前每个位置都进行过这样顺序的分配、收集后，就获得了一个有序的数列。</p>
-<h3 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h3><p>基数排序就是进行d论计数排序，d是最大数字的长度。每一轮排序就是针对每个数字的某一位做计数排序，每一轮排序的结果是所有元素不一定有序，但是在这一位上是有序。然后在对下一位进行下一轮的计数排序，所有数字在该位上是有序的，该位相等的那些数字在上一位是有序的。所以一共进行d论计数排序之后，所有数字都是有序的。</p>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><p><a target="_blank" rel="noopener" href="https://jepson-song.github.io/2021/12/01/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/">https://jepson-song.github.io/2021/12/01/%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/</a></p>
+          <h2 id="描述符表"><a href="#描述符表" class="headerlink" title="描述符表"></a>描述符表</h2><ul>
+<li><p>Linux中一切都被抽象成文件，设备也是文件，socket、惯导、消息队列等都是文件。</p>
+</li>
+<li><p>每个进程都有独立的描述符表。</p>
+</li>
+<li><p>件描述符就是一个整形变量，表示文件在描述符表中的下标。</p>
+</li>
+<li><p>每打开一个文件，就会将这个文件的描述符表中。每个进程都有三个默认文件描述符，分别是0（标准输入），1（标准输出），2（标准错误）。</p>
+</li>
+<li><p>文件描述符一般是调用open()函数返回，调用close()函数会收回对应的文件描述符。</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/03/09/XcuYRK6FqzA4fPk.png" alt="20220309205905"></p>
+<h2 id="文件表"><a href="#文件表" class="headerlink" title="文件表"></a>文件表</h2><ul>
+<li><p>所有进程共享同一个文件表。</p>
+</li>
+<li><p>文件表记录了文件的一些信息，比如文件位置、引用计数以及指向v-node表的指针等。</p>
+</li>
+<li><p>所有打开的文件都有一个文件位置，表示下一次读或写的起始位置。 seek, read, write 函数都可以修改该文件位置。</p>
+</li>
+<li><p>所有进程共享同一个文件表。文件表中的一个表项可能会被多个描述符指向，引用计数用来表示当前有多少个描述符指向该文件表表项。当调用 close() 函数时，系统会将描述符对应的文件表表项的引用计数减1，然后如果引用计数已经为0，则系统会删除此文件表表项。</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/03/09/lV3DtfpJ5e2HIc7.png" alt="20220309211335"></p>
+<h2 id="v-node表"><a href="#v-node表" class="headerlink" title="v-node表"></a>v-node表</h2><ul>
+<li><p>所有进程共享同一个 v-node 表。</p>
+</li>
+<li><p>一个 v-node 表的表项对应于一个文件。它记录了文件的元数据信息。包括文件权限，文件大小，文件类型等信息。</p>
+</li>
+<li><p>当对同一个文件调用多次 open() 函数，那么会产生多个文件表表项，但是只有一个 v-node 表表项。</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/03/09/PQ2cds8KZJM7eNf.png" alt="20220309211619"></p>
+<p><img src="https://s2.loli.net/2022/03/09/I6jGfuCw2BXqHKr.png" alt="20220309212229"></p>
 
       
     </div>
@@ -974,7 +653,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1041,7 +720,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-count">146</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

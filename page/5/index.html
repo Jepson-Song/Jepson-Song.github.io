@@ -188,7 +188,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/24/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/09/I-O%E6%A8%A1%E5%9E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -202,7 +202,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/24/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/" class="post-title-link" itemprop="url">希尔排序</a>
+            <a href="/2022/03/09/I-O%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">I/O模型</a>
         </h2>
 
         <div class="post-meta">
@@ -215,7 +215,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-24 10:32:29 / Modified: 10:46:22" itemprop="dateCreated datePublished" datetime="2022-02-24T10:32:29+08:00">2022-02-24</time>
+              <time title="Created: 2022-03-09 19:47:47 / Modified: 20:50:16" itemprop="dateCreated datePublished" datetime="2022-03-09T19:47:47+08:00">2022-03-09</time>
             </span>
 
           
@@ -229,16 +229,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="排序原理"><a href="#排序原理" class="headerlink" title="排序原理"></a>排序原理</h2><p>希尔排序是把记录按下标的一定增量分组，对每组使用直接插入排序算法排序；随着增量逐渐减少，每组包含的关键词越来越多，当增量减至1时，整个文件恰被分成一组，算法便终止。</p>
-<p>简单插入排序很循规蹈矩，不管数组分布是怎么样的，依然一步一步的对元素进行比较，移动，插入，比如[5,4,3,2,1,0]这种倒序序列，数组末端的0要回到首位置很是费劲，比较和移动元素均需n-1次。</p>
-<p>而希尔排序在数组中采用跳跃式分组的策略，通过某个增量将数组元素划分为若干组，然后分组进行插入排序，随后逐步缩小增量，继续按组进行插入排序操作，直至增量为1。希尔排序通过这种策略使得整个数组在初始阶段达到从宏观上看基本有序，小的基本在前，大的基本在后。然后缩小增量，到增量为1时，其实多数情况下只需微调即可，不会涉及过多的数据移动。</p>
-<p>好像有人证明希尔排序的时间复杂度是O(n^1.3)</p>
-<p><img src="https://s2.loli.net/2022/02/24/gjkAKLSPoGYuCRV.png" alt="20220224103652"></p>
-<p>动图：</p>
-<p><img src="https://s2.loli.net/2022/02/24/ZWMs3SkyAr1mu4I.png" alt="20220224103635"></p>
-<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>希尔排序的核心就是通过步长比较大的那几次插入排序保证了数组是基本有序的，然后再进行步长小的插入排序时不需要进行过多的比较和交换。</p>
-<p>在进行每一轮插入排序时，遇到第一个非逆序时就直接break就行了，我认为这才是希尔排序比简单插入排序快的原因。而网上大量博客都没说清楚，甚至代码里都没有这个break，这样性能可能还没有普通插入排序高。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">sortArray</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = nums.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> d=n/<span class="number">2</span>;d&gt;=<span class="number">1</span>;d/=<span class="number">2</span>)&#123; <span class="comment">// 步长d，共分为d组</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=d;i&lt;n;i++)&#123;  <span class="comment">// 对每个元素进行组内插入排序</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i;j&gt;=d;j-=d)&#123; <span class="comment">// 组内插入排序</span></span><br><span class="line">                <span class="keyword">if</span>(nums[j-d]&gt;nums[j]) <span class="built_in">swap</span>(nums[j-d], nums[j]);</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">break</span>; <span class="comment">// 希尔排序的核心就是这个break，遇到非逆序时就break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> nums;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <h2 id="阻塞I-O"><a href="#阻塞I-O" class="headerlink" title="阻塞I/O"></a>阻塞I/O</h2><p>程序发起一次IO操作后就会一直等待，直到IO成功或者失败才能返回，期间不能做其它事情。</p>
+<h2 id="非阻塞I-O"><a href="#非阻塞I-O" class="headerlink" title="非阻塞I/O"></a>非阻塞I/O</h2><p>程序发起一次IO后，不断地进行轮询，直到获得数据。</p>
+<h2 id="I-O多路复用"><a href="#I-O多路复用" class="headerlink" title="I/O多路复用"></a>I/O多路复用</h2><p>也是阻塞型IO，但是不同的是IO多路复用可以同时阻塞多个IO，并对多个IO进行轮询监控，直到有一个IO的数据可用。</p>
+<p>select时间复杂度O(n)，有数量限制；poll时间复杂度O(n)，没有数量限制，因为是用链表实现的；epoll时间复杂度O(1)，是事件驱动的而不是轮询。</p>
+<p>epoll使用回调机制而不是轮询，就是当文件描述符就绪后主动通知。</p>
+<p>对回调函数调用：调用程序发出对回调函数的调用后，不等函数执行完毕，立即返回并继续执行。这样，调用程序执和被调用函数同时在执行。当被调函数执行完毕后，被调函数会反过来调用某个事先指定函数，以通知调用程序：函数调用结束。这个过程称为回调（Callback），这正是回调函数名称的由来。</p>
+<h2 id="信号驱动I-O"><a href="#信号驱动I-O" class="headerlink" title="信号驱动I/O"></a>信号驱动I/O</h2><p>利用系统的信号机制，由内核告诉进程哪一个IO已经完成。</p>
+<h2 id="异步I-O"><a href="#异步I-O" class="headerlink" title="异步I/O"></a>异步I/O</h2><p>异步IO是指程序发起IO操作之后就去干其它事情，而不需要等待IO结果。</p>
+<p>跟信号驱动IO优点像，但区别是信号驱动IO在内核提醒IO完成之后还要程序完成数据从内核态到用户态的拷贝，而异步IO是在数据拷贝完成之后才通知的程序。</p>
 
       
     </div>
@@ -258,7 +257,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/23/%E6%9C%80%E9%95%BF%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97LIS/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/09/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -272,7 +271,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/23/%E6%9C%80%E9%95%BF%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97LIS/" class="post-title-link" itemprop="url">最长上升子序列LIS</a>
+            <a href="/2022/03/09/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">函数指针</a>
         </h2>
 
         <div class="post-meta">
@@ -285,7 +284,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-23 22:12:23 / Modified: 22:22:16" itemprop="dateCreated datePublished" datetime="2022-02-23T22:12:23+08:00">2022-02-23</time>
+              <time title="Created: 2022-03-09 17:00:31 / Modified: 17:07:24" itemprop="dateCreated datePublished" datetime="2022-03-09T17:00:31+08:00">2022-03-09</time>
             </span>
 
           
@@ -299,20 +298,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>给定一个长度为 n 的数组 arr，求它的最长严格上升子序列的长度。<br>所谓子序列，指一个数组删掉一些数（也可以不删）之后，形成的新数组。例如 [1,5,3,7,3] 数组，其子序列有：[1,3,3]、[7] 等。但 [1,6]、[1,3,5] 则不是它的子序列。</p>
-<p> 。<br>数据范围： 0 &lt;= n &lt;= 1000<br>要求：时间复杂度 O(n^2)，空间复杂度 O(n)</p>
-<h2 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h2><pre><code>输入：[6,3,1,5,2,3,7]
-返回值：4
-说明：该数组最长上升子序列为 [1,2,3,7] ，长度为4
-</code></pre>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>维护一个伪上升子序列，遍历数组中每一个值，二分找到伪上升子序列中第一个比它大的值，然后将其替换掉，如果没有则直接插入到伪上升子序列最后。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><ol>
-<li><p>手写二分</p>
- <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">LIS</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; arr)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// write code here</span></span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> n = arr.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> b[n];</span><br><span class="line">    <span class="keyword">int</span> lb, rb;</span><br><span class="line">    lb = rb = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> l, r, mid;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        l = lb;</span><br><span class="line">        r = rb;</span><br><span class="line">        <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">            mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(b[mid]&gt;arr[i]) r = mid;</span><br><span class="line">            <span class="keyword">else</span> l = mid+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(l&gt;=lb&amp;&amp;l&lt;=rb<span class="number">-1</span>) b[l] = arr[i];</span><br><span class="line">        <span class="keyword">else</span> b[rb++] = arr[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> rb-lb;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>upper_bound</p>
-<p> upper_bound( begin,end,num)：从数组的begin位置到end-1位置二分查找第一个大于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。</p>
-<p> lower_bound( begin,end,num)：从数组的begin位置到end-1位置二分查找第一个大于或等于num的数字，找到返回该数字的地址，不存在则返回end。通过返回的地址减去起始地址begin,得到找到数字在数组中的下标。</p>
- <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">LIS</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; a)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// write code here</span></span><br><span class="line">    <span class="keyword">int</span> n = a.<span class="built_in">size</span>();</span><br><span class="line">    vector&lt;<span class="keyword">int</span>&gt; b;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> p = <span class="built_in">upper_bound</span>(b.<span class="built_in">begin</span>(), b.<span class="built_in">end</span>(),a[i])-b.<span class="built_in">begin</span>();</span><br><span class="line">        <span class="keyword">if</span>(p==b.<span class="built_in">size</span>()) b.<span class="built_in">push_back</span>(a[i]);</span><br><span class="line">        <span class="keyword">else</span> b[p] = a[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> b.<span class="built_in">size</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+          <h2 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h2><p>函数指针就是指向函数的指针。</p>
+<h2 id="函数指针的作用"><a href="#函数指针的作用" class="headerlink" title="函数指针的作用"></a>函数指针的作用</h2><ol>
+<li><p>实现多态</p>
+<ul>
+<li><p>比如c++面向对象编程里的虚函数。</p>
+</li>
+<li><p>以及面向过程编程的多态指的是，具体执行哪个函数不是在编译时决定的，而是在函数运行时根据函数指针的值来决定的。</p>
+</li>
+</ul>
+</li>
+<li><p>回调函数</p>
+<p>函数指针作为某个函数的参数，通过函数参数调用的函数就是回调函数。</p>
+</li>
 </ol>
 
       
@@ -333,7 +331,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/23/BM65%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97%E4%BA%8C/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/08/%E8%AF%AD%E8%A8%80/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -347,7 +345,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/23/BM65%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97%E4%BA%8C/" class="post-title-link" itemprop="url">BM65最长公共子序列二</a>
+            <a href="/2022/03/08/%E8%AF%AD%E8%A8%80/" class="post-title-link" itemprop="url">语言</a>
         </h2>
 
         <div class="post-meta">
@@ -360,7 +358,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-23 21:01:04 / Modified: 21:10:07" itemprop="dateCreated datePublished" datetime="2022-02-23T21:01:04+08:00">2022-02-23</time>
+              <time title="Created: 2022-03-08 10:08:38 / Modified: 18:57:05" itemprop="dateCreated datePublished" datetime="2022-03-08T10:08:38+08:00">2022-03-08</time>
             </span>
 
           
@@ -374,16 +372,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>给定两个字符串str1和str2，输出两个字符串的最长公共子序列。如果最长公共子序列为空，则返回”-1”。目前给出的数据，仅仅会存在一个最长的公共子序列</p>
-<p>数据范围：0 &lt;= |str1|,|str2| &lt;= 20000</p>
-<p>要求：空间复杂度 O(n^2)，时间复杂度 O(n^2)</p>
-<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><pre><code>输入：&quot;1A2C3D4B56&quot;,&quot;B1D23A456A&quot;
-返回值：&quot;123456&quot;
-</code></pre>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>普通的最长公共子序列只需要返回长度，这道题需要返回子序列，而且受空间复杂度限制不能开二维string数组记录。</p>
-<p>需要用dp的结果倒推出子序列。</p>
-<p><img src="https://s2.loli.net/2022/02/23/PFUdSlp94ZRIf3N.png" alt="20220223210736"></p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">LCS</span><span class="params">(string s1, string s2)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// write code here</span></span><br><span class="line">    <span class="keyword">int</span> l1 = s1.<span class="built_in">length</span>();</span><br><span class="line">    <span class="keyword">int</span> l2 = s2.<span class="built_in">length</span>();</span><br><span class="line">    s1 = <span class="string">&quot;+&quot;</span>+s1;</span><br><span class="line">    s2 = <span class="string">&quot;-&quot;</span>+s2;</span><br><span class="line">    <span class="keyword">int</span> dp[l1+<span class="number">1</span>][l2+<span class="number">1</span>];</span><br><span class="line">    <span class="built_in">memset</span>(dp, <span class="number">0</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(dp));</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=l1;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=l2;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(s1[i]==s2[j])&#123;</span><br><span class="line">                dp[i][j] = dp[i<span class="number">-1</span>][j<span class="number">-1</span>] + <span class="number">1</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                dp[i][j] = <span class="built_in">max</span>(dp[i<span class="number">-1</span>][j], dp[i][j<span class="number">-1</span>]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    string ans;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=l1,j=l2;dp[i][j]&gt;=<span class="number">1</span>;)&#123;</span><br><span class="line">        <span class="keyword">if</span>(s1[i]==s2[j])&#123;</span><br><span class="line">            ans = s1[i]+ans;</span><br><span class="line">            i--;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(dp[i<span class="number">-1</span>][j]&gt;dp[i][j<span class="number">-1</span>]) i--;</span><br><span class="line">            <span class="keyword">else</span> j--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(ans.<span class="built_in">length</span>()==<span class="number">0</span>) ans = <span class="string">&quot;-1&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <h2 id="动态类型语言和静态类型语言"><a href="#动态类型语言和静态类型语言" class="headerlink" title="动态类型语言和静态类型语言"></a>动态类型语言和静态类型语言</h2><ul>
+<li>动态类型语言：在程序运行时才检查数据类型。即在编程时不要要指定变量的类型，运行时会根据变量的赋值自动确定类型。比如JacvaScript,Python。</li>
+<li>静态类型语言：在编译时检查数据类型。在编写程序时就需要指定变量的类型。比如C/C++,Java。</li>
+</ul>
+<h2 id="编译型语言和解释型语言"><a href="#编译型语言和解释型语言" class="headerlink" title="编译型语言和解释型语言"></a>编译型语言和解释型语言</h2><ul>
+<li>编译型语言：在运行前需要经过一个单独的编译，将程序翻译成机器语言，然后在机器上执行。优点是块，因为执行机器语言时不用再编译，缺点是平台关联性强。比如C/C++。</li>
+<li>解释型语言：解释型语言不需要编译，可以直接运行，运行时由解释器负责解释。比如Python。</li>
+<li>混合型语言：Java即是编译型的，也是解释型语言，总的来说Java更接近解释型语言。<ul>
+<li>可以说它是编译型的。因为所有的Java代码都是要编译的，.java不经过编译就什么用都没有。</li>
+<li>可以说它是解释型的。因为Java代码编译后不能直接运行，它是解释运行在JVM上的，所以它是解释运行的。</li>
+</ul>
+</li>
+</ul>
+<h2 id="脚本语言"><a href="#脚本语言" class="headerlink" title="脚本语言"></a>脚本语言</h2><ul>
+<li>源程序是文本格式，可以被解释执行的语言可以算作脚本语言。</li>
+<li>解释语言是说解释执行的语言，但执行的代码并不一定是文本格式的。脚本语言的程序是文本文件，并且是解释执行的。</li>
+</ul>
 
       
     </div>
@@ -403,7 +408,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/22/%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/07/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -417,7 +422,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/22/%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">指针和引用的区别</a>
+            <a href="/2022/03/07/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE/" class="post-title-link" itemprop="url">科研项目</a>
         </h2>
 
         <div class="post-meta">
@@ -429,14 +434,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2022-02-22 09:24:56" itemprop="dateCreated datePublished" datetime="2022-02-22T09:24:56+08:00">2022-02-22</time>
+              <time title="Created: 2022-03-07 22:14:12" itemprop="dateCreated datePublished" datetime="2022-03-07T22:14:12+08:00">2022-03-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-27 22:57:54" itemprop="dateModified" datetime="2022-02-27T22:57:54+08:00">2022-02-27</time>
+                <time title="Modified: 2022-03-08 09:33:40" itemprop="dateModified" datetime="2022-03-08T09:33:40+08:00">2022-03-08</time>
               </span>
 
           
@@ -450,18 +455,50 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="指针和引用的区别"><a href="#指针和引用的区别" class="headerlink" title="指针和引用的区别"></a>指针和引用的区别</h2><ol>
-<li><p>指针所指向的内存空间在程序运行过程中可以改变，而引用所绑定的对象一旦绑定就不能改变。（是否可变）</p>
+          <h2 id="基于超声波的驾驶员头部朝向追踪和生命体征监控系统"><a href="#基于超声波的驾驶员头部朝向追踪和生命体征监控系统" class="headerlink" title="基于超声波的驾驶员头部朝向追踪和生命体征监控系统"></a>基于超声波的驾驶员头部朝向追踪和生命体征监控系统</h2><h2 id="项目内容"><a href="#项目内容" class="headerlink" title="项目内容"></a>项目内容</h2><ul>
+<li><p>头部朝向追踪</p>
+<ul>
+<li><p>方案：基于超声波测距和定位算法。</p>
 </li>
-<li><p>指针本身在内存中占有内存空间，引用相当于变量的别名，在内存中不占内存空间。（是否占内存）</p>
-<p>*引用的实现实际上是占用内存空间的，但程序把它按照不占用内存空间来处理。</p>
-<p>实际在内存空间上，引用本身也占用一块内存，里面存储着所引用的变量的地址，大小与指针相同，字面上也表现为unsigned long int型。只是经过编译器处理后，访问这块内存时将直接转而访问其指向的内存。因此在程序中无法读取到这块内存本身。</p>
+<li><p>应用：估计驾驶员的意图用于智能驾驶。</p>
 </li>
-<li><p>指针可以为空，但是引用必须绑定对象。（是否可为空）</p>
+</ul>
 </li>
-<li><p>指针可以有多级，但是引用只能一级。（是否能为多级）</p>
+<li><p>生命体征监控</p>
+<ul>
+<li><p>方案：对2*8通道的超声信号一起进行主成分分析，从中提取驾驶员的呼吸和心跳信息。</p>
 </li>
-</ol>
+<li><p>应用：检测驾驶员疲劳驾驶和危险动作识别。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="项目难点"><a href="#项目难点" class="headerlink" title="项目难点"></a>项目难点</h2><ul>
+<li><p>声波信号的多径问题</p>
+<ul>
+<li><p>原因：由于环境中物体的反射，无线信号普遍存在的多径问题，即从发射端到达接收端会有多个不同的路径，包括直达径和多个反射径。</p>
+</li>
+<li><p>解决方案：采用Zadoff-Chu序列来调制超声信号，zc信号具有很好的多径分辨能力。</p>
+</li>
+</ul>
+</li>
+<li><p>直达径被遮挡问题</p>
+<ul>
+<li><p>原因：超声波测距和定位算法基于直达径信号传播时间的估计，如果直达径被遮挡，那么测得的就是反射径的距离，无法用于定位。</p>
+</li>
+<li><p>解决方案：理论上只需要三个接收端就可以根据三点定位算法完成发射端定位，通过布置更多的接收端保证头部不管怎样旋转都至少与三个接收端之间的直达径不被遮挡。</p>
+</li>
+</ul>
+</li>
+<li><p>只能定位头部的两个坐标</p>
+<ul>
+<li><p>原因：理论上至少需要知道物体上三个点的坐标才能确定其在三维空间中的朝向，但是生活中大多数设备都只支持双声道，而且实验用的数据采集卡也只支持两发，所以只能完成两个点的定位。</p>
+</li>
+<li><p>解决方案：提出“轴点”的假设，因为驾驶员在驾驶过程中头部动作十分有限，而且不会有复杂的动作，所以可以根据两个发射端的轨迹估计出驾驶员的动作，进而推算出轴点的位置。</p>
+</li>
+</ul>
+</li>
+</ul>
 
       
     </div>
@@ -481,7 +518,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/%E5%8F%8B%E5%85%83%E5%87%BD%E6%95%B0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/07/%E7%BC%96%E8%AF%91%E5%99%A8%E9%A1%B9%E7%9B%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -495,7 +532,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/21/%E5%8F%8B%E5%85%83%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">友元函数</a>
+            <a href="/2022/03/07/%E7%BC%96%E8%AF%91%E5%99%A8%E9%A1%B9%E7%9B%AE/" class="post-title-link" itemprop="url">编译器项目</a>
         </h2>
 
         <div class="post-meta">
@@ -506,10 +543,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-02-21 19:40:41 / Modified: 20:07:03" itemprop="dateCreated datePublished" datetime="2022-02-21T19:40:41+08:00">2022-02-21</time>
+              <time title="Created: 2022-03-07 16:53:55" itemprop="dateCreated datePublished" datetime="2022-03-07T16:53:55+08:00">2022-03-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-03-08 09:31:55" itemprop="dateModified" datetime="2022-03-08T09:31:55+08:00">2022-03-08</time>
+              </span>
 
           
 
@@ -522,449 +565,36 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="友元函数的作用"><a href="#友元函数的作用" class="headerlink" title="友元函数的作用"></a>友元函数的作用</h2><p>友元提供了不同类的成员函数之间、类的成员函数与一般函数之间进行数据共享的机制。通过友元，一个不同函数或另一个类中的成员函数可以访问类中的私有成员和保护成员。</p>
-<h2 id="private-public-protected的访问范围"><a href="#private-public-protected的访问范围" class="headerlink" title="private,public,protected的访问范围"></a>private,public,protected的访问范围</h2><p>private: 只能由该类中的函数、其友元函数访问,不能被任何其他访问，该类的对象也不能访问</p>
-<p>protected: 可以被该类中的函数、子类的函数、以及其友元函数访问,但不能被该类的对象访问</p>
-<p>public: 可以被该类中的函数、子类的函数、其友元函数访问,也可以由该类的对象访问</p>
-<p>注：友元函数包括两种：设为友元的全局函数，设为友元类中的成员函数</p>
-<h2 id="类的继承后方法属性变化"><a href="#类的继承后方法属性变化" class="headerlink" title="类的继承后方法属性变化"></a>类的继承后方法属性变化</h2><p>使用private继承,父类的所有方法在子类中变为private;</p>
-<p>使用protected继承,父类的protected和public方法在子类中变为protected,private方法不变;</p>
-<p>使用public继承,父类中的方法属性不发生改变;</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/%E5%AE%9E%E4%BE%8B%E5%8C%96%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/21/%E5%AE%9E%E4%BE%8B%E5%8C%96%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">实例化一个对象的过程</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-21 19:32:51 / Modified: 19:34:25" itemprop="dateCreated datePublished" datetime="2022-02-21T19:32:51+08:00">2022-02-21</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li><p>分配空间</p>
-<p> 创建类对象首先要为该对象分配内存空间。不同的对象，为其分配空间的时机未必相同。全局对象、静态对象、分配在栈区域内的对象，在编译阶段进行内存分配；存储在堆空间的对象，是在运行阶段进行内存分配。</p>
+          <h2 id="基于C0文法的编译器设计与开发"><a href="#基于C0文法的编译器设计与开发" class="headerlink" title="基于C0文法的编译器设计与开发"></a>基于C0文法的编译器设计与开发</h2><h3 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h3><p>大三时编译原理课程，报名参加了试点班。试点班就是不用参加平常的理论课和实验课，只需要用一学期的时间开发出一个编译器。但是一共三四十名学生报名参加了试点班，最后我的成绩是最高的。</p>
+<p>在上编译原理这门课之前对编译器可以说是一无所知，所以一开始上手很困难。老师给了我们一本编译原理的书，就是号称编译原理三大圣经之一的龙书，然后给了我们一个编译原理的网课让我们自学。看了一段时间书和网课然后慢慢开始一点点上手实践。</p>
+<h3 id="项目流程"><a href="#项目流程" class="headerlink" title="项目流程"></a>项目流程</h3><p>编译器开发主要分为四大块：词法分析、语法分析、中间代码生成和汇编代码生成。</p>
+<ul>
+<li>词法分析主要是将源代码的字符串划分为token，每个token都包含了一个划分出来的词以及这个词的类型。</li>
+<li>语法分析就是按照定义好的语法规则将词法分析生成的tokens转换成抽象语法树的过程。</li>
+<li>中间代码生成式在语法分析的过程中，将语法树转换成四元组的形式，使用四元组主要是为了方便后续汇编代码生成。</li>
+<li>汇编代码生成就是将四元组转化成对应的汇编代码，比如我采用的mips指令集。</li>
+</ul>
+<h3 id="项目难点"><a href="#项目难点" class="headerlink" title="项目难点"></a>项目难点</h3><ul>
+<li><p>寄存器优化</p>
+<p>  不进行优化的方案就是，每次对变量进行操作的时候，都需要先将变量从内存读到寄存器，然后在寄存器上对变量进行操作，操作完成后再将变量写回寄存器，所以每次使用一个变量都会带来两次寄存器读写，这是很耗时间的，尤其是当对一个变量进行反复修改，就得不断的反复从内存读出写入。</p>
+<p>  所以最好的解决方案是，给每个变量都分配一个寄存器，等到程序结束的时候再一起写回。但是实际中寄存器的数量是很有限的，以mips指令集为例，一般只有32位寄存器，除去一些有特殊用处的能够使用的寄存器可能只有十几二十几个，而一段代码内部的变量可能有很多，所以没办法给每个变量都分配一个寄存器。</p>
+<p>  可以尽可能多的把寄存器分配给变量，但是当寄存器用完了而又来了新变量时，就必须做出一个抉择就是要把哪个旧的变量踢出寄存器。这个选择做的好坏非常影响编译器的性能。</p>
+<p>  当时对这方面的算法了解不多，所以采取了一个比较简单的算法，就是引用计数法。即每次使用一个变量都对将它的计数器加一，然后需要踢出变量的时候就优先踢出计数器次数最小的那个。这种方法再大多数情况下是有效的，但是有些极端情况比如寄存器震荡等。</p>
+<p>  后来慢慢接触到其它知识后，了解到这个问题其实跟很多其它问题类似，比如内存的页面置换等。有一些很好的算法，比如LRU等，这也是这个编译器后续可以继续优化的方向。</p>
 </li>
-<li><p>初始化</p>
-<p> 首先明确一点：初始化不同于赋值。初始化发生在赋值之前，初始化随对象的创建而进行，而赋值是在对象创建好后，为其赋上相应的值。这一点可以联想下上一个问题中提到：初始化列表先于构造函数体内的代码执行，初始化列表执行的是数据成员的初始化过程，这个可以从成员对象的构造函数被调用看的出来。</p>
+<li><p>函数调用时的压栈和出栈设计</p>
+<p>每个函数都在内存中对应着一段栈帧，栈帧由栈顶和栈底两个寄存器确定，mips里叫做sp和fp。</p>
+<p>调用函数时，先将函数参数压栈压栈，再将返回地址压栈，再将栈底位置压栈，然后将栈底指向栈顶也就是当前位置，之后就是新函数的栈帧。</p>
+<p>函数调用结束后，出栈的顺序跟入栈的顺序相反，先让栈顶指向栈底，意味着将该函数的栈帧取消，再将栈底移到它指向的值，即回到上一个栈底的位置，从而恢复上一个函数的栈帧，然后再将放回地址出栈，让指令寄存器回到返回地址处继续执行程序。</p>
 </li>
-<li><p>赋值</p>
-<p> 对象初始化完成后，可以对其进行赋值。对于一个类的对象，其成员变量的赋值过程发生在类的构造函数的函数体中。当执行完该函数体，也就意味着类对象的实例化过程完成了。（总结：构造函数实现了对象的初始化和赋值两个过程，对象的初始化是通过初始化列表来完成，而对象的赋值则才是通过构造函数的函数体来实现。）</p>
+<li><p>多重for循坏的线性化</p>
+<p>通过mips的label和jump指令将for循环展开</p>
 </li>
-</ol>
-<p>注：对于拥有虚函数的类的对象，还需要给虚表指针赋值。</p>
-<pre><code>没有继承关系的类，分配完内存后，首先给虚表指针赋值，然后再列表初始化以及执行构造函数的函数体，即上述中的初始化和赋值操作。
-
-有继承关系的类，分配内存之后，首先进行基类的构造过程，然后给该派生类的虚表指针赋值，最后再列表初始化以及执行构造函数的函数体，即上述中的初始化和赋值操作。
-</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/c-%E7%9F%A5%E8%AF%86%E7%82%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/21/c-%E7%9F%A5%E8%AF%86%E7%82%B9/" class="post-title-link" itemprop="url">c++知识点</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-21 19:12:20 / Modified: 19:27:57" itemprop="dateCreated datePublished" datetime="2022-02-21T19:12:20+08:00">2022-02-21</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li><p>为什么拷贝构造函数必须为引用？</p>
-<p>避免拷贝构造函数无限制的递归，最终导致栈溢出。</p>
-<p>因为如果拷贝构造函数的参数不是引用的话，那么就是值传递。而值传递本身又会调用拷贝构造函数，拷贝构造函数又是值传递，值传递又会调用拷贝构造函数……导致无限递归下去。</p>
-</li>
-<li><p>构造函数的隐式调用</p>
-<p> 对已经实例化的对象赋值调用的是赋值函数，对还没实例话的对象赋值调用的是拷贝构造函数，这里使用的就是拷贝构造函数的隐式调用。</p>
-<p> 如：</p>
-<pre><code> A a;
- a = b; 调用的是赋值函数
-
- A a(b); 调用的也是拷贝构造函数
-
- A a = b; 调用的是拷贝构造函数（隐式调用）
-</code></pre>
-</li>
-<li><p>C++类对象的初始化顺序</p>
-<p>构造函数调用顺序：</p>
-<pre><code> 1. 按照派生类继承基类的顺序，即派生列表中声明的顺序，依次调用基类的构造函数；
- 2. 按照派生类中成员变量的声名顺序，依次调用派生类中成员变量所属类的构造函数；
- 3. 执行派生类自身的构造函数。
-</code></pre>
-<p> 综上可以得出，类对象的初始化顺序：基类构造函数–&gt;派生类成员变量的构造函数–&gt;自身构造函数</p>
-<p> 注：</p>
-<pre><code> 基类构造函数的调用顺序与派生类的派生列表中的顺序有关；
- 成员变量的初始化顺序与声明顺序有关；
- 析构顺序和构造顺序相反。
-</code></pre>
-</li>
-<li><p>为什么用成员初始化列表会快一些？</p>
-<p>原因：用户自定义类型如果使用类初始化列表，直接调用该成员变量对应的构造函数即完成初始化；如果在构造函数中初始化，因为 C++ 规定，对象的成员变量的初始化动作发生在进入构造函数本体之前，那么在执行构造函数的函数体之前首先调用默认的构造函数为成员变量设初值，在进入函数体之后，调用该成员变量对应的构造函数。因此，使用列表初始化会减少调用默认的构造函数的过程，效率高。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/%E4%B8%8D%E5%90%8C%E5%B1%82%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/21/%E4%B8%8D%E5%90%8C%E5%B1%82%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" class="post-title-link" itemprop="url">不同层常用的网络协议</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-21 16:30:13 / Modified: 16:58:17" itemprop="dateCreated datePublished" datetime="2022-02-21T16:30:13+08:00">2022-02-21</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <table>
-<thead>
-<tr>
-<th>层</th>
-<th>协议</th>
-<th>用处</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>数据链路层</td>
-<td>CSMA/CD</td>
-<td>载波监听，多点接入，冲突检测</td>
-</tr>
-<tr>
-<td></td>
-<td>PPP</td>
-<td>用户主机和ISP之间通信</td>
-</tr>
-<tr>
-<td>网络层</td>
-<td>IP</td>
-<td>建立主机之间的联系</td>
-</tr>
-<tr>
-<td></td>
-<td>ARP</td>
-<td>地址解析协议，已知IP地址获取MAC地址</td>
-</tr>
-<tr>
-<td></td>
-<td>ICMP</td>
-<td>网际控制报文协议，封装在IP内，用于更有效地转发IP数据报</td>
-</tr>
-<tr>
-<td>传输层</td>
-<td>TCP</td>
-<td>建立点对点的可靠的连接</td>
-</tr>
-<tr>
-<td></td>
-<td>UDP</td>
-<td>无连接，不可靠，及时性好</td>
-</tr>
-<tr>
-<td>应用层</td>
-<td>DHCP</td>
-<td>动态主机配置协议，用于配置主机的IP地址、子网掩码和网关</td>
-</tr>
-<tr>
-<td></td>
-<td>DNS</td>
-<td>域名解析协议，用于将域名转换成IP地址</td>
-</tr>
-<tr>
-<td></td>
-<td>HTTP, FTP, POP3, SMTP…</td>
-<td></td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/20/CSMA-CD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/20/CSMA-CD/" class="post-title-link" itemprop="url">CSMA/CD</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-20 22:17:25 / Modified: 22:18:10" itemprop="dateCreated datePublished" datetime="2022-02-20T22:17:25+08:00">2022-02-20</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="CSMA-CD-协议"><a href="#CSMA-CD-协议" class="headerlink" title="CSMA/CD 协议"></a>CSMA/CD 协议</h2><p>CSMA/CD 表示载波监听多点接入 / 碰撞检测。</p>
-<pre><code>多点接入 ：说明这是总线型网络，许多主机以多点的方式连接到总线上。
-载波监听 ：每个主机都必须不停地监听信道。在发送前，如果监听到信道正在使用，就必须等待。
-碰撞检测 ：在发送中，如果监听到信道已有其它主机正在发送数据，就表示发生了碰撞。虽然每个主机在发送数据之前都已经监听到信道为空闲，但是由于电磁波的传播时延的存在，还是有可能会发生碰撞。
-</code></pre>
-<p>记端到端的传播时延为 τ，最先发送的站点最多经过 2τ 就可以知道是否发生了碰撞，称 2τ 为 争用期 。只有经过争用期之后还没有检测到碰撞，才能肯定这次发送不会发生碰撞。</p>
-<p>当发生碰撞时，站点要停止发送，等待一段时间再发送。这个时间采用 截断二进制指数退避算法 来确定。从离散的整数集合 {0, 1, .., (2k-1)} 中随机取出一个数，记作 r，然后取 r 倍的争用期作为重传等待时间。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/20/%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/20/%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">网络体系结构</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-20 19:39:57 / Modified: 19:43:08" itemprop="dateCreated datePublished" datetime="2022-02-20T19:39:57+08:00">2022-02-20</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://s2.loli.net/2022/02/20/iNMUoEIyA1uBqkg.png" alt="20220220194032"></p>
-<h2 id="五层协议"><a href="#五层协议" class="headerlink" title="五层协议"></a>五层协议</h2><ol>
-<li><p>应用层 ：为特定应用程序提供数据传输服务，例如 HTTP、DNS 等协议。数据单位为报文。</p>
-</li>
-<li><p>传输层 ：为进程提供通用数据传输服务。由于应用层协议很多，定义通用的传输层协议就可以支持不断增多的应用层协议。运输层包括两种协议：传输控制协议 TCP，提供面向连接、可靠的数据传输服务，数据单位为报文段；用户数据报协议 UDP，提供无连接、尽最大努力的数据传输服务，数据单位为用户数据报。TCP 主要提供完整性服务，UDP 主要提供及时性服务。</p>
-</li>
-<li><p>网络层 ：为主机提供数据传输服务。而传输层协议是为主机中的进程提供数据传输服务。网络层把传输层传递下来的报文段或者用户数据报封装成分组。</p>
-</li>
-<li><p>数据链路层 ：网络层针对的还是主机之间的数据传输服务，而主机之间可以有很多链路，链路层协议就是为同一链路的主机提供数据传输服务。数据链路层把网络层传下来的分组封装成帧。</p>
-</li>
-<li><p>物理层 ：考虑的是怎样在传输媒体上传输数据比特流，而不是指具体的传输媒体。物理层的作用是尽可能屏蔽传输媒体和通信手段的差异，使数据链路层感觉不到这些差异。</p>
-</li>
-</ol>
-<h2 id="七层协议"><a href="#七层协议" class="headerlink" title="七层协议"></a>七层协议</h2><p>七层协议就是把五层协议中的应用层拆分成会话层、表示层和应用层。</p>
-<ol>
-<li><p>表示层 ：数据压缩、加密以及数据描述，这使得应用程序不必关心在各台主机中数据内部格式不同的问题。</p>
-</li>
-<li><p>会话层 ：建立及管理会话。</p>
-</li>
-</ol>
+</ul>
+<h3 id="后续的优化方向"><a href="#后续的优化方向" class="headerlink" title="后续的优化方向"></a>后续的优化方向</h3><ul>
+<li>增加一些功能，比如多维数组、结构体等。</li>
+<li>改进寄存器优化算法，比如增加计数器衰减或者使用LRU算法等。</li>
+</ul>
 
       
     </div>
@@ -983,7 +613,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1050,7 +680,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-count">146</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

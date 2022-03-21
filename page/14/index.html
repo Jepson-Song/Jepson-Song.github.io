@@ -188,7 +188,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/13/%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -202,7 +202,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/04/13/%E4%B8%83%E5%B1%82%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">七层网络模型</a>
+            <a href="/2022/02/16/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7/" class="post-title-link" itemprop="url">并发一致性</a>
         </h2>
 
         <div class="post-meta">
@@ -215,7 +215,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-04-13 14:40:15 / Modified: 14:42:22" itemprop="dateCreated datePublished" datetime="2021-04-13T14:40:15+08:00">2021-04-13</time>
+              <time title="Created: 2022-02-16 22:30:19 / Modified: 22:48:59" itemprop="dateCreated datePublished" datetime="2022-02-16T22:30:19+08:00">2022-02-16</time>
             </span>
 
           
@@ -229,618 +229,304 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210413144030.png" alt="20210413144030"></p>
-<p>从下往上</p>
-<ul>
-<li>物理层</li>
-<li>数据链路层</li>
-<li>网络层</li>
-<li>传输层</li>
-<li>会话层</li>
-<li>表示层</li>
-<li>应用层</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/13/%E8%99%9A%E5%87%BD%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/13/%E8%99%9A%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">虚函数</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-04-13 14:32:47 / Modified: 14:41:14" itemprop="dateCreated datePublished" datetime="2021-04-13T14:32:47+08:00">2021-04-13</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>多态是在不同继承关系的类对象，去调同一函数，产生了不同的行为。</p>
-<p>就是说，有一对继承关系的两个类，这两个类里面都有一个函数且名字、参数、返回值均相同，然后我们通过调用函数来实现不同类对象完成不同的事件。</p>
-<h2 id="虚函数"><a href="#虚函数" class="headerlink" title="虚函数"></a>虚函数</h2><p>在main函数中，如果有父类或者子类的实例对象，就需要有父类的虚函数的实现；在main函数中，如果没有父类或者子类的实例对象，可以不实现父类的虚函数。</p>
-<p>虚函数的目的是为了(在继承中)实现多态 。每一个类都有一个虚函数表(v-table)，每个对象都有一个虚函数指针(vptr)，指向虚函数表。当子类对象被创建后，虚函数指针就会指向子类中覆盖的虚函数。当使用基类指针时，虚函数指针将根据基类指针指向的对象的实际类型，来指向正确的函数。</p>
-<h2 id="纯虚函数"><a href="#纯虚函数" class="headerlink" title="纯虚函数"></a>纯虚函数</h2><p>子类必须实现该函数（接口）</p>
-<p>有纯虚函数的类叫做抽象类，不能生成实例对象</p>
-<p>抽象类就像一个规范一样，like 接口(Interface) in Java</p>
-<h2 id="虚函数与纯虚函数"><a href="#虚函数与纯虚函数" class="headerlink" title="虚函数与纯虚函数"></a>虚函数与纯虚函数</h2><p>定义一个函数为虚函数，不代表函数为不被实现的函数。</p>
-<p>定义他为虚函数是为了允许用基类的指针来调用子类的这个函数。</p>
-<p>定义一个函数为纯虚函数，才代表函数没有被实现。</p>
-<p>定义纯虚函数是为了实现一个接口，起到一个规范的作用，规范继承这个类的程序员必须实现这个函数。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/10/sort%E5%92%8Cqsort/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/10/sort%E5%92%8Cqsort/" class="post-title-link" itemprop="url">sort和qsort</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-04-10 13:10:36 / Modified: 13:12:26" itemprop="dateCreated datePublished" datetime="2021-04-10T13:10:36+08:00">2021-04-10</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> &amp;a, <span class="keyword">const</span> <span class="keyword">int</span> &amp;b)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> a &gt; b;<span class="comment">//从大到小</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">sort</span>(a + <span class="number">1</span>, a + <span class="number">1</span> + n, cmp);</span><br></pre></td></tr></table></figure>
-
-<h2 id="qsort"><a href="#qsort" class="headerlink" title="qsort"></a>qsort</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cmp2</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span>* a, <span class="keyword">const</span> <span class="keyword">void</span>* b)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> *(<span class="keyword">int</span>*)b - *(<span class="keyword">int</span>*)a;<span class="comment">//从大到小</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">qsort</span>(a+<span class="number">1</span>, n, <span class="built_in"><span class="keyword">sizeof</span></span>(a[<span class="number">0</span>]),cmp2);</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/09/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/09/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">排序算法</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-04-09 16:54:29 / Modified: 16:57:31" itemprop="dateCreated datePublished" datetime="2021-04-09T16:54:29+08:00">2021-04-09</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="快排"><a href="#快排" class="headerlink" title="快排"></a>快排</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mysort</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (l == r) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> mid = (l + r) / <span class="number">2</span>;</span><br><span class="line">	mysort(l, mid);</span><br><span class="line">	mysort(mid + <span class="number">1</span>, r);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> i = l;</span><br><span class="line">	<span class="keyword">int</span> j = mid + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">int</span> k = l;</span><br><span class="line">	<span class="keyword">while</span> (i &lt;= mid &amp;&amp; j &lt;= r) &#123;</span><br><span class="line">		<span class="keyword">if</span> (a[i] &lt;= a[j]) &#123;</span><br><span class="line">			b[k++] = a[i++];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			b[k++] = a[j++];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span> (i &lt;= mid) &#123;</span><br><span class="line">		b[k++] = a[i++];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span> (j &lt;= r) &#123;</span><br><span class="line">		b[k++] = a[j++];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> t = l; t &lt;= r; t++) &#123;</span><br><span class="line">		a[t] = b[t];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mysort2</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (l &gt;= r) <span class="keyword">return</span>;</span><br><span class="line">	<span class="keyword">int</span> mid = (l + r) / <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">int</span> i = l;</span><br><span class="line">	<span class="keyword">int</span> j = r;</span><br><span class="line">	<span class="keyword">int</span> flag = a[i];</span><br><span class="line">	<span class="keyword">while</span> (i&lt;j) &#123;</span><br><span class="line">		<span class="keyword">while</span> (i &lt; j &amp;&amp; flag &lt;= a[j]) &#123;</span><br><span class="line">			j--;</span><br><span class="line">		&#125;</span><br><span class="line">		a[i] = a[j];</span><br><span class="line">		<span class="keyword">while</span> (i &lt; j &amp;&amp; a[i] &lt;= flag) &#123;</span><br><span class="line">			i++;</span><br><span class="line">		&#125;</span><br><span class="line">		a[j] = a[i];</span><br><span class="line">	&#125;</span><br><span class="line">	a[i] = flag;</span><br><span class="line">	mysort2(l, i);</span><br><span class="line">	mysort2(i + <span class="number">1</span>, r);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/08/github%E5%9B%BE%E7%89%87%E7%9C%8B%E4%B8%8D%E4%BA%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/08/github%E5%9B%BE%E7%89%87%E7%9C%8B%E4%B8%8D%E4%BA%86/" class="post-title-link" itemprop="url">github图片看不了</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-04-08 22:28:52 / Modified: 22:30:59" itemprop="dateCreated datePublished" datetime="2021-04-08T22:28:52+08:00">2021-04-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="改host"><a href="#改host" class="headerlink" title="改host"></a>改host</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">140.82.113.3      github.com</span><br><span class="line">140.82.114.20     gist.github.com</span><br><span class="line"></span><br><span class="line">151.101.184.133    assets-cdn.github.com</span><br><span class="line">151.101.184.133    raw.githubusercontent.com</span><br><span class="line">151.101.184.133    gist.githubusercontent.com</span><br><span class="line">151.101.184.133    cloud.githubusercontent.com</span><br><span class="line">151.101.184.133    camo.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars0.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars0.githubusercontent.com</span><br><span class="line">199.232.28.133     avatars1.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars1.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars2.githubusercontent.com</span><br><span class="line">199.232.28.133     avatars2.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars3.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars3.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars4.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars4.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars5.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars5.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars6.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars6.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars7.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars7.githubusercontent.com</span><br><span class="line">151.101.184.133    avatars8.githubusercontent.com</span><br><span class="line">199.232.68.133     avatars8.githubusercontent.com</span><br></pre></td></tr></table></figure>
-
-<h2 id="改DNS"><a href="#改DNS" class="headerlink" title="改DNS"></a>改DNS</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">233.5.5.5</span><br><span class="line">233.6.6.6</span><br></pre></td></tr></table></figure>
-
-<h2 id="结果都没用"><a href="#结果都没用" class="headerlink" title="结果都没用"></a>结果都没用</h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/08/%E5%BF%AB%E6%8E%92/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/08/%E5%BF%AB%E6%8E%92/" class="post-title-link" itemprop="url">快排</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-04-08 17:33:02 / Modified: 21:54:33" itemprop="dateCreated datePublished" datetime="2021-04-08T17:33:02+08:00">2021-04-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mysort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(l&gt;=r) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> tl = l;</span><br><span class="line">    <span class="keyword">int</span> tr = r;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> flag = nums[l];</span><br><span class="line">    <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(l&lt;r&amp;&amp;flag&lt;=nums[r])&#123;</span><br><span class="line">            r--;</span><br><span class="line">        &#125;</span><br><span class="line">        nums[l] = nums[r];</span><br><span class="line">        <span class="keyword">while</span>(l&lt;r&amp;&amp;nums[l]&lt;=flag)&#123;</span><br><span class="line">            l ++;</span><br><span class="line">        &#125;</span><br><span class="line">        nums[r] = nums[l];</span><br><span class="line">    &#125;</span><br><span class="line">    nums[l] = flag;</span><br><span class="line"></span><br><span class="line">    mysort(nums, tl, l<span class="number">-1</span>);</span><br><span class="line">    mysort(nums, l+<span class="number">1</span>, tr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/08/%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/08/%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/" class="post-title-link" itemprop="url">端口转发</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-04-08 17:29:13" itemprop="dateCreated datePublished" datetime="2021-04-08T17:29:13+08:00">2021-04-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-07-19 19:49:42" itemprop="dateModified" datetime="2021-07-19T19:49:42+08:00">2021-07-19</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210408172946.png" alt="20210408172946"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/08/%E5%8D%95%E8%B0%83%E6%A0%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/08/%E5%8D%95%E8%B0%83%E6%A0%88/" class="post-title-link" itemprop="url">单调栈</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-04-08 17:01:22 / Modified: 21:57:22" itemprop="dateCreated datePublished" datetime="2021-04-08T17:01:22+08:00">2021-04-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">    rightMin[i] = len;       </span><br><span class="line">    <span class="keyword">while</span>(!que.empty()&amp;&amp;heights[que.top()]&gt;heights[i])&#123;</span><br><span class="line">        rightMin[que.top()] = i;</span><br><span class="line">        que.pop();</span><br><span class="line">    &#125;    </span><br><span class="line">    que.push(i);    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/08/Hexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/08/Hexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">Hexo常用命令</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-04-08 16:51:42 / Modified: 16:53:57" itemprop="dateCreated datePublished" datetime="2021-04-08T16:51:42+08:00">2021-04-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><ul>
-<li>hexo n “我的博客” == hexo new “我的博客” #新建文章</li>
-<li>hexo p == hexo publish</li>
-<li>hexo g == hexo generate#生成</li>
-<li>hexo s == hexo server #启动服务预览</li>
-<li>hexo d == hexo deploy#部署</li>
-</ul>
-<h3 id="多个tags用方括号括起来，并用逗号分隔"><a href="#多个tags用方括号括起来，并用逗号分隔" class="headerlink" title="多个tags用方括号括起来，并用逗号分隔"></a>多个tags用方括号括起来，并用逗号分隔</h3>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/29/%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/03/29/%E6%90%AD%E5%BB%BAHexo%E5%8D%9A%E5%AE%A2/" class="post-title-link" itemprop="url">搭建Hexo博客</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-03-29 15:36:24" itemprop="dateCreated datePublished" datetime="2021-03-29T15:36:24+08:00">2021-03-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-08 22:34:49" itemprop="dateModified" datetime="2021-04-08T22:34:49+08:00">2021-04-08</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="安装配置Hexo"><a href="#安装配置Hexo" class="headerlink" title="安装配置Hexo"></a>安装配置Hexo</h2><ul>
-<li>环境安装，nodejs + git，Hexo使用npm来进行包管理的；</li>
-<li>安装hexo脚手架：cnpm install hexo-cli；</li>
-<li>初始化博客文件：hexo init my_first_blog；</li>
-<li>常用命令<ul>
-<li>清理：hexo clean</li>
-<li>生成：hexo g</li>
-<li>部署：hexo d</li>
-<li>启动本地服务：hexo s</li>
-</ul>
+          <h2 id="并发一致性问题"><a href="#并发一致性问题" class="headerlink" title="并发一致性问题"></a>并发一致性问题</h2><p>在并发环境下，事务的隔离性很难保证，因此会出现很多并发一致性问题。</p>
+<ol>
+<li><p>丢失修改<br> 丢失修改指一个事务的更新操作被另外一个事务的更新操作替换。一般在现实生活中常会遇到，例如：T1 和 T2 两个事务都对一个数据进行修改，T1 先修改并提交生效，T2 随后修改，T2 的修改覆盖了 T1 的修改。</p>
 </li>
-<li>打开本地博客 localhost:4000；</li>
-</ul>
-<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><p>使用hexo d来部署时可能会出现这种部署失败的问题<br><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210329154940.png" alt="20210329154940"></p>
-<h3 id="解决方法1"><a href="#解决方法1" class="headerlink" title="解决方法1"></a>解决方法1</h3><ol>
-<li>删掉.deploy_git文件夹</li>
-<li>依次运行hexo clean，hexo g，hexo d</li>
+<li><p>读脏数据<br> 读脏数据指在不同的事务下，当前事务可以读到另外事务未提交的数据。例如：T1 修改一个数据但未提交，T2 随后读取这个数据。如果 T1 撤销了这次修改，那么 T2 读取的数据是脏数据。</p>
+</li>
+<li><p>不可重复读<br> 不可重复读指在一个事务内多次读取同一数据集合。在这一事务还未结束前，另一事务也访问了该同一数据集合并做了修改，由于第二个事务的修改，第一次事务的两次读取的数据可能不一致。例如：T2 读取一个数据，T1 对该数据做了修改。如果 T2 再次读取这个数据，此时读取的结果和第一次读取的结果不同。</p>
+</li>
+<li><p>幻影读<br> 幻读本质上也属于不可重复读的情况，T1 读取某个范围的数据，T2 在这个范围内插入新的数据，T1 再次读取这个范围的数据，此时读取的结果和和第一次读取的结果不同。</p>
+</li>
 </ol>
-<h3 id="解决方法2"><a href="#解决方法2" class="headerlink" title="解决方法2"></a>解决方法2</h3><p>直接使用hexo clean &amp;&amp; hexo g &amp;&amp; hexo d命令<br><img src="https://raw.githubusercontent.com/Jepson-Song/images/master/20210329213357.png" alt="20210329213357"></p>
-<h3 id="解决方法3（成功）"><a href="#解决方法3（成功）" class="headerlink" title="解决方法3（成功）"></a>解决方法3（成功）</h3><p>把博客部署的网址从http换成git</p>
+<p>产生并发不一致性问题的主要原因是破坏了事务的隔离性，解决方法是通过并发控制来保证隔离性。并发控制可以通过封锁来实现，但是封锁操作需要用户自己控制，相当复杂。数据库管理系统提供了事务的隔离级别，让用户以一种更轻松的方式处理并发一致性问题。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E4%BA%8B%E5%8A%A1ACID/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/16/%E4%BA%8B%E5%8A%A1ACID/" class="post-title-link" itemprop="url">事务ACID</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-16 22:27:30 / Modified: 22:29:59" itemprop="dateCreated datePublished" datetime="2022-02-16T22:27:30+08:00">2022-02-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>事务指的是满足 ACID 特性的一组操作，可以通过 Commit 提交一个事务，也可以使用 Rollback 进行回滚。</p>
+<h2 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h2><ol>
+<li><p>原子性（Atomicity）</p>
+<p> 事务被视为不可分割的最小单元，事务的所有操作要么全部提交成功，要么全部失败回滚。</p>
+<p> 回滚可以用回滚日志（Undo Log）来实现，回滚日志记录着事务所执行的修改操作，在回滚时反向执行这些修改操作即可。</p>
+</li>
+<li><p>一致性（Consistency）</p>
+<p> 数据库在事务执行前后都保持一致性状态。在一致性状态下，所有事务对同一个数据的读取结果都是相同的。</p>
+</li>
+<li><p>隔离性（Isolation）</p>
+<p> 一个事务所做的修改在最终提交以前，对其它事务是不可见的。</p>
+</li>
+<li><p>持久性（Durability）</p>
+<p> 一旦事务提交，则其所做的修改将会永远保存到数据库中。即使系统发生崩溃，事务执行的结果也不能丢失。</p>
+<p> 系统发生崩溃可以用重做日志（Redo Log）进行恢复，从而实现持久性。与回滚日志记录数据的逻辑修改不同，重做日志记录的是数据页的物理修改。</p>
+</li>
+</ol>
+<p>事务的 ACID 特性概念简单，但不是很好理解，主要是因为这几个特性不是一种平级关系：</p>
+<p>只有满足一致性，事务的执行结果才是正确的。</p>
+<p>在无并发的情况下，事务串行执行，隔离性一定能够满足。此时只要能满足原子性，就一定能满足一致性。</p>
+<p>在并发的情况下，多个事务并行执行，事务不仅要满足原子性，还需要满足隔离性，才能满足一致性。</p>
+<p>事务满足持久化是为了能应对系统崩溃的情况。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E6%9F%B1%E7%8A%B6%E5%9B%BE%E4%B8%AD%E6%9C%80%E5%A4%A7%E7%9A%84%E7%9F%A9%E5%BD%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/16/%E6%9F%B1%E7%8A%B6%E5%9B%BE%E4%B8%AD%E6%9C%80%E5%A4%A7%E7%9A%84%E7%9F%A9%E5%BD%A2/" class="post-title-link" itemprop="url">柱状图中最大的矩形</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-16 15:27:09 / Modified: 15:34:24" itemprop="dateCreated datePublished" datetime="2022-02-16T15:27:09+08:00">2022-02-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。</p>
+<p>求在该柱状图中，能够勾勒出来的矩形的最大面积。</p>
+<p>示例：</p>
+<p><img src="https://s2.loli.net/2022/02/16/sTSw6JUKRNqjDyV.png" alt="20220216152744"></p>
+<p>输入：heights = [2,1,5,6,2,3]</p>
+<p>输出：10</p>
+<p>解释：最大的矩形为图中红色区域，面积为 10</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>遍历每个柱子，以该柱子的高度为矩形高度，并寻找每个柱子左边和右边最后一个高于它的柱子的位置作为左右矩形边界。</p>
+<h2 id="解法1：单调栈"><a href="#解法1：单调栈" class="headerlink" title="解法1：单调栈"></a>解法1：单调栈</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> n = heights.<span class="built_in">size</span>();</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">lb</span><span class="params">(n, <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">rb</span><span class="params">(n, n<span class="number">-1</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    stack&lt;<span class="keyword">int</span>&gt; sta;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">while</span>(!sta.<span class="built_in">empty</span>()&amp;&amp;heights[i]&lt;heights[sta.<span class="built_in">top</span>()])&#123;</span><br><span class="line">            rb[sta.<span class="built_in">top</span>()] = i<span class="number">-1</span>;</span><br><span class="line">            sta.<span class="built_in">pop</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        sta.<span class="built_in">push</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    sta.<span class="built_in">pop</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=n<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">        <span class="keyword">while</span>(!sta.<span class="built_in">empty</span>()&amp;&amp;heights[i]&lt;heights[sta.<span class="built_in">top</span>()])&#123;</span><br><span class="line">            lb[sta.<span class="built_in">top</span>()] = i+<span class="number">1</span>;</span><br><span class="line">            sta.<span class="built_in">pop</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        sta.<span class="built_in">push</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    sta.<span class="built_in">pop</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++) ans = <span class="built_in">max</span>(ans, heights[i]*(rb[i]-lb[i]+<span class="number">1</span>));</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="解法2：线段树"><a href="#解法2：线段树" class="headerlink" title="解法2：线段树"></a>解法2：线段树</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; a;</span><br><span class="line"><span class="keyword">int</span> tree[<span class="number">1000000</span>];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(l==r)&#123;</span><br><span class="line">        tree[p] = a[l];</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid=(l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="built_in">build</span>(p*<span class="number">2</span>,l,mid);</span><br><span class="line">    <span class="built_in">build</span>(p*<span class="number">2</span>+<span class="number">1</span>,mid+<span class="number">1</span>,r);</span><br><span class="line">    tree[p] = <span class="built_in">min</span>(tree[p*<span class="number">2</span>], tree[p*<span class="number">2</span>+<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(x&lt;=l&amp;&amp;r&lt;=y)&#123;</span><br><span class="line">        <span class="keyword">return</span> tree[p];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span>(y&lt;=mid) <span class="keyword">return</span> <span class="built_in">query</span>(p*<span class="number">2</span>,l,mid,x,y);</span><br><span class="line">    <span class="keyword">if</span>(x&gt;=mid+<span class="number">1</span>) <span class="keyword">return</span> <span class="built_in">query</span>(p*<span class="number">2</span>+<span class="number">1</span>,mid+<span class="number">1</span>,r,x,y);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">min</span>(<span class="built_in">query</span>(p*<span class="number">2</span>,l,mid,x,y),<span class="built_in">query</span>(p*<span class="number">2</span>+<span class="number">1</span>,mid+<span class="number">1</span>,r,x,y));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea2</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">    a = heights;</span><br><span class="line">    <span class="keyword">int</span> n = heights.<span class="built_in">size</span>();</span><br><span class="line">    <span class="built_in">build</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> ans = <span class="built_in">max</span>(heights[<span class="number">0</span>], heights[n<span class="number">-1</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> lm,rm,lb,rb;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=n<span class="number">-1</span>;i++)&#123;</span><br><span class="line">        <span class="comment">//cout&lt;&lt;i&lt;&lt;&quot;: (&quot;&lt;&lt;heights[i]&lt;&lt;&quot;) &quot;;</span></span><br><span class="line">        <span class="keyword">if</span>(i==<span class="number">0</span>) lm = heights[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">else</span> lm = <span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,<span class="number">0</span>,i<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span>(lm&gt;=heights[i])&#123;</span><br><span class="line">            lb = <span class="number">0</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">int</span> l, r, mid;</span><br><span class="line">            l = <span class="number">0</span>;</span><br><span class="line">            r = i<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">                mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,mid+<span class="number">1</span>,r)&lt;heights[i])&#123;</span><br><span class="line">                    l = mid+<span class="number">1</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    r = mid;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            lb = l+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(i==n<span class="number">-1</span>) rm = heights[n<span class="number">-1</span>];</span><br><span class="line">        <span class="keyword">else</span> rm = <span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,i+<span class="number">1</span>,n<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span>(rm&gt;=heights[i])&#123;</span><br><span class="line">            rb = n<span class="number">-1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">int</span> l, r, mid;</span><br><span class="line">            l = i+<span class="number">1</span>;</span><br><span class="line">            r = n<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">                mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,l,mid)&lt;heights[i])&#123;</span><br><span class="line">                    r = mid;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    l = mid+<span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            rb = l<span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ans = <span class="built_in">max</span>(ans, heights[i]*(rb-lb+<span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E6%89%8B%E5%86%99%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/16/%E6%89%8B%E5%86%99%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" class="post-title-link" itemprop="url">手写优先队列</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-16 09:26:03 / Modified: 09:33:22" itemprop="dateCreated datePublished" datetime="2022-02-16T09:26:03+08:00">2022-02-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="优先队列"><a href="#优先队列" class="headerlink" title="优先队列"></a>优先队列</h2><p>用数组实现大/小顶堆，子节点=父节点*2或者*2+1。</p>
+<p>用数组构造二叉树，push元素时先存到最后一个节点，然后从最后一个节点迭代与父节点比较交换，一直到第一个节点或者停止交换。</p>
+<p>pop时直接交换第一个节点和最后一个节点，然后从第一个节点迭代与两个子节点中较大/小的那个比较交换，一直到最后一层节点或者停止交换。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a[<span class="number">10010</span>];</span><br><span class="line"><span class="keyword">int</span> siz;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">    a[++siz] = x;</span><br><span class="line">    <span class="keyword">int</span> son = siz;</span><br><span class="line">    <span class="keyword">int</span> par = son/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">while</span>(par&gt;=<span class="number">1</span>)&#123; </span><br><span class="line">        <span class="keyword">if</span>(a[son]&gt;a[par])&#123; <span class="comment">// 小顶堆为 &lt; </span></span><br><span class="line">            <span class="built_in">swap</span>(a[son], a[par]);</span><br><span class="line">            son = par;</span><br><span class="line">            par = son/<span class="number">2</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">top</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a[<span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span></span>&#123;</span><br><span class="line">    a[<span class="number">1</span>] = a[siz--];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> par = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> son = par*<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">while</span>(son&lt;=siz)&#123;</span><br><span class="line">        <span class="keyword">if</span>(son+<span class="number">1</span>&lt;=siz&amp;&amp;a[son+<span class="number">1</span>]&gt;a[son])&#123; <span class="comment">// 小顶堆为 &lt; </span></span><br><span class="line">            son ++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(a[son]&gt;a[par])&#123; <span class="comment">// 小顶堆为 &lt; </span></span><br><span class="line">            <span class="built_in">swap</span>(a[son], a[par]);</span><br><span class="line">            par = son;</span><br><span class="line">            son = par*<span class="number">2</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    siz = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        cin&gt;&gt;x;</span><br><span class="line">        <span class="built_in">push</span>(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        cout&lt;&lt;<span class="built_in">top</span>()&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line">        <span class="built_in">pop</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/15/%E5%A4%9A%E6%80%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/15/%E5%A4%9A%E6%80%81/" class="post-title-link" itemprop="url">多态</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-15 17:12:30 / Modified: 17:14:07" itemprop="dateCreated datePublished" datetime="2022-02-15T17:12:30+08:00">2022-02-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>多态就是不同继承类的对象，对同一消息做出不同的响应，基类的指针指向或绑定到派生类的对象，使得基类指针呈现不同的表现方式。在基类的函数前加上 virtual 关键字，在派生类中重写该函数，运行时将会根据对象的实际类型来调用相应的函数。如果对象类型是派生类，就调用派生类的函数；如果对象类型是基类，就调用基类的函数。<br>实现方法：多态是通过虚函数实现的，虚函数的地址保存在虚函数表中，虚函数表的地址保存在含有虚函数的类的实例对象的内存空间中。</p>
+<h2 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h2><p>在类中用 virtual 关键字声明的函数叫做虚函数；<br>存在虚函数的类都有一个虚函数表，当创建一个该类的对象时，该对象有一个指向虚函数表的虚表指针（虚函数表和类对应的，虚表指针是和对象对应）；<br>当基类指针指向派生类对象，基类指针调用虚函数时，基类指针指向派生类的虚表指针，由于该虚表指针指向派生类虚函数表，通过遍历虚表，寻找相应的虚函数。</p>
+<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::fun()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::fun1()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::fun2()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derive</span> :</span> <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derive::fun()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">D_fun1</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derive::D_fun1()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">D_fun2</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derive::D_fun2()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Base *p = <span class="keyword">new</span> <span class="built_in">Derive</span>();</span><br><span class="line">    p-&gt;<span class="built_in">fun</span>(); <span class="comment">// Derive::fun() 调用派生类中的虚函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>基类的虚函数表如下：</p>
+<p><img src="https://s2.loli.net/2022/02/15/Hexf8Qkly71Fqn2.png" alt="20220215171346"></p>
+<p>派生类的对象虚函数表如下：</p>
+<p><img src="https://s2.loli.net/2022/02/15/YqVBLIPJpWHlM2y.png" alt="20220215171352"></p>
+<p>简单解释：当基类的指针指向派生类的对象时，通过派生类的对象的虚表指针找到虚函数表（派生类的对象虚函数表），进而找到相应的虚函数 Derive::f() 进行调用。</p>
 
       
     </div>
@@ -859,7 +545,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -926,7 +612,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-count">146</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

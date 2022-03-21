@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Jepson&#39;s Blog">
+<meta property="og:url" content="http://example.com/page/16/index.html">
+<meta property="og:site_name" content="Jepson&#39;s Blog">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Jepson">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/page/16/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Jepson's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jepson's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/Jepson-Song" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/03/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950103/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/03/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950103/" class="post-title-link" itemprop="url">实验记录0103</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-03 13:28:36" itemprop="dateCreated datePublished" datetime="2022-01-03T13:28:36+08:00">2022-01-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-01-08 17:00:15" itemprop="dateModified" datetime="2022-01-08T17:00:15+08:00">2022-01-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>效果比较好的数据有：</p>
+<table>
+<thead>
+<tr>
+<th>数据编号</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>20211213_214603</td>
+<td></td>
+</tr>
+<tr>
+<td>20211213_210547</td>
+<td></td>
+</tr>
+<tr>
+<td>20211213_204805</td>
+<td></td>
+</tr>
+<tr>
+<td>20220103_195518</td>
+<td>中间停了10s</td>
+</tr>
+<tr>
+<td>20220103_200136</td>
+<td>中间10s</td>
+</tr>
+<tr>
+<td>20220103_201517</td>
+<td>后半段人走开</td>
+</tr>
+<tr>
+<td>20220103_202140</td>
+<td>耳机架在桌子上，后半段走开了30-40s，再回来</td>
+</tr>
+<tr>
+<td>20220103_204606</td>
+<td>50多秒时人走开</td>
+</tr>
+<tr>
+<td>20220103_205434</td>
+<td>一直呼吸</td>
+</tr>
+<tr>
+<td>20220103_205952</td>
+<td>一直呼吸</td>
+</tr>
+<tr>
+<td>20220103_210435</td>
+<td>后面半段人走开</td>
+</tr>
+<tr>
+<td>20220103_211403</td>
+<td>中间人走开</td>
+</tr>
+<tr>
+<td>20220103_212938</td>
+<td>中间人走开</td>
+</tr>
+<tr>
+<td>20220104_090548</td>
+<td>一直呼吸</td>
+</tr>
+<tr>
+<td>20220104_091117</td>
+<td>中间人走开</td>
+</tr>
+</tbody></table>
+<h2 id="实验分析"><a href="#实验分析" class="headerlink" title="实验分析"></a>实验分析</h2><ul>
+<li>耳机戴在头上得到的结果要比放在桌子上的结果好。<br>分析：可能是由于人呼吸和心跳带动身体微小的动作会传递到头部，这样就会影响发射端，所以实验得到的波形可能不仅仅提取自反射信号，直达信号的变化很可能对实验结果有很大的影响。这也是该系统跟其它同类型的系统之间的一个区别，因为其它已有的测呼吸的工作大多是把发射端和接收端都放在人旁边，这样就只能从反射信号中提取信息，而我们的系统发射端是穿戴在任身体上的，呼吸和心跳的pattern会直接作用于发射端并通过直达信号反应出来。</li>
+</ul>
+<h2 id="后续的实验方向"><a href="#后续的实验方向" class="headerlink" title="后续的实验方向"></a>后续的实验方向</h2><ol>
+<li><p>结合直达信号和反射信号共同用于波形提取。可以考虑把直达信号左右一部分的路径和其它路径设置不同的权重再放到一起做pca。</p>
+</li>
+<li><p>参数的调整。呼吸和心跳的snr阈值可能还需要进一步调整，用于识别出没有呼吸和心跳的场景。</p>
+</li>
+<li><p>路径选择的方法可能还需要调试，目前的结果是百分比法（前10%）效果比阈值法要好一些。</p>
+</li>
+<li><p>cir的长度和频率（现在是10）可能考虑一下是否需要调整。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/26/%E6%AD%BB%E9%94%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/26/%E6%AD%BB%E9%94%81/" class="post-title-link" itemprop="url">死锁</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-26 11:18:14" itemprop="dateCreated datePublished" datetime="2021-12-26T11:18:14+08:00">2021-12-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-19 21:48:13" itemprop="dateModified" datetime="2022-02-19T21:48:13+08:00">2022-02-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>如果一个进程集合中的每个进程都在等待只能由该进程集合中的其他进程才能引发的事件，那么该进程集合就是死锁的。</p>
+<h3 id="死锁的条件（四个同时满足）"><a href="#死锁的条件（四个同时满足）" class="headerlink" title="死锁的条件（四个同时满足）"></a>死锁的条件（四个同时满足）</h3><ol>
+<li><p>互斥：每个资源要么已经分配给一个进程，要么就是可用的；</p>
+</li>
+<li><p>占有和等待：进程因请求资源而阻塞时，对已获得的资源保持不放；</p>
+</li>
+<li><p>不可抢占：已经分配的资源不能强制被抢占，只能进程自己释放；</p>
+</li>
+<li><p>环路等待：存在一种进程资源的循环等待链。</p>
+</li>
+</ol>
+<h3 id="死锁的处理策略"><a href="#死锁的处理策略" class="headerlink" title="死锁的处理策略"></a>死锁的处理策略</h3><ol>
+<li><p>死锁预防：破坏死锁的四个条件之一</p>
+<p> 破环互斥条件：允许资源共享；</p>
+<p> 破环占有和等待条件：一次性分配所有资源，只要缺少一个资源，其它资源也都不给他分配；</p>
+<p> 破坏不可抢占：请求新资源得不到时，释放已经保持占有的资源，待以后重新申请；</p>
+<p> 破坏环路等待：采用顺序资源分配法，给每个资源编号，进程申请资源的时候按照编号顺序申请，释放的时候则相反；</p>
+</li>
+<li><p>死锁避免：死锁避免事先预防策略，但是是采用资源动态分配的过程中，防止系统进入不安全状态，以避免死锁。</p>
+<p> 预防死锁的几种策略，会严重地损害系统性能。因此在避免死锁时，要施加较弱的限制，从而获得 较满意的系统性能。由于在避免死锁的策略中，允许进程动态地申请资源。因而，系统在进行资源分配之前预先计算资源分配的安全性。若此次分配不会导致系统进入不安全的状态，则将资源分配给进程；否则，进程等待。其中最具有代表性的避免死锁算法是银行家算法。</p>
+<p> 银行家算法：首先需要定义状态和安全状态的概念。系统的状态是当前给进程分配的资源情况。因此，状态包含两个向量Resource（系统中每种资源的总量）和Available（未分配给进程的每种资源的总量）及两个矩阵Claim（表示进程对资源的需求）和Allocation（表示当前分配给进程的资源）。安全状态是指至少有一个资源分配序列不会导致死锁。当进程请求一组资源时，假设同意该请求，从而改变了系统的状态，然后确定其结果是否还处于安全状态。如果是，同意这个请求；如果不是，阻塞该进程知道同意该请求后系统状态仍然是安全的。</p>
+</li>
+<li><p>死锁检测与解除：</p>
+<p> 检测死锁：利用死锁原理化简资源分配图检测死锁的存在</p>
+<p> 死锁解除：资源剥夺、撤销进程、进程回退</p>
+<pre><code> 剥夺资源：从其它进程剥夺足够数量的资源给死锁进程，以解除死锁状态；
+
+ 撤消进程：可以直接撤消死锁进程或撤消代价最小的进程，直至有足够的资源可用，死锁状态.消除为止；所谓代价是指优先级、运行代价、进程的重要性和价值等。
+</code></pre>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/23/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/23/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">智能指针</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-23 11:04:38 / Modified: 12:22:47" itemprop="dateCreated datePublished" datetime="2021-12-23T11:04:38+08:00">2021-12-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h2><p>因为c++没有自动的内存回收机制，所以程序员每次在new一个对象的时候都需要手动delete，但是有的时候会忘记delete，或者因为程序分支等原因delete没有执行，就会使得对象没有释放而导致内存泄漏。</p>
+<p>智能指针（shared_ptr）是一个类，存储了指向一个对象的指针，通过引用计数的方式记录有多少个智能指针对象共享同一个指针，它在指针没有被使用时会自动释放其内存。</p>
+<h2 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h2><p>每次创建智能指针对象时，初始化其指针，引用计数设为1；</p>
+<p>当智能指针对象成为另一个智能指针对象的副本时，执行拷贝构造函数，并将引用计数加1；</p>
+<p>当执行赋值语句时，左操作数的引用计数减1，右操作数的引用计数加1；</p>
+<p>当执行析构函数时，引用计数减1；</p>
+<p>当引用计数为0时，释放内部指针指向的对象的空间。</p>
+<h2 id="循环引用"><a href="#循环引用" class="headerlink" title="循环引用"></a>循环引用</h2><p>智能指针存在的一个经典问题就是循环引用问题，如下。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="built_in">Node</span>(T data = <span class="built_in">T</span>()) :_data(data), <span class="built_in">Pnext</span>(<span class="literal">NULL</span>), <span class="built_in">Ppre</span>(<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	~<span class="built_in">Node</span>()</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;Call ~Node()&quot;</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	shared_ptr&lt;Node&gt; Pnext;</span><br><span class="line">	shared_ptr&lt;Node&gt; Ppre;</span><br><span class="line">	T _data;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testShared_Ptr</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	shared_ptr&lt;Node&lt;<span class="keyword">int</span>&gt;&gt;<span class="built_in">sp1</span>(<span class="keyword">new</span> Node&lt;<span class="keyword">int</span>&gt;(<span class="number">1</span>));</span><br><span class="line">	shared_ptr&lt;Node&lt;<span class="keyword">int</span>&gt;&gt;<span class="built_in">sp2</span>(<span class="keyword">new</span> Node&lt;<span class="keyword">int</span>&gt;(<span class="number">2</span>));</span><br><span class="line">	cout &lt;&lt; sp1.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//1</span></span><br><span class="line">	cout &lt;&lt; sp2.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//1</span></span><br><span class="line">	sp1-&gt;Pnext = sp2;</span><br><span class="line">	sp2-&gt;Ppre = sp1;</span><br><span class="line">	cout &lt;&lt; sp1.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//2</span></span><br><span class="line">	cout &lt;&lt; sp2.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//2</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*Node&lt;int&gt; *a = new Node&lt;int&gt;(3);</span></span><br><span class="line"><span class="comment">    delete a;</span></span><br><span class="line"><span class="comment">    shared_ptr&lt;Node&lt;int&gt;&gt; c(new Node&lt;int&gt;(4));*/</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">testShared_Ptr</span>();                                                                                                                            </span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;testShared_pte()函数运行结束&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在函数testShared_Ptr执行完之后，会先释放sp2，所以sp2的引用计数减1变为1，然后释放sp1的内存，sp1的引用计数也减1变为1。因为sp1中有对sp2的指针，sp2中也有sp1的指针，所以导致二者的引用计数都没有办法变为0，于是导致二者的内存空间都不会释放。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/21/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951221/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/21/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951221/" class="post-title-link" itemprop="url">实验记录1221</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-21 14:57:17 / Modified: 19:46:25" itemprop="dateCreated datePublished" datetime="2021-12-21T14:57:17+08:00">2021-12-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>用CIR虚部做PCA效果更好</p>
+<p>呼吸：</p>
+<p><img src="https://s2.loli.net/2021/12/21/W5AoQdFGH94CTsZ.png" alt="20211221145747"></p>
+<p>心跳：</p>
+<p><img src="https://s2.loli.net/2021/12/21/Tp1HgViDaFe5WlS.png" alt="20211221150024"></p>
+<p>实部和虚部分别独立做PCA再将结果相减：（效果又好了一点）</p>
+<p><img src="https://s2.loli.net/2021/12/21/51CL9mc6FfYwMXz.png" alt="20211221190046"></p>
+<p>数据编号：20211213_214603</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/20/%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/20/%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">继承方式</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-20 14:24:07 / Modified: 14:26:26" itemprop="dateCreated datePublished" datetime="2021-12-20T14:24:07+08:00">2021-12-20</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>不同的继承方式会影响基类成员在派生类中的访问权限。</p>
+<ol>
+<li>public继承方式</li>
+</ol>
+<ul>
+<li>基类中所有 public 成员在派生类中为 public 属性；</li>
+<li>基类中所有 protected 成员在派生类中为 protected 属性；</li>
+<li>基类中所有 private 成员在派生类中不能使用。</li>
+</ul>
+<ol start="2">
+<li>protected继承方式</li>
+</ol>
+<ul>
+<li>基类中的所有 public 成员在派生类中为 protected 属性；</li>
+<li>基类中的所有 protected 成员在派生类中为 protected 属性；</li>
+<li>基类中的所有 private 成员在派生类中不能使用。</li>
+</ul>
+<ol start="3">
+<li>private继承方式</li>
+</ol>
+<ul>
+<li>基类中的所有 public 成员在派生类中均为 private 属性；</li>
+<li>基类中的所有 protected 成员在派生类中均为 private 属性；</li>
+<li>基类中的所有 private 成员在派生类中不能使用。</li>
+</ul>
+<p>默认是私有继承</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jepson</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">146</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://jinpengsong20.github.io/" title="Homepage → https:&#x2F;&#x2F;jinpengsong20.github.io" rel="noopener" target="_blank"><i class="fa fa-user fa-fw"></i>Homepage</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://github.com/Jepson-Song" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Jepson-Song" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jinpengsong@smail.nju.edu.cn" title="E-Mail → mailto:jinpengsong@smail.nju.edu.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.nju.edu.cn/" title="School&#x2F;NJU → https:&#x2F;&#x2F;www.nju.edu.cn" rel="noopener" target="_blank"><i class="fa fa-university fa-fw"></i>School/NJU</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://cs.nju.edu.cn/lands" title="Lab&#x2F;LANDS → https:&#x2F;&#x2F;cs.nju.edu.cn&#x2F;lands" rel="noopener" target="_blank"><i class="fa fa-users fa-fw"></i>Lab/LANDS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://baike.baidu.com/item/%E5%8D%97%E4%BA%AC/23952?fr=aladdin" title="City&#x2F;NanJing → https:&#x2F;&#x2F;baike.baidu.com&#x2F;item&#x2F;%E5%8D%97%E4%BA%AC&#x2F;23952?fr&#x3D;aladdin" rel="noopener" target="_blank"><i class="fa fa-map-marker fa-fw"></i>City/NanJing</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://jepson-song.github.io/2022/03/12/CV/" title="https:&#x2F;&#x2F;jepson-song.github.io&#x2F;2022&#x2F;03&#x2F;12&#x2F;CV&#x2F;" rel="noopener" target="_blank">CV</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://jepson-song.github.io/" title="https:&#x2F;&#x2F;jepson-song.github.io" rel="noopener" target="_blank">Blog</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://jinpengsong20.github.io/" title="https:&#x2F;&#x2F;jinpengsong20.github.io" rel="noopener" target="_blank">Homepage</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jepson</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
+
+
+
+
+  
+
+  
+
+</body>
+</html>

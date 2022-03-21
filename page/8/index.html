@@ -188,7 +188,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/14/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/27/%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84%E4%B8%8E%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -202,7 +202,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/14/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">智能指针实现原理</a>
+            <a href="/2022/02/27/%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84%E4%B8%8E%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">指针数组与数组指针</a>
         </h2>
 
         <div class="post-meta">
@@ -215,7 +215,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-14 16:39:21 / Modified: 22:45:00" itemprop="dateCreated datePublished" datetime="2022-02-14T16:39:21+08:00">2022-02-14</time>
+              <time title="Created: 2022-02-27 23:03:45 / Modified: 23:08:55" itemprop="dateCreated datePublished" datetime="2022-02-27T23:03:45+08:00">2022-02-27</time>
             </span>
 
           
@@ -229,34 +229,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h2><p>智能指针是为了解决动态内存分配时带来的内存泄漏以及多次释放同一块内存空间而提出的。C++11 中封装在了 &lt;memory&gt; 头文件中。</p>
-<p>C++11 中智能指针包括以下三种：</p>
-<ol>
-<li><p>共享指针（shared_ptr）：资源可以被多个指针共享，使用计数机制表明资源被几个指针共享。通过 use_count() 查看资源的所有者的个数，可以通过 unique_ptr、weak_ptr 来构造，调用 release() 释放资源的所有权，计数减一，当计数减为 0 时，会自动释放内存空间，从而避免了内存泄漏。</p>
-</li>
-<li><p>独占指针（unique_ptr）：独享所有权的智能指针，资源只能被一个指针占有，该指针不能拷贝构造和赋值。但可以进行移动构造和移动赋值构造（调用 move() 函数），即一个 unique_ptr 对象赋值给另一个 unique_ptr 对象，可以通过该方法进行赋值。</p>
-</li>
-<li><p>弱指针（weak_ptr）：指向 share_ptr 指向的对象，能够解决由shared_ptr带来的循环引用问题。</p>
-</li>
-</ol>
-<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>智能指针的实现原理： 计数原理</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SmartPtr</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span> : </span><br><span class="line">    T *_ptr;</span><br><span class="line">    <span class="keyword">size_t</span> *_count;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">SmartPtr</span>(T *ptr = <span class="literal">nullptr</span>) : _ptr(ptr)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (_ptr)</span><br><span class="line">        &#123;</span><br><span class="line">            _count = <span class="keyword">new</span> <span class="built_in">size_t</span>(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            _count = <span class="keyword">new</span> <span class="built_in">size_t</span>(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">SmartPtr</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        (*<span class="keyword">this</span>-&gt;_count)--;</span><br><span class="line">        <span class="keyword">if</span> (*<span class="keyword">this</span>-&gt;_count == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">delete</span> <span class="keyword">this</span>-&gt;_ptr;</span><br><span class="line">            <span class="keyword">delete</span> <span class="keyword">this</span>-&gt;_count;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">SmartPtr</span>(<span class="keyword">const</span> SmartPtr &amp;ptr) <span class="comment">// 拷贝构造：计数 +1</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span> != &amp;ptr)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">this</span>-&gt;_ptr = ptr._ptr;</span><br><span class="line">            <span class="keyword">this</span>-&gt;_count = ptr._count;</span><br><span class="line">            (*<span class="keyword">this</span>-&gt;_count)++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    SmartPtr &amp;<span class="keyword">operator</span>=(<span class="keyword">const</span> SmartPtr &amp;ptr) <span class="comment">// 赋值运算符重载 </span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>-&gt;_ptr == ptr._ptr)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>-&gt;_ptr) <span class="comment">// 将当前的 ptr 指向的原来的空间的计数 -1</span></span><br><span class="line">        &#123;</span><br><span class="line">            (*<span class="keyword">this</span>-&gt;_count)--;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>-&gt;_count == <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">delete</span> <span class="keyword">this</span>-&gt;_ptr;</span><br><span class="line">                <span class="keyword">delete</span> <span class="keyword">this</span>-&gt;_count;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>-&gt;_ptr = ptr._ptr;</span><br><span class="line">        <span class="keyword">this</span>-&gt;_count = ptr._count;</span><br><span class="line">        (*<span class="keyword">this</span>-&gt;_count)++; <span class="comment">// 此时 ptr 指向了新赋值的空间，该空间的计数 +1</span></span><br><span class="line">        <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    T &amp;<span class="keyword">operator</span>*()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">assert</span>(<span class="keyword">this</span>-&gt;_ptr == <span class="literal">nullptr</span>);</span><br><span class="line">        <span class="keyword">return</span> *(<span class="keyword">this</span>-&gt;_ptr);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    T *<span class="keyword">operator</span>-&gt;()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">assert</span>(<span class="keyword">this</span>-&gt;_ptr == <span class="literal">nullptr</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>-&gt;_ptr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">size_t</span> <span class="title">use_count</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> *<span class="keyword">this</span>-&gt;count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p[<span class="number">10</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in"><span class="keyword">int</span></span> (*p)[<span class="number">10</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> *<span class="title">p</span><span class="params">(<span class="keyword">int</span>)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">int</span> <span class="params">(*p)</span><span class="params">(<span class="keyword">int</span>)</span></span></span><br></pre></td></tr></table></figure>
 
-<h2 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h2><p>智能指针可能出现的问题：循环引用</p>
-<p>在如下例子中定义了两个类 Parent、Child，在两个类中分别定义另一个类的对象的共享指针，由于在程序结束后，两个指针相互指向对方的内存空间，导致内存无法释放。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Parent</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Parent</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    shared_ptr&lt;Child&gt; ChildPtr;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setChild</span><span class="params">(shared_ptr&lt;Child&gt; child)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;ChildPtr = child;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>-&gt;ChildPtr.<span class="built_in">use_count</span>()) &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">Parent</span>() &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    shared_ptr&lt;Parent&gt; ParentPtr;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setPartent</span><span class="params">(shared_ptr&lt;Parent&gt; parent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;ParentPtr = parent;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>-&gt;ParentPtr.<span class="built_in">use_count</span>()) &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">Child</span>() &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    weak_ptr&lt;Parent&gt; wpp;</span><br><span class="line">    weak_ptr&lt;Child&gt; wpc;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">shared_ptr&lt;Parent&gt; <span class="title">p</span><span class="params">(<span class="keyword">new</span> Parent)</span></span>;</span><br><span class="line">        <span class="function">shared_ptr&lt;Child&gt; <span class="title">c</span><span class="params">(<span class="keyword">new</span> Child)</span></span>;</span><br><span class="line">        p-&gt;<span class="built_in">setChild</span>(c);</span><br><span class="line">        c-&gt;<span class="built_in">setPartent</span>(p);</span><br><span class="line">        wpp = p;</span><br><span class="line">        wpc = c;</span><br><span class="line">        cout &lt;&lt; p.<span class="built_in">use_count</span>() &lt;&lt; endl; <span class="comment">// 2</span></span><br><span class="line">        cout &lt;&lt; c.<span class="built_in">use_count</span>() &lt;&lt; endl; <span class="comment">// 2</span></span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; wpp.<span class="built_in">use_count</span>() &lt;&lt; endl;  <span class="comment">// 1</span></span><br><span class="line">    cout &lt;&lt; wpc.<span class="built_in">use_count</span>() &lt;&lt; endl;  <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>循环引用的解决方法： weak_ptr</p>
-<p>循环引用：该被调用的析构函数没有被调用，从而出现了内存泄漏。</p>
-<ol>
-<li><p>weak_ptr 对被 shared_ptr 管理的对象存在 非拥有性（弱）引用，在访问所引用的对象前必须先转化为 shared_ptr；</p>
+<ul>
+<li><p>int *p[10]表示指针数组，强调数组概念，是一个数组变量，数组大小为10，数组内每个元素都是指向int类型的指针变量。</p>
 </li>
-<li><p>weak_ptr 用来打断 shared_ptr 所管理对象的循环引用问题，若这种环被孤立（没有指向环中的外部共享指针），shared_ptr 引用计数无法抵达 0，内存被泄露；令环中的指针之一为弱指针可以避免该情况；</p>
+<li><p>int (*p)[10]表示数组指针，强调是指针，只有一个变量，是指针类型，不过指向的是一个int类型的数组，这个数组大小是10。</p>
 </li>
-<li><p>weak_ptr 用来表达临时所有权的概念，当某个对象只有存在时才需要被访问，而且随时可能被他人删除，可以用 weak_ptr 跟踪该对象；需要获得所有权时将其转化为 shared_ptr，此时如果原来的 shared_ptr 被销毁，则该对象的生命期被延长至这个临时的 shared_ptr 同样被销毁。</p>
+<li><p>int *p(int)是函数声明，函数名是p，参数是int类型的，返回值是int *类型的。</p>
 </li>
-</ol>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Parent</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Parent</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">//shared_ptr&lt;Child&gt; ChildPtr;</span></span><br><span class="line">    weak_ptr&lt;Child&gt; ChildPtr;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setChild</span><span class="params">(shared_ptr&lt;Child&gt; child)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;ChildPtr = child;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//new shared_ptr</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>-&gt;ChildPtr.<span class="built_in">lock</span>()) &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">Parent</span>() &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    shared_ptr&lt;Parent&gt; ParentPtr;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setPartent</span><span class="params">(shared_ptr&lt;Parent&gt; parent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;ParentPtr = parent;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>-&gt;ParentPtr.<span class="built_in">use_count</span>()) &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">Child</span>() &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    weak_ptr&lt;Parent&gt; wpp;</span><br><span class="line">    weak_ptr&lt;Child&gt; wpc;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">shared_ptr&lt;Parent&gt; <span class="title">p</span><span class="params">(<span class="keyword">new</span> Parent)</span></span>;</span><br><span class="line">        <span class="function">shared_ptr&lt;Child&gt; <span class="title">c</span><span class="params">(<span class="keyword">new</span> Child)</span></span>;</span><br><span class="line">        p-&gt;<span class="built_in">setChild</span>(c);</span><br><span class="line">        c-&gt;<span class="built_in">setPartent</span>(p);</span><br><span class="line">        wpp = p;</span><br><span class="line">        wpc = c;</span><br><span class="line">        cout &lt;&lt; p.<span class="built_in">use_count</span>() &lt;&lt; endl; <span class="comment">// 2</span></span><br><span class="line">        cout &lt;&lt; c.<span class="built_in">use_count</span>() &lt;&lt; endl; <span class="comment">// 1</span></span><br><span class="line">    &#125;</span><br><span class="line">    cout &lt;&lt; wpp.<span class="built_in">use_count</span>() &lt;&lt; endl;  <span class="comment">// 0</span></span><br><span class="line">    cout &lt;&lt; wpc.<span class="built_in">use_count</span>() &lt;&lt; endl;  <span class="comment">// 0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><p>int (*p)(int)是函数指针，强调是指针，该指针指向的函数具有int类型参数，并且返回值是int类型的。</p>
+</li>
+</ul>
 
       
     </div>
@@ -276,7 +260,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/14/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/26/GET%E5%92%8CPOST/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -290,7 +274,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/14/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">内存管理</a>
+            <a href="/2022/02/26/GET%E5%92%8CPOST/" class="post-title-link" itemprop="url">GET和POST</a>
         </h2>
 
         <div class="post-meta">
@@ -301,16 +285,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2022-02-14 14:25:12" itemprop="dateCreated datePublished" datetime="2022-02-14T14:25:12+08:00">2022-02-14</time>
+              <time title="Created: 2022-02-26 10:07:08 / Modified: 10:16:41" itemprop="dateCreated datePublished" datetime="2022-02-26T10:07:08+08:00">2022-02-26</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-27 13:30:20" itemprop="dateModified" datetime="2022-02-27T13:30:20+08:00">2022-02-27</time>
-              </span>
 
           
 
@@ -323,30 +301,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>C++ 内存分区：栈、堆、全局/静态存储区、常量存储区、代码区。</p>
-<ol>
-<li><p>栈：存放函数的局部变量、函数参数、返回地址等，由编译器自动分配和释放。</p>
+          <ol>
+<li><p>报文上的区别</p>
+<p> GET 和 POST 只是 HTTP 协议中两种请求方式，所以在传输上，没有区别，因为HTTP 协议是基于 TCP/IP 的应用层协议<br> 报文格式上，不带参数时，最大区别仅仅是第一行方法名不同，一个是GET，一个是POST。</p>
+<p> 带参数时报文的区别呢？在约定中，GET方法的参数应该放在url中，POST方法参数应该放在body中。</p>
+<p> 举个例子，如果参数是 name=qiming.c, age=22。</p>
+<p> GET 方法简约版报文可能是这样的：</p>
+<pre><code> GET /index.php?name=qiming.c&amp;age=22 HTTP/1.1
+ Host: localhost
+</code></pre>
+<p> POST 方法简约版报文可能是这样的：</p>
+<pre><code> POST /index.php HTTP/1.1
+ Host: localhost
+ Content-Type: application/x-www-form-urlencoded name=qiming. c&amp;age=22
+</code></pre>
 </li>
-<li><p>堆：动态申请的内存空间，就是由 malloc 分配的内存块，由程序员控制它的分配和释放，如果程序执行结束还没有释放，操作系统会自动回收。</p>
+<li><p>传输数据的大小</p>
+<p> 在HTTP规范中，没有对URL的长度和传输的数据大小进行限制。但是在实际开发过程中，对于GET，特定的浏览器和服务器对URL的长度有限制。因此，在使用GET请求时，传输数据会受到URL长度的限制。</p>
+<p> 对于POST，由于不是URL传值，理论上是不会受限制的，但是实际上各个服务器会规定对POST提交数据大小进行限制，Apache、IIS都有各自的配置。</p>
 </li>
-<li><p>全局区/静态存储区（.bss 段和 .data 段）：存放全局变量和静态变量，程序运行结束操作系统自动释放，在 C 语言中，未初始化的放在 .bss 段中，初始化的放在 .data 段中，C++ 中不再区分了。</p>
-</li>
-<li><p>常量存储区（.data 段）：存放的是常量，不允许修改，程序运行结束自动释放。</p>
-</li>
-<li><p>代码区（.text 段）：存放代码，不允许修改，但可以执行。编译后的二进制文件存放在这里。</p>
+<li><p>安全性</p>
+<p> POST的安全性比GET的高。比如，在进行登录操作，通过GET请求，用户名和密码都会暴露再URL上，因为登录页面有可能被浏览器缓存以及其他人查看浏览器的历史记录的原因，此时的用户名和密码就很容易被他人拿到了。除此之外，GET请求提交的数据还可能会造成Cross-site request frogery攻击。</p>
 </li>
 </ol>
-<p>说明：</p>
-<p>从操作系统的本身来讲，以上存储区在内存中的分布是如下形式(从低地址到高地址)：.text 段 –&gt; .data 段 –&gt; .bss 段 –&gt; 堆 –&gt; unused –&gt; 栈 –&gt; env</p>
-<p>程序实例：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">说明：C++ 中不再区分初始化和未初始化的全局变量、静态变量的存储区，如果非要区分下述程序标注在了括号中</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> g_var = <span class="number">0</span>; <span class="comment">// g_var 在全局区（.data 段）</span></span><br><span class="line"><span class="keyword">char</span> *gp_var;  <span class="comment">// gp_var 在全局区（.bss 段）</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> var;                    <span class="comment">// var 在栈区</span></span><br><span class="line">    <span class="keyword">char</span> *p_var;                <span class="comment">// p_var 在栈区</span></span><br><span class="line">    <span class="keyword">char</span> arr[] = <span class="string">&quot;abc&quot;</span>;         <span class="comment">// arr 为数组变量，存储在栈区；&quot;abc&quot;为字符串常量，存储在常量区</span></span><br><span class="line">    <span class="keyword">char</span> *p_var1 = <span class="string">&quot;123456&quot;</span>;    <span class="comment">// p_var1 在栈区；&quot;123456&quot;为字符串常量，存储在常量区</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> s_var = <span class="number">0</span>;       <span class="comment">// s_var 为静态变量，存在静态存储区（.data 段）</span></span><br><span class="line">    p_var = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">10</span>); <span class="comment">// 分配得来的 10 个字节的区域在堆区</span></span><br><span class="line">    <span class="built_in">free</span>(p_var);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>补充总结：</p>
-<p>在理解C/C++内存分区时，常会碰到如下术语：数据区，堆，栈，静态存储区，静态区，常量区，常变量区，全局区，字符串常量区，静态常量区，静态变量区，文字常量区，代码区等等，初学者被搞得云里雾里。在这里，尝试捋清楚以上分区的关系。</p>
-<p>数据区包括：堆，栈，静态存储区。</p>
-<p>静态存储区包括：常量区（静态常量区），全局区（全局变量区）和静态变量区（静态区）。</p>
-<p>常量区包括：字符串常量区和常变量区。</p>
-<p>代码区：存放程序编译后的二进制代码，不可寻址区。</p>
+<p>深入理解</p>
+<ol>
+<li><p>GET和POST都是http请求方式，底层都是TCP/IP协议；通常GET 产生一个TCP数据包；POST产生两个TCP数据包（但firefox是发送一个数据包），</p>
+</li>
+<li><p>对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）表示成功；</p>
+<p> 而对于POST，浏览器先发送header，服务器响应100， 浏览器再继续发送data，服务器响应200 （返回数据）。</p>
+</li>
+</ol>
 
       
     </div>
@@ -366,7 +351,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/14/%E7%BC%96%E8%AF%91/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/26/FTP%E7%9A%84%E4%B8%BB%E5%8A%A8%E6%A8%A1%E5%BC%8F%E5%92%8C%E8%A2%AB%E5%8A%A8%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -380,7 +365,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/14/%E7%BC%96%E8%AF%91/" class="post-title-link" itemprop="url">编译</a>
+            <a href="/2022/02/26/FTP%E7%9A%84%E4%B8%BB%E5%8A%A8%E6%A8%A1%E5%BC%8F%E5%92%8C%E8%A2%AB%E5%8A%A8%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">FTP的主动模式和被动模式</a>
         </h2>
 
         <div class="post-meta">
@@ -391,16 +376,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2022-02-14 14:16:35" itemprop="dateCreated datePublished" datetime="2022-02-14T14:16:35+08:00">2022-02-14</time>
+              <time title="Created: 2022-02-26 09:47:26 / Modified: 10:07:18" itemprop="dateCreated datePublished" datetime="2022-02-26T09:47:26+08:00">2022-02-26</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-16 08:42:46" itemprop="dateModified" datetime="2022-02-16T08:42:46+08:00">2022-02-16</time>
-              </span>
 
           
 
@@ -413,18 +392,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>编译过程分为四个过程：预处理、编译、汇编、链接。</p>
-<p>预处理：处理以 # 开头的指令；</p>
-<p>编译：将源码 .cpp 文件翻译成 .s 汇编代码；</p>
-<p>汇编：将汇编代码 .s 翻译成机器指令 .o 文件；</p>
-<p>链接：汇编程序生成的目标文件，即 .o 文件，并不会立即执行，因为可能会出现.cpp 文件中的函数引用了另一个.cpp 文件中定义的符号或者调用了某个库文件中的函数。那链接的目的就是将这些文件对应的目标文件连接成一个整体，从而生成可执行的程序 .exe 文件。</p>
-<p><img src="https://s2.loli.net/2022/02/14/4LIRCm5AlKTZufH.png" alt="20220214141659"></p>
-<p>链接分为两种：</p>
-<p>静态链接：代码从其所在的静态链接库中拷贝到最终的可执行程序中，在该程序被执行时，这些代码会被装入到该进程的虚拟地址空间中。</p>
-<p>动态链接：代码被放到动态链接库或共享对象的某个目标文件中，链接程序只是在最终的可执行程序中记录了共享对象的名字等一些信息。在程序执行时，动态链接库的全部内容会被映射到运行时相应进行的虚拟地址的空间。</p>
-<p>二者的优缺点：</p>
-<p>静态链接：浪费空间，每个可执行程序都会有目标文件的一个副本，这样如果目标文件进行了更新操作，就需要重新进行编译链接生成可执行程序（更新困难）；优点就是执行的时候运行速度快，因为可执行程序具备了程序运行的所有内容。</p>
-<p>动态链接：节省内存、更新方便，但是动态链接是在程序运行时，每次执行都需要链接，相比静态链接会有一定的性能损失。</p>
+          <h3 id="FTP主动模式"><a href="#FTP主动模式" class="headerlink" title="FTP主动模式"></a>FTP主动模式</h3><p><img src="https://s2.loli.net/2022/02/26/GS76hwuCjb9i3QF.png" alt="20220226094738"></p>
+<ol>
+<li><p>在主动模式下，客户端命令端口为N，数据端口为N+1，服务器端命令端口为21，数据端口为20。</p>
+<p> 第一步，客户端使用端口N连接FTP服务器的命令端口21，建立控制连接并告诉服务器我这边开启了数据端口N+1。</p>
+<p> 第二步，在控制连接建立成功后，服务器会使用数据端口20，主动连接客户端的N+1端口以建立数据连接。这就是FTP主动模式的连接过程。</p>
+<p> 我们可以看到，在这条红色的数据连接建立的过程中，服务器是主动的连接客户端的，所以称这种模式为主动模式。</p>
+</li>
+<li><p>主动模式的利弊</p>
+<p> 主动模式对FTP服务器的管理有利，因为FTP服务器只需要开启21端口的“准入”和20端口的“准出”即可。</p>
+<p> 但这种模式对客户端的管理不利，因为FTP服务器20端口连接客户端的数据端口时，有可能被客户端的防火墙拦截掉。</p>
+</li>
+</ol>
+<h3 id="FTP被动模式"><a href="#FTP被动模式" class="headerlink" title="FTP被动模式"></a>FTP被动模式</h3><p><img src="https://s2.loli.net/2022/02/26/CrznktXQZPiyAqg.png" alt="20220226094949"></p>
+<ol>
+<li><p>在被动模式下，客户端命令端口为N，数据端口为N+1，服务器端命令端口为21，数据端口为P。</p>
+<p> 第一步，客户端的命令端口N主动连接服务器命令端口21，并发送PASV命令，告诉服务器用“被动模式”，控制连接建立成功后，服务器开启一个数据端口P，通过PORT命令将P端口告诉客户端。</p>
+<p> 第二步，客户端的数据端口N+1去连接服务器的数据端口P，建立数据连接。</p>
+<p> 我们可以看到，在这条红色的数据连接建立的过程中，服务器是被动的等待客户端来连接的，所以称这种模式为被动模式。</p>
+</li>
+<li><p>被动模式利弊</p>
+<p> 被动模式对FTP客户端的管理有利，因为客户端的命令端口和数据端口都是“准出”，windows防火墙对于“准出”一般是不拦截的，所以客户端不需要任何多余的配置就可以连接FTP服务器了。</p>
+<p> 但对服务器端的管理不利。因为客户端数据端口连到FTP服务器的数据端口P时，很有可能被服务器端的防火墙阻塞掉。</p>
+</li>
+</ol>
 
       
     </div>
@@ -444,7 +435,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/03/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950103/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/26/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -458,7 +449,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/01/03/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950103/" class="post-title-link" itemprop="url">实验记录0103</a>
+            <a href="/2022/02/26/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/" class="post-title-link" itemprop="url">HTTP状态码</a>
         </h2>
 
         <div class="post-meta">
@@ -469,16 +460,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2022-01-03 13:28:36" itemprop="dateCreated datePublished" datetime="2022-01-03T13:28:36+08:00">2022-01-03</time>
+              <time title="Created: 2022-02-26 09:19:57 / Modified: 09:26:25" itemprop="dateCreated datePublished" datetime="2022-02-26T09:19:57+08:00">2022-02-26</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-01-08 17:00:15" itemprop="dateModified" datetime="2022-01-08T17:00:15+08:00">2022-01-08</time>
-              </span>
 
           
 
@@ -491,88 +476,35 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>效果比较好的数据有：</p>
+          <p>http状态码的由三位数字和原因短语组成，数字的第一位数字表示响应的类别，后面两位无类别。</p>
 <table>
 <thead>
 <tr>
-<th>数据编号</th>
-<th>备注</th>
+<th>状态码</th>
+<th>原因</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>20211213_214603</td>
-<td></td>
+<td>1XX</td>
+<td>临时状态码，表示正在处理请求</td>
 </tr>
 <tr>
-<td>20211213_210547</td>
-<td></td>
+<td>2XX</td>
+<td>请求处理成功</td>
 </tr>
 <tr>
-<td>20211213_204805</td>
-<td></td>
+<td>3XX</td>
+<td>重定向，表示要完成请求需要进一步操作</td>
 </tr>
 <tr>
-<td>20220103_195518</td>
-<td>中间停了10s</td>
+<td>4XX</td>
+<td>请求错误，错误的原因在客户端，比如请求的参数错误或者url过长等</td>
 </tr>
 <tr>
-<td>20220103_200136</td>
-<td>中间10s</td>
-</tr>
-<tr>
-<td>20220103_201517</td>
-<td>后半段人走开</td>
-</tr>
-<tr>
-<td>20220103_202140</td>
-<td>耳机架在桌子上，后半段走开了30-40s，再回来</td>
-</tr>
-<tr>
-<td>20220103_204606</td>
-<td>50多秒时人走开</td>
-</tr>
-<tr>
-<td>20220103_205434</td>
-<td>一直呼吸</td>
-</tr>
-<tr>
-<td>20220103_205952</td>
-<td>一直呼吸</td>
-</tr>
-<tr>
-<td>20220103_210435</td>
-<td>后面半段人走开</td>
-</tr>
-<tr>
-<td>20220103_211403</td>
-<td>中间人走开</td>
-</tr>
-<tr>
-<td>20220103_212938</td>
-<td>中间人走开</td>
-</tr>
-<tr>
-<td>20220104_090548</td>
-<td>一直呼吸</td>
-</tr>
-<tr>
-<td>20220104_091117</td>
-<td>中间人走开</td>
+<td>5XX</td>
+<td>服务器错误，比如服务不可用或者服务器内部出错</td>
 </tr>
 </tbody></table>
-<h2 id="实验分析"><a href="#实验分析" class="headerlink" title="实验分析"></a>实验分析</h2><ul>
-<li>耳机戴在头上得到的结果要比放在桌子上的结果好。<br>分析：可能是由于人呼吸和心跳带动身体微小的动作会传递到头部，这样就会影响发射端，所以实验得到的波形可能不仅仅提取自反射信号，直达信号的变化很可能对实验结果有很大的影响。这也是该系统跟其它同类型的系统之间的一个区别，因为其它已有的测呼吸的工作大多是把发射端和接收端都放在人旁边，这样就只能从反射信号中提取信息，而我们的系统发射端是穿戴在任身体上的，呼吸和心跳的pattern会直接作用于发射端并通过直达信号反应出来。</li>
-</ul>
-<h2 id="后续的实验方向"><a href="#后续的实验方向" class="headerlink" title="后续的实验方向"></a>后续的实验方向</h2><ol>
-<li><p>结合直达信号和反射信号共同用于波形提取。可以考虑把直达信号左右一部分的路径和其它路径设置不同的权重再放到一起做pca。</p>
-</li>
-<li><p>参数的调整。呼吸和心跳的snr阈值可能还需要进一步调整，用于识别出没有呼吸和心跳的场景。</p>
-</li>
-<li><p>路径选择的方法可能还需要调试，目前的结果是百分比法（前10%）效果比阈值法要好一些。</p>
-</li>
-<li><p>cir的长度和频率（现在是10）可能考虑一下是否需要调整。</p>
-</li>
-</ol>
 
       
     </div>
@@ -592,7 +524,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/26/%E6%AD%BB%E9%94%81/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/24/%E6%88%91%E7%9A%84%E6%97%A5%E7%A8%8B%E5%AE%89%E6%8E%92%E8%A1%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -606,104 +538,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/12/26/%E6%AD%BB%E9%94%81/" class="post-title-link" itemprop="url">死锁</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-12-26 11:18:14" itemprop="dateCreated datePublished" datetime="2021-12-26T11:18:14+08:00">2021-12-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-19 21:48:13" itemprop="dateModified" datetime="2022-02-19T21:48:13+08:00">2022-02-19</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h2><p>如果一个进程集合中的每个进程都在等待只能由该进程集合中的其他进程才能引发的事件，那么该进程集合就是死锁的。</p>
-<h3 id="死锁的条件（四个同时满足）"><a href="#死锁的条件（四个同时满足）" class="headerlink" title="死锁的条件（四个同时满足）"></a>死锁的条件（四个同时满足）</h3><ol>
-<li><p>互斥：每个资源要么已经分配给一个进程，要么就是可用的；</p>
-</li>
-<li><p>占有和等待：进程因请求资源而阻塞时，对已获得的资源保持不放；</p>
-</li>
-<li><p>不可抢占：已经分配的资源不能强制被抢占，只能进程自己释放；</p>
-</li>
-<li><p>环路等待：存在一种进程资源的循环等待链。</p>
-</li>
-</ol>
-<h3 id="死锁的处理策略"><a href="#死锁的处理策略" class="headerlink" title="死锁的处理策略"></a>死锁的处理策略</h3><ol>
-<li><p>死锁预防：破坏死锁的四个条件之一</p>
-<p> 破环互斥条件：允许资源共享；</p>
-<p> 破环占有和等待条件：一次性分配所有资源，只要缺少一个资源，其它资源也都不给他分配；</p>
-<p> 破坏不可抢占：请求新资源得不到时，释放已经保持占有的资源，待以后重新申请；</p>
-<p> 破坏环路等待：采用顺序资源分配法，给每个资源编号，进程申请资源的时候按照编号顺序申请，释放的时候则相反；</p>
-</li>
-<li><p>死锁避免：死锁避免事先预防策略，但是是采用资源动态分配的过程中，防止系统进入不安全状态，以避免死锁。</p>
-<p> 预防死锁的几种策略，会严重地损害系统性能。因此在避免死锁时，要施加较弱的限制，从而获得 较满意的系统性能。由于在避免死锁的策略中，允许进程动态地申请资源。因而，系统在进行资源分配之前预先计算资源分配的安全性。若此次分配不会导致系统进入不安全的状态，则将资源分配给进程；否则，进程等待。其中最具有代表性的避免死锁算法是银行家算法。</p>
-<p> 银行家算法：首先需要定义状态和安全状态的概念。系统的状态是当前给进程分配的资源情况。因此，状态包含两个向量Resource（系统中每种资源的总量）和Available（未分配给进程的每种资源的总量）及两个矩阵Claim（表示进程对资源的需求）和Allocation（表示当前分配给进程的资源）。安全状态是指至少有一个资源分配序列不会导致死锁。当进程请求一组资源时，假设同意该请求，从而改变了系统的状态，然后确定其结果是否还处于安全状态。如果是，同意这个请求；如果不是，阻塞该进程知道同意该请求后系统状态仍然是安全的。</p>
-</li>
-<li><p>死锁检测与解除：</p>
-<p> 检测死锁：利用死锁原理化简资源分配图检测死锁的存在</p>
-<p> 死锁解除：资源剥夺、撤销进程、进程回退</p>
-<pre><code> 剥夺资源：从其它进程剥夺足够数量的资源给死锁进程，以解除死锁状态；
-
- 撤消进程：可以直接撤消死锁进程或撤消代价最小的进程，直至有足够的资源可用，死锁状态.消除为止；所谓代价是指优先级、运行代价、进程的重要性和价值等。
-</code></pre>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/23/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/23/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">智能指针</a>
+            <a href="/2022/02/24/%E6%88%91%E7%9A%84%E6%97%A5%E7%A8%8B%E5%AE%89%E6%8E%92%E8%A1%A8/" class="post-title-link" itemprop="url">我的日程安排表</a>
         </h2>
 
         <div class="post-meta">
@@ -716,7 +551,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-12-23 11:04:38 / Modified: 12:22:47" itemprop="dateCreated datePublished" datetime="2021-12-23T11:04:38+08:00">2021-12-23</time>
+              <time title="Created: 2022-02-24 22:35:16 / Modified: 22:39:33" itemprop="dateCreated datePublished" datetime="2022-02-24T22:35:16+08:00">2022-02-24</time>
             </span>
 
           
@@ -730,319 +565,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h2><p>因为c++没有自动的内存回收机制，所以程序员每次在new一个对象的时候都需要手动delete，但是有的时候会忘记delete，或者因为程序分支等原因delete没有执行，就会使得对象没有释放而导致内存泄漏。</p>
-<p>智能指针（shared_ptr）是一个类，存储了指向一个对象的指针，通过引用计数的方式记录有多少个智能指针对象共享同一个指针，它在指针没有被使用时会自动释放其内存。</p>
-<h2 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h2><p>每次创建智能指针对象时，初始化其指针，引用计数设为1；</p>
-<p>当智能指针对象成为另一个智能指针对象的副本时，执行拷贝构造函数，并将引用计数加1；</p>
-<p>当执行赋值语句时，左操作数的引用计数减1，右操作数的引用计数加1；</p>
-<p>当执行析构函数时，引用计数减1；</p>
-<p>当引用计数为0时，释放内部指针指向的对象的空间。</p>
-<h2 id="循环引用"><a href="#循环引用" class="headerlink" title="循环引用"></a>循环引用</h2><p>智能指针存在的一个经典问题就是循环引用问题，如下。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="built_in">Node</span>(T data = <span class="built_in">T</span>()) :_data(data), <span class="built_in">Pnext</span>(<span class="literal">NULL</span>), <span class="built_in">Ppre</span>(<span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	&#125;</span><br><span class="line">	~<span class="built_in">Node</span>()</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;Call ~Node()&quot;</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	shared_ptr&lt;Node&gt; Pnext;</span><br><span class="line">	shared_ptr&lt;Node&gt; Ppre;</span><br><span class="line">	T _data;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">testShared_Ptr</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	shared_ptr&lt;Node&lt;<span class="keyword">int</span>&gt;&gt;<span class="built_in">sp1</span>(<span class="keyword">new</span> Node&lt;<span class="keyword">int</span>&gt;(<span class="number">1</span>));</span><br><span class="line">	shared_ptr&lt;Node&lt;<span class="keyword">int</span>&gt;&gt;<span class="built_in">sp2</span>(<span class="keyword">new</span> Node&lt;<span class="keyword">int</span>&gt;(<span class="number">2</span>));</span><br><span class="line">	cout &lt;&lt; sp1.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//1</span></span><br><span class="line">	cout &lt;&lt; sp2.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//1</span></span><br><span class="line">	sp1-&gt;Pnext = sp2;</span><br><span class="line">	sp2-&gt;Ppre = sp1;</span><br><span class="line">	cout &lt;&lt; sp1.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//2</span></span><br><span class="line">	cout &lt;&lt; sp2.<span class="built_in">use_count</span>() &lt;&lt; endl;<span class="comment">//2</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*Node&lt;int&gt; *a = new Node&lt;int&gt;(3);</span></span><br><span class="line"><span class="comment">    delete a;</span></span><br><span class="line"><span class="comment">    shared_ptr&lt;Node&lt;int&gt;&gt; c(new Node&lt;int&gt;(4));*/</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">testShared_Ptr</span>();                                                                                                                            </span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;testShared_pte()函数运行结束&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在函数testShared_Ptr执行完之后，会先释放sp2，所以sp2的引用计数减1变为1，然后释放sp1的内存，sp1的引用计数也减1变为1。因为sp1中有对sp2的指针，sp2中也有sp1的指针，所以导致二者的引用计数都没有办法变为0，于是导致二者的内存空间都不会释放。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/21/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951221/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/21/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951221/" class="post-title-link" itemprop="url">实验记录1221</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-12-21 14:57:17 / Modified: 19:46:25" itemprop="dateCreated datePublished" datetime="2021-12-21T14:57:17+08:00">2021-12-21</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>用CIR虚部做PCA效果更好</p>
-<p>呼吸：</p>
-<p><img src="https://s2.loli.net/2021/12/21/W5AoQdFGH94CTsZ.png" alt="20211221145747"></p>
-<p>心跳：</p>
-<p><img src="https://s2.loli.net/2021/12/21/Tp1HgViDaFe5WlS.png" alt="20211221150024"></p>
-<p>实部和虚部分别独立做PCA再将结果相减：（效果又好了一点）</p>
-<p><img src="https://s2.loli.net/2021/12/21/51CL9mc6FfYwMXz.png" alt="20211221190046"></p>
-<p>数据编号：20211213_214603</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/20/%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/20/%E7%BB%A7%E6%89%BF%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">继承方式</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-12-20 14:24:07 / Modified: 14:26:26" itemprop="dateCreated datePublished" datetime="2021-12-20T14:24:07+08:00">2021-12-20</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>不同的继承方式会影响基类成员在派生类中的访问权限。</p>
-<ol>
-<li>public继承方式</li>
-</ol>
-<ul>
-<li>基类中所有 public 成员在派生类中为 public 属性；</li>
-<li>基类中所有 protected 成员在派生类中为 protected 属性；</li>
-<li>基类中所有 private 成员在派生类中不能使用。</li>
-</ul>
-<ol start="2">
-<li>protected继承方式</li>
-</ol>
-<ul>
-<li>基类中的所有 public 成员在派生类中为 protected 属性；</li>
-<li>基类中的所有 protected 成员在派生类中为 protected 属性；</li>
-<li>基类中的所有 private 成员在派生类中不能使用。</li>
-</ul>
-<ol start="3">
-<li>private继承方式</li>
-</ol>
-<ul>
-<li>基类中的所有 public 成员在派生类中均为 private 属性；</li>
-<li>基类中的所有 protected 成员在派生类中均为 private 属性；</li>
-<li>基类中的所有 private 成员在派生类中不能使用。</li>
-</ul>
-<p>默认是私有继承</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/18/tcp%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/18/tcp%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6/" class="post-title-link" itemprop="url">tcp拥塞控制</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-12-18 11:56:50 / Modified: 12:10:15" itemprop="dateCreated datePublished" datetime="2021-12-18T11:56:50+08:00">2021-12-18</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="拥塞控制"><a href="#拥塞控制" class="headerlink" title="拥塞控制"></a>拥塞控制</h2><ol>
-<li><p>慢开始</p>
-<p>在发生拥塞（触发超时重传）时执行慢开始算法，发生拥塞时慢开始门限ssthresh减为原来一半。</p>
-<p>慢开始时把拥塞窗口cwnd设为1，每收到一个ack时cwnd+1，所以每经过一轮RTT后cwnd会乘2。</p>
-</li>
-<li><p>拥塞避免</p>
-<p>当拥塞窗口cwnd大于慢开始门限sstresh之后，cwnd每经过一轮RTT后自增1.</p>
-</li>
-<li><p>快重传</p>
-<p>有时网络没有拥塞但是个别报文也会丢失，这时候如果触发慢开始就会导致网络利用率下降，所以有了快重传算法。</p>
-<p>快重传就是在发射端连续接收到三个相同的ack时立刻对丢失的报文进行重传而不管重传计时器是否超时，之后进行快恢复而不是慢开始。</p>
-</li>
-<li><p>快恢复</p>
-<p>快恢复就是把拥塞窗口cwnd和慢开始门限都设置为触发快重传时cwnd的一半，然后执行拥塞避免。</p>
-</li>
-</ol>
-<p><img src="https://s2.loli.net/2021/12/18/qukW3yYiwGLh2UJ.png" alt="20211218115702"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>拥塞窗口小于慢开始门限时，执行慢开始算法，拥塞窗口指数增长；拥塞窗口大于慢开始门限时，执行拥塞避免算法，拥塞窗口线性增长。</p>
-<p>在没有发生拥塞时，拥塞窗口增大；在可能发生拥塞时，拥塞窗口减小。</p>
-<p>判断网络是否发生拥塞的依据为是否触发超时重传。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/15/%E7%BD%91%E9%A1%B5%E6%89%93%E5%BC%80%E6%89%80%E7%BB%8F%E5%8E%86%E7%9A%84%E8%BF%87%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/15/%E7%BD%91%E9%A1%B5%E6%89%93%E5%BC%80%E6%89%80%E7%BB%8F%E5%8E%86%E7%9A%84%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">网页打开所经历的过程</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-12-15 21:24:14 / Modified: 21:43:19" itemprop="dateCreated datePublished" datetime="2021-12-15T21:24:14+08:00">2021-12-15</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-DNS解析"><a href="#1-DNS解析" class="headerlink" title="1.DNS解析"></a>1.DNS解析</h2><h3 id="输入网址后，浏览器会先在自己的缓存中查找网址对应的ip"><a href="#输入网址后，浏览器会先在自己的缓存中查找网址对应的ip" class="headerlink" title="输入网址后，浏览器会先在自己的缓存中查找网址对应的ip"></a>输入网址后，浏览器会先在自己的缓存中查找网址对应的ip</h3><h3 id="如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）"><a href="#如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）" class="headerlink" title="如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）"></a>如果没找到，会从计算机缓存中查找（在host中手动绑定的网址和ip会记录在计算机缓存中）</h3><h3 id="如果还没找到，会向路由器缓存中查找"><a href="#如果还没找到，会向路由器缓存中查找" class="headerlink" title="如果还没找到，会向路由器缓存中查找"></a>如果还没找到，会向路由器缓存中查找</h3><h3 id="如果还没有，就向DNS服务器查找"><a href="#如果还没有，就向DNS服务器查找" class="headerlink" title="如果还没有，就向DNS服务器查找"></a>如果还没有，就向DNS服务器查找</h3><h3 id="如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端"><a href="#如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端" class="headerlink" title="如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端"></a>如果还找不到，会向根域名服务器查找，根域名服务器会根据网址递归地一层一层向下属域名服务器查找，最后将ip返回给客户端</h3><h3 id="客户端拿到ip后更新自己的缓存并与服务器建立连接"><a href="#客户端拿到ip后更新自己的缓存并与服务器建立连接" class="headerlink" title="客户端拿到ip后更新自己的缓存并与服务器建立连接"></a>客户端拿到ip后更新自己的缓存并与服务器建立连接</h3><h2 id="2-网络通信"><a href="#2-网络通信" class="headerlink" title="2.网络通信"></a>2.网络通信</h2><h3 id="TCP三次握手建立链接"><a href="#TCP三次握手建立链接" class="headerlink" title="TCP三次握手建立链接"></a>TCP三次握手建立链接</h3><p><img src="https://s2.loli.net/2021/12/15/82Kq4HfkiRjMYGP.png" alt="20211215213744"></p>
-<h3 id="四次挥手释放链接"><a href="#四次挥手释放链接" class="headerlink" title="四次挥手释放链接"></a>四次挥手释放链接</h3><p><img src="https://s2.loli.net/2021/12/15/ehx1bui5gIOnC7L.png" alt="20211215213754"></p>
-<p>为什么“握手”是三次，“挥手”却要四次？</p>
-<p>TCP建立连接时之所以只需要”三次握手”，是因为在第二次”握手”过程中，服务器端发送给客户端的TCP报文是以SYN与ACK作为标志位的。SYN是请求连接标志，表示服务器端同意建立连接；ACK是确认报文，表示告诉客户端，服务器端收到了它的请求报文。</p>
-<p>即SYN建立连接报文与ACK确认接收报文是在同一次”握手”当中传输的，所以”三次握手”不多也不少，正好让双方明确彼此信息互通。</p>
-<p>TCP释放连接时之所以需要“四次挥手”,是因为FIN释放连接报文与ACK确认接收报文是分别由第二次和第三次”握手”传输的。为何建立连接时一起传输，释放连接时却要分开传输？</p>
-<p>建立连接时，被动方服务器端结束CLOSED阶段进入“握手”阶段并不需要任何准备，可以直接返回SYN和ACK报文，开始建立连接。释放连接时，被动方服务器，突然收到主动方客户端释放连接的请求时并不能立即释放连接，因为还有必要的数据需要处理，所以服务器先返回ACK确认收到报文，经过CLOSE-WAIT阶段准备好释放连接之后，才能返回FIN释放连接报文。</p>
-<h2 id="3-页面渲染"><a href="#3-页面渲染" class="headerlink" title="3.页面渲染"></a>3.页面渲染</h2>
+          <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>当 k 个日程安排有一些时间上的交叉时（例如 k 个日程安排都在同一时间内），就会产生 k 次预订。</p>
+<p>给你一些日程安排 [start, end) ，请你在每个日程安排添加后，返回一个整数 k ，表示所有先前日程安排会产生的最大 k 次预订。</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>插旗法：进入一个区间的时候将该点坐标对应的值+1，代表插上一面进入的🚩，离开时将该点坐标值-1，代表插上一面离开的🚩，在同一个点可以同时插进入的旗或离开的旗，因为这样并不形成区间重叠。</p>
+<p>通过计数器cnt可以得到当前重叠次数，如果不能重叠则cnt&gt;1就返回false（如我的日程安排表一），如果不能重叠三次就cnt&gt;2再返回false（如我的日程安排表二），如果要求最大重叠次数就返回cnt最大值（如我的日程安排表三）。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">map&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt; rec;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">book</span><span class="params">(<span class="keyword">int</span> start, <span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line">    rec[start] ++;</span><br><span class="line">    rec[end] --;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;a: rec)&#123;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">        if(cnt&gt;1)&#123;</span></span><br><span class="line"><span class="comment">            rec[start] --;</span></span><br><span class="line"><span class="comment">            rec[end] ++;</span></span><br><span class="line"><span class="comment">            return false;</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        cnt += a.second;</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, cnt);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -1060,7 +587,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1127,7 +654,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-count">146</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

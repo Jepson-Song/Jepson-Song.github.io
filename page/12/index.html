@@ -188,7 +188,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950726/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/18/%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -202,76 +202,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/07/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950726/" class="post-title-link" itemprop="url">实验记录0726</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-07-26 13:10:41" itemprop="dateCreated datePublished" datetime="2021-07-26T13:10:41+08:00">2021-07-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-07-31 15:03:55" itemprop="dateModified" datetime="2021-07-31T15:03:55+08:00">2021-07-31</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.loli.net/2021/07/26/C2WaSTFlHUcdn9s.png" alt="20210726131049"></p>
-<p>突然发现用相位的测距结果反而比不用相位的波动大。。</p>
-<p><img src="https://i.loli.net/2021/07/26/sN9Ak6Pz2HLWXFg.png" alt="20210726155435"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/25/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950725/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/07/25/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950725/" class="post-title-link" itemprop="url">实验记录0725</a>
+            <a href="/2022/02/18/%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" class="post-title-link" itemprop="url">进程通信</a>
         </h2>
 
         <div class="post-meta">
@@ -284,7 +215,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-07-25 17:12:00 / Modified: 19:59:50" itemprop="dateCreated datePublished" datetime="2021-07-25T17:12:00+08:00">2021-07-25</time>
+              <time title="Created: 2022-02-18 16:41:42 / Modified: 16:44:20" itemprop="dateCreated datePublished" datetime="2022-02-18T16:41:42+08:00">2022-02-18</time>
             </span>
 
           
@@ -298,108 +229,38 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>20℃<br><img src="https://i.loli.net/2021/07/25/ZCjRvyaxMOSK6pF.png" alt="20210725172935"></p>
-<p>26℃<br><img src="https://i.loli.net/2021/07/25/dzCymheBcDvAa3E.png" alt="20210725195329"></p>
+          <h2 id="进程通信"><a href="#进程通信" class="headerlink" title="进程通信"></a>进程通信</h2><p>进程同步与进程通信很容易混淆，它们的区别在于：</p>
+<pre><code>进程同步：控制多个进程按一定顺序执行；
+
+进程通信：进程间传输信息。
+</code></pre>
+<p>进程通信是一种手段，而进程同步是一种目的。也可以说，为了能够达到进程同步的目的，需要让进程进行通信，传输一些进程同步所需要的信息。</p>
 <ol>
-<li><p>明天可以重测一下发射单和接收端初始的偏移距离，因为修正了一个bug</p>
+<li><p>管道</p>
+<p> 它具有以下限制：</p>
+<p> 只支持半双工通信（单向交替传输）；<br> 只能在父子进程或者兄弟进程中使用。</p>
 </li>
-<li><p>可能需要找到一个比较好的纠正跳波长问题的算</p>
+<li><p>FIFO</p>
+<p> 也称为命名管道，去除了管道只能在父子进程中使用的限制。</p>
 </li>
-</ol>
+<li><p>消息队列</p>
+<p> 相比于 FIFO，消息队列具有以下优点：</p>
+<pre><code> 消息队列可以独立于读写进程存在，从而避免了 FIFO 中同步管道的打开和关闭时可能产生的困难；
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950722/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/07/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950722/" class="post-title-link" itemprop="url">实验记录0722</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-07-22 21:27:10" itemprop="dateCreated datePublished" datetime="2021-07-22T21:27:10+08:00">2021-07-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-07-24 16:18:12" itemprop="dateModified" datetime="2021-07-24T16:18:12+08:00">2021-07-24</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="实验记录"><a href="#实验记录" class="headerlink" title="实验记录"></a>实验记录</h2><ol>
-<li><p>解决了一个BUG，在ZC信号调制时进行共轭对称应该从ofdm的第二个点开始。</p>
-<p> <img src="https://i.loli.net/2021/07/22/IEmKOuyUfXCgQkF.png" alt="20210722212743"></p>
-<p> 改完的测距记过好像确实好了不少。（数据编号：20210722_170344）（不过rcv6好像坏掉了。。。）</p>
+ 避免了 FIFO 的同步阻塞问题，不需要进程自己提供同步方法；
+ 
+ 读进程可以根据消息类型有选择地接收消息，而不像 FIFO 那样只能默认地接收。
+</code></pre>
 </li>
-<li><p>增加了一个test GUI来一对一检测发送或者接收端压电陶瓷是否损坏。</p>
-<p> <img src="https://i.loli.net/2021/07/22/TVGfBvDWrPpiYIm.png" alt="20210722212801"></p>
+<li><p>信号量</p>
+<p> 它是一个计数器，用于为多个进程提供对共享数据对象的访问。</p>
 </li>
-<li><p> 固定了面部方向；规定了方程组有两个解的时候选哪一个；</p>
+<li><p>共享存储</p>
+<p> 允许多个进程共享一个给定的存储区。因为数据不需要在进程之间复制，所以这是最快的一种 IPC。</p>
+<p> 需要使用信号量用来同步对共享存储的访问。</p>
+<p> 多个进程可以将同一个文件映射到它们的地址空间从而实现共享内存。另外 XSI 共享内存不是使用文件，而是使用内存的匿名段。</p>
 </li>
-<li><p>头戴耳机静止。数据编号：20210722_200343</p>
-<p> <img src="https://i.loli.net/2021/07/22/4s8cPHzvjD6LNgo.png" alt="20210722212810"></p>
-</li>
-<li><p>左右平移耳机，数据编号：20210722_200840</p>
-<p> <img src="https://i.loli.net/2021/07/22/EftCMdxyQ9W8KhL.png" alt="20210722212821"></p>
-</li>
-<li><p>取消用相位进行细粒度测距，直接用cir进行粗粒度测距，验证一下相位的作用。数据编号：20210722_202008<br> 只用cir</p>
-<p> <img src="https://i.loli.net/2021/07/22/P51Nfhy2EdaIBjK.png" alt="20210722212827"></p>
-<p> 用相位以后</p>
-<p> <img src="https://i.loli.net/2021/07/22/ECfWrhUvod59AJy.png" alt="20210722212839"></p>
-<p> 咋感觉增加相位以后测距效果更差了？？？</p>
-<p> 改成26℃</p>
-<p> <img src="https://i.loli.net/2021/07/22/4hYfq67PNvjdJzF.png" alt="20210722212848"></p>
-<p> 改变正负号</p>
-<p> <img src="https://i.loli.net/2021/07/22/4tvemFZEQ3Huins.png" alt="20210722212855"></p>
-</li>
-<li><p>增加一个单选按钮用来显示当前计算需要的数据是否已经读入，如果读入了就不用再重新读取。如果更改数据编号则需要重新读取，但是如果是因为播放录制而导致的数据编号改变则不需要重新读取数据。</p>
-<p> <img src="https://i.loli.net/2021/07/23/1kahuU2plFfbPc9.png" alt="20210723135441"></p>
+<li><p>套接字<br> 与其它通信机制不同的是，它可用于不同机器间的进程通信。</p>
 </li>
 </ol>
 
@@ -421,7 +282,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950721/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/18/%E8%AE%A8%E8%AE%BA0218/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -435,7 +296,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/07/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950721/" class="post-title-link" itemprop="url">实验记录0721</a>
+            <a href="/2022/02/18/%E8%AE%A8%E8%AE%BA0218/" class="post-title-link" itemprop="url">讨论0218</a>
         </h2>
 
         <div class="post-meta">
@@ -448,7 +309,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-07-22 14:09:58 / Modified: 14:12:40" itemprop="dateCreated datePublished" datetime="2021-07-22T14:09:58+08:00">2021-07-22</time>
+              <time title="Created: 2022-02-18 13:23:32 / Modified: 13:26:52" itemprop="dateCreated datePublished" datetime="2022-02-18T13:23:32+08:00">2022-02-18</time>
             </span>
 
           
@@ -462,31 +323,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>数据编号：20210720_213700</p>
-<p><img src="https://i.loli.net/2021/07/22/VKnY97UIrLThoHc.png" alt="20210722141029"></p>
-<p>修正后</p>
-<p><img src="https://i.loli.net/2021/07/22/xMIkXEhKTG65AHL.png" alt="20210722141053"></p>
-<p>可能是跳波长？接下来试一下整个波长纠正。</p>
-<p>温度影响？？</p>
-<p>温度试验：<br>原始20℃</p>
-<p><img src="https://i.loli.net/2021/07/22/VKnY97UIrLThoHc.png" alt="20210722141101"></p>
-<p>21℃</p>
-<p><img src="https://i.loli.net/2021/07/22/pqUTtlKR9OubAHF.png" alt="20210722141109"></p>
-<p>22℃</p>
-<p><img src="https://i.loli.net/2021/07/22/Oe9u6VrzXsy3SIE.png" alt="20210722141116"></p>
-<p>23℃</p>
-<p><img src="https://i.loli.net/2021/07/22/Zi81MxudVgSLRAt.png" alt="20210722141124"></p>
-<p>24℃</p>
-<p><img src="https://i.loli.net/2021/07/22/dxy4bTGmwlJ8FUZ.png" alt="20210722141130"></p>
-<p>25℃</p>
-<p><img src="https://i.loli.net/2021/07/22/qlFgUY5hkZN69BC.png" alt="20210722141137"></p>
-<p>30℃</p>
-<p><img src="https://i.loli.net/2021/07/22/CASwHeqh1BKzPOQ.png" alt="20210722141145"></p>
-<p>50℃</p>
-<p><img src="https://i.loli.net/2021/07/22/BKw7HqE1GldLUkO.png" alt="20210722141212"></p>
-<p>100℃</p>
-<p><img src="https://i.loli.net/2021/07/22/rN678mecnyqWXxQ.png" alt="20210722141227"></p>
-<p>感觉就是图像整体平移了呀，这有点儿不合理，是不是代码写的有问题？？  </p>
+          <p>目前的瓶颈：应用场景</p>
+<p>有源方案的问题：头上只有两个点，测朝向有局限性</p>
+<p>无源方案的问题：只做头部朝向的分类，太小了</p>
+<p>都存在的问题：呼吸和心跳融不进头部朝向</p>
+<p>卖技术：一个技术能在很多场景应用</p>
+<p>卖故事：把一个应用场景的故事讲的很好</p>
 
       
     </div>
@@ -506,7 +348,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/20/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950720/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/%E8%AF%BB%E8%80%85%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -520,114 +362,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/07/20/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950720/" class="post-title-link" itemprop="url">实验记录0720</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-07-20 10:35:10" itemprop="dateCreated datePublished" datetime="2021-07-20T10:35:10+08:00">2021-07-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-07-24 16:18:01" itemprop="dateModified" datetime="2021-07-24T16:18:01+08:00">2021-07-24</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="测距的锯齿问题"><a href="#测距的锯齿问题" class="headerlink" title="测距的锯齿问题"></a>测距的锯齿问题</h2><p><img src="https://i.loli.net/2021/07/20/qcRVyKobepILfw8.png" alt="20210720103532"></p>
-<p><img src="https://i.loli.net/2021/07/20/vpi5AmwbPxCdkfZ.png" alt="20210720103650"></p>
-<h2 id="存在的问题："><a href="#存在的问题：" class="headerlink" title="存在的问题："></a>存在的问题：</h2><ol>
-<li><p>ai1对应的压电陶瓷接收端采集的数据计算出来的距离波动总是比其他的大。</p>
-<p> <img src="https://i.loli.net/2021/07/20/z2yomi4XgdFQZnu.png" alt="20210720215558"></p>
-</li>
-<li><p>发射端追踪还是不够准确</p>
-<p> <img src="https://i.loli.net/2021/07/20/oU9aDwK2kSrsHCL.png" alt="20210720215605"></p>
-<p> 数据编号：20210720_164407</p>
-</li>
-</ol>
-<h2 id="要做的事："><a href="#要做的事：" class="headerlink" title="要做的事："></a>要做的事：</h2><ol>
-<li><p>解决ai1接收端数据波动大的问题。</p>
-<p> 把ai0和ai1的插头交换之后，还是ai1对应的数据波动大，说明可能是ai1这个接口有问题。（数据编号：20210720_165731）</p>
-<p> 把ai1换成ai3之后，数据波动就没那么大，所以证明应该是ai1这个接口有问题，以后左边使用ai0 ai3 ai2这三个接口。（数据编号：20210720_170841）</p>
-<p> <img src="https://i.loli.net/2021/07/20/ETsHDiQmVUM6k3K.png" alt="20210720215634"></p>
-</li>
-<li><p> 增加一个功能，使得在gui界面上能够选择是用原始距离定位还是用修正后的距离定位。</p>
-</li>
-</ol>
-<h2 id="实验记录："><a href="#实验记录：" class="headerlink" title="实验记录："></a>实验记录：</h2><ol>
-<li><p>切换端口后的实验。.把ai1换到ai3上，解决了ai1计算的距离波动大的问题。</p>
-<p> <img src="https://i.loli.net/2021/07/20/hFQiMf3m67IvCsd.png" alt="20210720215659"></p>
-<p> 数据编号：20210720_171347</p>
-</li>
-<li><p> 增加了两个单选按钮，实现可以在gui界面上选择用原始距离还是修正距离来计算位置。</p>
-</li>
-<li><p> 测量了房间的长度，大概是3.865m</p>
-</li>
-<li><p>头戴耳机进行了实验，数据编号：20210720_213700。</p>
-<p> <img src="https://i.loli.net/2021/07/20/z9DZd6l7x8GLXmO.png" alt="20210720215715"></p>
-</li>
-</ol>
-<h2 id="存在的问题：-1"><a href="#存在的问题：-1" class="headerlink" title="存在的问题："></a>存在的问题：</h2><ol>
-<li><p>接收端离得太远会导致测距结果不精准，波动大。</p>
-<p> 还可以增大电压么？</p>
-<p> 或者不放那么远，不在会议室做就在工位上做？</p>
-</li>
-<li><p> 画向量图的时候2D视图里向量跟三角形面不垂直。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/19/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950719/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/07/19/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950719/" class="post-title-link" itemprop="url">实验记录0719</a>
+            <a href="/2022/02/17/%E8%AF%BB%E8%80%85%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">读者写者问题</a>
         </h2>
 
         <div class="post-meta">
@@ -640,7 +375,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-07-19 19:33:51 / Modified: 21:58:50" itemprop="dateCreated datePublished" datetime="2021-07-19T19:33:51+08:00">2021-07-19</time>
+              <time title="Created: 2022-02-17 19:27:31 / Modified: 19:29:36" itemprop="dateCreated datePublished" datetime="2022-02-17T19:27:31+08:00">2022-02-17</time>
             </span>
 
           
@@ -654,17 +389,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <ol>
-<li><p>单个发射端追踪</p>
-<p><img src="https://i.loli.net/2021/07/19/ueZhVL2g8X1Wfon.png" alt="20210719194903"></p>
-<p>效果一般吧，感觉误差有个一两厘米的样子。</p>
-</li>
-<li><p>有个接收端好像坏了，ai7？</p>
-<p>解决了，不是接收端坏了，是线接错了，应该右边三个应该接ai4 ai5 ai6三个接口。</p>
-</li>
-<li><p>把采集数据，测距，定位三个功能独立开了，每个按钮只负责一个功能。</p>
-</li>
-</ol>
+          <p>允许多个进程同时对数据进行读操作，但是不允许读和写以及写和写操作同时发生。</p>
+<p>一个整型变量 count 记录在对数据进行读操作的进程数量，一个互斥量 count_mutex 用于对 count 加锁，一个互斥量 data_mutex 用于对读写的数据加锁。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> samephore;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">down</span><span class="params">(<span class="keyword">int</span>* x)</span></span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">up</span><span class="params">(<span class="keyword">int</span>* y)</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">samephore count_mutex = <span class="number">1</span>;</span><br><span class="line">samephore data_mutex = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reader</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count ++;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">1</span>) <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">        <span class="comment">//read</span></span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count --;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">0</span>) <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">writer</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="comment">//write</span></span><br><span class="line">        <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此解法中读者是优先的，当存在读者时，写者将被延迟，且只要有一个读者活跃，随后而来的读者都将被允许访问此文件，从而导致写者长时间等待，并有可能出现写者饥饿现象。</p>
+<p>增加信号量并修改此程序，让写者与读者平等：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">samephore s = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reader</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">down</span>(&amp;s);</span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count ++;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">1</span>) <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;s);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//read</span></span><br><span class="line">        </span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count --;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">0</span>) <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">writer</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">down</span>(&amp;s);</span><br><span class="line">        <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="comment">//write</span></span><br><span class="line">        <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>假设进程队列：R1、W1、W2、R2、R3</p>
+<p>当R1刚刚执行完V(s)，W1进程若调度会卡在P(writeblock)，而W2R2R3想要运行，均会卡在P(s)，当R1读完，V(writeblock)完成，W1可以运行，以此类推，R1W1W2R2R3按顺序调度。</p>
 
       
     </div>
@@ -684,7 +418,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/18/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950718/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%90%8C%E6%AD%A5%E5%92%8C%E4%BA%92%E6%96%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -698,7 +432,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/07/18/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950718/" class="post-title-link" itemprop="url">实验记录0718</a>
+            <a href="/2022/02/17/%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%90%8C%E6%AD%A5%E5%92%8C%E4%BA%92%E6%96%A5/" class="post-title-link" itemprop="url">进程的同步和互斥</a>
         </h2>
 
         <div class="post-meta">
@@ -709,16 +443,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2021-07-18 16:27:07" itemprop="dateCreated datePublished" datetime="2021-07-18T16:27:07+08:00">2021-07-18</time>
+              <time title="Created: 2022-02-17 17:02:32 / Modified: 18:26:02" itemprop="dateCreated datePublished" datetime="2022-02-17T17:02:32+08:00">2022-02-17</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-07-19 19:49:23" itemprop="dateModified" datetime="2021-07-19T19:49:23+08:00">2021-07-19</time>
-              </span>
 
           
 
@@ -731,8 +459,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>好像找到方程组无解的原因了，应该是因为三个接收端在同一条直线上了。需要重新布置一下实验环境，让三个压电陶瓷不在同一条直线上。</p>
-<p><img src="https://i.loli.net/2021/07/18/UTolOQvcKEqmxWy.png" alt="20210718163148"></p>
+          <h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><p>同步亦称直接制约关系，它是指为完成某种任务而建立的两个或多个进程，这些进程因为需要在某些位置上协调它们的工作次序而等待、传递信息所产生的制约关系。</p>
+<p>进程间的直接制约关系就是源于它们之间的相互合作。例如：上面两个程序可以看成5+3*5中的加法程序和乘法程序。若先执行乘法程序再执行加法程序，则5+3*5=20。这个答案一定是对的吗？其实不然。如果我们想要的答案是40，就要先执行加法程序再执行乘法程序，(5+3)*5=40。我们通过加 () 改变了运算的先后顺序，使先乘除后加减变成了先加减后乘除，这就是一种同步机制。</p>
+<h2 id="互斥"><a href="#互斥" class="headerlink" title="互斥"></a>互斥</h2><p>互斥亦称间接制约关系。当一个进程进入临界区使用临界资源时，另一个进程必须等待，当占用临界资源的进程退出临界区后，另一进程才允许去访问此临界资源。</p>
+<p>例如，在仅有一台打印机的系统中，有两个进程A和进程B，如果进程A需要打印时，系统已将打印机分配给进程B，则进程A必须阻塞。一旦进程B将打印机释放，系统便将进程A唤醒，并将其由阻塞状态变为就绪状态。为禁止两个进程同时进入临界区，同步机制应遵循以下准则：</p>
+<pre><code>空闲让进：临界区空闲时，可以允许一个请求进入临界区的进程立即进入临界区。
+
+忙则等待：当已有进程进入临界区时，其他试图进入临界区的进程必须等待。
+
+有限等待：对请求访问的进程，应保证能在有限时间内进入临界区。
+
+让权等待：当进程不能进入临界区时，应立即释放处理器，防止进程忙等待。
+</code></pre>
 
       
     </div>
@@ -752,7 +490,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/17/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950717/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -766,7 +504,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/07/17/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950717/" class="post-title-link" itemprop="url">实验记录0717</a>
+            <a href="/2022/02/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD/" class="post-title-link" itemprop="url">操作系统基本功能</a>
         </h2>
 
         <div class="post-meta">
@@ -777,16 +515,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2021-07-17 21:37:38" itemprop="dateCreated datePublished" datetime="2021-07-17T21:37:38+08:00">2021-07-17</time>
+              <time title="Created: 2022-02-17 17:00:48 / Modified: 18:22:43" itemprop="dateCreated datePublished" datetime="2022-02-17T17:00:48+08:00">2022-02-17</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-07-18 16:52:00" itemprop="dateModified" datetime="2021-07-18T16:52:00+08:00">2021-07-18</time>
-              </span>
 
           
 
@@ -799,192 +531,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>重写了一下计算位置解方程的代码，目前距离能测出来，但是位置解不出来，方程组无解。<br>数据编号：20210717_213221</p>
-<p><img src="https://i.loli.net/2021/07/17/CY8cOrpKDBnjQ2J.png" alt="20210717213808"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/16/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950716/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/07/16/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950716/" class="post-title-link" itemprop="url">实验记录0716</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-07-16 21:40:14" itemprop="dateCreated datePublished" datetime="2021-07-16T21:40:14+08:00">2021-07-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-07-23 18:47:58" itemprop="dateModified" datetime="2021-07-23T18:47:58+08:00">2021-07-23</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="收发压电陶瓷之间的初始距离校准。（0距离，ni一次开关机之内）"><a href="#收发压电陶瓷之间的初始距离校准。（0距离，ni一次开关机之内）" class="headerlink" title="收发压电陶瓷之间的初始距离校准。（0距离，ni一次开关机之内）"></a>收发压电陶瓷之间的初始距离校准。（0距离，ni一次开关机之内）</h2><p>第一次：</p>
-<p><img src="https://i.loli.net/2021/07/16/DuXb7k3BvVjoSc2.png" alt="20210716214323"></p>
-<p>第二次：</p>
-<p><img src="https://i.loli.net/2021/07/16/azQ7fECqN5jghSm.png" alt="20210716214334"></p>
-<p>第三次：</p>
-<p><img src="https://i.loli.net/2021/07/16/KTewuZ95G8ogvhU.png" alt="20210716214341"></p>
-<p>第四次：</p>
-<p><img src="https://i.loli.net/2021/07/16/iBpUYoDgnNzmOZV.png" alt="20210716214347"></p>
-<p>第五次：</p>
-<p><img src="https://i.loli.net/2021/07/16/GQzPHt7xDsbcRUJ.png" alt="20210716214358"></p>
-<h2 id="重启ni"><a href="#重启ni" class="headerlink" title="重启ni"></a>重启ni</h2><p>第一次：</p>
-<p><img src="https://i.loli.net/2021/07/16/xA9NMPXqIGDL5H3.png" alt="20210716214416"></p>
-<p>第二次：（改为4位小数）20210716_183142</p>
-<p><img src="https://i.loli.net/2021/07/16/24ZOU9ghJBuskXj.png" alt="20210716214444"></p>
-<p>第三次：20210716_183419</p>
-<p><img src="https://i.loli.net/2021/07/16/aplKXykWM9Ds7Y5.png" alt="20210716214449"></p>
-<p>第四次：20210716_183719<br>0.0690 0.0697 0.0599 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.1098 0.0669 0.0582 \n</p>
-<p>第五次：20210716_184007<br>0.0609 0.0699 0.0605 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.0844 0.0583 0.0340 \n</p>
-<p>第六次：20210716_184252<br>0.0607 0.0693 0.0605 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.1125 0.0582 0.0250 \n</p>
-<p>第七次：20210716_184453<br>0.0689 0.0698 0.0606 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.1097 0.0685 0.0532 \n</p>
-<p>第八次：20210716_184719<br>0.0688 0.0691 0.0593 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.1267 0.0680 0.0524 \n</p>
-<p>第九次：20210716_184812<br>0.0688 0.0695 0.0607 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.1267 0.0680 0.0356 \n</p>
-<p>第十次：20210716_184924<br>0.0691 0.0694 0.0608 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.1279 0.0689 0.0441 \n</p>
-<p>基本都保持在0.069 0.069 0.060这个值附近</p>
-<h2 id="重启ni-1"><a href="#重启ni-1" class="headerlink" title="重启ni"></a>重启ni</h2><p>第一次：20210518_193646<br>0.0691 0.0689 0.0608 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.1098 0.0350 0.0341 \n</p>
-<p>第二次：20210716_185353<br>0.0611 0.0691 0.0606 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.1023 0.0606 0.0344 \n</p>
-<p>第三次：20210716_185537<br>0.0695 0.0693 0.0605 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.1035 0.0667 0.0413 \n</p>
-<p>第四次：20210716_185756<br>0.0692 0.0693 0.0603 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.1199 0.0621 0.0443 \n</p>
-<p>第五次：20210716_185928<br>0.0692 0.0694 0.0604 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.1114 0.0677 0.0431 \n</p>
-<p>基本也都保持在0.069 0.069 0.060这个值附近，不过会出现跳一个波长的问题，所以很可能这三个接收端的数值也是一样的，因为0.069和0.060也刚好差不多差了一个波长。</p>
-<p>所以只要保证设备（包括ni，线，电脑等）不变，这个初始校准距离很可能是个定值，如果是这样的话，那么就能保证对于一套设备只需要一开始做一次校准即可，之后的使用都不需要重新校准了。</p>
-<h2 id="重启ni-2"><a href="#重启ni-2" class="headerlink" title="重启ni"></a>重启ni</h2><p>第一次：20210716_190345<br>0.0691 0.0692 0.0525 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.0848 1.8292 2.0417 \n</p>
-<p>第二次：20210716_202732<br>0.0690 0.0689 0.0606 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.0678 0.0678 2.0502 \n</p>
-<p>第三次：20210716_202822<br>0.0687 0.0690 0.0607 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 1.5989 1.8281 0.0274 \n</p>
-<p>换成长线（1m-&gt;3m）<br>第四次：20210716_202911<br>0.0688 0.0691 0.0605 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.0765 0.0344 2.0525 \n</p>
-<p>第五次：20210716_203059<br>0.0687 0.0694 0.0606 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.0754 1.8191 100.0000 \n</p>
-<p>结论：线的长度影响不大</p>
-<p>开始测量右边三个接收端（ai4 ai5 ai6）<br>第六次：20210716_203540<br>1.1691 100.0000 0.7213 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.0759 0.0265 0.0695 \n</p>
-<p>第七次：20210716_20375<br>1.0651 100.0000 0.6266 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.0778 0.0687 0.0758 \n</p>
-<p>第八次：20210716_204044<br>1.0719 100.0000 0.6267 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.0774 0.0609 0.0754 \n</p>
-<p>第九次：20210716_204213<br>1.0636 100.0000 0.6348 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.0778 0.0694 0.0757 \n</p>
-<p>第十次：20210716_204339<br>1.0711 100.0000 0.6345 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.0764 0.0607 0.0696 \n</p>
-<p>第十一次：20210716_204513<br>1.0749 100.0000 0.6256 100.0000 100.0000 100.0000 \n100.0000 100.0000 100.0000 0.0695 0.0692 0.0773 \n</p>
-<p>右边三个接收端的初始校准距离大概是0.077 0.069 0.075左右</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/15/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950715/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/07/15/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950715/" class="post-title-link" itemprop="url">实验记录0715</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-07-15 21:10:44" itemprop="dateCreated datePublished" datetime="2021-07-15T21:10:44+08:00">2021-07-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-07-23 18:48:14" itemprop="dateModified" datetime="2021-07-23T18:48:14+08:00">2021-07-23</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li><p>今天主要在623会议室部署了一下实验环境。在相距大概4m的两面墙上各贴了3个接收端，间距30cm。</p>
-<p> <img src="https://i.loli.net/2021/07/16/MlDItB8aRZwxYij.jpg" alt="IMG_20210715_203920"></p>
-<p> <img src="https://i.loli.net/2021/07/16/Of9enLNKuxArFyw.jpg" alt="IMG_20210715_203904"></p>
-<p> <img src="https://i.loli.net/2021/07/16/EObTv9SfK8BG7WR.jpg" alt="IMG_20210715_203916"></p>
+          <h2 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h2><ol>
+<li><p>进程管理</p>
+<p> 进程控制、进程同步、进程通信、死锁处理、处理机调度等。</p>
 </li>
-<li><p>用耳机上的两个发射端测试了一下，感觉距离在1m~1.5m左右效果更好一点，这两面墙的间距可能稍微大了一点儿，有的时候离得远的接收端信号不稳定。</p>
-<p> <img src="https://i.loli.net/2021/07/15/EhBS1JING6Lstzp.png" alt="20210715211332"></p>
+<li><p>内存管理</p>
+<p> 内存分配、地址映射、内存保护与共享、虚拟内存等。</p>
+</li>
+<li><p>文件管理</p>
+<p> 文件存储空间的管理、目录管理、文件读写管理和保护等。</p>
+</li>
+<li><p>设备管理</p>
+<p> 完成用户的 I/O 请求，方便用户使用各种设备，并提高设备的利用率。</p>
+<p> 主要包括缓冲管理、设备分配、设备处理、虛拟设备等。</p>
 </li>
 </ol>
 
@@ -1005,7 +564,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1072,7 +631,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-count">146</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

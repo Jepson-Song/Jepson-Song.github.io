@@ -188,7 +188,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/25/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950825/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/20/CSMA-CD/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -202,7 +202,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/08/25/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950825/" class="post-title-link" itemprop="url">实验记录0825</a>
+            <a href="/2022/02/20/CSMA-CD/" class="post-title-link" itemprop="url">CSMA/CD</a>
         </h2>
 
         <div class="post-meta">
@@ -215,7 +215,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-08-25 17:07:25 / Modified: 18:16:18" itemprop="dateCreated datePublished" datetime="2021-08-25T17:07:25+08:00">2021-08-25</time>
+              <time title="Created: 2022-02-20 22:17:25 / Modified: 22:18:10" itemprop="dateCreated datePublished" datetime="2022-02-20T22:17:25+08:00">2022-02-20</time>
             </span>
 
           
@@ -229,20 +229,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="用HMM完成分类任务"><a href="#用HMM完成分类任务" class="headerlink" title="用HMM完成分类任务"></a>用HMM完成分类任务</h2><p><img src="https://i.loli.net/2021/08/25/XVh9TxvJnpMSRDG.png" alt="20210825170754"></p>
-<p>只用了单边位置的数据进行分类，理论上左右发射端的位置是非常对称的。主要是因为HMM的输入好像只能是一维的？</p>
-<p>数据长度为10时正确率在90%左右</p>
-<p>把数据长度改成20能达到97%的准确率</p>
-<p><img src="https://i.loli.net/2021/08/25/oYcQPRKT2wlMpHZ.png" alt="20210825181612"></p>
-<p>步长设为5准确率也有96%</p>
-<p>但是步长设为10准确率就降到85%zuoyou</p>
-<p>步长设为20准确率会降到65%</p>
-<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><ol>
-<li>优化HMM</li>
-<li>把HMM训练好的参数保存下来</li>
-<li>把HMM和之前的代码结合起来</li>
-<li>每次采集数据时要新建一个文件夹</li>
-</ol>
+          <h2 id="CSMA-CD-协议"><a href="#CSMA-CD-协议" class="headerlink" title="CSMA/CD 协议"></a>CSMA/CD 协议</h2><p>CSMA/CD 表示载波监听多点接入 / 碰撞检测。</p>
+<pre><code>多点接入 ：说明这是总线型网络，许多主机以多点的方式连接到总线上。
+载波监听 ：每个主机都必须不停地监听信道。在发送前，如果监听到信道正在使用，就必须等待。
+碰撞检测 ：在发送中，如果监听到信道已有其它主机正在发送数据，就表示发生了碰撞。虽然每个主机在发送数据之前都已经监听到信道为空闲，但是由于电磁波的传播时延的存在，还是有可能会发生碰撞。
+</code></pre>
+<p>记端到端的传播时延为 τ，最先发送的站点最多经过 2τ 就可以知道是否发生了碰撞，称 2τ 为 争用期 。只有经过争用期之后还没有检测到碰撞，才能肯定这次发送不会发生碰撞。</p>
+<p>当发生碰撞时，站点要停止发送，等待一段时间再发送。这个时间采用 截断二进制指数退避算法 来确定。从离散的整数集合 {0, 1, .., (2k-1)} 中随机取出一个数，记作 r，然后取 r 倍的争用期作为重传等待时间。</p>
 
       
     </div>
@@ -262,7 +255,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/24/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950824/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/20/%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -276,83 +269,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/08/24/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950824/" class="post-title-link" itemprop="url">实验记录0824</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-08-24 22:33:53" itemprop="dateCreated datePublished" datetime="2021-08-24T22:33:53+08:00">2021-08-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-25 10:25:18" itemprop="dateModified" datetime="2021-08-25T10:25:18+08:00">2021-08-25</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="采集了6个动作的数据"><a href="#采集了6个动作的数据" class="headerlink" title="采集了6个动作的数据"></a>采集了6个动作的数据</h2><p><img src="https://i.loli.net/2021/08/24/hbB5s1pdzQIYD46.png" alt="20210824223442"></p>
-<p>之后把这6组数据的pos算出来，进行轨迹识别。</p>
-<h2 id="用HMM对轨迹进行分类"><a href="#用HMM对轨迹进行分类" class="headerlink" title="用HMM对轨迹进行分类"></a>用HMM对轨迹进行分类</h2><p>TODO:</p>
-<ol>
-<li>把采集到的训练数据的pos计算出来</li>
-<li>对数据集进行增强，按照每1秒一段切分（0.9s重叠每个动作大概可以切出1000个数据）</li>
-<li>对数据集进行处理，初始位置移动到坐标原点</li>
-<li>还可以继续进行数据增强，比如把轨迹进行旋转等</li>
-<li>用HMMM训练和分类</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/23/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950823/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/23/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950823/" class="post-title-link" itemprop="url">实验记录0823</a>
+            <a href="/2022/02/20/%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">网络体系结构</a>
         </h2>
 
         <div class="post-meta">
@@ -365,7 +282,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-08-23 09:50:09 / Modified: 10:08:44" itemprop="dateCreated datePublished" datetime="2021-08-23T09:50:09+08:00">2021-08-23</time>
+              <time title="Created: 2022-02-20 19:39:57 / Modified: 19:43:08" itemprop="dateCreated datePublished" datetime="2022-02-20T19:39:57+08:00">2022-02-20</time>
             </span>
 
           
@@ -379,253 +296,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><ol>
-<li><p>提高计算速度。现在每秒只能计算一帧，至少提到每秒10帧。</p>
-<ul>
-<li>优化解方程</li>
-<li>减小帧长，20~40ms</li>
-</ul>
+          <p><img src="https://s2.loli.net/2022/02/20/iNMUoEIyA1uBqkg.png" alt="20220220194032"></p>
+<h2 id="五层协议"><a href="#五层协议" class="headerlink" title="五层协议"></a>五层协议</h2><ol>
+<li><p>应用层 ：为特定应用程序提供数据传输服务，例如 HTTP、DNS 等协议。数据单位为报文。</p>
 </li>
-<li><p>用轨迹来判断动作。根据过去3~5s的轨迹来判断当前在做什么动作。</p>
+<li><p>传输层 ：为进程提供通用数据传输服务。由于应用层协议很多，定义通用的传输层协议就可以支持不断增多的应用层协议。运输层包括两种协议：传输控制协议 TCP，提供面向连接、可靠的数据传输服务，数据单位为报文段；用户数据报协议 UDP，提供无连接、尽最大努力的数据传输服务，数据单位为用户数据报。TCP 主要提供完整性服务，UDP 主要提供及时性服务。</p>
 </li>
-<li><p>再增加部署2个接收端，一共8个接收端。</p>
+<li><p>网络层 ：为主机提供数据传输服务。而传输层协议是为主机中的进程提供数据传输服务。网络层把传输层传递下来的报文段或者用户数据报封装成分组。</p>
+</li>
+<li><p>数据链路层 ：网络层针对的还是主机之间的数据传输服务，而主机之间可以有很多链路，链路层协议就是为同一链路的主机提供数据传输服务。数据链路层把网络层传下来的分组封装成帧。</p>
+</li>
+<li><p>物理层 ：考虑的是怎样在传输媒体上传输数据比特流，而不是指具体的传输媒体。物理层的作用是尽可能屏蔽传输媒体和通信手段的差异，使数据链路层感觉不到这些差异。</p>
 </li>
 </ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950808/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950808/" class="post-title-link" itemprop="url">实验记录0808</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-08-08 14:13:21" itemprop="dateCreated datePublished" datetime="2021-08-08T14:13:21+08:00">2021-08-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-27 19:46:50" itemprop="dateModified" datetime="2021-08-27T19:46:50+08:00">2021-08-27</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>全部默认为转动，知道耳机中点与轴点的距离超出阈值认为是移动，更新轴点。</p>
-<p>俯仰数据：20210808_202031</p>
-<p>旋转数据：20210808_202544</p>
-<p>倾斜数据：20210808_202641</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950807/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950807/" class="post-title-link" itemprop="url">实验记录0807</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-08-08 14:13:16" itemprop="dateCreated datePublished" datetime="2021-08-08T14:13:16+08:00">2021-08-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-25 18:15:23" itemprop="dateModified" datetime="2021-08-25T18:15:23+08:00">2021-08-25</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>感觉上面的思路可能想复杂了，可能没必要把动作划分的那么细，应该只要分别出移动和转动就可以了，因为只有移动会导致轴点改变，而转动不会改变轴点位置。</p>
-<p>不过也没办法依据一个标准就把移动和转动完全分开，现在想到的比较好的分类标准是“两耳机移动方向是否一致”，根据两耳机移动向量的夹角来判断，如果夹角大于阈值则是旋转yaw和倾斜roll动作，如果夹角小于阈值则是移动或者俯仰pitch，阈值暂定为90度。</p>
-<p>所以还需要第二个标准把移动和俯仰分开，目前想用的是“耳机移动方向和视线方向的关系”，因为上下移动和左右移动时是垂直关系，前后移动时是平行关系，只有俯仰既不垂直也不平行，但是这个夹角可能比较小会被误认为平行关系，所以可能会和前后移动混淆。</p>
-<p>所以可能还需要再找到一个标准更好地区分前后移动和俯仰，但是这不太好解决，即上面思路的第5点。。。</p>
-<p>PS: 后来又发现左右倾斜和左右移动也不好区分。。。“两耳机移动方向是否一致”这个标准好像只能用来区分左右旋转这一个动作。所以可能得考虑用“耳机中点与轴点的距离”，这个标准应该能帮助区分左右倾斜和左右移动以及前后俯仰和前后移动。</p>
-<p>思路就是一开始全部认为是转动，一旦距离超过阈值，就认为是移动。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/06/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950806/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/06/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950806/" class="post-title-link" itemprop="url">实验记录0806</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-08-06 10:41:19" itemprop="dateCreated datePublished" datetime="2021-08-06T10:41:19+08:00">2021-08-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-25 18:14:58" itemprop="dateModified" datetime="2021-08-25T18:14:58+08:00">2021-08-25</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="6DoF设计"><a href="#6DoF设计" class="headerlink" title="6DoF设计"></a>6DoF设计</h2><p><img src="https://i.loli.net/2021/08/06/uLwXkANxpcHF6BM.png" alt="20210806110016"></p>
+<h2 id="七层协议"><a href="#七层协议" class="headerlink" title="七层协议"></a>七层协议</h2><p>七层协议就是把五层协议中的应用层拆分成会话层、表示层和应用层。</p>
 <ol>
-<li>forward/backward (surge)：前后移动</li>
-<li>left/right (sway)：左右移动</li>
-<li>up/down (heave)：上下移动</li>
-<li>Roll：左右倾斜</li>
-<li>Pitch：前后俯仰</li>
-<li>Yaw：左右旋转</li>
-</ol>
-<p><img src="https://i.loli.net/2021/08/06/ew8XEI2S7PkLbgh.png" alt="20210806104150"></p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ol>
-<li><p>先把动作分为两类：一类是旋转动作和倾斜动作，另一类是三种平移动作和俯仰动作。</p>
-<p> 分类依据：相邻帧两个耳机移动向量的夹角。如果两耳机移动方向不一致（夹角大于阈值）则是第一类动作，如果方向一致（夹角小于阈值）则是第二类动作。</p>
+<li><p>表示层 ：数据压缩、加密以及数据描述，这使得应用程序不必关心在各台主机中数据内部格式不同的问题。</p>
 </li>
-<li><p>对于第一类动作，如果耳机移动向量与（上一帧）视线方向（几乎）垂直，则是倾斜动作，反之则是旋转动作，或者根据耳机中点是否移动来判断是不是旋转动作。</p>
-</li>
-<li><p>对于第二类动作，如果耳机移动方向与视线方向几乎垂直，则是左右移动或上下移动；反之则是前后移动或俯仰动作。</p>
-</li>
-<li><p>对于左右移动或者上下移动，则根据耳机移动向量在竖直方向的分量的绝对值大小来判断，如果在竖直方向的分量占比最大，则是上下移动，反之则是左右移动。</p>
-</li>
-<li><p>对于前后移动或者俯仰动作，比较难区分，目前想到的方式有</p>
-<ol>
-<li><p>根据是否有竖直方向的分量来判断，如果有且比较大则是俯仰动作，反之则是前后移动。</p>
-</li>
-<li><p>根据量耳机中点与轴点的距离来判断（但是这个距离因人而异），如果距离超过固定值则是前后移动，反之则是俯仰动作。</p>
-</li>
-</ol>
+<li><p>会话层 ：建立及管理会话。</p>
 </li>
 </ol>
 
@@ -647,7 +335,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/05/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950805/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/20/%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -661,7 +349,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/08/05/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950805/" class="post-title-link" itemprop="url">实验记录0805</a>
+            <a href="/2022/02/20/%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">磁盘管理</a>
         </h2>
 
         <div class="post-meta">
@@ -672,16 +360,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2021-08-05 15:48:56" itemprop="dateCreated datePublished" datetime="2021-08-05T15:48:56+08:00">2021-08-05</time>
+              <time title="Created: 2022-02-20 15:49:16 / Modified: 15:51:02" itemprop="dateCreated datePublished" datetime="2022-02-20T15:49:16+08:00">2022-02-20</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-27 19:47:06" itemprop="dateModified" datetime="2021-08-27T19:47:06+08:00">2021-08-27</time>
-              </span>
 
           
 
@@ -694,233 +376,29 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="Pos按钮"><a href="#Pos按钮" class="headerlink" title="Pos按钮"></a>Pos按钮</h2><h3 id="功能：根据距离数据计算前两点坐标pos1和pos2"><a href="#功能：根据距离数据计算前两点坐标pos1和pos2" class="headerlink" title="功能：根据距离数据计算前两点坐标pos1和pos2"></a>功能：根据距离数据计算前两点坐标pos1和pos2</h3><h3 id="输入：dis文件（或者dis-cor文件）"><a href="#输入：dis文件（或者dis-cor文件）" class="headerlink" title="输入：dis文件（或者dis_cor文件）"></a>输入：dis文件（或者dis_cor文件）</h3><h3 id="输出：pos文件（或者pos-cor文件），内部数据每一行nin-nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离"><a href="#输出：pos文件（或者pos-cor文件），内部数据每一行nin-nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离" class="headerlink" title="输出：pos文件（或者pos_cor文件），内部数据每一行nin*nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离"></a>输出：pos文件（或者pos_cor文件），内部数据每一行nin*nout个值，即每个接收端与每个接口的距离，依次是所有接收端与第一个发射端的距离，所有接收端与第二个发射端的距离</h3><h2 id="Dir按钮"><a href="#Dir按钮" class="headerlink" title="Dir按钮"></a>Dir按钮</h2><h3 id="功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir"><a href="#功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir" class="headerlink" title="功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir"></a>功能：根据前两点坐标pos1和pos2计算第三点坐标pos3和面部朝向dir</h3><h3 id="输入：pos文件（或者pos-cor文件）"><a href="#输入：pos文件（或者pos-cor文件）" class="headerlink" title="输入：pos文件（或者pos_cor文件）"></a>输入：pos文件（或者pos_cor文件）</h3><h3 id="输出：dir文件（或者dir-cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量"><a href="#输出：dir文件（或者dir-cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量" class="headerlink" title="输出：dir文件（或者dir_cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量"></a>输出：dir文件（或者dir_cor文件），内部数据每一行6个数值，依次是pos3的三维坐标，放dir的向量</h3>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/02/%E9%A1%B9%E7%9B%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/02/%E9%A1%B9%E7%9B%AE/" class="post-title-link" itemprop="url">项目</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-08-02 11:48:38" itemprop="dateCreated datePublished" datetime="2021-08-02T11:48:38+08:00">2021-08-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-09-24 13:00:27" itemprop="dateModified" datetime="2021-09-24T13:00:27+08:00">2021-09-24</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="新冠疫情项目"><a href="#新冠疫情项目" class="headerlink" title="新冠疫情项目"></a>新冠疫情项目</h2><ol>
-<li><p>距离管控</p>
-<p>因为疫情环境下为了避免人们互相传播病毒，所以人数比较多的场合一般都需要人们保持一个最低的社交距离。</p>
-<p>假设每个人都随身携带手机，那么可以把手机的位置当做人的位置。</p>
-<p>手机开启蓝牙功能，实时搜索环境中的蓝牙信号，根据一些测距算法完成与其他用户的测距，最简单的测距算法比如RSSI或者一些复杂的测距算法。如果测得的距离小于社交距离则提醒用户。</p>
-</li>
-<li><p>轨迹追踪 –&gt; 密切接触者排查</p>
-<p>如果不在环境中部署锚点很难实现绝对的位置测量，但是这个项目的应用场景不一定要实现绝对的轨迹追踪，更重要的是用户都接触过哪些人，所以只需要用蓝牙记录下用户移动过程中搜索到的所有其他蓝牙设备，假设蓝牙设备和用户身份一一对应，那么就可以用这种方式来排查密切接触者。</p>
-</li>
-</ol>
-<h3 id="2021-8-5完成申请书"><a href="#2021-8-5完成申请书" class="headerlink" title="2021/8/5完成申请书"></a>2021/8/5完成申请书</h3>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/01/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950801/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/01/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950801/" class="post-title-link" itemprop="url">实验记录0801</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-08-01 11:25:13" itemprop="dateCreated datePublished" datetime="2021-08-01T11:25:13+08:00">2021-08-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-27 19:47:42" itemprop="dateModified" datetime="2021-08-27T19:47:42+08:00">2021-08-27</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="直达径被遮挡问题"><a href="#直达径被遮挡问题" class="headerlink" title="直达径被遮挡问题"></a>直达径被遮挡问题</h2><p>因为发射端是固定在耳机上的，所以直达径很容易被人的头部遮挡。</p>
-<p>解决思路是在环境中部署多个接收端，使得不管发射端再什么位置，都有若干个接收端的直达径没有被遮挡。</p>
-<h2 id="多接收端定位问题"><a href="#多接收端定位问题" class="headerlink" title="多接收端定位问题"></a>多接收端定位问题</h2><p>因为有多个接收端，而计算发射端位置并不需要这么多接收端。</p>
-<p>解决思路是利用GPS的原理，从所有接收端里挑选三个信号最好的用于定位。</p>
-<h2 id="信号好坏的判定问题"><a href="#信号好坏的判定问题" class="headerlink" title="信号好坏的判定问题"></a>信号好坏的判定问题</h2><p>人眼可以通过观察cir图主峰是否明显来判定直达径是否被遮挡，但是如何程序化地让计算机来判断。</p>
-<p>解决思路是设定一个评价标准，用最高峰的强度除以其它所有点信号强度的平均值，如果这个比值超过一定阈值，则认为该接收端信号直达径没有被遮挡。</p>
-<h2 id="多径问题"><a href="#多径问题" class="headerlink" title="多径问题"></a>多径问题</h2><p>在工位上进行实验时，因为发射端和接收端距离比较近以及工位环境比较复杂，所以多径的影响更严重。</p>
-<p>解决多径的一个思路是根据发射端当前的位置计算出每一个接收端信号里主峰的理论位置，然后在这个理论位置左右选择一个比较小的区间，在这个区间内选取新的主峰计算距离。</p>
-<h2 id="实验记录"><a href="#实验记录" class="headerlink" title="实验记录"></a>实验记录</h2><h3 id="单发射端画了个五角星"><a href="#单发射端画了个五角星" class="headerlink" title="单发射端画了个五角星"></a>单发射端画了个五角星</h3><p><img src="https://i.loli.net/2021/08/01/Ws8wTIt9v3coXrS.png" alt="20210801115343"></p>
-<p>数据编号：20210801_114924</p>
-<h3 id="戴耳机实验"><a href="#戴耳机实验" class="headerlink" title="戴耳机实验"></a>戴耳机实验</h3><p><img src="https://i.loli.net/2021/08/01/BcmuwXYsUlZG4Wa.png" alt="20210801170105"></p>
-<p>数据编号：20210801_170052</p>
-<h3 id="六个自由度移动"><a href="#六个自由度移动" class="headerlink" title="六个自由度移动"></a>六个自由度移动</h3><p><img src="https://i.loli.net/2021/08/01/1VdxKW4cjYpECAF.png" alt="20210801190413"></p>
-<p>数据编号：20210801_185446</p>
-<h2 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h2><ol>
-<li><p>方向向量朝向问题</p>
-<p>已解决。初始化大概的朝向，每次都跟上一个向量做点积，如果小于零则取反。</p>
-</li>
-<li><p>实验环境的布置问题</p>
-<p>现在只有六个接收端，而且是三个对应左发射端三个对应右发射端写死的。要想实现360度旋转可能需要八个接收端，工位每一面都布置两个。然后写一个接收端筛选的算法，使得每个发射端每次都选择三个信号质量最好的接收端。</p>
-</li>
-<li><p>轴点移动问题</p>
-<p>把头部绕脖颈旋转的那个点叫做轴点。因为理论上要判断刚体旋转需要三个点的坐标，但是实验只能获得两个发射端（分别大概在左右耳的位置）的坐标，所以就需要推理出第三个点也就是轴点的坐标。</p>
-<p>目前的思路是进行动作划分，把头部动作分为旋转、倾斜、俯仰三个转动动作和前后、左右、上下三个移动动作。</p>
-<p>可以发现旋转、倾斜、俯仰这三个转动动作基本不会导致轴点移动，而前后、左右、上下三个移动动作基本必定导致轴点移动，更重要的是在只进行移动动作时，轴点与两个发射点的相对位置保持不变。</p>
-<p>所以，如果不考虑复杂动作（转动和移动同时发生）只考虑简单动作（只转动或只移动），对于转动动作可以认为轴点不动，对于移动动作可以根据两个发射点的位置不断计算更新轴点位置。</p>
-<p>该思路首先需要对动作进行分类，目前还没想到特别好的分类方法，只能通过两个发射端的移动特征来分类，比如如果左发射点向左下移动右发射点向左上移动，那么这个动作很可能是向左倾斜旋转，所以可以把每个动作导致的发射点的变化列出来作为特征，然后用这些特征来判断是哪个动作。这也是接下来要做事情。</p>
-<p>但是这个问题的难点是有些动作很难区分，比如低头和前移，这两个动作反应的特征都是两个发射点前移，只不过低头动作的发射点还会下降，但是对于如果动作幅度很小的话可能比较难判断。</p>
-<table>
-<thead>
-<tr>
-<th>动作</th>
-<th>特征</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>旋转（左）</td>
-<td>左点向右后，右点向左前，二者上下不变</td>
-</tr>
-<tr>
-<td>倾斜（左）</td>
-<td>左点向左下，右点向左上，二者前后不变</td>
-</tr>
-<tr>
-<td>俯仰（下）</td>
-<td>左点向前下，右点向前下，二者左右不变</td>
-</tr>
-<tr>
-<td>前后（前）</td>
-<td>左点向前，右点向前，二者左右上下不变</td>
-</tr>
-<tr>
-<td>左右（左）</td>
-<td>左点向左，右点向右，二者前后上下不变</td>
-</tr>
-<tr>
-<td>上下（上）</td>
-<td>左点向上，右点向上，二者前后左右不变</td>
-</tr>
-</tbody></table>
-<p>（反方向动作特征相反）</p>
-<p>分析发现，三类移动动作比较简单，或许可以放到一起讨论？如果左右两点动作特征一样那么就是移动动作（或者俯仰动作），（除俯仰动作外）都可以根据两点位置来更新轴点位置；如果左右特征不一样那么就是转动动作，则认为轴点位置保持不变。</p>
-<p>流程：</p>
+          <h2 id="磁盘调度算法"><a href="#磁盘调度算法" class="headerlink" title="磁盘调度算法"></a>磁盘调度算法</h2><p>读写一个磁盘块的时间的影响因素有：</p>
+<pre><code>旋转时间（主轴转动盘面，使得磁头移动到适当的扇区上）
+寻道时间（制动手臂移动，使得磁头移动到适当的磁道上）
+实际的数据传输时间
+</code></pre>
+<p>其中，寻道时间最长，因此磁盘调度的主要目标是使磁盘的平均寻道时间最短。</p>
 <ol>
-<li><p>左右点特征是否相同？</p>
-<ol>
-<li>相同。移动动作或者俯仰动作。根据高度是否改变来判断是否为俯仰动作。<ol>
-<li>高度改变 –&gt; 俯仰</li>
-<li>高度不变 –&gt; 移动动作</li>
-</ol>
+<li><p>先来先服务</p>
+<p> FCFS, First Come First Served</p>
+<p> 按照磁盘请求的顺序进行调度。</p>
+<p> 优点是公平和简单。缺点也很明显，因为未对寻道做任何优化，使平均寻道时间可能较长。</p>
 </li>
-<li>不相同。旋转动作。</li>
-</ol>
+<li><p>最短寻道时间优先</p>
+<p> SSTF, Shortest Seek Time First</p>
+<p> 优先调度与当前磁头所在磁道距离最近的磁道。</p>
+<p> 虽然平均寻道时间比较低，但是不够公平。如果新到达的磁道请求总是比一个在等待的磁道请求近，那么在等待的磁道请求会一直等待下去，也就是出现饥饿现象。具体来说，两端的磁道请求更容易出现饥饿现象。</p>
+<p> <img src="https://s2.loli.net/2022/02/20/vpGJOkajMPBUnbf.png" alt="20220220155042"></p>
 </li>
-<li><p>旋转动作时，左右点特征特征？</p>
-<ol>
-<li>左点向右后，右点向左前 –&gt; 左旋转</li>
-<li>左点向右前，右点向左后 –&gt; 右旋转</li>
-<li>左点向左下，右点向左上 –&gt; 左倾斜</li>
-<li>左点向右上，右点向右下 –&gt; 右倾斜</li>
-<li>左点向前下，右点向前下 –&gt; 下俯仰</li>
-<li>左点向后上，右点向后上 –&gt; 上俯仰</li>
-</ol>
-</li>
-</ol>
+<li><p>电梯算法</p>
+<p> 电梯总是保持一个方向运行，直到该方向没有请求为止，然后改变运行方向。</p>
+<p> 电梯算法（扫描算法）和电梯的运行过程类似，总是按一个方向来进行磁盘调度，直到该方向上没有未完成的磁盘请求，然后改变方向。</p>
+<p> 因为考虑了移动方向，因此所有的磁盘请求都会被满足，解决了 SSTF 的饥饿问题。</p>
+<p> <img src="https://s2.loli.net/2022/02/20/uwMSyHxKlRz1BZc.png" alt="20220220155049"></p>
 </li>
 </ol>
 
@@ -942,7 +420,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/31/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950731/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/19/%E8%BF%9E%E7%BB%AD%E4%B8%AD%E5%80%BC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -956,7 +434,86 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/07/31/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950731/" class="post-title-link" itemprop="url">实验记录0731</a>
+            <a href="/2022/02/19/%E8%BF%9E%E7%BB%AD%E4%B8%AD%E5%80%BC/" class="post-title-link" itemprop="url">连续中值</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-19 17:11:13 / Modified: 17:17:25" itemprop="dateCreated datePublished" datetime="2022-02-19T17:11:13+08:00">2022-02-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="连续中值"><a href="#连续中值" class="headerlink" title="连续中值"></a>连续中值</h2><p>随机产生数字并传递给一个方法。你能否完成这个方法，在每次产生新值时，寻找当前所有值的中间值（中位数）并保存。</p>
+<p>中位数是有序列表中间的数。如果列表长度是偶数，中位数则是中间两个数的平均值。</p>
+<p>例如，</p>
+<p>[2,3,4] 的中位数是 3</p>
+<p>[2,3] 的中位数是 (2 + 3) / 2 = 2.5</p>
+<p>设计一个支持以下两种操作的数据结构：</p>
+<pre><code>void addNum(int num) - 从数据流中添加一个整数到数据结构中。
+double findMedian() - 返回目前所有元素的中位数。
+</code></pre>
+<p>示例：</p>
+<p>addNum(1)<br>addNum(2)<br>findMedian() -&gt; 1.5<br>addNum(3)<br>findMedian() -&gt; 2</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>数组分两半，左边建大顶堆维护左半部分的最大值，右边建小顶堆维护右半部分的最小值，两个堆顶的均值就是数组的中值。每次插入数据的时候判断一下：</p>
+<pre><code>如果要插入的数据比右边小顶堆堆顶小，则插到左边；
+如果要插入的数据比左边大顶堆堆顶大，则插到右边；
+如果介于二者中间，也插到右边，
+</code></pre>
+<p>同时要保证右边的小顶堆长度最多比左边的大顶堆大1。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><pre><code><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">priority_queue&lt;<span class="keyword">int</span>, vector&lt;<span class="keyword">int</span>&gt;, less&lt;<span class="keyword">int</span>&gt; &gt;bigheap;</span><br><span class="line">priority_queue&lt;<span class="keyword">int</span>, vector&lt;<span class="keyword">int</span>&gt;, greater&lt;<span class="keyword">int</span>&gt; &gt;smallheap;</span><br><span class="line"></span><br><span class="line"><span class="built_in">MedianFinder</span>() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addNum</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(bigheap.<span class="built_in">size</span>()==<span class="number">0</span>&amp;&amp;smallheap.<span class="built_in">size</span>()&lt;=<span class="number">1</span>) smallheap.<span class="built_in">push</span>(num);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(num&lt;smallheap.<span class="built_in">top</span>()) bigheap.<span class="built_in">push</span>(num);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(num&gt;bigheap.<span class="built_in">top</span>()) smallheap.<span class="built_in">push</span>(num);</span><br><span class="line">    <span class="keyword">else</span> bigheap.<span class="built_in">push</span>(num);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(smallheap.<span class="built_in">size</span>()&gt;bigheap.<span class="built_in">size</span>()+<span class="number">1</span>)&#123;</span><br><span class="line">        bigheap.<span class="built_in">push</span>(smallheap.<span class="built_in">top</span>());</span><br><span class="line">        smallheap.<span class="built_in">pop</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(bigheap.<span class="built_in">size</span>()&gt;smallheap.<span class="built_in">size</span>())&#123;</span><br><span class="line">        smallheap.<span class="built_in">push</span>(bigheap.<span class="built_in">top</span>());</span><br><span class="line">        bigheap.<span class="built_in">pop</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">findMedian</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(smallheap.<span class="built_in">size</span>()&gt;bigheap.<span class="built_in">size</span>()) <span class="keyword">return</span> smallheap.<span class="built_in">top</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1.0</span>*(smallheap.<span class="built_in">top</span>()+bigheap.<span class="built_in">top</span>())/<span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/19/%E6%AD%BB%E9%94%81-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/19/%E6%AD%BB%E9%94%81-1/" class="post-title-link" itemprop="url">死锁</a>
         </h2>
 
         <div class="post-meta">
@@ -968,14 +525,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2021-07-31 14:00:06" itemprop="dateCreated datePublished" datetime="2021-07-31T14:00:06+08:00">2021-07-31</time>
+              <time title="Created: 2022-02-19 13:52:27" itemprop="dateCreated datePublished" datetime="2022-02-19T13:52:27+08:00">2022-02-19</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-01 11:25:17" itemprop="dateModified" datetime="2021-08-01T11:25:17+08:00">2021-08-01</time>
+                <time title="Modified: 2022-03-02 15:45:05" itemprop="dateModified" datetime="2022-03-02T15:45:05+08:00">2022-03-02</time>
               </span>
 
           
@@ -989,12 +546,54 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="不用相位和用相位比较，数据编号：20210722-202008"><a href="#不用相位和用相位比较，数据编号：20210722-202008" class="headerlink" title="不用相位和用相位比较，数据编号：20210722_202008"></a>不用相位和用相位比较，数据编号：20210722_202008</h2><p><img src="https://i.loli.net/2021/07/31/4zMu8SJ3E6gOn7o.png" alt="20210731135923"></p>
-<h2 id="在工位上布置实验环境"><a href="#在工位上布置实验环境" class="headerlink" title="在工位上布置实验环境"></a>在工位上布置实验环境</h2><p><img src="https://i.loli.net/2021/07/31/re21tnvmSEgzc4Z.jpg" alt="1100f8c42d289f9bd51c69aa1ee0b88"></p>
-<h2 id="空中画圈，数据编号：20210731-160225"><a href="#空中画圈，数据编号：20210731-160225" class="headerlink" title="空中画圈，数据编号：20210731_160225"></a>空中画圈，数据编号：20210731_160225</h2><p><img src="https://i.loli.net/2021/07/31/tgnQixLBmz4kYMh.png" alt="20210731160339"></p>
-<h2 id="实时计算并且画cir-dis-pos图时一帧大概需要0-6秒"><a href="#实时计算并且画cir-dis-pos图时一帧大概需要0-6秒" class="headerlink" title="实时计算并且画cir dis pos图时一帧大概需要0.6秒"></a>实时计算并且画cir dis pos图时一帧大概需要0.6秒</h2><p><img src="https://i.loli.net/2021/07/31/W2lPCwUEan3HJ4G.png" alt="20210731163047"></p>
-<h2 id="是否使用相位比较"><a href="#是否使用相位比较" class="headerlink" title="是否使用相位比较"></a>是否使用相位比较</h2><p><img src="https://i.loli.net/2021/07/31/ScTqszZluoDk1Bp.png" alt="20210731170010"></p>
-<p>上面的是用了相位，下面的没用相位，结果还是没用相位的波动更小一点。</p>
+          <h2 id="死锁定义"><a href="#死锁定义" class="headerlink" title="死锁定义"></a>死锁定义</h2><p>线程死锁是指由于两个或者多个线程互相持有对方所需要的资源，导致这些线程处于等待状态，无法前往执行。</p>
+<h2 id="必要条件"><a href="#必要条件" class="headerlink" title="必要条件"></a>必要条件</h2><p>互斥：每个资源要么已经分配给了一个进程，要么就是可用的。</p>
+<p>占有和等待：已经得到了某个资源的进程可以再请求新的资源。</p>
+<p>不可抢占：已经分配给一个进程的资源不能强制性地被抢占，它只能被占有它的进程显式地释放。</p>
+<p>环路等待：有两个或者两个以上的进程组成一条环路，该环路中的每个进程都在等待下一个进程所占有的资源。</p>
+<h2 id="死锁的处理策略"><a href="#死锁的处理策略" class="headerlink" title="死锁的处理策略"></a>死锁的处理策略</h2><ol>
+<li><p>鸵鸟策略</p>
+<p>把头埋在沙子里，假装根本没发生问题。</p>
+<p> 因为解决死锁问题的代价很高，因此鸵鸟策略这种不采取任务措施的方案会获得更高的性能。</p>
+<p> 当发生死锁时不会对用户造成多大影响，或发生死锁的概率很低，可以采用鸵鸟策略。</p>
+<p> 大多数操作系统，包括 Unix，Linux 和 Windows，处理死锁问题的办法仅仅是忽略它。</p>
+</li>
+<li><p>死锁预防：破坏死锁的四个条件之一</p>
+<p> 破环互斥条件：允许资源共享；</p>
+<p> 破环占有和等待条件：一次性分配所有资源，只要缺少一个资源，其它资源也都不给他分配；</p>
+<p> 破坏不可抢占：请求新资源得不到时，释放已经保持占有的资源，待以后重新申请；</p>
+<p> 破坏环路等待：采用顺序资源分配法，给每个资源编号，进程申请资源的时候按照编号顺序申请，释放的时候则相反；</p>
+</li>
+<li><p>死锁检测与解除：</p>
+<p> 检测死锁：利用死锁原理化简资源分配图检测死锁的存在</p>
+<p> 死锁解除：资源剥夺、撤销进程、进程回退</p>
+<pre><code> 剥夺资源：从其它进程剥夺足够数量的资源给死锁进程，以解除死锁状态；
+
+ 撤消进程：可以直接撤消死锁进程或撤消代价最小的进程，直至有足够的资源可用，死锁状态.消除为止；所谓代价是指优先级、运行代价、进程的重要性和价值等。
+</code></pre>
+</li>
+<li><p>死锁避免：死锁避免事先预防策略，但是是采用资源动态分配的过程中，防止系统进入不安全状态，以避免死锁。</p>
+<p> 预防死锁的几种策略，会严重地损害系统性能。因此在避免死锁时，要施加较弱的限制，从而获得 较满意的系统性能。由于在避免死锁的策略中，允许进程动态地申请资源。因而，系统在进行资源分配之前预先计算资源分配的安全性。若此次分配不会导致系统进入不安全的状态，则将资源分配给进程；否则，进程等待。其中最具有代表性的避免死锁算法是银行家算法。</p>
+<p> 银行家算法：首先需要定义状态和安全状态的概念。系统的状态是当前给进程分配的资源情况。因此，状态包含两个向量Resource（系统中每种资源的总量）和Available（未分配给进程的每种资源的总量）及两个矩阵Claim（表示进程对资源的需求）和Allocation（表示当前分配给进程的资源）。安全状态是指至少有一个资源分配序列不会导致死锁。当进程请求一组资源时，假设同意该请求，从而改变了系统的状态，然后确定其结果是否还处于安全状态。如果是，同意这个请求；如果不是，阻塞该进程知道同意该请求后系统状态仍然是安全的。</p>
+</li>
+</ol>
+<h2 id="银行家算法"><a href="#银行家算法" class="headerlink" title="银行家算法"></a>银行家算法</h2><p>银行家算法是仿照银行发放贷款时采用的控制方式而设计的一种死锁避免算法，该算法的策略是实现动态避免死锁。</p>
+<h3 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h3><p>银行家算法的基本思想是：分配资源之前，判断系统是否安全，如果安全才会进行资源分配。</p>
+<p>我们把操作系统看做是银行家，操作系统管理的资源相当于银行家的资金，线程向操作系统请求分配资源就是用户向银行家要贷款。</p>
+<p>算法在每次分配资源前需要要求： request &lt; available &amp;&amp; request &lt; needing;</p>
+<h3 id="算法实例"><a href="#算法实例" class="headerlink" title="算法实例"></a>算法实例</h3><p>系统中有R1，R2，R3三种资源，在time0时刻，5个线程T0，T1，T2，T3，T4对资源占用和需求的情况如下表，此时系统的可用资源向量为(3,3,2)。求T0时刻系统是否存在安全序列？</p>
+<p><img src="https://s2.loli.net/2022/02/19/VkdnsuegCWtRB3Y.png" alt="20220219142642"></p>
+<p>我们假设每个线程执行时间为一个时刻。</p>
+<p>1、在time0时刻，available(3,3,2) &gt; T1.needing(1,2,2)； 所以T1可以执行，T1执行完毕之后available = T1.allocated(2,0,0) + available(3,3,2) = (5,3,2);</p>
+<p><img src="https://s2.loli.net/2022/02/19/VSrsExfi6GpQ78u.png" alt="20220219142719"></p>
+<p>2、进入time1时刻，available(5,3,2) &gt; T3.needing(0,1,1)；所以T3可以执行，T3执行完毕之后available = T3.allocated(2,1,1)+available(5,3,2) = (7,4,3)；</p>
+<p><img src="https://s2.loli.net/2022/02/19/Yw83SBZubGzjMct.png" alt="20220219142727"></p>
+<p>3、进入time2时刻，available(7,4,3) &gt; T4.needing(4,3,1)；所以T4可以执行，T4执行完毕之后available = T4.allocated(0,0,2) + available(7,4,3) = (7,4,5)；</p>
+<p><img src="https://s2.loli.net/2022/02/19/C7XSQbAgKFu2Bwc.png" alt="20220219142735"></p>
+<p>4、进入time3时刻，available(7,4,5) &gt; T2.needing(6,0,0)；所以T2可以执行，T2指向完毕之后available = T2.allocated(3,0,2) + available(7,4,5) = (10,4,7)；</p>
+<p><img src="https://s2.loli.net/2022/02/19/gkcsiXuh7IjYG46.png" alt="20220219142741"></p>
+<p>5、进入time4时刻，因为available(10,4,7) &gt; T0.needing(7,4,3)；所以执行T0。完成安全序列。</p>
+<p>上面只是安全序列的一个例子，可能还存在其他安全序列。</p>
 
       
     </div>
@@ -1013,7 +612,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1080,7 +679,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-count">146</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

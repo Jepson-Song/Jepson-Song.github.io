@@ -188,7 +188,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/30/new%E5%92%8Cmalloc/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/22/%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -202,7 +202,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/11/30/new%E5%92%8Cmalloc/" class="post-title-link" itemprop="url">new和malloc</a>
+            <a href="/2022/02/22/%E6%8C%87%E9%92%88%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">指针和引用的区别</a>
         </h2>
 
         <div class="post-meta">
@@ -214,15 +214,324 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2021-11-30 16:17:36" itemprop="dateCreated datePublished" datetime="2021-11-30T16:17:36+08:00">2021-11-30</time>
+              <time title="Created: 2022-02-22 09:24:56" itemprop="dateCreated datePublished" datetime="2022-02-22T09:24:56+08:00">2022-02-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-12-03 18:52:54" itemprop="dateModified" datetime="2021-12-03T18:52:54+08:00">2021-12-03</time>
+                <time title="Modified: 2022-02-27 22:57:54" itemprop="dateModified" datetime="2022-02-27T22:57:54+08:00">2022-02-27</time>
               </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="指针和引用的区别"><a href="#指针和引用的区别" class="headerlink" title="指针和引用的区别"></a>指针和引用的区别</h2><ol>
+<li><p>指针所指向的内存空间在程序运行过程中可以改变，而引用所绑定的对象一旦绑定就不能改变。（是否可变）</p>
+</li>
+<li><p>指针本身在内存中占有内存空间，引用相当于变量的别名，在内存中不占内存空间。（是否占内存）</p>
+<p>*引用的实现实际上是占用内存空间的，但程序把它按照不占用内存空间来处理。</p>
+<p>实际在内存空间上，引用本身也占用一块内存，里面存储着所引用的变量的地址，大小与指针相同，字面上也表现为unsigned long int型。只是经过编译器处理后，访问这块内存时将直接转而访问其指向的内存。因此在程序中无法读取到这块内存本身。</p>
+</li>
+<li><p>指针可以为空，但是引用必须绑定对象。（是否可为空）</p>
+</li>
+<li><p>指针可以有多级，但是引用只能一级。（是否能为多级）</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/%E5%8F%8B%E5%85%83%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/21/%E5%8F%8B%E5%85%83%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">友元函数</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-21 19:40:41 / Modified: 20:07:03" itemprop="dateCreated datePublished" datetime="2022-02-21T19:40:41+08:00">2022-02-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="友元函数的作用"><a href="#友元函数的作用" class="headerlink" title="友元函数的作用"></a>友元函数的作用</h2><p>友元提供了不同类的成员函数之间、类的成员函数与一般函数之间进行数据共享的机制。通过友元，一个不同函数或另一个类中的成员函数可以访问类中的私有成员和保护成员。</p>
+<h2 id="private-public-protected的访问范围"><a href="#private-public-protected的访问范围" class="headerlink" title="private,public,protected的访问范围"></a>private,public,protected的访问范围</h2><p>private: 只能由该类中的函数、其友元函数访问,不能被任何其他访问，该类的对象也不能访问</p>
+<p>protected: 可以被该类中的函数、子类的函数、以及其友元函数访问,但不能被该类的对象访问</p>
+<p>public: 可以被该类中的函数、子类的函数、其友元函数访问,也可以由该类的对象访问</p>
+<p>注：友元函数包括两种：设为友元的全局函数，设为友元类中的成员函数</p>
+<h2 id="类的继承后方法属性变化"><a href="#类的继承后方法属性变化" class="headerlink" title="类的继承后方法属性变化"></a>类的继承后方法属性变化</h2><p>使用private继承,父类的所有方法在子类中变为private;</p>
+<p>使用protected继承,父类的protected和public方法在子类中变为protected,private方法不变;</p>
+<p>使用public继承,父类中的方法属性不发生改变;</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/%E5%AE%9E%E4%BE%8B%E5%8C%96%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/21/%E5%AE%9E%E4%BE%8B%E5%8C%96%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">实例化一个对象的过程</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-21 19:32:51 / Modified: 19:34:25" itemprop="dateCreated datePublished" datetime="2022-02-21T19:32:51+08:00">2022-02-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ol>
+<li><p>分配空间</p>
+<p> 创建类对象首先要为该对象分配内存空间。不同的对象，为其分配空间的时机未必相同。全局对象、静态对象、分配在栈区域内的对象，在编译阶段进行内存分配；存储在堆空间的对象，是在运行阶段进行内存分配。</p>
+</li>
+<li><p>初始化</p>
+<p> 首先明确一点：初始化不同于赋值。初始化发生在赋值之前，初始化随对象的创建而进行，而赋值是在对象创建好后，为其赋上相应的值。这一点可以联想下上一个问题中提到：初始化列表先于构造函数体内的代码执行，初始化列表执行的是数据成员的初始化过程，这个可以从成员对象的构造函数被调用看的出来。</p>
+</li>
+<li><p>赋值</p>
+<p> 对象初始化完成后，可以对其进行赋值。对于一个类的对象，其成员变量的赋值过程发生在类的构造函数的函数体中。当执行完该函数体，也就意味着类对象的实例化过程完成了。（总结：构造函数实现了对象的初始化和赋值两个过程，对象的初始化是通过初始化列表来完成，而对象的赋值则才是通过构造函数的函数体来实现。）</p>
+</li>
+</ol>
+<p>注：对于拥有虚函数的类的对象，还需要给虚表指针赋值。</p>
+<pre><code>没有继承关系的类，分配完内存后，首先给虚表指针赋值，然后再列表初始化以及执行构造函数的函数体，即上述中的初始化和赋值操作。
+
+有继承关系的类，分配内存之后，首先进行基类的构造过程，然后给该派生类的虚表指针赋值，最后再列表初始化以及执行构造函数的函数体，即上述中的初始化和赋值操作。
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/c-%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/21/c-%E7%9F%A5%E8%AF%86%E7%82%B9/" class="post-title-link" itemprop="url">c++知识点</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-21 19:12:20 / Modified: 19:27:57" itemprop="dateCreated datePublished" datetime="2022-02-21T19:12:20+08:00">2022-02-21</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ol>
+<li><p>为什么拷贝构造函数必须为引用？</p>
+<p>避免拷贝构造函数无限制的递归，最终导致栈溢出。</p>
+<p>因为如果拷贝构造函数的参数不是引用的话，那么就是值传递。而值传递本身又会调用拷贝构造函数，拷贝构造函数又是值传递，值传递又会调用拷贝构造函数……导致无限递归下去。</p>
+</li>
+<li><p>构造函数的隐式调用</p>
+<p> 对已经实例化的对象赋值调用的是赋值函数，对还没实例话的对象赋值调用的是拷贝构造函数，这里使用的就是拷贝构造函数的隐式调用。</p>
+<p> 如：</p>
+<pre><code> A a;
+ a = b; 调用的是赋值函数
+
+ A a(b); 调用的也是拷贝构造函数
+
+ A a = b; 调用的是拷贝构造函数（隐式调用）
+</code></pre>
+</li>
+<li><p>C++类对象的初始化顺序</p>
+<p>构造函数调用顺序：</p>
+<pre><code> 1. 按照派生类继承基类的顺序，即派生列表中声明的顺序，依次调用基类的构造函数；
+ 2. 按照派生类中成员变量的声名顺序，依次调用派生类中成员变量所属类的构造函数；
+ 3. 执行派生类自身的构造函数。
+</code></pre>
+<p> 综上可以得出，类对象的初始化顺序：基类构造函数–&gt;派生类成员变量的构造函数–&gt;自身构造函数</p>
+<p> 注：</p>
+<pre><code> 基类构造函数的调用顺序与派生类的派生列表中的顺序有关；
+ 成员变量的初始化顺序与声明顺序有关；
+ 析构顺序和构造顺序相反。
+</code></pre>
+</li>
+<li><p>为什么用成员初始化列表会快一些？</p>
+<p>原因：用户自定义类型如果使用类初始化列表，直接调用该成员变量对应的构造函数即完成初始化；如果在构造函数中初始化，因为 C++ 规定，对象的成员变量的初始化动作发生在进入构造函数本体之前，那么在执行构造函数的函数体之前首先调用默认的构造函数为成员变量设初值，在进入函数体之后，调用该成员变量对应的构造函数。因此，使用列表初始化会减少调用默认的构造函数的过程，效率高。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/%E4%B8%8D%E5%90%8C%E5%B1%82%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/21/%E4%B8%8D%E5%90%8C%E5%B1%82%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" class="post-title-link" itemprop="url">不同层常用的网络协议</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-21 16:30:13 / Modified: 16:58:17" itemprop="dateCreated datePublished" datetime="2022-02-21T16:30:13+08:00">2022-02-21</time>
+            </span>
 
           
 
@@ -238,813 +547,62 @@
           <table>
 <thead>
 <tr>
-<th>malloc</th>
-<th>new</th>
+<th>层</th>
+<th>协议</th>
+<th>用处</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>从<strong>堆</strong>上动态分配内存</td>
-<td>从<strong>自由存储区</strong>动态分配内存</td>
+<td>数据链路层</td>
+<td>CSMA/CD</td>
+<td>载波监听，多点接入，冲突检测</td>
 </tr>
 <tr>
-<td>返回值是void*，需要强制转换</td>
-<td>自动返回对象类型的指针</td>
+<td></td>
+<td>PPP</td>
+<td>用户主机和ISP之间通信</td>
 </tr>
 <tr>
-<td>需要制定内存大小</td>
-<td>不需要制定内存大小</td>
+<td>网络层</td>
+<td>IP</td>
+<td>建立主机之间的联系</td>
 </tr>
 <tr>
-<td>分配失败返回NULL</td>
-<td>分配失败抛出bac_alloc异常</td>
+<td></td>
+<td>ARP</td>
+<td>地址解析协议，已知IP地址获取MAC地址</td>
 </tr>
 <tr>
-<td>内存不够不能重新分配</td>
-<td>可以重新分配</td>
+<td></td>
+<td>ICMP</td>
+<td>网际控制报文协议，封装在IP内，用于更有效地转发IP数据报</td>
 </tr>
 <tr>
-<td>不能调用构造函数和析构函数</td>
-<td>可以调用构造函数和析构函数</td>
+<td>传输层</td>
+<td>TCP</td>
+<td>建立点对点的可靠的连接</td>
 </tr>
 <tr>
-<td>不能初始化数组元素对象</td>
-<td>可以初始化数组元素对象？</td>
+<td></td>
+<td>UDP</td>
+<td>无连接，不可靠，及时性好</td>
+</tr>
+<tr>
+<td>应用层</td>
+<td>DHCP</td>
+<td>动态主机配置协议，用于配置主机的IP地址、子网掩码和网关</td>
+</tr>
+<tr>
+<td></td>
+<td>DNS</td>
+<td>域名解析协议，用于将域名转换成IP地址</td>
+</tr>
+<tr>
+<td></td>
+<td>HTTP, FTP, POP3, SMTP…</td>
+<td></td>
 </tr>
 </tbody></table>
-<p><strong>自由存储区</strong>是c++基于new操作符的一个抽象概念，其可以是堆也可以是静态存储区，主要取决于operator new的实现。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/30/const/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/11/30/const/" class="post-title-link" itemprop="url">const</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-11-30 15:52:54 / Modified: 16:17:43" itemprop="dateCreated datePublished" datetime="2021-11-30T15:52:54+08:00">2021-11-30</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><p>const是只读类型的变量，值不能修改，只能在定义的时候赋值。</p>
-<p>形式为const int a = 1;</p>
-<h2 id="常量指针和指针常量"><a href="#常量指针和指针常量" class="headerlink" title="常量指针和指针常量"></a>常量指针和指针常量</h2><p><strong>常量指针</strong>又叫<strong>底层const</strong>，形式为const int *p = &a;</p>
-<p>特点：不能使用该指针修改指向的值，但是可以修改指针指向的地址。</p>
-<p>即，初始化后不可以*p=2，但是可以p=&b;</p>
-<p><strong>指针常量</strong>又叫<strong>顶层const</strong>，形式为int* const p = &a;</p>
-<p>特点：能使用该指针修改指向的值，但是不可以修改指针指向的地址。</p>
-<p>即，初始化后可以*p=2，但是不能p=&b;</p>
-<p>还有一种叫做<strong>常指针常量</strong>的，形式为const int* const a = &b;</p>
-<p>是常量指针和指针常量的综合，既不可以修改指针指向的地址也不可以修改指针指向的值。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/19/%E8%AE%BA%E6%96%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/19/%E8%AE%BA%E6%96%87/" class="post-title-link" itemprop="url">论文</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-10-19 11:12:38" itemprop="dateCreated datePublished" datetime="2021-10-19T11:12:38+08:00">2021-10-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-11-30 15:52:03" itemprop="dateModified" datetime="2021-11-30T15:52:03+08:00">2021-11-30</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>\section{INTRODUCTION}</p>
-<p>\subsection{background}</p>
-<p>\subsection{application}</p>
-<p>\subsection{related work}</p>
-<p>\subsection{propose}</p>
-<p>\subsection{challenge}</p>
-<p>\subsection{techniques}</p>
-<p>\subsection{contributions}</p>
-<p>\subsection{paper organization}</p>
-<p>\section{BACKGROUND}</p>
-<p>\section{RELATED WORK}</p>
-<p>\section{SYSTEM DESIGN}</p>
-<p>\subsection{System Overview}</p>
-<p>headphone positioning -&gt; Head movement recognition -&gt; Head posture tracking</p>
-<p>\subsection{headphone positioning}</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/15/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951015/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/15/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951015/" class="post-title-link" itemprop="url">实验记录1015</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-10-15 11:08:01 / Modified: 18:51:37" itemprop="dateCreated datePublished" datetime="2021-10-15T11:08:01+08:00">2021-10-15</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>发射端距离身体十几厘米：20211014_103041</p>
-<p><img src="https://i.loli.net/2021/10/15/CYOQKIJ91GlMoNX.png" alt="20211015110858"></p>
-<p>这个数据还不错：20211015_123426<br><img src="https://i.loli.net/2021/10/15/8V6OMJUa2WSP9dI.png" alt="20211015123542"></p>
-<p>20211015_123946<br><img src="https://i.loli.net/2021/10/15/UnR4d2KDhAVlqYi.png" alt="20211015124113"></p>
-<p>发射端放到耳机上就不太好了：20211015_130101<br><img src="https://i.loli.net/2021/10/15/iHRTZQvMa7yIGpq.png" alt="20211015130229"></p>
-<p>发射端在耳机上，20211015_130834，SNR阈值设置为0.9效果还不错<br><img src="https://i.loli.net/2021/10/15/V4fqxD51rvb6dgU.png" alt="20211015131249"></p>
-<h2 id="六个接收端"><a href="#六个接收端" class="headerlink" title="六个接收端"></a>六个接收端</h2><p>数据编号：20211015_184816 降维后的第三个特征向量还可以</p>
-<p><img src="https://i.loli.net/2021/10/15/BhZlSYc5goHdTj4.png" alt="20211015185038"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/12/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951012/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/12/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951012/" class="post-title-link" itemprop="url">实验记录1012</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-10-12 15:03:39 / Modified: 17:10:00" itemprop="dateCreated datePublished" datetime="2021-10-12T15:03:39+08:00">2021-10-12</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>先对CIR做滑动平均滤波，然后在做PCA降维，得到的呼吸结果。</p>
-<p><img src="https://i.loli.net/2021/10/12/vTUS6tgoYzJaHhi.png" alt="20211012150346"></p>
-<p>数据编号：20211010_140604</p>
-<p>发射端放在肚子附近：20211012_170451</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951008/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951008/" class="post-title-link" itemprop="url">实验记录1008</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-10-08 12:31:24 / Modified: 12:32:08" itemprop="dateCreated datePublished" datetime="2021-10-08T12:31:24+08:00">2021-10-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.loli.net/2021/10/08/jt2qzDFK9uLiTNU.png" alt="20211008123140"><br>（左边是cir右边是dcir）</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/23/%E8%AE%A8%E8%AE%BA0924/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/23/%E8%AE%A8%E8%AE%BA0924/" class="post-title-link" itemprop="url">讨论0924</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-09-23 14:31:17" itemprop="dateCreated datePublished" datetime="2021-09-23T14:31:17+08:00">2021-09-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-09-24 13:00:08" itemprop="dateModified" datetime="2021-09-24T13:00:08+08:00">2021-09-24</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="头部追踪系统"><a href="#头部追踪系统" class="headerlink" title="头部追踪系统"></a>头部追踪系统</h2><h3 id="系统组成"><a href="#系统组成" class="headerlink" title="系统组成"></a>系统组成</h3><ol>
-<li><p>耳机定位</p>
-<p>在环境中部署若干个接收端，在左右耳机各部署一个发射端。两发射端发射不同的zc超声信号，接收端接收信号。参考GPS卫星定位的思想，每次都选择信号质量最好的三个接收端来计算与耳机的距离，然后根据三个距离用牛顿迭代解方程计算出耳机的位置（自己手写了牛顿迭代的代码解决了matlab里solve函数计算太慢的问题）。</p>
-<p>存在的问题：</p>
-<ol>
-<li>计算距离时用相位好像比不用相位效果更差。因为不用相位的精度是声速除以采样率（96k）精度为3.5mm左右，但是用相位要把距离先对波长取整，而波长是8.5mm左右，虽然可以用相位进行补偿，但是实验看起来补偿效果不是太好，用相位的测得的距离波动更大一些。<br><img src="https://i.loli.net/2021/09/24/c4IuQTwvkZKHYxq.png" alt="20210924124649"></li>
-<li>计算位置过程中因为每次都要选择三个信号最好的接收端，导致一旦接收端切换位置就可能会出现比较大的偏移。</li>
-</ol>
-</li>
-<li><p>头部动作识别</p>
-<p>把头部的动作进行分类（目前分成了六类，分别是：前后移动，左右移动，上下移动，旋转，俯仰，倾斜），然后利用耳机的位置数据来判断头部正在做哪个动作。</p>
-<p>采用LSTM作为分类模型，用左右耳机的轨迹完成头部动作分类。每秒对耳机定位10次，把两耳机2s的轨迹作为训练数据，因为每个耳机的位置是3维，所以构造特征维度为6长度为20的数据输入LSTM训练，六分类的平均准确率达到了97%以上。</p>
-<p>构造了一个数据集，六类动作每一类大概1000条数据，训练LSTM的效果如下。</p>
-<p> <img src="https://i.loli.net/2021/09/23/nFxqM32AwKhY8I4.png" alt="20210923160403"></p>
-<p> <img src="https://i.loli.net/2021/09/23/6TagVw3t1yEWLpG.png" alt="20210923160347"></p>
-</li>
-<li><p>头部朝向计算</p>
-<p>左右耳机的位置可以看成左右耳的位置，但是只知道两个点的坐标没办法计算出头部的朝向。我们知道头部的动作近似是围绕着脖子处的一个轴点进行的，有的动作会导致轴点位置改变（比如前后左右上下移动），而有的动作不会导致轴点位置改变（比如旋转俯仰倾斜）。</p>
-<p>在第二步识别出头部动作的基础上，如果是转动类型的动作（旋转，俯仰，倾斜），则轴点不变，如果是移动类型的动作（前后移动，左右移动，上下移动），虽然轴点发生变化了，但是轴点与两耳的相对位置基本可以认为是不变的，所以可以直接根据两耳的位置推算出轴点的位置，这里暂时只考虑了这些简单动作，没考虑复杂的移动，比如低着头移动等。最后根据两耳位置和轴点位置即可得到头部的姿态。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950922/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/22/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950922/" class="post-title-link" itemprop="url">实验记录0922</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-09-22 10:14:24" itemprop="dateCreated datePublished" datetime="2021-09-22T10:14:24+08:00">2021-09-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-09-23 20:00:33" itemprop="dateModified" datetime="2021-09-23T20:00:33+08:00">2021-09-23</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="完成LSTM"><a href="#完成LSTM" class="headerlink" title="完成LSTM"></a>完成LSTM</h2><p>numHiddenUnits = 200</p>
-<p>maxEpochs = 200</p>
-<p>miniBatchSize = 100</p>
-<p>rmsprop</p>
-<p>‘InitialLearnRate’, 0.001</p>
-<p><img src="https://i.loli.net/2021/09/22/vK1PFb24QZMIoW3.png" alt="20210922101444"></p>
-<hr>
-<p>numHiddenUnits = 200</p>
-<p>maxEpochs = 200</p>
-<p>miniBatchSize = 100</p>
-<p>adam</p>
-<p>‘InitialLearnRate’, 0.001</p>
-<p><img src="https://i.loli.net/2021/09/22/imF4S7CNlBaMtb2.png" alt="20210922152552"></p>
-<hr>
-<p>numHiddenUnits = 200</p>
-<p>maxEpochs = 200</p>
-<p>miniBatchSize = 100</p>
-<p>adam</p>
-<p>‘InitialLearnRate’, 0.0001</p>
-<p><img src="https://i.loli.net/2021/09/22/TeWNc492InFEzZA.png" alt="20210922162306"></p>
-<p>（学习率太低了）</p>
-<hr>
-<p>numHiddenUnits = 200</p>
-<p>maxEpochs = 200</p>
-<p>miniBatchSize = 50</p>
-<p>adam</p>
-<p>‘InitialLearnRate’, 0.001</p>
-<p>‘LearnRateSchedule’, ‘piecewise’</p>
-<p>‘LearnRateDropFactor’, 0.5</p>
-<p>‘LearnRateDropPeriod’, 50</p>
-<p><img src="https://i.loli.net/2021/09/23/DzHlK7QYUme9pvk.png" alt="20210923190541"></p>
-<p>（分段调节的学习率，效果反而不好）</p>
-<p>acc = 0.9674</p>
-<hr>
-<p>numHiddenUnits = 200</p>
-<p>maxEpochs = 200</p>
-<p>miniBatchSize = 50</p>
-<p>adam</p>
-<p>‘InitialLearnRate’, 0.001</p>
-<p><img src="https://i.loli.net/2021/09/23/jZbsLE6oVDzR2Gc.png" alt="20210923193326"></p>
-<p>acc = 0.9801</p>
-<hr>
-<p>numHiddenUnits = 200</p>
-<p>maxEpochs = 200</p>
-<p>miniBatchSize = 50</p>
-<p>adam</p>
-<p>‘InitialLearnRate’, 0.001</p>
-<p>‘LearnRateSchedule’, ‘piecewise’</p>
-<p>‘LearnRateDropFactor’, 0.5</p>
-<p>‘LearnRateDropPeriod’, 100</p>
-<p><img src="https://i.loli.net/2021/09/23/iE8cxjKBWTy9OfA.png" alt="20210923195915"></p>
-<p>（100epoch之后学习率减半，acc稍微低一点点）</p>
-<p>acc = 0.9772</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/27/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950827/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/27/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950827/" class="post-title-link" itemprop="url">实验记录0827</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-08-27 16:59:40 / Modified: 20:25:33" itemprop="dateCreated datePublished" datetime="2021-08-27T16:59:40+08:00">2021-08-27</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="函数重名bug"><a href="#函数重名bug" class="headerlink" title="函数重名bug"></a>函数重名bug</h2><p>workspace输入which strsplit -all查找函数strsplit的地址会发现两条记录：</p>
-<p>D:\chrome下载\HMM\HMMall\KPMtools\strsplit.m</p>
-<p>D:\MATLAB\R2020a\toolbox\matlab\strfun\strsplit.m  % Shadowed</p>
-<p>说明HMM里和toolbox里都有一个名为strsplit的函数，导致函数重名问题。</p>
-<p>该bug会在play并且调用hmm时触发，导致程序报错。如果只play采集数据不跑hmm的话不会报错，用已经采集好的数据跑hmm也不会报错。</p>
-<p>解决方法是把其中一个工具箱的函数名改掉，但是要找到所有调用该函数的地方改名，暂时还没解决掉。。</p>
-<h2 id="数据采集"><a href="#数据采集" class="headerlink" title="数据采集"></a>数据采集</h2><table>
-<thead>
-<tr>
-<th>数据编号</th>
-<th>分类动作</th>
-<th>分类编号</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>20210827_182636</td>
-<td>前后移动</td>
-<td>1</td>
-</tr>
-<tr>
-<td>20210827_183214</td>
-<td>左右移动</td>
-<td>2</td>
-</tr>
-<tr>
-<td>20210827_183657</td>
-<td>上下移动</td>
-<td>3</td>
-</tr>
-<tr>
-<td>20210827_184027</td>
-<td>左右倾斜</td>
-<td>4</td>
-</tr>
-<tr>
-<td>20210827_184337</td>
-<td>前后俯仰</td>
-<td>5</td>
-</tr>
-<tr>
-<td>20210827_184709</td>
-<td>左右旋转</td>
-<td>6</td>
-</tr>
-<tr>
-<td>20210827_194237</td>
-<td>前后移动</td>
-<td>1</td>
-</tr>
-<tr>
-<td>20210827_194606</td>
-<td>左右移动</td>
-<td>2</td>
-</tr>
-<tr>
-<td>20210827_195119</td>
-<td>上下移动</td>
-<td>3</td>
-</tr>
-<tr>
-<td>20210827_195413</td>
-<td>左右倾斜</td>
-<td>4</td>
-</tr>
-<tr>
-<td>20210827_195739</td>
-<td>前后俯仰</td>
-<td>5</td>
-</tr>
-<tr>
-<td>20210827_200120</td>
-<td>左右旋转</td>
-<td>6</td>
-</tr>
-<tr>
-<td>20210827_200819</td>
-<td>前后左右上下（平动）</td>
-<td>7</td>
-</tr>
-<tr>
-<td>20210827_201313</td>
-<td>倾斜俯仰旋转（转动）</td>
-<td>8</td>
-</tr>
-<tr>
-<td>20210827_201808</td>
-<td>随意平动</td>
-<td>7？</td>
-</tr>
-<tr>
-<td>20210827_202339</td>
-<td>随意转动</td>
-<td>8？</td>
-</tr>
-</tbody></table>
-<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><p>在某些情况下，尤其是移动比较剧烈（比如太左太右或者太高）时，两个定位点会移动到z轴上半轴，比如20210827_183214中后20s的数据。</p>
-<p>把每个数据编号都建立一个文件夹应该比较好。</p>
-<h2 id="是否可以直接模拟生成数据？"><a href="#是否可以直接模拟生成数据？" class="headerlink" title="是否可以直接模拟生成数据？"></a>是否可以直接模拟生成数据？</h2><p>代码构造一个人头让其移动，记录下来双耳的位置作为数据，这样可以获得大量训练集。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950826/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950826/" class="post-title-link" itemprop="url">实验记录0826</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-08-26 12:29:33 / Modified: 20:27:42" itemprop="dateCreated datePublished" datetime="2021-08-26T12:29:33+08:00">2021-08-26</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="hmm环境配置"><a href="#hmm环境配置" class="headerlink" title="hmm环境配置"></a>hmm环境配置</h2><p>用hmm之前要添加一下地址：addpath(genpath(‘D:\chrome下载\HMM\HMMall’))</p>
-<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><p>提高cal_pos解方程的速度，至少要提高到每秒10帧</p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>牛顿迭代就一定会用到雅可比矩阵，雅可比矩阵就一定会用到符号计算，用到符号计算就一定会很慢。。</p>
-<p><img src="https://i.loli.net/2021/08/26/TauQpWYhcdfrKGU.png" alt="20210826202638"></p>
-<p><img src="https://i.loli.net/2021/08/26/GQZ3nkTUK4odzAr.png" alt="20210826202715"></p>
 
       
     </div>
@@ -1063,7 +621,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1130,7 +688,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-count">146</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

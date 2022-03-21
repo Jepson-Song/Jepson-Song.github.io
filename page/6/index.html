@@ -188,7 +188,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/20/%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/04/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -202,171 +202,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/20/%E7%A3%81%E7%9B%98%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">磁盘管理</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-20 15:49:16 / Modified: 15:51:02" itemprop="dateCreated datePublished" datetime="2022-02-20T15:49:16+08:00">2022-02-20</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="磁盘调度算法"><a href="#磁盘调度算法" class="headerlink" title="磁盘调度算法"></a>磁盘调度算法</h2><p>读写一个磁盘块的时间的影响因素有：</p>
-<pre><code>旋转时间（主轴转动盘面，使得磁头移动到适当的扇区上）
-寻道时间（制动手臂移动，使得磁头移动到适当的磁道上）
-实际的数据传输时间
-</code></pre>
-<p>其中，寻道时间最长，因此磁盘调度的主要目标是使磁盘的平均寻道时间最短。</p>
-<ol>
-<li><p>先来先服务</p>
-<p> FCFS, First Come First Served</p>
-<p> 按照磁盘请求的顺序进行调度。</p>
-<p> 优点是公平和简单。缺点也很明显，因为未对寻道做任何优化，使平均寻道时间可能较长。</p>
-</li>
-<li><p>最短寻道时间优先</p>
-<p> SSTF, Shortest Seek Time First</p>
-<p> 优先调度与当前磁头所在磁道距离最近的磁道。</p>
-<p> 虽然平均寻道时间比较低，但是不够公平。如果新到达的磁道请求总是比一个在等待的磁道请求近，那么在等待的磁道请求会一直等待下去，也就是出现饥饿现象。具体来说，两端的磁道请求更容易出现饥饿现象。</p>
-<p> <img src="https://s2.loli.net/2022/02/20/vpGJOkajMPBUnbf.png" alt="20220220155042"></p>
-</li>
-<li><p>电梯算法</p>
-<p> 电梯总是保持一个方向运行，直到该方向没有请求为止，然后改变运行方向。</p>
-<p> 电梯算法（扫描算法）和电梯的运行过程类似，总是按一个方向来进行磁盘调度，直到该方向上没有未完成的磁盘请求，然后改变方向。</p>
-<p> 因为考虑了移动方向，因此所有的磁盘请求都会被满足，解决了 SSTF 的饥饿问题。</p>
-<p> <img src="https://s2.loli.net/2022/02/20/uwMSyHxKlRz1BZc.png" alt="20220220155049"></p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/19/%E8%BF%9E%E7%BB%AD%E4%B8%AD%E5%80%BC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/19/%E8%BF%9E%E7%BB%AD%E4%B8%AD%E5%80%BC/" class="post-title-link" itemprop="url">连续中值</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-19 17:11:13 / Modified: 17:17:25" itemprop="dateCreated datePublished" datetime="2022-02-19T17:11:13+08:00">2022-02-19</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="连续中值"><a href="#连续中值" class="headerlink" title="连续中值"></a>连续中值</h2><p>随机产生数字并传递给一个方法。你能否完成这个方法，在每次产生新值时，寻找当前所有值的中间值（中位数）并保存。</p>
-<p>中位数是有序列表中间的数。如果列表长度是偶数，中位数则是中间两个数的平均值。</p>
-<p>例如，</p>
-<p>[2,3,4] 的中位数是 3</p>
-<p>[2,3] 的中位数是 (2 + 3) / 2 = 2.5</p>
-<p>设计一个支持以下两种操作的数据结构：</p>
-<pre><code>void addNum(int num) - 从数据流中添加一个整数到数据结构中。
-double findMedian() - 返回目前所有元素的中位数。
-</code></pre>
-<p>示例：</p>
-<p>addNum(1)<br>addNum(2)<br>findMedian() -&gt; 1.5<br>addNum(3)<br>findMedian() -&gt; 2</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>数组分两半，左边建大顶堆维护左半部分的最大值，右边建小顶堆维护右半部分的最小值，两个堆顶的均值就是数组的中值。每次插入数据的时候判断一下：</p>
-<pre><code>如果要插入的数据比右边小顶堆堆顶小，则插到左边；
-如果要插入的数据比左边大顶堆堆顶大，则插到右边；
-如果介于二者中间，也插到右边，
-</code></pre>
-<p>同时要保证右边的小顶堆长度最多比左边的大顶堆大1。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><pre><code><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">priority_queue&lt;<span class="keyword">int</span>, vector&lt;<span class="keyword">int</span>&gt;, less&lt;<span class="keyword">int</span>&gt; &gt;bigheap;</span><br><span class="line">priority_queue&lt;<span class="keyword">int</span>, vector&lt;<span class="keyword">int</span>&gt;, greater&lt;<span class="keyword">int</span>&gt; &gt;smallheap;</span><br><span class="line"></span><br><span class="line"><span class="built_in">MedianFinder</span>() &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addNum</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(bigheap.<span class="built_in">size</span>()==<span class="number">0</span>&amp;&amp;smallheap.<span class="built_in">size</span>()&lt;=<span class="number">1</span>) smallheap.<span class="built_in">push</span>(num);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(num&lt;smallheap.<span class="built_in">top</span>()) bigheap.<span class="built_in">push</span>(num);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(num&gt;bigheap.<span class="built_in">top</span>()) smallheap.<span class="built_in">push</span>(num);</span><br><span class="line">    <span class="keyword">else</span> bigheap.<span class="built_in">push</span>(num);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(smallheap.<span class="built_in">size</span>()&gt;bigheap.<span class="built_in">size</span>()+<span class="number">1</span>)&#123;</span><br><span class="line">        bigheap.<span class="built_in">push</span>(smallheap.<span class="built_in">top</span>());</span><br><span class="line">        smallheap.<span class="built_in">pop</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(bigheap.<span class="built_in">size</span>()&gt;smallheap.<span class="built_in">size</span>())&#123;</span><br><span class="line">        smallheap.<span class="built_in">push</span>(bigheap.<span class="built_in">top</span>());</span><br><span class="line">        bigheap.<span class="built_in">pop</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">findMedian</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(smallheap.<span class="built_in">size</span>()&gt;bigheap.<span class="built_in">size</span>()) <span class="keyword">return</span> smallheap.<span class="built_in">top</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1.0</span>*(smallheap.<span class="built_in">top</span>()+bigheap.<span class="built_in">top</span>())/<span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/19/%E6%AD%BB%E9%94%81-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/19/%E6%AD%BB%E9%94%81-1/" class="post-title-link" itemprop="url">死锁</a>
+            <a href="/2022/03/04/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/" class="post-title-link" itemprop="url">系统调用</a>
         </h2>
 
         <div class="post-meta">
@@ -378,14 +214,14 @@ double findMedian() - 返回目前所有元素的中位数。
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2022-02-19 13:52:27" itemprop="dateCreated datePublished" datetime="2022-02-19T13:52:27+08:00">2022-02-19</time>
+              <time title="Created: 2022-03-04 17:02:45" itemprop="dateCreated datePublished" datetime="2022-03-04T17:02:45+08:00">2022-03-04</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-02 15:45:05" itemprop="dateModified" datetime="2022-03-02T15:45:05+08:00">2022-03-02</time>
+                <time title="Modified: 2022-03-06 13:35:31" itemprop="dateModified" datetime="2022-03-06T13:35:31+08:00">2022-03-06</time>
               </span>
 
           
@@ -399,54 +235,23 @@ double findMedian() - 返回目前所有元素的中位数。
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="死锁定义"><a href="#死锁定义" class="headerlink" title="死锁定义"></a>死锁定义</h2><p>线程死锁是指由于两个或者多个线程互相持有对方所需要的资源，导致这些线程处于等待状态，无法前往执行。</p>
-<h2 id="必要条件"><a href="#必要条件" class="headerlink" title="必要条件"></a>必要条件</h2><p>互斥：每个资源要么已经分配给了一个进程，要么就是可用的。</p>
-<p>占有和等待：已经得到了某个资源的进程可以再请求新的资源。</p>
-<p>不可抢占：已经分配给一个进程的资源不能强制性地被抢占，它只能被占有它的进程显式地释放。</p>
-<p>环路等待：有两个或者两个以上的进程组成一条环路，该环路中的每个进程都在等待下一个进程所占有的资源。</p>
-<h2 id="死锁的处理策略"><a href="#死锁的处理策略" class="headerlink" title="死锁的处理策略"></a>死锁的处理策略</h2><ol>
-<li><p>鸵鸟策略</p>
-<p>把头埋在沙子里，假装根本没发生问题。</p>
-<p> 因为解决死锁问题的代价很高，因此鸵鸟策略这种不采取任务措施的方案会获得更高的性能。</p>
-<p> 当发生死锁时不会对用户造成多大影响，或发生死锁的概率很低，可以采用鸵鸟策略。</p>
-<p> 大多数操作系统，包括 Unix，Linux 和 Windows，处理死锁问题的办法仅仅是忽略它。</p>
+          <h2 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h2><p>系统调用就是调用操作系统提供的一系列内核功能函数，因为内核总是对用户程序持不信任的态度，一些核心功能不能直接交由用户程序来实现执行。用户程序只能发出请求，然后内核调用相应的内核函数来帮着处理，将结果返回给应用程序。如此才能保证系统的稳定和安全。</p>
+<p>系统调用是给用户态下的程序使用的，但是用户程序并不直接使用系统调用，而是系统调用在用户态下的接口。这个用户接口就是操作系统提供的系统调用API，一般遵循POSIX标准。</p>
+<p>每一个系统调用都唯一分配了一个整数来标识，通常的做法就是将这个系统调用号放进eax寄存器，当执行到系统调用入口程序的时候就会根据eax的值去调用具体的系统调用程序，比如说eax中存放的是1那么就会去调用fork这个系统调用的相关函数。</p>
+<h3 id="系统调用的实现"><a href="#系统调用的实现" class="headerlink" title="系统调用的实现"></a>系统调用的实现</h3><ul>
+<li><p>参数</p>
+<p>  有些系统调用的是需要参数的，用户接口不真正干活，真正干活的是内核功能函数，但是需要的参数在用户态下，所以需要在用户接口部分向内核传递参数。传参有两种方法：</p>
+<ul>
+<li><p>直接传给寄存器，寄存器是通用的，在用户态将值传给寄存器，进入内核态之后就可以直接使用，这可以使用内联汇编来实现。</p>
 </li>
-<li><p>死锁预防：破坏死锁的四个条件之一</p>
-<p> 破环互斥条件：允许资源共享；</p>
-<p> 破环占有和等待条件：一次性分配所有资源，只要缺少一个资源，其它资源也都不给他分配；</p>
-<p> 破坏不可抢占：请求新资源得不到时，释放已经保持占有的资源，待以后重新申请；</p>
-<p> 破坏环路等待：采用顺序资源分配法，给每个资源编号，进程申请资源的时候按照编号顺序申请，释放的时候则相反；</p>
+<li><p>压栈，压栈有个问题，系统调用使用中断/陷阱来实现，这期间会换栈，在用户态下压栈的参数对内核来说似乎没什么用处。所以要想使用用户态下栈中的参数，必须要获得用户栈的地址，这个值在哪呢？没错，在内核栈中的上下文保存着，从内核栈中取出用户栈的栈顶esp值，就可以取到系统调用的参数了，xv6就是这样实现的。</p>
 </li>
-<li><p>死锁检测与解除：</p>
-<p> 检测死锁：利用死锁原理化简资源分配图检测死锁的存在</p>
-<p> 死锁解除：资源剥夺、撤销进程、进程回退</p>
-<pre><code> 剥夺资源：从其它进程剥夺足够数量的资源给死锁进程，以解除死锁状态；
-
- 撤消进程：可以直接撤消死锁进程或撤消代价最小的进程，直至有足够的资源可用，死锁状态.消除为止；所谓代价是指优先级、运行代价、进程的重要性和价值等。
-</code></pre>
+</ul>
 </li>
-<li><p>死锁避免：死锁避免事先预防策略，但是是采用资源动态分配的过程中，防止系统进入不安全状态，以避免死锁。</p>
-<p> 预防死锁的几种策略，会严重地损害系统性能。因此在避免死锁时，要施加较弱的限制，从而获得 较满意的系统性能。由于在避免死锁的策略中，允许进程动态地申请资源。因而，系统在进行资源分配之前预先计算资源分配的安全性。若此次分配不会导致系统进入不安全的状态，则将资源分配给进程；否则，进程等待。其中最具有代表性的避免死锁算法是银行家算法。</p>
-<p> 银行家算法：首先需要定义状态和安全状态的概念。系统的状态是当前给进程分配的资源情况。因此，状态包含两个向量Resource（系统中每种资源的总量）和Available（未分配给进程的每种资源的总量）及两个矩阵Claim（表示进程对资源的需求）和Allocation（表示当前分配给进程的资源）。安全状态是指至少有一个资源分配序列不会导致死锁。当进程请求一组资源时，假设同意该请求，从而改变了系统的状态，然后确定其结果是否还处于安全状态。如果是，同意这个请求；如果不是，阻塞该进程知道同意该请求后系统状态仍然是安全的。</p>
+<li><p>返回值</p>
+<p>  函数的调用约定中规定了返回值应该放在eax寄存器里面。而在系统调用的一开始我们将系统调用号传进了eax寄存器，然后中断时保存上下文，将eax压入内核栈，系统调用处理程序将最后结果放到eax寄存器中。</p>
 </li>
-</ol>
-<h2 id="银行家算法"><a href="#银行家算法" class="headerlink" title="银行家算法"></a>银行家算法</h2><p>银行家算法是仿照银行发放贷款时采用的控制方式而设计的一种死锁避免算法，该算法的策略是实现动态避免死锁。</p>
-<h3 id="算法思想"><a href="#算法思想" class="headerlink" title="算法思想"></a>算法思想</h3><p>银行家算法的基本思想是：分配资源之前，判断系统是否安全，如果安全才会进行资源分配。</p>
-<p>我们把操作系统看做是银行家，操作系统管理的资源相当于银行家的资金，线程向操作系统请求分配资源就是用户向银行家要贷款。</p>
-<p>算法在每次分配资源前需要要求： request &lt; available &amp;&amp; request &lt; needing;</p>
-<h3 id="算法实例"><a href="#算法实例" class="headerlink" title="算法实例"></a>算法实例</h3><p>系统中有R1，R2，R3三种资源，在time0时刻，5个线程T0，T1，T2，T3，T4对资源占用和需求的情况如下表，此时系统的可用资源向量为(3,3,2)。求T0时刻系统是否存在安全序列？</p>
-<p><img src="https://s2.loli.net/2022/02/19/VkdnsuegCWtRB3Y.png" alt="20220219142642"></p>
-<p>我们假设每个线程执行时间为一个时刻。</p>
-<p>1、在time0时刻，available(3,3,2) &gt; T1.needing(1,2,2)； 所以T1可以执行，T1执行完毕之后available = T1.allocated(2,0,0) + available(3,3,2) = (5,3,2);</p>
-<p><img src="https://s2.loli.net/2022/02/19/VSrsExfi6GpQ78u.png" alt="20220219142719"></p>
-<p>2、进入time1时刻，available(5,3,2) &gt; T3.needing(0,1,1)；所以T3可以执行，T3执行完毕之后available = T3.allocated(2,1,1)+available(5,3,2) = (7,4,3)；</p>
-<p><img src="https://s2.loli.net/2022/02/19/Yw83SBZubGzjMct.png" alt="20220219142727"></p>
-<p>3、进入time2时刻，available(7,4,3) &gt; T4.needing(4,3,1)；所以T4可以执行，T4执行完毕之后available = T4.allocated(0,0,2) + available(7,4,3) = (7,4,5)；</p>
-<p><img src="https://s2.loli.net/2022/02/19/C7XSQbAgKFu2Bwc.png" alt="20220219142735"></p>
-<p>4、进入time3时刻，available(7,4,5) &gt; T2.needing(6,0,0)；所以T2可以执行，T2指向完毕之后available = T2.allocated(3,0,2) + available(7,4,5) = (10,4,7)；</p>
-<p><img src="https://s2.loli.net/2022/02/19/gkcsiXuh7IjYG46.png" alt="20220219142741"></p>
-<p>5、进入time4时刻，因为available(10,4,7) &gt; T0.needing(7,4,3)；所以执行T0。完成安全序列。</p>
-<p>上面只是安全序列的一个例子，可能还存在其他安全序列。</p>
+</ul>
 
       
     </div>
@@ -466,7 +271,7 @@ double findMedian() - 返回目前所有元素的中位数。
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/18/%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/04/%E8%AF%AD%E6%B3%95%E7%B3%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -480,7 +285,7 @@ double findMedian() - 返回目前所有元素的中位数。
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/18/%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" class="post-title-link" itemprop="url">进程通信</a>
+            <a href="/2022/03/04/%E8%AF%AD%E6%B3%95%E7%B3%96/" class="post-title-link" itemprop="url">语法糖</a>
         </h2>
 
         <div class="post-meta">
@@ -493,7 +298,7 @@ double findMedian() - 返回目前所有元素的中位数。
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-18 16:41:42 / Modified: 16:44:20" itemprop="dateCreated datePublished" datetime="2022-02-18T16:41:42+08:00">2022-02-18</time>
+              <time title="Created: 2022-03-04 16:45:32 / Modified: 16:47:13" itemprop="dateCreated datePublished" datetime="2022-03-04T16:45:32+08:00">2022-03-04</time>
             </span>
 
           
@@ -507,40 +312,10 @@ double findMedian() - 返回目前所有元素的中位数。
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="进程通信"><a href="#进程通信" class="headerlink" title="进程通信"></a>进程通信</h2><p>进程同步与进程通信很容易混淆，它们的区别在于：</p>
-<pre><code>进程同步：控制多个进程按一定顺序执行；
-
-进程通信：进程间传输信息。
-</code></pre>
-<p>进程通信是一种手段，而进程同步是一种目的。也可以说，为了能够达到进程同步的目的，需要让进程进行通信，传输一些进程同步所需要的信息。</p>
-<ol>
-<li><p>管道</p>
-<p> 它具有以下限制：</p>
-<p> 只支持半双工通信（单向交替传输）；<br> 只能在父子进程或者兄弟进程中使用。</p>
-</li>
-<li><p>FIFO</p>
-<p> 也称为命名管道，去除了管道只能在父子进程中使用的限制。</p>
-</li>
-<li><p>消息队列</p>
-<p> 相比于 FIFO，消息队列具有以下优点：</p>
-<pre><code> 消息队列可以独立于读写进程存在，从而避免了 FIFO 中同步管道的打开和关闭时可能产生的困难；
-
- 避免了 FIFO 的同步阻塞问题，不需要进程自己提供同步方法；
- 
- 读进程可以根据消息类型有选择地接收消息，而不像 FIFO 那样只能默认地接收。
-</code></pre>
-</li>
-<li><p>信号量</p>
-<p> 它是一个计数器，用于为多个进程提供对共享数据对象的访问。</p>
-</li>
-<li><p>共享存储</p>
-<p> 允许多个进程共享一个给定的存储区。因为数据不需要在进程之间复制，所以这是最快的一种 IPC。</p>
-<p> 需要使用信号量用来同步对共享存储的访问。</p>
-<p> 多个进程可以将同一个文件映射到它们的地址空间从而实现共享内存。另外 XSI 共享内存不是使用文件，而是使用内存的匿名段。</p>
-</li>
-<li><p>套接字<br> 与其它通信机制不同的是，它可用于不同机器间的进程通信。</p>
-</li>
-</ol>
+          <p>语法糖(syntactic sugar)，也译为糖衣语法，是由英国计算机科学家彼得·约翰·兰达（Peter J. Landin）发明的一个术语，指计算机语言中添加的某种语法，这种语法对语言的功能并没有影响，但是更方便程序员使用。通常来说使用语法糖能够增加程序的可读性，从而减少程序代码出错的机会。</p>
+<p>语法糖是指编程语言中可以更容易的表达一个操作的语法，它可以使程序员更加容易去使用这门语言：操作可以变得更加清晰、方便，或者更加符合程序员的编程习惯。</p>
+<p>具体来说，语法糖是指语言中的一个构件，当去掉该构件后并不影响语言的功能和表达能力。</p>
+<p>例如，C语言中的标记a[i]就是*(a+i)的语法糖。</p>
 
       
     </div>
@@ -560,7 +335,7 @@ double findMedian() - 返回目前所有元素的中位数。
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/18/%E8%AE%A8%E8%AE%BA0218/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/03/STL/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -574,7 +349,7 @@ double findMedian() - 返回目前所有元素的中位数。
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/18/%E8%AE%A8%E8%AE%BA0218/" class="post-title-link" itemprop="url">讨论0218</a>
+            <a href="/2022/03/03/STL/" class="post-title-link" itemprop="url">STL</a>
         </h2>
 
         <div class="post-meta">
@@ -587,7 +362,7 @@ double findMedian() - 返回目前所有元素的中位数。
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-18 13:23:32 / Modified: 13:26:52" itemprop="dateCreated datePublished" datetime="2022-02-18T13:23:32+08:00">2022-02-18</time>
+              <time title="Created: 2022-03-03 20:24:00 / Modified: 21:14:27" itemprop="dateCreated datePublished" datetime="2022-03-03T20:24:00+08:00">2022-03-03</time>
             </span>
 
           
@@ -601,12 +376,97 @@ double findMedian() - 返回目前所有元素的中位数。
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>目前的瓶颈：应用场景</p>
-<p>有源方案的问题：头上只有两个点，测朝向有局限性</p>
-<p>无源方案的问题：只做头部朝向的分类，太小了</p>
-<p>都存在的问题：呼吸和心跳融不进头部朝向</p>
-<p>卖技术：一个技术能在很多场景应用</p>
-<p>卖故事：把一个应用场景的故事讲的很好</p>
+          <table>
+<thead>
+<tr>
+<th>STL</th>
+<th>类型</th>
+<th>名称</th>
+<th>底层实现</th>
+<th>特性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>vector</td>
+<td>顺序型容器</td>
+<td>变长数组</td>
+<td>数组</td>
+<td>O(1)查找O(n)插入</td>
+</tr>
+<tr>
+<td>list</td>
+<td>顺序型容器</td>
+<td>链表</td>
+<td>双向链表</td>
+<td>O(n)查找O(1)插入</td>
+</tr>
+<tr>
+<td>deque</td>
+<td>顺序型容器</td>
+<td>双端队列</td>
+<td>类似二维数组</td>
+<td>由若干段大小相等的连续内存组成，不同段之间可能不连续，数组中每个节点都指向一段内存</td>
+</tr>
+<tr>
+<td>map</td>
+<td>有序关联型容器</td>
+<td>映射</td>
+<td>红黑树</td>
+<td>按照key值排序，key不重复</td>
+</tr>
+<tr>
+<td>mutimap</td>
+<td>有序关联型容器</td>
+<td>多重映射</td>
+<td>红黑树</td>
+<td>按照key值排序，key可重复</td>
+</tr>
+<tr>
+<td>set</td>
+<td>有序关联型容器</td>
+<td>集合</td>
+<td>红黑树</td>
+<td>按照key值排序，key不重复</td>
+</tr>
+<tr>
+<td>mutiset</td>
+<td>有序关联型容器</td>
+<td>多重集合</td>
+<td>红黑树</td>
+<td>按照key值排序，key可重复</td>
+</tr>
+<tr>
+<td>unordered_map</td>
+<td>无序关联型容器</td>
+<td>无序映射</td>
+<td>哈希表</td>
+<td>不排序，用链表法解决哈希冲突（哈希桶）</td>
+</tr>
+<tr>
+<td>stack</td>
+<td>容器适配器</td>
+<td>栈</td>
+<td>deque</td>
+<td>先进后出</td>
+</tr>
+<tr>
+<td>queue</td>
+<td>容器适配器</td>
+<td>队列</td>
+<td>deque</td>
+<td>先进先出</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>容器支持迭代器，容器适配器不支持迭代器。</p>
+</li>
+<li><p>map中的基本元素就是对组pair。</p>
+</li>
+<li><p>pair是用一个结构体实现的，结构体主要的两个成员变量first和second，分别存储两个数据。</p>
+</li>
+<li><p>map中的pair第一个元素为key(键值)，起索引作用，就相当于数组下标，第二个元素为value(实值)。map所有元素会根据键值大小自动排序</p>
+</li>
+</ul>
 
       
     </div>
@@ -626,7 +486,7 @@ double findMedian() - 返回目前所有元素的中位数。
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/%E8%AF%BB%E8%80%85%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/02/%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -640,7 +500,7 @@ double findMedian() - 返回目前所有元素的中位数。
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/17/%E8%AF%BB%E8%80%85%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">读者写者问题</a>
+            <a href="/2022/03/02/%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">买卖股票问题总结</a>
         </h2>
 
         <div class="post-meta">
@@ -653,7 +513,7 @@ double findMedian() - 返回目前所有元素的中位数。
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-17 19:27:31 / Modified: 19:29:36" itemprop="dateCreated datePublished" datetime="2022-02-17T19:27:31+08:00">2022-02-17</time>
+              <time title="Created: 2022-03-02 15:22:14 / Modified: 15:31:17" itemprop="dateCreated datePublished" datetime="2022-03-02T15:22:14+08:00">2022-03-02</time>
             </span>
 
           
@@ -667,16 +527,24 @@ double findMedian() - 返回目前所有元素的中位数。
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>允许多个进程同时对数据进行读操作，但是不允许读和写以及写和写操作同时发生。</p>
-<p>一个整型变量 count 记录在对数据进行读操作的进程数量，一个互斥量 count_mutex 用于对 count 加锁，一个互斥量 data_mutex 用于对读写的数据加锁。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> samephore;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">down</span><span class="params">(<span class="keyword">int</span>* x)</span></span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">up</span><span class="params">(<span class="keyword">int</span>* y)</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">samephore count_mutex = <span class="number">1</span>;</span><br><span class="line">samephore data_mutex = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reader</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count ++;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">1</span>) <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">        <span class="comment">//read</span></span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count --;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">0</span>) <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">writer</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="comment">//write</span></span><br><span class="line">        <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <p>leetcode上买卖股票问题一共有六道题，六道题十分相似，只要掌握一个算法稍作修改就可以都AC掉，现做一个总结。</p>
+<h2 id="买卖股票的最佳时机"><a href="#买卖股票的最佳时机" class="headerlink" title="买卖股票的最佳时机"></a>买卖股票的最佳时机</h2><p>只能买卖一次</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        buy = <span class="built_in">max</span>(buy, <span class="number">0</span>-prices[i]);</span><br><span class="line">        sell = <span class="built_in">max</span>(sell, prices[i]+buy);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>此解法中读者是优先的，当存在读者时，写者将被延迟，且只要有一个读者活跃，随后而来的读者都将被允许访问此文件，从而导致写者长时间等待，并有可能出现写者饥饿现象。</p>
-<p>增加信号量并修改此程序，让写者与读者平等：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">samephore s = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reader</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">down</span>(&amp;s);</span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count ++;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">1</span>) <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;s);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//read</span></span><br><span class="line">        </span><br><span class="line">        <span class="built_in">down</span>(&amp;count_mutex);</span><br><span class="line">        count --;</span><br><span class="line">        <span class="keyword">if</span>(count==<span class="number">0</span>) <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;count_mutex);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">writer</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="built_in">down</span>(&amp;s);</span><br><span class="line">        <span class="built_in">down</span>(&amp;data_mutex);</span><br><span class="line">        <span class="comment">//write</span></span><br><span class="line">        <span class="built_in">up</span>(&amp;data_mutex);</span><br><span class="line">        <span class="built_in">up</span>(&amp;s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="买卖股票的最佳时机-II"><a href="#买卖股票的最佳时机-II" class="headerlink" title="买卖股票的最佳时机 II"></a>买卖股票的最佳时机 II</h2><p>可以买卖多次</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        buy = <span class="built_in">max</span>(buy, sell-prices[i]);</span><br><span class="line">        sell = <span class="built_in">max</span>(sell, prices[i]+buy);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>假设进程队列：R1、W1、W2、R2、R3</p>
-<p>当R1刚刚执行完V(s)，W1进程若调度会卡在P(writeblock)，而W2R2R3想要运行，均会卡在P(s)，当R1读完，V(writeblock)完成，W1可以运行，以此类推，R1W1W2R2R3按顺序调度。</p>
+<h2 id="买卖股票的最佳时机-III"><a href="#买卖股票的最佳时机-III" class="headerlink" title="买卖股票的最佳时机 III"></a>买卖股票的最佳时机 III</h2><p>只能买卖两次</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> buy2 = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell2 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        buy = <span class="built_in">max</span>(buy, <span class="number">0</span>-prices[i]);</span><br><span class="line">        sell = <span class="built_in">max</span>(sell, prices[i]+buy);</span><br><span class="line">        buy2 = <span class="built_in">max</span>(buy2, sell-prices[i]);</span><br><span class="line">        sell2 = <span class="built_in">max</span>(sell2, prices[i]+buy2);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="买卖股票的最佳时机-IV"><a href="#买卖股票的最佳时机-IV" class="headerlink" title="买卖股票的最佳时机 IV"></a>买卖股票的最佳时机 IV</h2><p>只能买卖K次</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span> k, vector&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy[k+<span class="number">1</span>], sell[k+<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=k;i++)&#123;</span><br><span class="line">        buy[i] = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">        sell[i] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=k;j++)&#123;</span><br><span class="line">            buy[j] = <span class="built_in">max</span>(buy[j], sell[j<span class="number">-1</span>]-prices[i]);</span><br><span class="line">            sell[j] = <span class="built_in">max</span>(sell[j], prices[i]+buy[j]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell[k];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="最佳买卖股票时机含冷冻期"><a href="#最佳买卖股票时机含冷冻期" class="headerlink" title="最佳买卖股票时机含冷冻期"></a>最佳买卖股票时机含冷冻期</h2><p>有一天冷冻期，卖了之后隔一个天才能再买</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> sell2 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        buy = <span class="built_in">max</span>(buy, sell2-prices[i]);</span><br><span class="line"></span><br><span class="line">        sell2 = sell;</span><br><span class="line">        sell = <span class="built_in">max</span>(sell, prices[i]+buy);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="买卖股票的最佳时机含手续费"><a href="#买卖股票的最佳时机含手续费" class="headerlink" title="买卖股票的最佳时机含手续费"></a>买卖股票的最佳时机含手续费</h2><p>每次买卖需要交手续费fee（同一次买卖只交一次）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; prices, <span class="keyword">int</span> fee)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        buy = <span class="built_in">max</span>(buy, sell-prices[i]-fee);</span><br><span class="line">        sell = <span class="built_in">max</span>(sell, prices[i]+buy);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -696,7 +564,7 @@ double findMedian() - 返回目前所有元素的中位数。
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%90%8C%E6%AD%A5%E5%92%8C%E4%BA%92%E6%96%A5/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/02/%E9%A1%B5%E8%A1%A8%E5%92%8C%E5%BF%AB%E8%A1%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -710,7 +578,7 @@ double findMedian() - 返回目前所有元素的中位数。
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/17/%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%90%8C%E6%AD%A5%E5%92%8C%E4%BA%92%E6%96%A5/" class="post-title-link" itemprop="url">进程的同步和互斥</a>
+            <a href="/2022/03/02/%E9%A1%B5%E8%A1%A8%E5%92%8C%E5%BF%AB%E8%A1%A8/" class="post-title-link" itemprop="url">页表和快表</a>
         </h2>
 
         <div class="post-meta">
@@ -723,7 +591,7 @@ double findMedian() - 返回目前所有元素的中位数。
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-17 17:02:32 / Modified: 18:26:02" itemprop="dateCreated datePublished" datetime="2022-02-17T17:02:32+08:00">2022-02-17</time>
+              <time title="Created: 2022-03-02 08:59:23 / Modified: 09:16:01" itemprop="dateCreated datePublished" datetime="2022-03-02T08:59:23+08:00">2022-03-02</time>
             </span>
 
           
@@ -737,247 +605,30 @@ double findMedian() - 返回目前所有元素的中位数。
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><p>同步亦称直接制约关系，它是指为完成某种任务而建立的两个或多个进程，这些进程因为需要在某些位置上协调它们的工作次序而等待、传递信息所产生的制约关系。</p>
-<p>进程间的直接制约关系就是源于它们之间的相互合作。例如：上面两个程序可以看成5+3*5中的加法程序和乘法程序。若先执行乘法程序再执行加法程序，则5+3*5=20。这个答案一定是对的吗？其实不然。如果我们想要的答案是40，就要先执行加法程序再执行乘法程序，(5+3)*5=40。我们通过加 () 改变了运算的先后顺序，使先乘除后加减变成了先加减后乘除，这就是一种同步机制。</p>
-<h2 id="互斥"><a href="#互斥" class="headerlink" title="互斥"></a>互斥</h2><p>互斥亦称间接制约关系。当一个进程进入临界区使用临界资源时，另一个进程必须等待，当占用临界资源的进程退出临界区后，另一进程才允许去访问此临界资源。</p>
-<p>例如，在仅有一台打印机的系统中，有两个进程A和进程B，如果进程A需要打印时，系统已将打印机分配给进程B，则进程A必须阻塞。一旦进程B将打印机释放，系统便将进程A唤醒，并将其由阻塞状态变为就绪状态。为禁止两个进程同时进入临界区，同步机制应遵循以下准则：</p>
-<pre><code>空闲让进：临界区空闲时，可以允许一个请求进入临界区的进程立即进入临界区。
-
-忙则等待：当已有进程进入临界区时，其他试图进入临界区的进程必须等待。
-
-有限等待：对请求访问的进程，应保证能在有限时间内进入临界区。
-
-让权等待：当进程不能进入临界区时，应立即释放处理器，防止进程忙等待。
-</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD/" class="post-title-link" itemprop="url">操作系统基本功能</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-17 17:00:48 / Modified: 18:22:43" itemprop="dateCreated datePublished" datetime="2022-02-17T17:00:48+08:00">2022-02-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="基本功能"><a href="#基本功能" class="headerlink" title="基本功能"></a>基本功能</h2><ol>
-<li><p>进程管理</p>
-<p> 进程控制、进程同步、进程通信、死锁处理、处理机调度等。</p>
+          <h2 id="页表"><a href="#页表" class="headerlink" title="页表"></a>页表</h2><ul>
+<li><p>页表是将逻辑地址转换为物理地址。</p>
 </li>
-<li><p>内存管理</p>
-<p> 内存分配、地址映射、内存保护与共享、虚拟内存等。</p>
+<li><p>页表内存储的是页号和块号的映射。</p>
 </li>
-<li><p>文件管理</p>
-<p> 文件存储空间的管理、目录管理、文件读写管理和保护等。</p>
+<li><p>逻辑地址整除页长得到的商就是页号，余数就是页面偏移量。</p>
 </li>
-<li><p>设备管理</p>
-<p> 完成用户的 I/O 请求，方便用户使用各种设备，并提高设备的利用率。</p>
-<p> 主要包括缓冲管理、设备分配、设备处理、虛拟设备等。</p>
+<li><p>通过页表将页号转换为块号，在用块号和页面偏移量即可得到数据在内存中的物理地址。</p>
 </li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81/" class="post-title-link" itemprop="url">操作系统基本特征</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-17 16:26:27 / Modified: 16:58:45" itemprop="dateCreated datePublished" datetime="2022-02-17T16:26:27+08:00">2022-02-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="基本特征"><a href="#基本特征" class="headerlink" title="基本特征"></a>基本特征</h2><ol>
-<li><p>并发</p>
-<p> 并发是指宏观上在一段时间内能同时运行多个程序，而并行则指同一时刻能运行多个指令。</p>
-<p> 并行需要硬件支持，如多流水线、多核处理器或者分布式计算系统。</p>
-<p> 操作系统通过引入进程和线程，使得程序能够并发运行。</p>
+<li><p>当请求的页面不在内存中时（页表中还有状态位等信息表示页面是否在内存中），发生缺页中断将需要的页面调入内存，如果内存没有多余的空间则使用页面置换算法替换掉内存中的某个页。</p>
 </li>
-<li><p>共享</p>
-<p> 共享是指系统中的资源可以被多个并发进程共同使用。</p>
-<p> 有两种共享方式：互斥共享和同时共享。</p>
-<p> 互斥共享的资源称为临界资源，例如打印机等，在同一时刻只允许一个进程访问，需要用同步机制来实现互斥访问。</p>
+</ul>
+<p><img src="https://s2.loli.net/2022/03/02/3oqNDV2jnAOx5EL.png" alt="20220302085955"></p>
+<h2 id="快表"><a href="#快表" class="headerlink" title="快表"></a>快表</h2><ul>
+<li><p>快表是一种比内存快很多的高速缓存存储器</p>
 </li>
-<li><p>虚拟</p>
-<p> 虚拟技术把一个物理实体转换为多个逻辑实体。</p>
-<p> 主要有两种虚拟技术：时（时间）分复用技术和空（空间）分复用技术。</p>
-<p> 多个进程能在同一个处理器上并发执行使用了时分复用技术，让每个进程轮流占用处理器，每次只执行一小个时间片并快速切换。</p>
-<p> 虚拟内存使用了空分复用技术，它将物理内存抽象为地址空间，每个进程都有各自的地址空间。地址空间的页被映射到物理内存，地址空间的页并不需要全部在物理内存中，当使用到一个没有在物理内存的页时，执行页面置换算法，将该页置换到内存中。</p>
+<li><p>快表存储的是一些常用的的页号，相当于页表的cache，如果快表命中了则不需要再访问页表。</p>
 </li>
-<li><p>异步</p>
-<p> 异步指进程不是一次性执行完毕，而是走走停停，以不可知的速度向前推进</p>
+<li><p>快表中的页一定在内存中，页表中的页不一定在内存中。</p>
 </li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/%E9%A9%AC%E6%88%8F%E5%9B%A2%E4%BA%BA%E5%A1%94/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/17/%E9%A9%AC%E6%88%8F%E5%9B%A2%E4%BA%BA%E5%A1%94/" class="post-title-link" itemprop="url">马戏团人塔</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-17 13:22:21 / Modified: 13:29:08" itemprop="dateCreated datePublished" datetime="2022-02-17T13:22:21+08:00">2022-02-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>有个马戏团正在设计叠罗汉的表演节目，一个人要站在另一人的肩膀上。出于实际和美观的考虑，在上面的人要比下面的人矮一点且轻一点。已知马戏团每个人的身高和体重，请编写代码计算叠罗汉最多能叠几个人。</p>
-<p>示例：</p>
-<pre><code>输入：height = [65,70,56,75,60,68] weight = [100,150,90,190,95,110]
-输出：6
-解释：从上往下数，叠罗汉最多能叠 6 层：(56,90), (60,95), (65,100), (68,110), (70,150), (75,190)
-</code></pre>
-<p>思路:</p>
-<pre><code>先按照身高降序按照体重升序排序，然后再对体重做最长下降子序列。
-因为数据范围是10000所以n^2的算法不行，需要用栈+二分的方法做。
-</code></pre>
-<p>代码：</p>
-<pre><code><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> height;</span><br><span class="line">    <span class="keyword">int</span> weight;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(<span class="keyword">const</span> node &amp;a, <span class="keyword">const</span> node &amp;b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(a.height!=b.height) <span class="keyword">return</span> a.height&gt;b.height;</span><br><span class="line">    <span class="keyword">return</span> a.weight&lt;b.weight;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bestSeqAtIndex</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; height, vector&lt;<span class="keyword">int</span>&gt;&amp; weight)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = height.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    vector&lt;node&gt; arr;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        node tmp;</span><br><span class="line">        tmp.height = height[i];</span><br><span class="line">        tmp.weight = weight[i];</span><br><span class="line">        arr.<span class="built_in">push_back</span>(tmp);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">sort</span>(arr.<span class="built_in">begin</span>(), arr.<span class="built_in">end</span>(), cmp);</span><br><span class="line">    <span class="comment">//for(int i=0;i&lt;n;i++) cout&lt;&lt;arr[i].height&lt;&lt;&quot; &quot;&lt;&lt;arr[i].weight&lt;&lt;endl;</span></span><br><span class="line"></span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">tmp</span><span class="params">(n, <span class="number">-1</span>)</span></span>;</span><br><span class="line">    <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    tmp[<span class="number">0</span>] = arr[<span class="number">0</span>].weight;</span><br><span class="line">    cnt ++;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> w = arr[i].weight;</span><br><span class="line">        <span class="keyword">if</span>(w&lt;tmp[cnt<span class="number">-1</span>])&#123;</span><br><span class="line">            tmp[cnt++] = w;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">int</span> l,r,mid;</span><br><span class="line">            l = <span class="number">0</span>;</span><br><span class="line">            r = cnt<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">                mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(tmp[mid]&gt;w) l = mid+<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">else</span> r = mid;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(l&gt;=<span class="number">0</span>&amp;&amp;l&lt;cnt&amp;&amp;tmp[l]&lt;w) tmp[l] = w;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//for(int j=0;j&lt;cnt;j++) cout&lt;&lt;tmp[j]&lt;&lt;&quot; &quot;;</span></span><br><span class="line">        <span class="comment">//cout&lt;&lt;endl;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cnt;</span><br></pre></td></tr></table></figure>
-</code></pre>
+<li><p>快表命中了只需要访问一次内存，没命中则需要访问两次内存（访问页表一次加访问数据一次）。</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/03/02/9LqQ8Ycj6S7oEhF.png" alt="20220302091110"></p>
 
       
     </div>
@@ -996,7 +647,7 @@ double findMedian() - 返回目前所有元素的中位数。
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1063,7 +714,7 @@ double findMedian() - 返回目前所有元素的中位数。
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-count">146</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

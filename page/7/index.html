@@ -188,7 +188,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/MVCC-NextKeyLocks/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/%E7%BA%BF%E7%A8%8B%E9%94%81POSIX/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -202,7 +202,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/17/MVCC-NextKeyLocks/" class="post-title-link" itemprop="url">MVCC+NextKeyLocks</a>
+            <a href="/2022/03/01/%E7%BA%BF%E7%A8%8B%E9%94%81POSIX/" class="post-title-link" itemprop="url">线程锁POSIX</a>
         </h2>
 
         <div class="post-meta">
@@ -215,7 +215,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-17 10:13:14 / Modified: 10:15:34" itemprop="dateCreated datePublished" datetime="2022-02-17T10:13:14+08:00">2022-02-17</time>
+              <time title="Created: 2022-03-01 22:22:56 / Modified: 22:33:03" itemprop="dateCreated datePublished" datetime="2022-03-01T22:22:56+08:00">2022-03-01</time>
             </span>
 
           
@@ -229,459 +229,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="多版本并发控制"><a href="#多版本并发控制" class="headerlink" title="多版本并发控制"></a>多版本并发控制</h2><p>多版本并发控制（Multi-Version Concurrency Control, MVCC）是 MySQL 的 InnoDB 存储引擎实现隔离级别的一种具体方式，用于实现提交读和可重复读这两种隔离级别。而未提交读隔离级别总是读取最新的数据行，要求很低，无需使用 MVCC。可串行化隔离级别需要对所有读取的行都加锁，单纯使用 MVCC 无法实现。</p>
-<h3 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h3><p>在封锁一节中提到，加锁能解决多个事务同时执行时出现的并发一致性问题。在实际场景中读操作往往多于写操作，因此又引入了读写锁来避免不必要的加锁操作，例如读和读没有互斥关系。读写锁中读和写操作仍然是互斥的，而 MVCC 利用了多版本的思想，写操作更新最新的版本快照，而读操作去读旧版本快照，没有互斥关系，这一点和 CopyOnWrite 类似。</p>
-<p>在 MVCC 中事务的修改操作（DELETE、INSERT、UPDATE）会为数据行新增一个版本快照。</p>
-<p>脏读和不可重复读最根本的原因是事务读取到其它事务未提交的修改。在事务进行读取操作时，为了解决脏读和不可重复读问题，MVCC 规定只能读取已经提交的快照。当然一个事务可以读取自身未提交的快照，这不算是脏读。</p>
-<h3 id="版本号"><a href="#版本号" class="headerlink" title="版本号"></a>版本号</h3><ul>
-<li>系统版本号 SYS_ID：是一个递增的数字，每开始一个新的事务，系统版本号就会自动递增。</li>
-<li>事务版本号 TRX_ID ：事务开始时的系统版本号。</li>
-</ul>
-<h3 id="Undo-日志"><a href="#Undo-日志" class="headerlink" title="Undo 日志"></a>Undo 日志</h3><p>MVCC 的多版本指的是多个版本的快照，快照存储在 Undo 日志中，该日志通过回滚指针 ROLL_PTR 把一个数据行的所有快照连接起来。</p>
-<p>例如在 MySQL 创建一个表 t，包含主键 id 和一个字段 x。我们先插入一个数据行，然后对该数据行执行两次更新操作。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> t(id, x) <span class="keyword">VALUES</span>(<span class="number">1</span>, &quot;a&quot;);</span><br><span class="line">UPDATE t <span class="keyword">SET</span> x<span class="operator">=</span>&quot;b&quot; <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="number">1</span>;</span><br><span class="line">UPDATE t <span class="keyword">SET</span> x<span class="operator">=</span>&quot;c&quot; <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-
-<p>因为没有使用 <code>START TRANSACTION</code> 将上面的操作当成一个事务来执行，根据 MySQL 的 AUTOCOMMIT 机制，每个操作都会被当成一个事务来执行，所以上面的操作总共涉及到三个事务。快照中除了记录事务版本号 TRX_ID 和操作之外，还记录了一个 bit 的 DEL 字段，用于标记是否被删除。</p>
-<div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/image-20191208164808217.png"/> </div><br>
-
-<p>INSERT、UPDATE、DELETE 操作会创建一个日志，并将事务版本号 TRX_ID  写入。DELETE 可以看成是一个特殊的 UPDATE，还会额外将 DEL 字段设置为 1。</p>
-<h3 id="ReadView"><a href="#ReadView" class="headerlink" title="ReadView"></a>ReadView</h3><p>MVCC 维护了一个 ReadView 结构，主要包含了当前系统未提交的事务列表 TRX_IDs {TRX_ID_1, TRX_ID_2, …}，还有该列表的最小值 TRX_ID_MIN 和 TRX_ID_MAX。</p>
-<div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/image-20191208171445674.png"/> </div><br>
-
-<p>在进行 SELECT 操作时，根据数据行快照的 TRX_ID 与 TRX_ID_MIN 和 TRX_ID_MAX 之间的关系，从而判断数据行快照是否可以使用：</p>
-<ul>
-<li><p>TRX_ID &lt; TRX_ID_MIN，表示该数据行快照时在当前所有未提交事务之前进行更改的，因此可以使用。</p>
+          <ul>
+<li><p>互斥锁（mutex，互斥量）</p>
+<p>互斥锁是用于控制多个线程对他们之间共享资源互斥访问的一个信号量。</p>
+<p>互斥锁属于sleep-waiting类型的锁。例如在一个双核的机器上有两个线程A和B，它们分别运行在core 0和core 1上。假设线程A想要通过pthread_mutex_lock操作去得到一个临界区的锁，而此时这个锁正被线程B所持有，那么线程A就会被阻塞，此时会通过上下文切换将线程A置于等待队列中，此时core 0就可以运行其他的任务（如线程C）。</p>
 </li>
-<li><p>TRX_ID &gt; TRX_ID_MAX，表示该数据行快照是在事务启动之后被更改的，因此不可使用。</p>
+<li><p>条件锁（cond，条件变量）</p>
+<p>条件锁就是所谓的条件变量，某一个线程因为某个条件为满足时可以使用条件变量使改程序处于阻塞状态。一旦条件满足以“信号量”的方式唤醒一个因为该条件而被阻塞的线程。最为常见就是在线程池中，起初没有任务时任务队列为空，此时线程池中的线程因为“任务队列为空”这个条件处于阻塞状态。一旦有任务进来，就会以信号量的方式唤醒一个线程来处理这个任务，这个过程中就使用到了条件变量。</p>
+<p>互斥锁实现的是线程的互斥，条件锁实现的是线程的同步。</p>
 </li>
-<li><p>TRX_ID_MIN &lt;= TRX_ID &lt;= TRX_ID_MAX，需要根据隔离级别再进行判断：</p>
-<ul>
-<li>提交读：如果 TRX_ID  在 TRX_IDs  列表中，表示该数据行快照对应的事务还未提交，则该快照不可使用。否则表示已经提交，可以使用。</li>
-<li>可重复读：都不可以使用。因为如果可以使用的话，那么其它事务也可以读到这个数据行快照并进行修改，那么当前事务再去读这个数据行得到的值就会发生改变，也就是出现了不可重复读问题。</li>
-</ul>
+<li><p>自旋锁（spin）</p>
+<p>自旋锁属于busy-waiting类型的锁，当线程A请求自旋锁，如果自旋锁已经被线程B所持有，那么线程A就会一直在core 0上进行忙等待并不停的进行锁请求，检查该自旋锁是否已经被线程B释放，直到得到这个锁为止。因为自旋锁不会引起调用者睡眠，所以自旋锁的效率远高于互斥锁。</p>
 </li>
-</ul>
-<p>在数据行快照不可使用的情况下，需要沿着 Undo Log 的回滚指针 ROLL_PTR  找到下一个快照，再进行上面的判断。</p>
-<h3 id="快照读与当前读"><a href="#快照读与当前读" class="headerlink" title="快照读与当前读"></a>快照读与当前读</h3><h4 id="1-快照读"><a href="#1-快照读" class="headerlink" title="1. 快照读"></a>1. 快照读</h4><p>MVCC 的 SELECT 操作是快照中的数据，不需要进行加锁操作。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="keyword">table</span> ...;</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-当前读"><a href="#2-当前读" class="headerlink" title="2. 当前读"></a>2. 当前读</h4><p>MVCC 其它会对数据库进行修改的操作（INSERT、UPDATE、DELETE）需要进行加锁操作，从而读取最新的数据。可以看到 MVCC 并不是完全不用加锁，而只是避免了 SELECT 的加锁操作。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span>;</span><br><span class="line">UPDATE;</span><br><span class="line"><span class="keyword">DELETE</span>;</span><br></pre></td></tr></table></figure>
-
-<p>在进行 SELECT 操作时，可以强制指定进行加锁操作。以下第一个语句需要加 S 锁，第二个需要加 X 锁。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> ? lock <span class="keyword">in</span> share mode;</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> ? <span class="keyword">for</span> update;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Next-Key-Locks"><a href="#Next-Key-Locks" class="headerlink" title="Next-Key Locks"></a>Next-Key Locks</h2><p>Next-Key Locks 是 MySQL 的 InnoDB 存储引擎的一种锁实现。</p>
-<p>MVCC 不能解决幻影读问题，Next-Key Locks 就是为了解决这个问题而存在的。在可重复读（REPEATABLE READ）隔离级别下，使用 MVCC + Next-Key Locks 可以解决幻读问题。</p>
-<h3 id="Record-Locks"><a href="#Record-Locks" class="headerlink" title="Record Locks"></a>Record Locks</h3><p>锁定一个记录上的索引，而不是记录本身。</p>
-<p>如果表没有设置索引，InnoDB 会自动在主键上创建隐藏的聚簇索引，因此 Record Locks 依然可以使用。</p>
-<h3 id="Gap-Locks"><a href="#Gap-Locks" class="headerlink" title="Gap Locks"></a>Gap Locks</h3><p>锁定索引之间的间隙，但是不包含索引本身。例如当一个事务执行以下语句，其它事务就不能在 t.c 中插入 15。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> c <span class="keyword">FROM</span> t <span class="keyword">WHERE</span> c <span class="keyword">BETWEEN</span> <span class="number">10</span> <span class="keyword">and</span> <span class="number">20</span> <span class="keyword">FOR</span> UPDATE;</span><br></pre></td></tr></table></figure>
-
-<h3 id="Next-Key-Locks-1"><a href="#Next-Key-Locks-1" class="headerlink" title="Next-Key Locks"></a>Next-Key Locks</h3><p>它是 Record Locks 和 Gap Locks 的结合，不仅锁定一个记录上的索引，也锁定索引之间的间隙。它锁定一个前开后闭区间，例如一个索引包含以下值：10, 11, 13, and 20，那么就需要锁定以下区间：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(<span class="operator">-</span>∞, <span class="number">10</span>]</span><br><span class="line">(<span class="number">10</span>, <span class="number">11</span>]</span><br><span class="line">(<span class="number">11</span>, <span class="number">13</span>]</span><br><span class="line">(<span class="number">13</span>, <span class="number">20</span>]</span><br><span class="line">(<span class="number">20</span>, <span class="operator">+</span>∞)</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/17/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA/" class="post-title-link" itemprop="url">关系数据库设计理论</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-17 10:04:12 / Modified: 10:09:28" itemprop="dateCreated datePublished" datetime="2022-02-17T10:04:12+08:00">2022-02-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>关系数据库设计理论</p>
-<h3 id="函数依赖"><a href="#函数依赖" class="headerlink" title="函数依赖"></a>函数依赖</h3><p>记 A-&gt;B 表示 A 函数决定 B，也可以说 B 函数依赖于 A。</p>
-<p>如果 {A1，A2，… ，An} 是关系的一个或多个属性的集合，该集合函数决定了关系的其它所有属性并且是最小的，那么该集合就称为键码。</p>
-<p>对于 A-&gt;B，如果能找到 A 的真子集 A’，使得 A’-&gt; B，那么 A-&gt;B 就是部分函数依赖，否则就是完全函数依赖。</p>
-<p>对于 A-&gt;B，B-&gt;C，则 A-&gt;C 是一个传递函数依赖。</p>
-<h3 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h3><p>以下的学生课程关系的函数依赖为 {Sno, Cname} -&gt; {Sname, Sdept, Mname, Grade}，键码为 {Sno, Cname}。也就是说，确定学生和课程之后，就能确定其它信息。</p>
-<table>
-<thead>
-<tr>
-<th align="center">Sno</th>
-<th align="center">Sname</th>
-<th align="center">Sdept</th>
-<th align="center">Mname</th>
-<th align="center">Cname</th>
-<th align="center">Grade</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">1</td>
-<td align="center">学生-1</td>
-<td align="center">学院-1</td>
-<td align="center">院长-1</td>
-<td align="center">课程-1</td>
-<td align="center">90</td>
-</tr>
-<tr>
-<td align="center">2</td>
-<td align="center">学生-2</td>
-<td align="center">学院-2</td>
-<td align="center">院长-2</td>
-<td align="center">课程-2</td>
-<td align="center">80</td>
-</tr>
-<tr>
-<td align="center">2</td>
-<td align="center">学生-2</td>
-<td align="center">学院-2</td>
-<td align="center">院长-2</td>
-<td align="center">课程-1</td>
-<td align="center">100</td>
-</tr>
-<tr>
-<td align="center">3</td>
-<td align="center">学生-3</td>
-<td align="center">学院-2</td>
-<td align="center">院长-2</td>
-<td align="center">课程-2</td>
-<td align="center">95</td>
-</tr>
-</tbody></table>
-<p>不符合范式的关系，会产生很多异常，主要有以下四种异常：</p>
-<ul>
-<li>冗余数据：例如 <code>学生-2</code> 出现了两次。</li>
-<li>修改异常：修改了一个记录中的信息，但是另一个记录中相同的信息却没有被修改。</li>
-<li>删除异常：删除一个信息，那么也会丢失其它信息。例如删除了 <code>课程-1</code> 需要删除第一行和第三行，那么 <code>学生-1</code> 的信息就会丢失。</li>
-<li>插入异常：例如想要插入一个学生的信息，如果这个学生还没选课，那么就无法插入。</li>
-</ul>
-<h3 id="范式"><a href="#范式" class="headerlink" title="范式"></a>范式</h3><p>范式理论是为了解决以上提到四种异常。</p>
-<p>高级别范式的依赖于低级别的范式，1NF 是最低级别的范式。</p>
-<h4 id="1-第一范式-1NF"><a href="#1-第一范式-1NF" class="headerlink" title="1. 第一范式 (1NF)"></a>1. 第一范式 (1NF)</h4><p>属性不可分。</p>
-<h4 id="2-第二范式-2NF"><a href="#2-第二范式-2NF" class="headerlink" title="2. 第二范式 (2NF)"></a>2. 第二范式 (2NF)</h4><p>每个非主属性完全函数依赖于键码。</p>
-<p>可以通过分解来满足。</p>
-<p><strong>分解前</strong>:</p>
-<table>
-<thead>
-<tr>
-<th align="center">Sno</th>
-<th align="center">Sname</th>
-<th align="center">Sdept</th>
-<th align="center">Mname</th>
-<th align="center">Cname</th>
-<th align="center">Grade</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">1</td>
-<td align="center">学生-1</td>
-<td align="center">学院-1</td>
-<td align="center">院长-1</td>
-<td align="center">课程-1</td>
-<td align="center">90</td>
-</tr>
-<tr>
-<td align="center">2</td>
-<td align="center">学生-2</td>
-<td align="center">学院-2</td>
-<td align="center">院长-2</td>
-<td align="center">课程-2</td>
-<td align="center">80</td>
-</tr>
-<tr>
-<td align="center">2</td>
-<td align="center">学生-2</td>
-<td align="center">学院-2</td>
-<td align="center">院长-2</td>
-<td align="center">课程-1</td>
-<td align="center">100</td>
-</tr>
-<tr>
-<td align="center">3</td>
-<td align="center">学生-3</td>
-<td align="center">学院-2</td>
-<td align="center">院长-2</td>
-<td align="center">课程-2</td>
-<td align="center">95</td>
-</tr>
-</tbody></table>
-<p>以上学生课程关系中，{Sno, Cname} 为键码，有如下函数依赖：</p>
-<ul>
-<li>Sno -&gt; Sname, Sdept</li>
-<li>Sdept -&gt; Mname</li>
-<li>Sno, Cname-&gt; Grade</li>
-</ul>
-<p>Grade 完全函数依赖于键码，它没有任何冗余数据，每个学生的每门课都有特定的成绩。</p>
-<p>Sname, Sdept 和 Mname 都部分依赖于键码，当一个学生选修了多门课时，这些数据就会出现多次，造成大量冗余数据。</p>
-<p><strong>分解后</strong>:</p>
-<p>关系-1</p>
-<table>
-<thead>
-<tr>
-<th align="center">Sno</th>
-<th align="center">Sname</th>
-<th align="center">Sdept</th>
-<th align="center">Mname</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">1</td>
-<td align="center">学生-1</td>
-<td align="center">学院-1</td>
-<td align="center">院长-1</td>
-</tr>
-<tr>
-<td align="center">2</td>
-<td align="center">学生-2</td>
-<td align="center">学院-2</td>
-<td align="center">院长-2</td>
-</tr>
-<tr>
-<td align="center">3</td>
-<td align="center">学生-3</td>
-<td align="center">学院-2</td>
-<td align="center">院长-2</td>
-</tr>
-</tbody></table>
-<p>有以下函数依赖：</p>
-<ul>
-<li>Sno -&gt; Sname, Sdept</li>
-<li>Sdept -&gt; Mname</li>
-</ul>
-<p>关系-2</p>
-<table>
-<thead>
-<tr>
-<th align="center">Sno</th>
-<th align="center">Cname</th>
-<th align="center">Grade</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">1</td>
-<td align="center">课程-1</td>
-<td align="center">90</td>
-</tr>
-<tr>
-<td align="center">2</td>
-<td align="center">课程-2</td>
-<td align="center">80</td>
-</tr>
-<tr>
-<td align="center">2</td>
-<td align="center">课程-1</td>
-<td align="center">100</td>
-</tr>
-<tr>
-<td align="center">3</td>
-<td align="center">课程-2</td>
-<td align="center">95</td>
-</tr>
-</tbody></table>
-<p>有以下函数依赖：</p>
-<ul>
-<li>Sno, Cname -&gt;  Grade</li>
-</ul>
-<h4 id="3-第三范式-3NF"><a href="#3-第三范式-3NF" class="headerlink" title="3. 第三范式 (3NF)"></a>3. 第三范式 (3NF)</h4><p>非主属性不传递函数依赖于键码。</p>
-<p>上面的 关系-1 中存在以下传递函数依赖：</p>
-<ul>
-<li>Sno -&gt; Sdept -&gt; Mname</li>
-</ul>
-<p>可以进行以下分解：</p>
-<p>关系-11</p>
-<table>
-<thead>
-<tr>
-<th align="center">Sno</th>
-<th align="center">Sname</th>
-<th align="center">Sdept</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">1</td>
-<td align="center">学生-1</td>
-<td align="center">学院-1</td>
-</tr>
-<tr>
-<td align="center">2</td>
-<td align="center">学生-2</td>
-<td align="center">学院-2</td>
-</tr>
-<tr>
-<td align="center">3</td>
-<td align="center">学生-3</td>
-<td align="center">学院-2</td>
-</tr>
-</tbody></table>
-<p>关系-12</p>
-<table>
-<thead>
-<tr>
-<th align="center">Sdept</th>
-<th align="center">Mname</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">学院-1</td>
-<td align="center">院长-1</td>
-</tr>
-<tr>
-<td align="center">学院-2</td>
-<td align="center">院长-2</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E5%B0%81%E9%94%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/16/%E5%B0%81%E9%94%81/" class="post-title-link" itemprop="url">封锁</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-16 22:49:14 / Modified: 22:52:48" itemprop="dateCreated datePublished" datetime="2022-02-16T22:49:14+08:00">2022-02-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="封锁粒度"><a href="#封锁粒度" class="headerlink" title="封锁粒度"></a>封锁粒度</h2><p>MySQL 中提供了两种封锁粒度：行级锁以及表级锁。</p>
-<p>应该尽量只锁定需要修改的那部分数据，而不是所有的资源。锁定的数据量越少，发生锁争用的可能就越小，系统的并发程度就越高。</p>
-<p>但是加锁需要消耗资源，锁的各种操作（包括获取锁、释放锁、以及检查锁状态）都会增加系统开销。因此封锁粒度越小，系统开销就越大。</p>
-<p>在选择封锁粒度时，需要在锁开销和并发程度之间做一个权衡。</p>
-<h2 id="封锁类型"><a href="#封锁类型" class="headerlink" title="封锁类型"></a>封锁类型</h2><ol>
 <li><p>读写锁</p>
-<p> 互斥锁（Exclusive），简写为 X 锁，又称写锁。</p>
-<p> 共享锁（Shared），简写为 S 锁，又称读锁。</p>
-<p> 有以下两个规定：</p>
-<p> 一个事务对数据对象 A 加了 X 锁，就可以对 A 进行读取和更新。加锁期间其它事务不能对 A 加任何锁。</p>
-<p> 一个事务对数据对象 A 加了 S 锁，可以对 A 进行读取操作，但是不能进行更新操作。加锁期间其它事务能对 A 加 S 锁，但是不能加 X 锁。</p>
+<p>可以有多个读线程同时获取读的锁，而只有一个线程可以获取写的锁。读锁和写锁互斥，写锁和写锁互斥。</p>
 </li>
-<li><p>意向锁</p>
-<p> 使用意向锁（Intention Locks）可以更容易地支持多粒度封锁。</p>
-<p> 在存在行级锁和表级锁的情况下，事务 T 想要对表 A 加 X 锁，就需要先检测是否有其它事务对表 A 或者表 A 中的任意一行加了锁，那么就需要对表 A 的每一行都检测一次，这是非常耗时的。</p>
-<p> 意向锁在原来的 X/S 锁之上引入了 IX/IS，IX/IS 都是表锁，用来表示一个事务想要在表中的某个数据行上加 X 锁或 S 锁。有以下两个规定：</p>
-<p> 一个事务在获得某个数据行对象的 S 锁之前，必须先获得表的 IS 锁或者更强的锁；</p>
-<p> 一个事务在获得某个数据行对象的 X 锁之前，必须先获得表的 IX 锁。</p>
-<p> 通过引入意向锁，事务 T 想要对表 A 加 X 锁，只需要先检测是否有其它事务对表 A 加了 X/IX/S/IS 锁，如果加了就表示有其它事务正在使用这个表或者表中某一行的锁，因此事务 T 加 X 锁失败。</p>
-<p> 解释如下：</p>
-<p> 任意 IS/IX 锁之间都是兼容的，因为它们只表示想要对表加锁，而不是真正加锁；<br> 这里兼容关系针对的是表级锁，而表级的 IX 锁和行级的 X 锁兼容，两个事务可以对两个数据行加 X 锁。（事务 T1 想要对数据行 R1 加 X 锁，事务 T2 想要对同一个表的数据行 R2 加 X 锁，两个事务都需要对该表加 IX 锁，但是 IX 锁是兼容的，并且 IX 锁与行级的 X 锁也是兼容的，因此两个事务都能加锁成功，对同一个表中的两个数据行做修改。）</p>
-</li>
-</ol>
-<h2 id="封锁协议"><a href="#封锁协议" class="headerlink" title="封锁协议"></a>封锁协议</h2><ol>
-<li><p>三级封锁协议</p>
-<ol>
-<li><p>一级封锁协议</p>
-<p> 事务 T 要修改数据 A 时必须加 X 锁，直到 T 结束才释放锁。</p>
-<p> 可以解决丢失修改问题，因为不能同时有两个事务对同一个数据进行修改，那么事务的修改就不会被覆盖。</p>
-</li>
-<li><p>二级封锁协议</p>
-<p> 在一级的基础上，要求读取数据 A 时必须加 S 锁，读取完马上释放 S 锁。</p>
-<p> 可以解决读脏数据问题，因为如果一个事务在对数据 A 进行修改，根据 1 级封锁协议，会加 X 锁，那么就不能再加 S 锁了，也就是不会读入数据。</p>
-</li>
-<li><p>三级封锁协议</p>
-<p> 在二级的基础上，要求读取数据 A 时必须加 S 锁，直到事务结束了才能释放 S 锁。</p>
-<p> 可以解决不可重复读的问题，因为读 A 时，其它事务不能对 A 加 X 锁，从而避免了在读的期间数据发生改变。</p>
-</li>
-</ol>
-</li>
-<li><p>两段锁协议<br> 加锁和解锁分为两个阶段进行。</p>
-<p> 可串行化调度是指，通过并发控制，使得并发执行的事务结果与某个串行执行的事务结果相同。串行执行的事务互不干扰，不会出现并发一致性问题。</p>
-<p> 事务遵循两段锁协议是保证可串行化调度的充分条件。例如以下操作满足两段锁协议，它是可串行化调度。</p>
-<pre><code> lock-x(A)...lock-s(B)...lock-s(C)...unlock(A)...unlock(C)...unlock(B)
-</code></pre>
-<p> 但不是必要条件，例如以下操作不满足两段锁协议，但它还是可串行化调度。</p>
-<pre><code> lock-x(A)...unlock(A)...lock-s(B)...unlock(B)...lock-s(C)...unlock(C)
-</code></pre>
-</li>
-</ol>
+</ul>
 
       
     </div>
@@ -701,7 +264,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E4%B8%83%E7%A7%8D%E6%96%B9%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -715,365 +278,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/16/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7/" class="post-title-link" itemprop="url">并发一致性</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-16 22:30:19 / Modified: 22:48:59" itemprop="dateCreated datePublished" datetime="2022-02-16T22:30:19+08:00">2022-02-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="并发一致性问题"><a href="#并发一致性问题" class="headerlink" title="并发一致性问题"></a>并发一致性问题</h2><p>在并发环境下，事务的隔离性很难保证，因此会出现很多并发一致性问题。</p>
-<ol>
-<li><p>丢失修改<br> 丢失修改指一个事务的更新操作被另外一个事务的更新操作替换。一般在现实生活中常会遇到，例如：T1 和 T2 两个事务都对一个数据进行修改，T1 先修改并提交生效，T2 随后修改，T2 的修改覆盖了 T1 的修改。</p>
-</li>
-<li><p>读脏数据<br> 读脏数据指在不同的事务下，当前事务可以读到另外事务未提交的数据。例如：T1 修改一个数据但未提交，T2 随后读取这个数据。如果 T1 撤销了这次修改，那么 T2 读取的数据是脏数据。</p>
-</li>
-<li><p>不可重复读<br> 不可重复读指在一个事务内多次读取同一数据集合。在这一事务还未结束前，另一事务也访问了该同一数据集合并做了修改，由于第二个事务的修改，第一次事务的两次读取的数据可能不一致。例如：T2 读取一个数据，T1 对该数据做了修改。如果 T2 再次读取这个数据，此时读取的结果和第一次读取的结果不同。</p>
-</li>
-<li><p>幻影读<br> 幻读本质上也属于不可重复读的情况，T1 读取某个范围的数据，T2 在这个范围内插入新的数据，T1 再次读取这个范围的数据，此时读取的结果和和第一次读取的结果不同。</p>
-</li>
-</ol>
-<p>产生并发不一致性问题的主要原因是破坏了事务的隔离性，解决方法是通过并发控制来保证隔离性。并发控制可以通过封锁来实现，但是封锁操作需要用户自己控制，相当复杂。数据库管理系统提供了事务的隔离级别，让用户以一种更轻松的方式处理并发一致性问题。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E4%BA%8B%E5%8A%A1ACID/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/16/%E4%BA%8B%E5%8A%A1ACID/" class="post-title-link" itemprop="url">事务ACID</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-16 22:27:30 / Modified: 22:29:59" itemprop="dateCreated datePublished" datetime="2022-02-16T22:27:30+08:00">2022-02-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>事务指的是满足 ACID 特性的一组操作，可以通过 Commit 提交一个事务，也可以使用 Rollback 进行回滚。</p>
-<h2 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h2><ol>
-<li><p>原子性（Atomicity）</p>
-<p> 事务被视为不可分割的最小单元，事务的所有操作要么全部提交成功，要么全部失败回滚。</p>
-<p> 回滚可以用回滚日志（Undo Log）来实现，回滚日志记录着事务所执行的修改操作，在回滚时反向执行这些修改操作即可。</p>
-</li>
-<li><p>一致性（Consistency）</p>
-<p> 数据库在事务执行前后都保持一致性状态。在一致性状态下，所有事务对同一个数据的读取结果都是相同的。</p>
-</li>
-<li><p>隔离性（Isolation）</p>
-<p> 一个事务所做的修改在最终提交以前，对其它事务是不可见的。</p>
-</li>
-<li><p>持久性（Durability）</p>
-<p> 一旦事务提交，则其所做的修改将会永远保存到数据库中。即使系统发生崩溃，事务执行的结果也不能丢失。</p>
-<p> 系统发生崩溃可以用重做日志（Redo Log）进行恢复，从而实现持久性。与回滚日志记录数据的逻辑修改不同，重做日志记录的是数据页的物理修改。</p>
-</li>
-</ol>
-<p>事务的 ACID 特性概念简单，但不是很好理解，主要是因为这几个特性不是一种平级关系：</p>
-<p>只有满足一致性，事务的执行结果才是正确的。</p>
-<p>在无并发的情况下，事务串行执行，隔离性一定能够满足。此时只要能满足原子性，就一定能满足一致性。</p>
-<p>在并发的情况下，多个事务并行执行，事务不仅要满足原子性，还需要满足隔离性，才能满足一致性。</p>
-<p>事务满足持久化是为了能应对系统崩溃的情况。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E6%9F%B1%E7%8A%B6%E5%9B%BE%E4%B8%AD%E6%9C%80%E5%A4%A7%E7%9A%84%E7%9F%A9%E5%BD%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/16/%E6%9F%B1%E7%8A%B6%E5%9B%BE%E4%B8%AD%E6%9C%80%E5%A4%A7%E7%9A%84%E7%9F%A9%E5%BD%A2/" class="post-title-link" itemprop="url">柱状图中最大的矩形</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-16 15:27:09 / Modified: 15:34:24" itemprop="dateCreated datePublished" datetime="2022-02-16T15:27:09+08:00">2022-02-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。</p>
-<p>求在该柱状图中，能够勾勒出来的矩形的最大面积。</p>
-<p>示例：</p>
-<p><img src="https://s2.loli.net/2022/02/16/sTSw6JUKRNqjDyV.png" alt="20220216152744"></p>
-<p>输入：heights = [2,1,5,6,2,3]</p>
-<p>输出：10</p>
-<p>解释：最大的矩形为图中红色区域，面积为 10</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>遍历每个柱子，以该柱子的高度为矩形高度，并寻找每个柱子左边和右边最后一个高于它的柱子的位置作为左右矩形边界。</p>
-<h2 id="解法1：单调栈"><a href="#解法1：单调栈" class="headerlink" title="解法1：单调栈"></a>解法1：单调栈</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> n = heights.<span class="built_in">size</span>();</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">lb</span><span class="params">(n, <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">rb</span><span class="params">(n, n<span class="number">-1</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    stack&lt;<span class="keyword">int</span>&gt; sta;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">while</span>(!sta.<span class="built_in">empty</span>()&amp;&amp;heights[i]&lt;heights[sta.<span class="built_in">top</span>()])&#123;</span><br><span class="line">            rb[sta.<span class="built_in">top</span>()] = i<span class="number">-1</span>;</span><br><span class="line">            sta.<span class="built_in">pop</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        sta.<span class="built_in">push</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    sta.<span class="built_in">pop</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=n<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">        <span class="keyword">while</span>(!sta.<span class="built_in">empty</span>()&amp;&amp;heights[i]&lt;heights[sta.<span class="built_in">top</span>()])&#123;</span><br><span class="line">            lb[sta.<span class="built_in">top</span>()] = i+<span class="number">1</span>;</span><br><span class="line">            sta.<span class="built_in">pop</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        sta.<span class="built_in">push</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    sta.<span class="built_in">pop</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++) ans = <span class="built_in">max</span>(ans, heights[i]*(rb[i]-lb[i]+<span class="number">1</span>));</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="解法2：线段树"><a href="#解法2：线段树" class="headerlink" title="解法2：线段树"></a>解法2：线段树</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; a;</span><br><span class="line"><span class="keyword">int</span> tree[<span class="number">1000000</span>];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(l==r)&#123;</span><br><span class="line">        tree[p] = a[l];</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid=(l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="built_in">build</span>(p*<span class="number">2</span>,l,mid);</span><br><span class="line">    <span class="built_in">build</span>(p*<span class="number">2</span>+<span class="number">1</span>,mid+<span class="number">1</span>,r);</span><br><span class="line">    tree[p] = <span class="built_in">min</span>(tree[p*<span class="number">2</span>], tree[p*<span class="number">2</span>+<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(x&lt;=l&amp;&amp;r&lt;=y)&#123;</span><br><span class="line">        <span class="keyword">return</span> tree[p];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span>(y&lt;=mid) <span class="keyword">return</span> <span class="built_in">query</span>(p*<span class="number">2</span>,l,mid,x,y);</span><br><span class="line">    <span class="keyword">if</span>(x&gt;=mid+<span class="number">1</span>) <span class="keyword">return</span> <span class="built_in">query</span>(p*<span class="number">2</span>+<span class="number">1</span>,mid+<span class="number">1</span>,r,x,y);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">min</span>(<span class="built_in">query</span>(p*<span class="number">2</span>,l,mid,x,y),<span class="built_in">query</span>(p*<span class="number">2</span>+<span class="number">1</span>,mid+<span class="number">1</span>,r,x,y));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea2</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">    a = heights;</span><br><span class="line">    <span class="keyword">int</span> n = heights.<span class="built_in">size</span>();</span><br><span class="line">    <span class="built_in">build</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> ans = <span class="built_in">max</span>(heights[<span class="number">0</span>], heights[n<span class="number">-1</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> lm,rm,lb,rb;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=n<span class="number">-1</span>;i++)&#123;</span><br><span class="line">        <span class="comment">//cout&lt;&lt;i&lt;&lt;&quot;: (&quot;&lt;&lt;heights[i]&lt;&lt;&quot;) &quot;;</span></span><br><span class="line">        <span class="keyword">if</span>(i==<span class="number">0</span>) lm = heights[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">else</span> lm = <span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,<span class="number">0</span>,i<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span>(lm&gt;=heights[i])&#123;</span><br><span class="line">            lb = <span class="number">0</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">int</span> l, r, mid;</span><br><span class="line">            l = <span class="number">0</span>;</span><br><span class="line">            r = i<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">                mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,mid+<span class="number">1</span>,r)&lt;heights[i])&#123;</span><br><span class="line">                    l = mid+<span class="number">1</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    r = mid;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            lb = l+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(i==n<span class="number">-1</span>) rm = heights[n<span class="number">-1</span>];</span><br><span class="line">        <span class="keyword">else</span> rm = <span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,i+<span class="number">1</span>,n<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span>(rm&gt;=heights[i])&#123;</span><br><span class="line">            rb = n<span class="number">-1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">int</span> l, r, mid;</span><br><span class="line">            l = i+<span class="number">1</span>;</span><br><span class="line">            r = n<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">                mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,l,mid)&lt;heights[i])&#123;</span><br><span class="line">                    r = mid;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    l = mid+<span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            rb = l<span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ans = <span class="built_in">max</span>(ans, heights[i]*(rb-lb+<span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E6%89%8B%E5%86%99%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/16/%E6%89%8B%E5%86%99%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" class="post-title-link" itemprop="url">手写优先队列</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-16 09:26:03 / Modified: 09:33:22" itemprop="dateCreated datePublished" datetime="2022-02-16T09:26:03+08:00">2022-02-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="优先队列"><a href="#优先队列" class="headerlink" title="优先队列"></a>优先队列</h2><p>用数组实现大/小顶堆，子节点=父节点*2或者*2+1。</p>
-<p>用数组构造二叉树，push元素时先存到最后一个节点，然后从最后一个节点迭代与父节点比较交换，一直到第一个节点或者停止交换。</p>
-<p>pop时直接交换第一个节点和最后一个节点，然后从第一个节点迭代与两个子节点中较大/小的那个比较交换，一直到最后一层节点或者停止交换。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> a[<span class="number">10010</span>];</span><br><span class="line"><span class="keyword">int</span> siz;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">    a[++siz] = x;</span><br><span class="line">    <span class="keyword">int</span> son = siz;</span><br><span class="line">    <span class="keyword">int</span> par = son/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">while</span>(par&gt;=<span class="number">1</span>)&#123; </span><br><span class="line">        <span class="keyword">if</span>(a[son]&gt;a[par])&#123; <span class="comment">// 小顶堆为 &lt; </span></span><br><span class="line">            <span class="built_in">swap</span>(a[son], a[par]);</span><br><span class="line">            son = par;</span><br><span class="line">            par = son/<span class="number">2</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">top</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a[<span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span></span>&#123;</span><br><span class="line">    a[<span class="number">1</span>] = a[siz--];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> par = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> son = par*<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">while</span>(son&lt;=siz)&#123;</span><br><span class="line">        <span class="keyword">if</span>(son+<span class="number">1</span>&lt;=siz&amp;&amp;a[son+<span class="number">1</span>]&gt;a[son])&#123; <span class="comment">// 小顶堆为 &lt; </span></span><br><span class="line">            son ++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(a[son]&gt;a[par])&#123; <span class="comment">// 小顶堆为 &lt; </span></span><br><span class="line">            <span class="built_in">swap</span>(a[son], a[par]);</span><br><span class="line">            par = son;</span><br><span class="line">            son = par*<span class="number">2</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    siz = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        cin&gt;&gt;x;</span><br><span class="line">        <span class="built_in">push</span>(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">        cout&lt;&lt;<span class="built_in">top</span>()&lt;&lt;<span class="string">&quot; &quot;</span>;</span><br><span class="line">        <span class="built_in">pop</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/15/%E5%A4%9A%E6%80%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/15/%E5%A4%9A%E6%80%81/" class="post-title-link" itemprop="url">多态</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-15 17:12:30 / Modified: 17:14:07" itemprop="dateCreated datePublished" datetime="2022-02-15T17:12:30+08:00">2022-02-15</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>多态就是不同继承类的对象，对同一消息做出不同的响应，基类的指针指向或绑定到派生类的对象，使得基类指针呈现不同的表现方式。在基类的函数前加上 virtual 关键字，在派生类中重写该函数，运行时将会根据对象的实际类型来调用相应的函数。如果对象类型是派生类，就调用派生类的函数；如果对象类型是基类，就调用基类的函数。<br>实现方法：多态是通过虚函数实现的，虚函数的地址保存在虚函数表中，虚函数表的地址保存在含有虚函数的类的实例对象的内存空间中。</p>
-<h2 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h2><p>在类中用 virtual 关键字声明的函数叫做虚函数；<br>存在虚函数的类都有一个虚函数表，当创建一个该类的对象时，该对象有一个指向虚函数表的虚表指针（虚函数表和类对应的，虚表指针是和对象对应）；<br>当基类指针指向派生类对象，基类指针调用虚函数时，基类指针指向派生类的虚表指针，由于该虚表指针指向派生类虚函数表，通过遍历虚表，寻找相应的虚函数。</p>
-<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::fun()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::fun1()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::fun2()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derive</span> :</span> <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derive::fun()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">D_fun1</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derive::D_fun1()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">D_fun2</span><span class="params">()</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derive::D_fun2()&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Base *p = <span class="keyword">new</span> <span class="built_in">Derive</span>();</span><br><span class="line">    p-&gt;<span class="built_in">fun</span>(); <span class="comment">// Derive::fun() 调用派生类中的虚函数</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>基类的虚函数表如下：</p>
-<p><img src="https://s2.loli.net/2022/02/15/Hexf8Qkly71Fqn2.png" alt="20220215171346"></p>
-<p>派生类的对象虚函数表如下：</p>
-<p><img src="https://s2.loli.net/2022/02/15/YqVBLIPJpWHlM2y.png" alt="20220215171352"></p>
-<p>简单解释：当基类的指针指向派生类的对象时，通过派生类的对象的虚表指针找到虚函数表（派生类的对象虚函数表），进而找到相应的虚函数 Derive::f() 进行调用。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/15/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/15/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">刷题记录</a>
+            <a href="/2022/03/01/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E7%9A%84%E4%B8%83%E7%A7%8D%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">进程间通信的七种方式</a>
         </h2>
 
         <div class="post-meta">
@@ -1085,14 +290,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2022-02-15 15:26:08" itemprop="dateCreated datePublished" datetime="2022-02-15T15:26:08+08:00">2022-02-15</time>
+              <time title="Created: 2022-03-01 16:28:42" itemprop="dateCreated datePublished" datetime="2022-03-01T16:28:42+08:00">2022-03-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-17 22:22:07" itemprop="dateModified" datetime="2022-03-17T22:22:07+08:00">2022-03-17</time>
+                <time title="Modified: 2022-03-03 21:05:55" itemprop="dateModified" datetime="2022-03-03T21:05:55+08:00">2022-03-03</time>
               </span>
 
           
@@ -1106,289 +311,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="03-17"><a href="#03-17" class="headerlink" title="03/17"></a>03/17</h2><p>21.合并两个有序链表</p>
-<p>24.两两交换链表中的节点</p>
-<p>82.删除排序链表中的重复元素 II</p>
-<p>143.重排链表</p>
-<p>148.排序链表</p>
-<p>147.对链表进行插入排序</p>
-<h2 id="03-14"><a href="#03-14" class="headerlink" title="03/14"></a>03/14</h2><p>【2021】阿里巴巴编程题 1.子集</p>
-<p>【2021】阿里巴巴编程题 2.小强爱数学</p>
-<p>【2021】阿里巴巴编程题 3.二叉树</p>
-<p>【2021】阿里巴巴编程题 4.对称飞行器</p>
-<p>【2021】阿里巴巴编程题 6.树上最短链</p>
-<p>【2021】阿里巴巴编程题 7.牛牛们吃糖果</p>
-<p>【2021】阿里巴巴编程题 8.方案数量</p>
-<p>【2021】阿里巴巴编程题 9.合法连续子段</p>
-<h2 id="03-12"><a href="#03-12" class="headerlink" title="03/12"></a>03/12</h2><p>424.替换后的最长重复字符</p>
-<h2 id="03-11"><a href="#03-11" class="headerlink" title="03/11"></a>03/11</h2><p>25.K 个一组翻转链表</p>
-<h2 id="03-10"><a href="#03-10" class="headerlink" title="03/10"></a>03/10</h2><p>剑指 Offer 25. 合并两个排序的链表</p>
-<p>NC142 最长重复子串</p>
-<p>NC73 数组中出现次数超过一半的数字</p>
-<p>208.实现 Trie (前缀树)</p>
-<h2 id="03-09"><a href="#03-09" class="headerlink" title="03/09"></a>03/09</h2><p>120.三角形最小路径和</p>
-<p>329.矩阵中的最长递增路径</p>
-<p>343.整数拆分</p>
-<h2 id="03-08"><a href="#03-08" class="headerlink" title="03/08"></a>03/08</h2><p>18.四数之和</p>
-<h2 id="03-06"><a href="#03-06" class="headerlink" title="03/06"></a>03/06</h2><p>131.分割回文串</p>
-<p>132.分割回文串 II</p>
-<p>233.数字 1 的个数</p>
-<p>264.丑数 II</p>
-<p>313.超级丑数</p>
-<h2 id="03-04"><a href="#03-04" class="headerlink" title="03/04"></a>03/04</h2><p>剑指 Offer 24. 反转链表</p>
-<p>160.相交链表</p>
-<h2 id="03-03"><a href="#03-03" class="headerlink" title="03/03"></a>03/03</h2><p>322.零钱兑换</p>
-<p>337.打家劫舍 III</p>
-<p>416.分割等和子集</p>
-<p>338.比特位计数</p>
-<p>72.编辑距离</p>
-<p>213.打家劫舍 II</p>
-<h2 id="03-02"><a href="#03-02" class="headerlink" title="03/02"></a>03/02</h2><p>152.乘积最大子数组</p>
-<p>221.最大正方形</p>
-<p>279.完全平方数</p>
-<p>300.最长递增子序列</p>
-<p>121.买卖股票的最佳时机</p>
-<p>122.买卖股票的最佳时机 II</p>
-<p>123.买卖股票的最佳时机 III</p>
-<p>188.买卖股票的最佳时机 IV</p>
-<p>309.最佳买卖股票时机含冷冻期</p>
-<p>714.买卖股票的最佳时机含手续费</p>
-<h2 id="03-01"><a href="#03-01" class="headerlink" title="03/01"></a>03/01</h2><p>1091.二进制矩阵中的最短路径</p>
-<p>1129.颜色交替的最短路径</p>
-<p>102.二叉树的层序遍历</p>
-<p>101.对称二叉树</p>
-<p>752.打开转盘锁</p>
-<h2 id="02-28"><a href="#02-28" class="headerlink" title="02/28"></a>02/28</h2><p>105.从前序与中序遍历序列构造二叉树</p>
-<p>112.路径总和</p>
-<p>98.验证二叉搜索树</p>
-<p>494.目标和</p>
-<p>547.省份数量</p>
-<p>1254.统计封闭岛屿的数目</p>
-<h2 id="02-27"><a href="#02-27" class="headerlink" title="02/27"></a>02/27</h2><p>47.全排列 II</p>
-<p>406.根据身高重建队列</p>
-<p>899.有序队列</p>
-<p>946.验证栈序列</p>
-<p>116.填充每个节点的下一个右侧节点指针</p>
-<p>895.最大频率栈 *</p>
-<p>61.旋转链表</p>
-<p>729.我的日程安排表 I</p>
-<p>25.K 个一组翻转链表</p>
-<p>554.砖墙</p>
-<p>112.路径总和</p>
-<h2 id="02-26"><a href="#02-26" class="headerlink" title="02/26"></a>02/26</h2><p>剑指 Offer II 051. 节点之和最大的路径</p>
-<p>409.最长回文串</p>
-<p>5.最长回文子串</p>
-<p>214.最短回文串*</p>
-<h2 id="02-24"><a href="#02-24" class="headerlink" title="02/24"></a>02/24</h2><p>3.无重复字符的最长子串</p>
-<p>剑指 Offer II 016. 不含重复字符的最长子字符串</p>
-<p>49.字母异位词分组</p>
-<p>30.串联所有单词的子串</p>
-<p>86.分隔链表</p>
-<p>16.最接近的三数之和</p>
-<p>732.我的日程安排表 III</p>
-<p>731.我的日程安排表 II</p>
-<p>729.我的日程安排表 I</p>
-<h2 id="02-23"><a href="#02-23" class="headerlink" title="02/23"></a>02/23</h2><p>剑指 Offer 14- I. 剪绳子</p>
-<p>115.不同的子序列</p>
-<p>139.单词拆分</p>
-<p>140.单词拆分 II</p>
-<h2 id="02-22"><a href="#02-22" class="headerlink" title="02/22"></a>02/22</h2><p>面试题 16.24. 数对和</p>
-<p>面试题 17.05.  字母与数字</p>
-<p>面试题 17.11. 单词距离</p>
-<p>面试题 17.16. 按摩师</p>
-<h2 id="02-21"><a href="#02-21" class="headerlink" title="02/21"></a>02/21</h2><p>面试题 04.01. 节点间通路</p>
-<p>面试题 04.05. 合法二叉搜索树</p>
-<p>面试题 04.06. 后继者</p>
-<p>面试题 04.08. 首个共同祖先</p>
-<p>面试题 08.02. 迷路的机器人</p>
-<h2 id="02-20"><a href="#02-20" class="headerlink" title="02/20"></a>02/20</h2><p>面试题 17.23. 最大黑方阵</p>
-<p>面试题 17.24. 最大子矩阵</p>
-<p>面试题 03.05. 栈排序</p>
-<p>面试题 10.10. 数字流的秩</p>
-<h2 id="02-19"><a href="#02-19" class="headerlink" title="02/19"></a>02/19</h2><p>面试题 17.19. 消失的两个数字</p>
-<p>面试题 17.20. 连续中值</p>
-<h2 id="02-18"><a href="#02-18" class="headerlink" title="02/18"></a>02/18</h2><p>面试题 17.09. 第 k 个数</p>
-<p>面试题 17.18. 最短超串</p>
-<p>面试题 17.21. 直方图的水量</p>
-<h2 id="02-17"><a href="#02-17" class="headerlink" title="02/17"></a>02/17</h2><p>面试题 03.03. 堆盘子</p>
-<p>面试题 08.11. 硬币</p>
-<p>面试题 10.11. 峰与谷</p>
-<p>面试题 17.14. 最小K个数</p>
-<p>面试题 17.08. 马戏团人塔</p>
-<h2 id="02-16"><a href="#02-16" class="headerlink" title="02/16"></a>02/16</h2><p>剑指 Offer 34. 二叉树中和为某一值的路径</p>
-<p>剑指 Offer 33. 二叉搜索树的后序遍历序列</p>
-<p>面试题32 - I. 从上到下打印二叉树</p>
-<p>剑指 Offer 44. 数字序列中某一位的数字  </p>
-<p>84.柱状图中最大的矩形</p>
-<h2 id="02-15"><a href="#02-15" class="headerlink" title="02/15"></a>02/15</h2><p>剑指Offer26.树的子结构</p>
-<p>剑指Offer16.数值的整数次方</p>
-<p>剑指Offer35.复杂链表的复制</p>
-<p>剑指Offer36.二叉搜索树与双向链表</p>
-<p>剑指Offer31.栈的压入、弹出序列</p>
-<p>剑指Offer38.字符串的排列</p>
-<p>剑指Offer32-III.从上到下打印二叉树III</p>
-<p>641.设计循环双端队列</p>
-<h2 id="02-14"><a href="#02-14" class="headerlink" title="02/14"></a>02/14</h2><p>剑指Offer04.二维数组中的查找</p>
-<p>剑指Offer12.矩阵中的路径</p>
-<p>剑指Offer13.机器人的运动范围</p>
-<p>剑指Offer07.重建二叉树</p>
-<p>剑指Offer14-I.剪绳子</p>
-<p>面试题16.25.LRU缓存</p>
-<h2 id="02-13"><a href="#02-13" class="headerlink" title="02/13"></a>02/13</h2><p>剑指Offer48.最长不含重复字符的子字符串</p>
-<p>剑指Offer49.丑数</p>
-<p>剑指Offer59-I.滑动窗口的最大值</p>
-<p>剑指Offer59-II.队列的最大值</p>
-<p>剑指Offer66.构建乘积数组</p>
-<p>剑指Offer60.n个骰子的点数</p>
-<p>剑指Offer67.把字符串转换成整数</p>
-<p>剑指Offer63.股票的最大利润</p>
-<p>剑指Offer64.求1+2+…+n</p>
-<p>剑指Offer56-I.数组中数字出现的次数</p>
-<h2 id="02-12"><a href="#02-12" class="headerlink" title="02/12"></a>02/12</h2><p>剑指Offer45.把数组排成最小的数</p>
-<p>剑指Offer46.把数字翻译成字符串</p>
-<p>剑指Offer47.礼物的最大价值</p>
-<h2 id="12-30"><a href="#12-30" class="headerlink" title="12/30"></a>12/30</h2><p>112.最长递增路径</p>
-<p>114.外星文字典</p>
-<h2 id="12-29"><a href="#12-29" class="headerlink" title="12/29"></a>12/29</h2><p>632.最小区间</p>
-<p>094.最少回文分割</p>
-<h2 id="12-28"><a href="#12-28" class="headerlink" title="12/28"></a>12/28</h2><p>543.二叉树的直径</p>
-<p>435.无重叠区间</p>
-<p>51.数组中的逆序对</p>
-<h2 id="12-27"><a href="#12-27" class="headerlink" title="12/27"></a>12/27</h2><p>206.反转链表</p>
-<p>1312.让字符串成为回文串的最少插入次数</p>
-<h2 id="12-23"><a href="#12-23" class="headerlink" title="12/23"></a>12/23</h2><p>5.最长回文子串</p>
-<p>647.回文子串</p>
-<p>409.最长回文串</p>
-<h2 id="12-18"><a href="#12-18" class="headerlink" title="12/18"></a>12/18</h2><p>121.买卖股票的最佳时机</p>
-<p>122.买卖股票的最佳时机II</p>
-<p>123.买卖股票的最佳时机III</p>
-<p>188.买卖股票的最佳时机IV</p>
-<h2 id="12-16"><a href="#12-16" class="headerlink" title="12/16"></a>12/16</h2><p>049.从根节点到叶节点的路径数字之和</p>
-<p>050.向下的路径节点之和</p>
-<p>051.节点之和最大的路径</p>
-<p>052.展平二叉搜索树</p>
-<p>055.二叉搜索树迭代器</p>
-<p>056.二叉搜索树中两个节点之和</p>
-<p>012.左右两边子数组的和相等</p>
-<h2 id="12-15"><a href="#12-15" class="headerlink" title="12/15"></a>12/15</h2><p>043.往完全二叉树添加节点</p>
-<p>044.二叉树每层的最大值</p>
-<p>045.二叉树最底层最左边的值</p>
-<p>046.二叉树的右侧视图</p>
-<p>047.二叉树剪枝</p>
-<p>039.直方图最大矩形面积</p>
-<p>040.矩阵中最大的矩形</p>
-<h2 id="12-14"><a href="#12-14" class="headerlink" title="12/14"></a>12/14</h2><p>033.变位词组</p>
-<h2 id="12-13"><a href="#12-13" class="headerlink" title="12/13"></a>12/13</h2><p>095.最长公共子序列</p>
-<p>096.字符串交织</p>
-<p>036.后缀表达式</p>
-<p>030.插入、删除和随机访问都是O(1)的容器</p>
-<p>029.排序的循环链表</p>
-<p>099.最小路径之和</p>
-<p>106.二分图</p>
-<p>093.最长斐波那契数列*</p>
-<p>107.矩阵中的距离</p>
-<p>113.课程顺序</p>
-<h2 id="12-12"><a href="#12-12" class="headerlink" title="12/12"></a>12/12</h2><p>767.重构字符串</p>
-<p>153.寻找旋转排序数组中的最小值</p>
-<p>969.煎饼排序</p>
-<h2 id="12-11"><a href="#12-11" class="headerlink" title="12/11"></a>12/11</h2><p>092.翻转字符</p>
-<p>083.没有重复元素集合的全排列</p>
-<p>084.含有重复元素集合的全排列</p>
-<p>085.生成匹配的括号</p>
-<p>007.数组中和为0的三个数</p>
-<p>014.字符串中的变位词</p>
-<p>031.最近最少使用缓存</p>
-<h2 id="12-10"><a href="#12-10" class="headerlink" title="12/10"></a>12/10</h2><p>090.环形房屋偷盗</p>
-<p>035.最小时间差</p>
-<p>010.和为k的子数组前缀和+哈希优化</p>
-<h2 id="12-9"><a href="#12-9" class="headerlink" title="12/9"></a>12/9</h2><p>057.值和下标之差都在给定的范围内桶</p>
-<p>058.日程表</p>
-<p>059.数据流的第K大数值</p>
-<p>060.出现频率最高的k个数字</p>
-<p>061.和最小的k个数对</p>
-<p>073.狒狒吃香蕉</p>
-<p>116.省份数量</p>
-<p>071.按权重生成随机数</p>
-<h2 id="12-8"><a href="#12-8" class="headerlink" title="12/8"></a>12/8</h2><p>038.每日温度</p>
-<p>100.三角形中最小路径之和</p>
-<p>102.加减的目标值</p>
-<p>103.最少的硬币数目</p>
-<p>105.岛屿的最大面积</p>
-<p>109.开密码锁</p>
-<p>292.Nim游戏</p>
-<p>118.多余的边</p>
-<h2 id="12-7"><a href="#12-7" class="headerlink" title="12/7"></a>12/7</h2><p>027.回文链表</p>
-<p>072.求平方根</p>
-<p>081.允许重复选择元素的组合</p>
-<p>003.前n个数字二进制中1的个数</p>
-<p>082.含有重复元素集合的组合</p>
-<p>005.单词长度的最大乘积</p>
-<p>008.和大于等于target的最短子数组</p>
-<p>088.爬楼梯的最少成本</p>
-<p>009.乘积小于K的子数组</p>
-<p>089.房屋偷盗</p>
-<p>011.0和1个数相同的子数组</p>
-<p>013.二维子矩阵的和</p>
-<p>091.粉刷房子</p>
-<p>037.小行星碰撞</p>
-<h2 id="12-6"><a href="#12-6" class="headerlink" title="12/6"></a>12/6</h2><p>815.公交路线</p>
-<p>909.蛇梯棋</p>
-<p>529.扫雷游戏</p>
-<p>934.最短的桥</p>
-<p>146.LRU缓存机制</p>
-<h2 id="12-4"><a href="#12-4" class="headerlink" title="12/4"></a>12/4</h2><p>1293.网格中的最短路径三维BFS</p>
-<p>141.环形链表</p>
-<p>142.环形链表II</p>
-<h2 id="12-3"><a href="#12-3" class="headerlink" title="12/3"></a>12/3</h2><p>80.删除有序数组中的重复项II</p>
-<p>1162.地图分析BFS</p>
-<p>743.网络延迟时间Dijkstra</p>
-<h2 id="12-2"><a href="#12-2" class="headerlink" title="12/2"></a>12/2</h2><p>77.组合</p>
-<p>70.爬楼梯</p>
-<p>79.单词搜索</p>
-<p>89.格雷编码</p>
-<p>90.子集II</p>
-<p>91.解码方法</p>
-<p>92.反转链表II</p>
-<p>93.复原IP地址</p>
-<p>96.不同的二叉搜索树</p>
-<p>97.交错字符串dp*********</p>
-<h2 id="12-1"><a href="#12-1" class="headerlink" title="12/1"></a>12/1</h2><p>214.最短回文串哈希/KMP</p>
-<p>312.戳气球区间dp</p>
-<p>7.整数反转</p>
-<p>8.字符串转换整数(atoi)</p>
-<p>12.整数转罗马数字</p>
-<p>63.不同路径II</p>
-<p>38.外观数列</p>
-<p>40.组合总和II</p>
-<h2 id="11-30"><a href="#11-30" class="headerlink" title="11/30"></a>11/30</h2><p>149.直线上最多的点数</p>
-<p>174.地下城游戏逆向dp</p>
-<p>20.有效的括号栈</p>
-<p>27.移除元素</p>
-<p>124.二叉树中的最大路径和树上dp</p>
-<p>底层const和顶层const</p>
-<p>164.最大间距计数排序</p>
-<h2 id="11-29"><a href="#11-29" class="headerlink" title="11/29"></a>11/29</h2><p>123.买卖股票的最佳时机IIIdp</p>
-<p>135.分发糖果</p>
-<h2 id="11-26"><a href="#11-26" class="headerlink" title="11/26"></a>11/26</h2><p>57插图区间什么破题？？？闭区间还是开区间都没说清楚。。</p>
-<p>45跳跃游戏经典dp</p>
-<p>50Pow经典快速幂</p>
-<h2 id="11-25"><a href="#11-25" class="headerlink" title="11/25"></a>11/25</h2><p>44通配符匹配</p>
-<p>32最长有效括号</p>
-<p>51+52N皇后</p>
-<p>60排列序列**********</p>
-<p>65有效数字</p>
-<p>84柱状图中最大的矩形</p>
-<h2 id="11-24"><a href="#11-24" class="headerlink" title="11/24"></a>11/24</h2><p>301？？？？？剪枝就愣是剪不过去？？？</p>
-<p>41缺失的第一个正数有点意思</p>
-<p>42接雨水</p>
-<h2 id="11-23"><a href="#11-23" class="headerlink" title="11/23"></a>11/23</h2><p>1.数之和</p>
-<p>2.两数相加</p>
-<p>3.无重复字符的最长子串</p>
-<p>4.寻找两个正序数组的中位数</p>
-<p>5.最长回文子串</p>
-<p>15.三数之和</p>
-<p>72.编辑距离</p>
-<p>239.滑动窗口最大值</p>
+          <h2 id="进程间通信的7种方式"><a href="#进程间通信的7种方式" class="headerlink" title="进程间通信的7种方式"></a>进程间通信的7种方式</h2><ol>
+<li><p>管道（Pipe）：管道是一种半双工的通信方式，数据只能单向流动，而且只能在具有亲缘关系的进程间使用，允许一个进程和另一个与它有共同祖先的进程之间进行通信。</p>
+</li>
+<li><p>命名管道（named pipe）：也是半双工的通信方式，除具有管道所具有的功能外，它还允许无亲缘关系进程间的通信。命名管道在文件系统中有对应的文件名。命名管道通过命令mkfifo或系统调用mkfifo来创建。</p>
+</li>
+<li><p>信号（Signal）：信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生。是Unix系统中使用的最古老的进程间通信的方法之一。操作系统通过信号来通知进程系统中发生了某种预先规定好的事件（一组事件中的一个），它也是用户进程之间通信和同步的一种原始机制。比如Ctrl+C就是一种程序终止(interrupt)信号。</p>
+</li>
+<li><p>消息（Message）队列：消息队列是消息的链接表，包括Posix消息队列system V消息队列。有足够权限的进程可以向队列中添加消息，被赋予读权限的进程则可以读走队列中的消息。消息队列克服了信号承载信息量少，管道只能承载无格式字节流以及缓冲区大小受限等缺</p>
+</li>
+<li><p>共享内存：共享内存就是映射一段能被其他进程所访问的内存，这段共享内存由一个进程创建，但多个进程都可以访问，是最快的可用IPC形式。是针对其他通信机制运行效率较低而设计的。往往与其它通信机制，如信号量结合使用，来达到进程间的同步及互斥。</p>
+</li>
+<li><p>信号量（semaphore）：信号量是一个计数器，可以用来控制多个进程对共享资源的访问。它常作为一种锁机制，防止某进程正在访问共享资源时，其他进程也访问该资源。因此，主要作为进程间以及同一进程内不同线程之间的同步手段。</p>
+</li>
+<li><p>套接字（Socket）：与其他通信机制不同的是，它可用于不同机器间的进程通信。起初是由Unix系统的BSD分支开发出来的，但现在一般可以移植到其它类Unix系统上：Linux和System V的变种都支持套接字。</p>
+</li>
+</ol>
 
       
     </div>
@@ -1408,7 +346,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/14/%E9%87%8D%E8%BD%BD%EF%BC%8C%E8%A6%86%E7%9B%96%EF%BC%8C%E9%87%8D%E5%86%99/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/28/const%E7%9A%84%E4%BD%9C%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1422,7 +360,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/02/14/%E9%87%8D%E8%BD%BD%EF%BC%8C%E8%A6%86%E7%9B%96%EF%BC%8C%E9%87%8D%E5%86%99/" class="post-title-link" itemprop="url">重载，覆盖，重写</a>
+            <a href="/2022/02/28/const%E7%9A%84%E4%BD%9C%E7%94%A8/" class="post-title-link" itemprop="url">const的作用</a>
         </h2>
 
         <div class="post-meta">
@@ -1435,7 +373,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-14 22:35:45 / Modified: 22:42:40" itemprop="dateCreated datePublished" datetime="2022-02-14T22:35:45+08:00">2022-02-14</time>
+              <time title="Created: 2022-02-28 16:19:09 / Modified: 16:31:01" itemprop="dateCreated datePublished" datetime="2022-02-28T16:19:09+08:00">2022-02-28</time>
             </span>
 
           
@@ -1449,33 +387,195 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <ol>
-<li><p>重载：是指同一可访问区内被声明几个具有不同参数列（参数的类型、个数、顺序）的同名函数，根据参数列表确定调用哪个函数，重载不关心函数返回类型。</p>
- <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> tmp)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">float</span> tmp)</span></span>;        <span class="comment">// 重载 参数类型不同（相对于上一个函数）</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> tmp, <span class="keyword">float</span> tmp1)</span></span>; <span class="comment">// 重载 参数个数不同（相对于上一个函数）</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">float</span> tmp, <span class="keyword">int</span> tmp1)</span></span>; <span class="comment">// 重载 参数顺序不同（相对于上一个函数）</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> tmp)</span></span>;            <span class="comment">// error: &#x27;int A::fun(int)&#x27; cannot be overloaded 错误：注意重载不关心函数返回类型</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
-<li><p>隐藏：是指派生类的函数屏蔽了与其同名的基类函数，只要同名函数，不管参数列表是否相同，基类函数都会被隐藏。</p>
- <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> tmp, <span class="keyword">float</span> tmp1)</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::fun(int tmp, float tmp1)&quot;</span> &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derive</span> :</span> <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> tmp)</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derive::fun(int tmp)&quot;</span> &lt;&lt; endl; &#125; <span class="comment">// 隐藏基类中的同名函数</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Derive ex;</span><br><span class="line">    ex.<span class="built_in">fun</span>(<span class="number">1</span>);       <span class="comment">// Derive::fun(int tmp)</span></span><br><span class="line">    ex.<span class="built_in">fun</span>(<span class="number">1</span>, <span class="number">0.01</span>); <span class="comment">// error: candidate expects 1 argument, 2 provided</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <h2 id="const的作用"><a href="#const的作用" class="headerlink" title="const的作用"></a>const的作用</h2><ol>
+<li><p>阻止一个变量被改变，可以使用const关键字。在定义该const变量时，通常需要对它进行初始化，因为以后就没有机会再去改变它了；</p>
+</li>
+<li><p>对指针来说，可以指定指针本身为const（指针常量：int* const p），也可以指定指针所指的数据为const（常量指针：const int* p），或二者同时指定为const（常指针常量：const int* const p）；</p>
+</li>
+<li><p>类的常函数可以访问const和非const的成员变量，但不能修改类的成员变量；</p>
+<p>this指针默认是指针常量，所以不能修改this指针的指向。在成员函数后面加const变成常函数，实际是修饰的是this指针，将this指针变成常指针常量，使其不能修改指向的值。</p>
+</li>
+<li><p>常对象只能调用常函数，非常对象可以调用常函数也可以调用非常函数；</p>
+</li>
+<li><p>const类型变量必须定义的时候进行初始化，因此也导致如果类的成员变量有const类型的变量，那么该变量必须在类的初始化列表中进行初始化；</p>
+</li>
+<li><p>const类型变量可以通过类型转换符const_cast将const类型转换为非const类型；</p>
+</li>
+<li><p>在一个函数声明中，const可以修饰形参，表明它是一个输入参数，在函数内部不能改变其值；</p>
+</li>
+<li><p>对于函数值传递的情况，因为参数传递是通过复制实参创建一个临时变量传递进函数的，函数内只能改变临时变量，但无法改变实参。则这个时候无论加不加const对实参不会产生任何影响。但是在引用或指针传递函数调用中，因为传进去的是一个引用或指针，这样函数内部可以改变引用或指针所指向的变量，这时const 才是实实在在地保护了实参所指向的变量。因为在编译阶段编译器对调用函数的选择是根据实参进行的，所以，只有引用传递和指针传递可以用是否加const来重载。一个拥有顶层const的形参无法和另一个没有顶层const的形参区分开来。</p>
+</li>
+</ol>
 
-<p> 说明：上述代码中 ex.fun(1, 0.01); 出现错误，说明派生类中将基类的同名函数隐藏了。若是想调用基类中的同名函数，可以加上类型名指明 ex.Base::fun(1, 0.01);，这样就可以调用基类中的同名函数。</p>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/28/static%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E7%94%A8%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/28/static%E7%9A%84%E4%BD%9C%E7%94%A8%E5%92%8C%E7%94%A8%E6%B3%95/" class="post-title-link" itemprop="url">static的作用和用法</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-28 15:45:08 / Modified: 15:52:48" itemprop="dateCreated datePublished" datetime="2022-02-28T15:45:08+08:00">2022-02-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="static的用法和作用"><a href="#static的用法和作用" class="headerlink" title="static的用法和作用"></a>static的用法和作用</h2><ol>
+<li><p>隐藏</p>
+<p>当同时编译多个文件时，所有未加static前缀的全局变量和函数都具有全局可见性。</p>
+<p>加static的全局变量只有本文件内能访问。</p>
 </li>
-<li><p>重写(覆盖)：虚函数的应用。是指派生类中存在重新定义的函数。函数名、参数列表、返回值类型都必须同基类中被重写的函数一致，只有函数体不同。派生类调用时会调用派生类的重写函数，不会调用被重写函数。重写的基类中被重写的函数必须有 virtual 修饰。</p>
- <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> tmp)</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Base::fun(int tmp) : &quot;</span> &lt;&lt; tmp &lt;&lt; endl; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span> :</span> <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> tmp)</span> </span>&#123; cout &lt;&lt; <span class="string">&quot;Derived::fun(int tmp) : &quot;</span> &lt;&lt; tmp &lt;&lt; endl; &#125; <span class="comment">// 重写基类中的 fun 函数</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Base *p = <span class="keyword">new</span> <span class="built_in">Derived</span>();</span><br><span class="line">    p-&gt;<span class="built_in">fun</span>(<span class="number">3</span>); <span class="comment">// Derived::fun(int) : 3</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>保持变量内容的持久</p>
+<p> （static变量中的记忆功能和全局生存期）</p>
+<p> 存储在静态数据区的变量会在程序刚开始运行时就完成初始化，也是唯一的一次初始化。共有两种变量存储在静态存储区：全局变量和static变量，只不过和全局变量比起来，static可以控制变量的可见范围，说到底static还是用来隐藏的。</p>
+</li>
+<li><p>默认初始化为0</p>
+<p> 其实全局变量也具备这一属性，因为全局变量也存储在静态数据区。在静态数据区，内存中所有的字节默认值都是0x00，某些时候这一特点可以减少程序员的工作量。</p>
+</li>
+<li><p>类成员声明为static</p>
+<ul>
+<li>函数体内static变量的作用范围为该函数体，不同于auto变量，该变量的内存只被分配一次，因此其值在下次调用时仍维持上次的值</li>
+<li>在模块内的static全局变量可以被模块内所有函数访问，但不能被模块外其它函数访问；</li>
+<li>在模块内的static函数只可被这一模块内的其它函数调用，这个函数的使用范围被限制在声明它的模块内；</li>
+<li>在类中的static成员变量属于整个类所拥有，对类的所有对象只有一份拷贝；</li>
+<li>在类中的static成员函数属于整个类所拥有，这个函数不接收this指针，因而只能访问类的static成员变量。</li>
+<li>static类对象必须要在类外进行初始化，static修饰的变量先于对象存在，所以static修饰的变量要在类外初始化；</li>
+<li>由于static修饰的类成员属于类，不属于对象，因此static类成员函数是没有this指针的，this指针是指向本对象的指针。正因为没有this指针，所以static类成员函数不能访问非static的类成员，只能访问 static修饰的类成员；</li>
+<li>static成员函数不能被virtual修饰，static成员不属于任何对象或实例，所以加上virtual没有任何实际意义；静态成员函数没有this指针，虚函数的实现是为每一个对象分配一个vptr指针，而vptr是通过this指针调用的，所以不能为virtual；虚函数的调用关系，this-&gt;vptr-&gt;ctable-&gt;virtual function</li>
+</ul>
+</li>
 </ol>
-<p>重写和重载的区别：</p>
-<ol>
-<li><p>范围区别：对于类中函数的重载或者重写而言，重载发生在同一个类的内部，重写发生在不同的类之间（子类和父类之间）。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/27/%E5%AE%8F%E5%AE%9A%E4%B9%89%E5%92%8Ctypedef/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/27/%E5%AE%8F%E5%AE%9A%E4%B9%89%E5%92%8Ctypedef/" class="post-title-link" itemprop="url">宏定义和typedef</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-27 23:15:48" itemprop="dateCreated datePublished" datetime="2022-02-27T23:15:48+08:00">2022-02-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-28 10:15:55" itemprop="dateModified" datetime="2022-02-28T10:15:55+08:00">2022-02-28</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="宏定义和typedef区别"><a href="#宏定义和typedef区别" class="headerlink" title="宏定义和typedef区别"></a>宏定义和typedef区别</h2><ul>
+<li><p>宏主要用于定义常量及书写复杂的内容；typedef主要用于定义类型别名。</p>
 </li>
-<li><p>参数区别：重载的函数需要与原函数有相同的函数名、不同的参数列表，不关注函数的返回值类型；重写的函数的函数名、参数列表和返回值类型都需要和原函数相同，父类中被重写的函数需要有 virtual 修饰。</p>
+<li><p>宏替换发生在编译阶段之前，属于文本插入替换；typedef是编译的一部分。</p>
 </li>
-<li><p>virtual 关键字：重写的函数基类中必须有 virtual关键字的修饰，重载的函数可以有 virtual 关键字的修饰也可以没有。</p>
+<li><p>宏不检查类型；typedef会检查数据类型。</p>
 </li>
-</ol>
-<p>隐藏和重写，重载的区别：</p>
-<ol>
-<li><p>范围区别：隐藏与重载范围不同，隐藏发生在不同类中。</p>
+<li><p>宏不是语句，不在在最后加分号；typedef是语句，要加分号标识结束。</p>
 </li>
-<li><p>参数区别：隐藏函数和被隐藏函数参数列表可以相同，也可以不同，但函数名一定相同；当参数不同时，无论基类中的函数是否被 virtual 修饰，基类函数都是被隐藏，而不是重写。</p>
+<li><p>注意对指针的操作，typedef char * p_char和#define p_char char *区别巨大。</p>
+<p>一个经典例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INT int*</span></span><br><span class="line">INT a,b;</span><br></pre></td></tr></table></figure>
+
+<p>这里a的类型是int*，而b的类型是int。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> * INT  </span><br><span class="line">INT a,b;</span><br></pre></td></tr></table></figure>
+
+<p>这里的a,b都是int *类型。</p>
 </li>
-</ol>
+</ul>
 
       
     </div>
@@ -1494,7 +594,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1561,7 +661,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-count">146</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
