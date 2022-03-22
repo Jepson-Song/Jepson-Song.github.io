@@ -21,20 +21,23 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="C++ 内存分区：栈、堆、全局&#x2F;静态存储区、常量存储区、代码区。  栈：存放函数的局部变量、函数参数、返回地址等，由编译器自动分配和释放。  堆：动态申请的内存空间，就是由 malloc 分配的内存块，由程序员控制它的分配和释放，如果程序执行结束还没有释放，操作系统会自动回收。  全局区&#x2F;静态存储区（.bss 段和 .data 段）：存放全局变量和静态变量，程序运行结束操作系统自动释放，在 C 语">
+  <meta name="description" content="启动zokeeper进入zokeeper的bin目录 1cd &#x2F;usr&#x2F;local&#x2F;zookeeper&#x2F;apache-zookeeper-3.8.0-bin&#x2F;bin&#x2F;  开启zookeeper集群 1.&#x2F;zkCli.sh -server 192.168.79.128:2181,192.168.79.128:2182,192.168.79.128:2183,192.168.79.128:2184">
 <meta property="og:type" content="article">
-<meta property="og:title" content="内存管理">
-<meta property="og:url" content="http://example.com/2022/02/14/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:title" content="kafka">
+<meta property="og:url" content="http://example.com/2022/03/22/kafka/index.html">
 <meta property="og:site_name" content="Jepson&#39;s Blog">
-<meta property="og:description" content="C++ 内存分区：栈、堆、全局&#x2F;静态存储区、常量存储区、代码区。  栈：存放函数的局部变量、函数参数、返回地址等，由编译器自动分配和释放。  堆：动态申请的内存空间，就是由 malloc 分配的内存块，由程序员控制它的分配和释放，如果程序执行结束还没有释放，操作系统会自动回收。  全局区&#x2F;静态存储区（.bss 段和 .data 段）：存放全局变量和静态变量，程序运行结束操作系统自动释放，在 C 语">
+<meta property="og:description" content="启动zokeeper进入zokeeper的bin目录 1cd &#x2F;usr&#x2F;local&#x2F;zookeeper&#x2F;apache-zookeeper-3.8.0-bin&#x2F;bin&#x2F;  开启zookeeper集群 1.&#x2F;zkCli.sh -server 192.168.79.128:2181,192.168.79.128:2182,192.168.79.128:2183,192.168.79.128:2184">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-02-14T06:25:12.000Z">
-<meta property="article:modified_time" content="2022-02-27T05:30:20.828Z">
+<meta property="og:image" content="https://s2.loli.net/2022/03/22/UMcGQJ1L8uBaDkr.png">
+<meta property="og:image" content="https://s2.loli.net/2022/03/22/mnRIlBcizh79C4g.png">
+<meta property="og:image" content="https://s2.loli.net/2022/03/22/GConpFKMeWw2zk9.png">
+<meta property="article:published_time" content="2022-03-22T04:45:40.000Z">
+<meta property="article:modified_time" content="2022-03-22T10:11:59.043Z">
 <meta property="article:author" content="Jepson">
-<meta property="article:tag" content="知识点">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/03/22/UMcGQJ1L8uBaDkr.png">
 
-<link rel="canonical" href="http://example.com/2022/02/14/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+<link rel="canonical" href="http://example.com/2022/03/22/kafka/">
 
 
 <script id="page-configurations">
@@ -47,7 +50,7 @@
   };
 </script>
 
-  <title>内存管理 | Jepson's Blog</title>
+  <title>kafka | Jepson's Blog</title>
   
 
 
@@ -194,7 +197,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/14/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/22/kafka/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -207,7 +210,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          内存管理
+          kafka
         </h1>
 
         <div class="post-meta">
@@ -218,16 +221,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2022-02-14 14:25:12" itemprop="dateCreated datePublished" datetime="2022-02-14T14:25:12+08:00">2022-02-14</time>
+              <time title="Created: 2022-03-22 12:45:40 / Modified: 18:11:59" itemprop="dateCreated datePublished" datetime="2022-03-22T12:45:40+08:00">2022-03-22</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-27 13:30:20" itemprop="dateModified" datetime="2022-02-27T13:30:20+08:00">2022-02-27</time>
-              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -247,30 +244,88 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>C++ 内存分区：栈、堆、全局/静态存储区、常量存储区、代码区。</p>
-<ol>
-<li><p>栈：存放函数的局部变量、函数参数、返回地址等，由编译器自动分配和释放。</p>
-</li>
-<li><p>堆：动态申请的内存空间，就是由 malloc 分配的内存块，由程序员控制它的分配和释放，如果程序执行结束还没有释放，操作系统会自动回收。</p>
-</li>
-<li><p>全局区/静态存储区（.bss 段和 .data 段）：存放全局变量和静态变量，程序运行结束操作系统自动释放，在 C 语言中，未初始化的放在 .bss 段中，初始化的放在 .data 段中，C++ 中不再区分了。</p>
-</li>
-<li><p>常量存储区（.data 段）：存放的是常量，不允许修改，程序运行结束自动释放。</p>
-</li>
-<li><p>代码区（.text 段）：存放代码，不允许修改，但可以执行。编译后的二进制文件存放在这里。</p>
-</li>
-</ol>
-<p>说明：</p>
-<p>从操作系统的本身来讲，以上存储区在内存中的分布是如下形式(从低地址到高地址)：.text 段 –&gt; .data 段 –&gt; .bss 段 –&gt; 堆 –&gt; unused –&gt; 栈 –&gt; env</p>
-<p>程序实例：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">说明：C++ 中不再区分初始化和未初始化的全局变量、静态变量的存储区，如果非要区分下述程序标注在了括号中</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> g_var = <span class="number">0</span>; <span class="comment">// g_var 在全局区（.data 段）</span></span><br><span class="line"><span class="keyword">char</span> *gp_var;  <span class="comment">// gp_var 在全局区（.bss 段）</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> var;                    <span class="comment">// var 在栈区</span></span><br><span class="line">    <span class="keyword">char</span> *p_var;                <span class="comment">// p_var 在栈区</span></span><br><span class="line">    <span class="keyword">char</span> arr[] = <span class="string">&quot;abc&quot;</span>;         <span class="comment">// arr 为数组变量，存储在栈区；&quot;abc&quot;为字符串常量，存储在常量区</span></span><br><span class="line">    <span class="keyword">char</span> *p_var1 = <span class="string">&quot;123456&quot;</span>;    <span class="comment">// p_var1 在栈区；&quot;123456&quot;为字符串常量，存储在常量区</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> s_var = <span class="number">0</span>;       <span class="comment">// s_var 为静态变量，存在静态存储区（.data 段）</span></span><br><span class="line">    p_var = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="number">10</span>); <span class="comment">// 分配得来的 10 个字节的区域在堆区</span></span><br><span class="line">    <span class="built_in">free</span>(p_var);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h3 id="启动zokeeper"><a href="#启动zokeeper" class="headerlink" title="启动zokeeper"></a>启动zokeeper</h3><p>进入zokeeper的bin目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/zookeeper/apache-zookeeper-3.8.0-bin/bin/</span><br></pre></td></tr></table></figure>
 
-<p>补充总结：</p>
-<p>在理解C/C++内存分区时，常会碰到如下术语：数据区，堆，栈，静态存储区，静态区，常量区，常变量区，全局区，字符串常量区，静态常量区，静态变量区，文字常量区，代码区等等，初学者被搞得云里雾里。在这里，尝试捋清楚以上分区的关系。</p>
-<p>数据区包括：堆，栈，静态存储区。</p>
-<p>静态存储区包括：常量区（静态常量区），全局区（全局变量区）和静态变量区（静态区）。</p>
-<p>常量区包括：字符串常量区和常变量区。</p>
-<p>代码区：存放程序编译后的二进制代码，不可寻址区。</p>
+<p>开启zookeeper集群</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./zkCli.sh -server 192.168.79.128:2181,192.168.79.128:2182,192.168.79.128:2183,192.168.79.128:2184</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动kafka服务器"><a href="#启动kafka服务器" class="headerlink" title="启动kafka服务器"></a>启动kafka服务器</h3><p>进入kafka的bin目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/kafka/kafka_2.11-2.4.1/bin/</span><br></pre></td></tr></table></figure>
+
+<p>启动kafka</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-server-start.sh -daemon ../config/server.properties</span><br></pre></td></tr></table></figure>
+
+<p>检查是否启动成功</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -aux|grep server.properties</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建topic"><a href="#创建topic" class="headerlink" title="创建topic"></a>创建topic</h3><p>通过kafka命令创建一个topic</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-topics.sh --create --zookeeper 192.168.79.128:2181 --replication-factor 1 --partitions 1 --topic test</span><br></pre></td></tr></table></figure>
+
+<p>查看zk中所有topic</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-topics.sh --list --zookeeper 192.168.79.128:2181</span><br></pre></td></tr></table></figure>
+
+<h3 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h3><p>生产者发送消息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-console-producer.sh --broker-list 192.168.79.129:9092 --topic test</span><br></pre></td></tr></table></figure>
+
+<h3 id="接收消息"><a href="#接收消息" class="headerlink" title="接收消息"></a>接收消息</h3><p>消费者接收消息</p>
+<ul>
+<li>方式一：从最后一条消息的偏移量+1开始消费</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-console-consumer.sh --bootstrap-server 192.168.79.129:9092 --topic test</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>方式二：从头开始消费</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-console-consumer.sh --bootstrap-server 192.168.79.129:9092 --from-beginning --topic test</span><br></pre></td></tr></table></figure>
+
+<h3 id="单播消息"><a href="#单播消息" class="headerlink" title="单播消息"></a>单播消息</h3><p>两个消费者在同一个组</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-console-consumer.sh --bootstrap-server 192.168.79.129:9092 --consumer-property group.id=testGroup --topic test</span><br></pre></td></tr></table></figure>
+
+<p>如果多个消费者在同一个消费者组，那么只有一个消费者能收到订阅的topic中的消息</p>
+<h3 id="多播消息"><a href="#多播消息" class="headerlink" title="多播消息"></a>多播消息</h3><p>两个消费者在不同组</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-console-consumer.sh --bootstrap-server 192.168.79.129:9092 --consumer-property group.id=testGroup --topic test</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-console-consumer.sh --bootstrap-server 192.168.79.129:9092 --consumer-property group.id=testGroup1 --topic test</span><br></pre></td></tr></table></figure>
+
+<p>可以同时收到消息</p>
+<h3 id="查看消费者组"><a href="#查看消费者组" class="headerlink" title="查看消费者组"></a>查看消费者组</h3><p>查看有哪些消费者组</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-consumer-groups.sh --bootstrap-server 192.168.79.129:9092--topic test</span><br></pre></td></tr></table></figure>
+
+<p>查看某个组的具体信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-consumer-groups.sh --bootstrap-server 192.168.79.129:9092 --describe --group testGroup</span><br></pre></td></tr></table></figure>
+
+<h2 id="topic和patition"><a href="#topic和patition" class="headerlink" title="topic和patition"></a>topic和patition</h2><h3 id="topic"><a href="#topic" class="headerlink" title="topic"></a>topic</h3><p>kafka中的topic是一个逻辑概念，通过topic对消息进行分类，不同的topic会被订阅该topic的消费者消费。</p>
+<p>如果消息非常多，因为消息是会被保存在log日志中，为了解决文件过大的问题，kafka提出了patition的概念。</p>
+<h3 id="partition"><a href="#partition" class="headerlink" title="partition"></a>partition</h3><p>通过partition将topic的消息分区存储</p>
+<ul>
+<li><p>解决了log文件过大的问题</p>
+</li>
+<li><p>提高生产者和消费者的吞吐量，读和写可以在多个分区同时进行</p>
+</li>
+</ul>
+<h2 id="创建多分区topic"><a href="#创建多分区topic" class="headerlink" title="创建多分区topic"></a>创建多分区topic</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-topics.sh --create --zookeeper 192.168.79.128:2181 --replication-factor 1 --partitions 2 --topic test1</span><br></pre></td></tr></table></figure>
+
+<h2 id="搭建kafka集群"><a href="#搭建kafka集群" class="headerlink" title="搭建kafka集群"></a>搭建kafka集群</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./kafka-server-start.sh -daemon ../config/server.properties</span><br><span class="line">./kafka-server-start.sh -daemon ../config/server1.properties</span><br><span class="line">./kafka-server-start.sh -daemon ../config/server2.properties</span><br></pre></td></tr></table></figure>
+
+<h3 id="副本"><a href="#副本" class="headerlink" title="副本"></a>副本</h3><p>一个主题，两个分区，三个副本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-topics.sh --create --zookeeper 192.168.79.128:2181 --replication-factor 3 --partitions 2 --topic my-replicated-topic</span><br></pre></td></tr></table></figure>
+
+<p>查看topic</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-topics.sh --describe --zookeeper 192.168.79.128:2181 --topic my-replicated-topicmy-replicated-topic</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2022/03/22/UMcGQJ1L8uBaDkr.png" alt="20220322152036"></p>
+<p>副本时为分区建立的副本，一个leader其余是follower</p>
+<p>读和写都发生在leader上，leader挂了从follower中选举产生新leader</p>
+<p>follower接收leader的同步数据</p>
+<p><img src="https://s2.loli.net/2022/03/22/mnRIlBcizh79C4g.png" alt="20220322153205"></p>
+<h3 id="集群发消息"><a href="#集群发消息" class="headerlink" title="集群发消息"></a>集群发消息</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-console-producer.sh --broker-list 192.168.79.129:9092,192.168.79.129:9093,192.168.79.129:9094 --topic my-replicated-topic</span><br></pre></td></tr></table></figure>
+
+<h3 id="集群收消息"><a href="#集群收消息" class="headerlink" title="集群收消息"></a>集群收消息</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-console-consumer.sh --bootstrap-server 192.168.79.129:9092,192.168.79.129:9093,192.168.79.129:9094 --from-beginning --topic my-replicated-topic</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2022/03/22/GConpFKMeWw2zk9.png" alt="20220322160204"></p>
+<p>一个partition最多被一个consumer消费（保证消费的顺序），一个consumer可以消费多个partition。</p>
+<p>消费者组中consumer的数量不能比patition的数量多，不然多出来的consumer没有patition消费。</p>
 
     </div>
 
@@ -298,10 +353,6 @@
 
 
       <footer class="post-footer">
-          
-          <div class="post-tags">
-              <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag"><i class="fa fa-tag"></i> 知识点</a>
-          </div>
 
         
 
@@ -309,13 +360,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/02/14/%E7%BC%96%E8%AF%91/" rel="prev" title="编译">
-      <i class="fa fa-chevron-left"></i> 编译
+    <a href="/2022/03/21/%E8%99%9A%E6%8B%9F%E6%9C%BA/" rel="prev" title="虚拟机">
+      <i class="fa fa-chevron-left"></i> 虚拟机
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/02/14/%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" rel="next" title="智能指针实现原理">
-      智能指针实现原理 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -375,6 +423,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8zokeeper"><span class="nav-number">1.</span> <span class="nav-text">启动zokeeper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8kafka%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">启动kafka服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAtopic"><span class="nav-number">3.</span> <span class="nav-text">创建topic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF"><span class="nav-number">4.</span> <span class="nav-text">发送消息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6%E6%B6%88%E6%81%AF"><span class="nav-number">5.</span> <span class="nav-text">接收消息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E6%92%AD%E6%B6%88%E6%81%AF"><span class="nav-number">6.</span> <span class="nav-text">单播消息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E6%92%AD%E6%B6%88%E6%81%AF"><span class="nav-number">7.</span> <span class="nav-text">多播消息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%B6%88%E8%B4%B9%E8%80%85%E7%BB%84"><span class="nav-number">8.</span> <span class="nav-text">查看消费者组</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#topic%E5%92%8Cpatition"><span class="nav-number"></span> <span class="nav-text">topic和patition</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#topic"><span class="nav-number">1.</span> <span class="nav-text">topic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#partition"><span class="nav-number">2.</span> <span class="nav-text">partition</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%A4%9A%E5%88%86%E5%8C%BAtopic"><span class="nav-number"></span> <span class="nav-text">创建多分区topic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%AD%E5%BB%BAkafka%E9%9B%86%E7%BE%A4"><span class="nav-number"></span> <span class="nav-text">搭建kafka集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%AF%E6%9C%AC"><span class="nav-number">1.</span> <span class="nav-text">副本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E5%8F%91%E6%B6%88%E6%81%AF"><span class="nav-number">2.</span> <span class="nav-text">集群发消息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E6%94%B6%E6%B6%88%E6%81%AF"><span class="nav-number">3.</span> <span class="nav-text">集群收消息</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
