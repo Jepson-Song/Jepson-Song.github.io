@@ -188,6 +188,90 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/02/%E9%A1%B5%E8%A1%A8%E5%92%8C%E5%BF%AB%E8%A1%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/02/%E9%A1%B5%E8%A1%A8%E5%92%8C%E5%BF%AB%E8%A1%A8/" class="post-title-link" itemprop="url">页表和快表</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-02 08:59:23 / Modified: 09:16:01" itemprop="dateCreated datePublished" datetime="2022-03-02T08:59:23+08:00">2022-03-02</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="页表"><a href="#页表" class="headerlink" title="页表"></a>页表</h2><ul>
+<li><p>页表是将逻辑地址转换为物理地址。</p>
+</li>
+<li><p>页表内存储的是页号和块号的映射。</p>
+</li>
+<li><p>逻辑地址整除页长得到的商就是页号，余数就是页面偏移量。</p>
+</li>
+<li><p>通过页表将页号转换为块号，在用块号和页面偏移量即可得到数据在内存中的物理地址。</p>
+</li>
+<li><p>当请求的页面不在内存中时（页表中还有状态位等信息表示页面是否在内存中），发生缺页中断将需要的页面调入内存，如果内存没有多余的空间则使用页面置换算法替换掉内存中的某个页。</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/03/02/3oqNDV2jnAOx5EL.png" alt="20220302085955"></p>
+<h2 id="快表"><a href="#快表" class="headerlink" title="快表"></a>快表</h2><ul>
+<li><p>快表是一种比内存快很多的高速缓存存储器</p>
+</li>
+<li><p>快表存储的是一些常用的的页号，相当于页表的cache，如果快表命中了则不需要再访问页表。</p>
+</li>
+<li><p>快表中的页一定在内存中，页表中的页不一定在内存中。</p>
+</li>
+<li><p>快表命中了只需要访问一次内存，没命中则需要访问两次内存（访问页表一次加访问数据一次）。</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/03/02/9LqQ8Ycj6S7oEhF.png" alt="20220302091110"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/%E7%BA%BF%E7%A8%8B%E9%94%81POSIX/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -506,91 +590,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/27/%E5%AE%8F%E5%AE%9A%E4%B9%89%E5%92%8Ctypedef/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/27/%E5%AE%8F%E5%AE%9A%E4%B9%89%E5%92%8Ctypedef/" class="post-title-link" itemprop="url">宏定义和typedef</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-02-27 23:15:48" itemprop="dateCreated datePublished" datetime="2022-02-27T23:15:48+08:00">2022-02-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-02-28 10:15:55" itemprop="dateModified" datetime="2022-02-28T10:15:55+08:00">2022-02-28</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="宏定义和typedef区别"><a href="#宏定义和typedef区别" class="headerlink" title="宏定义和typedef区别"></a>宏定义和typedef区别</h2><ul>
-<li><p>宏主要用于定义常量及书写复杂的内容；typedef主要用于定义类型别名。</p>
-</li>
-<li><p>宏替换发生在编译阶段之前，属于文本插入替换；typedef是编译的一部分。</p>
-</li>
-<li><p>宏不检查类型；typedef会检查数据类型。</p>
-</li>
-<li><p>宏不是语句，不在在最后加分号；typedef是语句，要加分号标识结束。</p>
-</li>
-<li><p>注意对指针的操作，typedef char * p_char和#define p_char char *区别巨大。</p>
-<p>一个经典例子：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INT int*</span></span><br><span class="line">INT a,b;</span><br></pre></td></tr></table></figure>
-
-<p>这里a的类型是int*，而b的类型是int。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> * INT  </span><br><span class="line">INT a,b;</span><br></pre></td></tr></table></figure>
-
-<p>这里的a,b都是int *类型。</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -661,7 +660,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">147</span>
+          <span class="site-state-item-count">148</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

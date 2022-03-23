@@ -188,6 +188,84 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/03/%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/03/%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">最短路算法总结</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-03 16:01:50 / Modified: 18:52:49" itemprop="dateCreated datePublished" datetime="2021-12-03T16:01:50+08:00">2021-12-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>算法变革：BFS-&gt;Dijkstra-&gt;A*</p>
+<h2 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a>BFS</h2><p>1162. 地图分析</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BFS</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x, y, z;</span><br><span class="line">    <span class="keyword">int</span> nx, ny, nz;</span><br><span class="line">    <span class="keyword">while</span>(!que.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        z = que.<span class="built_in">front</span>();</span><br><span class="line">        que.<span class="built_in">pop</span>();</span><br><span class="line">        vis[z] = <span class="literal">true</span>;</span><br><span class="line">        x = z/n;</span><br><span class="line">        y = z%n;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;i++)&#123;</span><br><span class="line">            nx = x+dir[i][<span class="number">0</span>];</span><br><span class="line">            ny = y+dir[i][<span class="number">1</span>];</span><br><span class="line">            nz = nx*n+ny;</span><br><span class="line">            <span class="keyword">if</span>(nx&gt;=<span class="number">0</span>&amp;&amp;nx&lt;n&amp;&amp;ny&gt;=<span class="number">0</span>&amp;&amp;ny&lt;n&amp;&amp;!mp[nx][ny]&amp;&amp;!vis[nz]&amp;&amp;dis[nz]&gt;dis[z]+<span class="number">1</span>)&#123;</span><br><span class="line">                dis[nz] = dis[z] + <span class="number">1</span>;</span><br><span class="line">                que.<span class="built_in">push</span>(nz);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ans = dis[z];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>BFS只能用来解决无权图的最短路问题。</p>
+<h2 id="Dijkstra"><a href="#Dijkstra" class="headerlink" title="Dijkstra"></a>Dijkstra</h2><p>743. 网络延迟时间</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> mx = <span class="number">0</span>;</span><br><span class="line">    dis[<span class="number">0</span>] = <span class="number">0x3f3f3f3f</span>; </span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=m;i++)&#123;</span><br><span class="line">        mx = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vis[j]&amp;&amp;dis[j]&lt;dis[mx])&#123;</span><br><span class="line">                mx = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(mx==<span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        vis[mx] = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vis[j]&amp;&amp;dis[j]&gt;dis[mx]+mp[mx][j])&#123;</span><br><span class="line">                dis[j] = dis[mx] + mp[mx][j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, dis[mx]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Dijkstra可以解决带权图的最短路问题，但是普通版Dijkstra的时间复杂度是O(N^2)的，可以使用堆优化来降低复杂度。</p>
+<h3 id="堆优化Dijkstra"><a href="#堆优化Dijkstra" class="headerlink" title="堆优化Dijkstra"></a>堆优化Dijkstra</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">int</span> dis;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &lt;(<span class="keyword">const</span> node &amp;a) <span class="keyword">const</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.dis&lt;dis;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    priority_queue&lt;node&gt; que;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(dis[j]==<span class="number">0</span>)&#123;</span><br><span class="line">            que.<span class="built_in">push</span>(node&#123;j,<span class="number">0</span>&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(!que.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        node tmp = que.<span class="built_in">top</span>();</span><br><span class="line">        <span class="keyword">int</span> u = tmp.num;</span><br><span class="line">        que.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">if</span>(vis[u]) <span class="keyword">continue</span>;</span><br><span class="line">        vis[u] = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vis[j]&amp;&amp;dis[j]&gt;dis[u]+mp[u][j])&#123;</span><br><span class="line">                dis[j] = dis[u] + mp[u][j];</span><br><span class="line">                que.<span class="built_in">push</span>(node&#123;j,dis[j]&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, dis[u]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>堆优化就是把每次寻找优先级最高的节点的操作用一个小顶堆代替，复杂度为O(nlogn)。</p>
+<h2 id="BestFirst-最佳优先搜索"><a href="#BestFirst-最佳优先搜索" class="headerlink" title="BestFirst(最佳优先搜索)"></a>BestFirst(最佳优先搜索)</h2><p>BestFirst就是把未搜索节点的优先级定义为该节点与目标节点之间的<strong>估计距离</strong>，如果这个估计距离刚好是真实距离，则BestFirst可以很快搜索到目标节点，但是大多数情况下估计距离时不准确的。这个估计距离是非常启发式的，比如曼哈顿距离等。如果估计距离设定的不准确，那么很可能得到的最短路是错误的。</p>
+<h2 id="A"><a href="#A" class="headerlink" title="A*"></a>A*</h2><p>A*结合了Dijkstra和BestFirst，关键的区别也是对未搜索节点的优先级定义。A*将优先级定义为：f(n) = g(n) + h(n)。其中g(n)是该节点到其实节点的距离，h(n)是一个启发式函数表示该节点到目标节点之间的估计距离。</p>
+<p>在极端情况下，如果h(n)=0则A*退化为Dijkstra，如果g(n)=0则A*退化为BestFirst。</p>
+<p>如果h(n)小于该节点到目标节点的实际距离，则A*一定能找到最短路，但是h(n)越小，搜索的节点就越多，导致算法就越慢；</p>
+<p>如果h(n)刚好等于该节点到目标节点的实际距离，则A*会以很快的速度找到最短路，但是在现实中很难找到这样的h(n);</p>
+<p>如果h(n)大于该节点到目标节点的实际距离，则A*不一定能找到最短路，不过此时算法的速度会很快。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/03/insert%E5%92%8Cerase/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -505,76 +583,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/30/const/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/11/30/const/" class="post-title-link" itemprop="url">const</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-11-30 15:52:54 / Modified: 16:17:43" itemprop="dateCreated datePublished" datetime="2021-11-30T15:52:54+08:00">2021-11-30</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><p>const是只读类型的变量，值不能修改，只能在定义的时候赋值。</p>
-<p>形式为const int a = 1;</p>
-<h2 id="常量指针和指针常量"><a href="#常量指针和指针常量" class="headerlink" title="常量指针和指针常量"></a>常量指针和指针常量</h2><p><strong>常量指针</strong>又叫<strong>底层const</strong>，形式为const int *p = &a;</p>
-<p>特点：不能使用该指针修改指向的值，但是可以修改指针指向的地址。</p>
-<p>即，初始化后不可以*p=2，但是可以p=&b;</p>
-<p><strong>指针常量</strong>又叫<strong>顶层const</strong>，形式为int* const p = &a;</p>
-<p>特点：能使用该指针修改指向的值，但是不可以修改指针指向的地址。</p>
-<p>即，初始化后可以*p=2，但是不能p=&b;</p>
-<p>还有一种叫做<strong>常指针常量</strong>的，形式为const int* const a = &b;</p>
-<p>是常量指针和指针常量的综合，既不可以修改指针指向的地址也不可以修改指针指向的值。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -645,7 +653,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">147</span>
+          <span class="site-state-item-count">148</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
