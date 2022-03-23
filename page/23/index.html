@@ -188,6 +188,101 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/06/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950806/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/08/06/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950806/" class="post-title-link" itemprop="url">实验记录0806</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-08-06 10:41:19" itemprop="dateCreated datePublished" datetime="2021-08-06T10:41:19+08:00">2021-08-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-25 18:14:58" itemprop="dateModified" datetime="2021-08-25T18:14:58+08:00">2021-08-25</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="6DoF设计"><a href="#6DoF设计" class="headerlink" title="6DoF设计"></a>6DoF设计</h2><p><img src="https://i.loli.net/2021/08/06/uLwXkANxpcHF6BM.png" alt="20210806110016"></p>
+<ol>
+<li>forward/backward (surge)：前后移动</li>
+<li>left/right (sway)：左右移动</li>
+<li>up/down (heave)：上下移动</li>
+<li>Roll：左右倾斜</li>
+<li>Pitch：前后俯仰</li>
+<li>Yaw：左右旋转</li>
+</ol>
+<p><img src="https://i.loli.net/2021/08/06/ew8XEI2S7PkLbgh.png" alt="20210806104150"></p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ol>
+<li><p>先把动作分为两类：一类是旋转动作和倾斜动作，另一类是三种平移动作和俯仰动作。</p>
+<p> 分类依据：相邻帧两个耳机移动向量的夹角。如果两耳机移动方向不一致（夹角大于阈值）则是第一类动作，如果方向一致（夹角小于阈值）则是第二类动作。</p>
+</li>
+<li><p>对于第一类动作，如果耳机移动向量与（上一帧）视线方向（几乎）垂直，则是倾斜动作，反之则是旋转动作，或者根据耳机中点是否移动来判断是不是旋转动作。</p>
+</li>
+<li><p>对于第二类动作，如果耳机移动方向与视线方向几乎垂直，则是左右移动或上下移动；反之则是前后移动或俯仰动作。</p>
+</li>
+<li><p>对于左右移动或者上下移动，则根据耳机移动向量在竖直方向的分量的绝对值大小来判断，如果在竖直方向的分量占比最大，则是上下移动，反之则是左右移动。</p>
+</li>
+<li><p>对于前后移动或者俯仰动作，比较难区分，目前想到的方式有</p>
+<ol>
+<li><p>根据是否有竖直方向的分量来判断，如果有且比较大则是俯仰动作，反之则是前后移动。</p>
+</li>
+<li><p>根据量耳机中点与轴点的距离来判断（但是这个距离因人而异），如果距离超过固定值则是前后移动，反之则是俯仰动作。</p>
+</li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/05/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950805/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -551,75 +646,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950726/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/07/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950726/" class="post-title-link" itemprop="url">实验记录0726</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-07-26 13:10:41" itemprop="dateCreated datePublished" datetime="2021-07-26T13:10:41+08:00">2021-07-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-07-31 15:03:55" itemprop="dateModified" datetime="2021-07-31T15:03:55+08:00">2021-07-31</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.loli.net/2021/07/26/C2WaSTFlHUcdn9s.png" alt="20210726131049"></p>
-<p>突然发现用相位的测距结果反而比不用相位的波动大。。</p>
-<p><img src="https://i.loli.net/2021/07/26/sN9Ak6Pz2HLWXFg.png" alt="20210726155435"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -690,7 +716,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">148</span>
+          <span class="site-state-item-count">149</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
