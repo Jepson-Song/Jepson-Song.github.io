@@ -188,6 +188,78 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950807/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/08/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950807/" class="post-title-link" itemprop="url">实验记录0807</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-08-08 14:13:16" itemprop="dateCreated datePublished" datetime="2021-08-08T14:13:16+08:00">2021-08-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-08-25 18:15:23" itemprop="dateModified" datetime="2021-08-25T18:15:23+08:00">2021-08-25</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>感觉上面的思路可能想复杂了，可能没必要把动作划分的那么细，应该只要分别出移动和转动就可以了，因为只有移动会导致轴点改变，而转动不会改变轴点位置。</p>
+<p>不过也没办法依据一个标准就把移动和转动完全分开，现在想到的比较好的分类标准是“两耳机移动方向是否一致”，根据两耳机移动向量的夹角来判断，如果夹角大于阈值则是旋转yaw和倾斜roll动作，如果夹角小于阈值则是移动或者俯仰pitch，阈值暂定为90度。</p>
+<p>所以还需要第二个标准把移动和俯仰分开，目前想用的是“耳机移动方向和视线方向的关系”，因为上下移动和左右移动时是垂直关系，前后移动时是平行关系，只有俯仰既不垂直也不平行，但是这个夹角可能比较小会被误认为平行关系，所以可能会和前后移动混淆。</p>
+<p>所以可能还需要再找到一个标准更好地区分前后移动和俯仰，但是这不太好解决，即上面思路的第5点。。。</p>
+<p>PS: 后来又发现左右倾斜和左右移动也不好区分。。。“两耳机移动方向是否一致”这个标准好像只能用来区分左右旋转这一个动作。所以可能得考虑用“耳机中点与轴点的距离”，这个标准应该能帮助区分左右倾斜和左右移动以及前后俯仰和前后移动。</p>
+<p>思路就是一开始全部认为是转动，一旦距离超过阈值，就认为是移动。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/06/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950806/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -574,78 +646,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/31/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950731/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/07/31/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950731/" class="post-title-link" itemprop="url">实验记录0731</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-07-31 14:00:06" itemprop="dateCreated datePublished" datetime="2021-07-31T14:00:06+08:00">2021-07-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-01 11:25:17" itemprop="dateModified" datetime="2021-08-01T11:25:17+08:00">2021-08-01</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="不用相位和用相位比较，数据编号：20210722-202008"><a href="#不用相位和用相位比较，数据编号：20210722-202008" class="headerlink" title="不用相位和用相位比较，数据编号：20210722_202008"></a>不用相位和用相位比较，数据编号：20210722_202008</h2><p><img src="https://i.loli.net/2021/07/31/4zMu8SJ3E6gOn7o.png" alt="20210731135923"></p>
-<h2 id="在工位上布置实验环境"><a href="#在工位上布置实验环境" class="headerlink" title="在工位上布置实验环境"></a>在工位上布置实验环境</h2><p><img src="https://i.loli.net/2021/07/31/re21tnvmSEgzc4Z.jpg" alt="1100f8c42d289f9bd51c69aa1ee0b88"></p>
-<h2 id="空中画圈，数据编号：20210731-160225"><a href="#空中画圈，数据编号：20210731-160225" class="headerlink" title="空中画圈，数据编号：20210731_160225"></a>空中画圈，数据编号：20210731_160225</h2><p><img src="https://i.loli.net/2021/07/31/tgnQixLBmz4kYMh.png" alt="20210731160339"></p>
-<h2 id="实时计算并且画cir-dis-pos图时一帧大概需要0-6秒"><a href="#实时计算并且画cir-dis-pos图时一帧大概需要0-6秒" class="headerlink" title="实时计算并且画cir dis pos图时一帧大概需要0.6秒"></a>实时计算并且画cir dis pos图时一帧大概需要0.6秒</h2><p><img src="https://i.loli.net/2021/07/31/W2lPCwUEan3HJ4G.png" alt="20210731163047"></p>
-<h2 id="是否使用相位比较"><a href="#是否使用相位比较" class="headerlink" title="是否使用相位比较"></a>是否使用相位比较</h2><p><img src="https://i.loli.net/2021/07/31/ScTqszZluoDk1Bp.png" alt="20210731170010"></p>
-<p>上面的是用了相位，下面的没用相位，结果还是没用相位的波动更小一点。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -716,7 +716,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">149</span>
+          <span class="site-state-item-count">150</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
