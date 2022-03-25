@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>阿里淘宝智能制造二面</title>
+    <url>/2022/03/25/%E9%98%BF%E9%87%8C%E6%B7%98%E5%AE%9D%E6%99%BA%E8%83%BD%E5%88%B6%E9%80%A0%E4%BA%8C%E9%9D%A2/</url>
+    <content><![CDATA[<ul>
+<li>自我介绍</li>
+<li>问项目<ul>
+<li>主要问了科研项目</li>
+<li>系统的组成</li>
+<li>横向比较，跟CV</li>
+<li>技术难点</li>
+<li>负责的工作</li>
+<li>系统的成果</li>
+</ul>
+</li>
+<li>无线感知是什么</li>
+<li>实验室做什么的</li>
+<li>周围同学有做相关研究或者不同研究的吗</li>
+<li>linux了解吗<ul>
+<li>常用命令</li>
+</ul>
+</li>
+<li>学习中遇到哪些困难怎么解决的</li>
+<li>哪一阶段代码能力提高最快<ul>
+<li>打ACM的时候</li>
+<li>问了ACM的分工</li>
+</ul>
+</li>
+<li>投了哪些公司哪些岗位</li>
+<li>自己的优点和缺点</li>
+<li>最近在学什么看什么</li>
+<li>反问环节<ul>
+<li>部门干什么的<ul>
+<li>工厂使用的系统（偏java）</li>
+<li>边缘端研发（偏c/c++）</li>
+</ul>
+</li>
+<li>面试进展<ul>
+<li>不会再有技术面了</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>面经</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hungary算法</title>
     <url>/2022/03/24/hungary%E7%AE%97%E6%B3%95/</url>
     <content><![CDATA[<h2 id="二分图最大匹配——匈牙利算法"><a href="#二分图最大匹配——匈牙利算法" class="headerlink" title="二分图最大匹配——匈牙利算法"></a>二分图最大匹配——匈牙利算法</h2><h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><p><a href="https://blog.csdn.net/sunny_hun/article/details/80627351">https://blog.csdn.net/sunny_hun/article/details/80627351</a></p>
@@ -23,7 +71,9 @@
   <entry>
     <title>阿里淘宝智能制造一面</title>
     <url>/2022/03/23/%E9%98%BF%E9%87%8C%E6%B7%98%E5%AE%9D%E6%99%BA%E8%83%BD%E5%88%B6%E9%80%A0%E4%B8%80%E9%9D%A2/</url>
-    <content><![CDATA[<ul>
+    <content><![CDATA[<p>已通过</p>
+<hr>
+<ul>
 <li>40min</li>
 <li>自我介绍</li>
 <li>编译器项目</li>
