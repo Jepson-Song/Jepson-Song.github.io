@@ -850,8 +850,8 @@ Session是由应用服务器维持的一个服务器端的存储空间，用户�
 <h2 id="分布式操作系统"><a href="#分布式操作系统" class="headerlink" title="分布式操作系统"></a>分布式操作系统</h2><p>简单来说就是有一堆计算机，各自物理硬件上是独立的，通过网络相连，互相通信，通过统一的“中间件”进行协调，共享资源，协同分工完成一件任务的计算机集群。</p>
 ]]></content>
       <tags>
-        <tag>知识点</tag>
         <tag>八股文</tag>
+        <tag>知识点</tag>
         <tag>操作系统</tag>
       </tags>
   </entry>
@@ -894,8 +894,8 @@ Session是由应用服务器维持的一个服务器端的存储空间，用户�
 <p><img src="https://s2.loli.net/2022/03/09/I6jGfuCw2BXqHKr.png" alt="20220309212229"></p>
 ]]></content>
       <tags>
-        <tag>知识点</tag>
         <tag>八股文</tag>
+        <tag>知识点</tag>
         <tag>操作系统</tag>
       </tags>
   </entry>
@@ -913,8 +913,8 @@ Session是由应用服务器维持的一个服务器端的存储空间，用户�
 <p>跟信号驱动IO优点像，但区别是信号驱动IO在内核提醒IO完成之后还要程序完成数据从内核态到用户态的拷贝，而异步IO是在数据拷贝完成之后才通知的程序。</p>
 ]]></content>
       <tags>
-        <tag>知识点</tag>
         <tag>八股文</tag>
+        <tag>知识点</tag>
         <tag>操作系统</tag>
       </tags>
   </entry>
@@ -937,8 +937,8 @@ Session是由应用服务器维持的一个服务器端的存储空间，用户�
 </ol>
 ]]></content>
       <tags>
-        <tag>知识点</tag>
         <tag>八股文</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1444,8 +1444,8 @@ Session是由应用服务器维持的一个服务器端的存储空间，用户�
 </ol>
 ]]></content>
       <tags>
-        <tag>知识点</tag>
         <tag>八股文</tag>
+        <tag>知识点</tag>
         <tag>操作系统</tag>
       </tags>
   </entry>
