@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>kafka中的HW</title>
+    <url>/2022/03/30/kafka%E4%B8%AD%E7%9A%84HW/</url>
+    <content><![CDATA[<p>isr列表：inSyncReplicas，分区中与leader副本保持一定程度同步的副本成为isr，这个是与副本同步有关的，就是说，如果你partition的follower副本会去leader副本上拉取数据同步到follower副本中，这个时候follower副本的leo也是会增加的，每拉过来一条数据follower副本的leo就会+1，然后如果你这个follower 副本的leo追上了leader的hw，就会将这个follower副本添加到isr列表中，如果过段时间发现这个follower 好长时间没有拉取数据了，就会将它从isr列表中剔除。</p>
+<p><img src="https://s2.loli.net/2022/03/30/FbyIpTO2JhSY56r.png" alt="20220330165313"></p>
+<p>logStartOffset，日志中第一条消息的offset，副本的拉取请求（FetchRequest）和删除请求（DeleteRecordRequest）有可能触发新建日志分段而旧的的被清理，进而导致logStartoffset的增加。</p>
+<p>LW（Low Watermark），俗称“低水位”，代表AR集合中最小的logStartOffset值。</p>
+<p>logEndOffset，日志中将要写入的新消息的offset，最后一条消息的offset+1。</p>
+<p>HW（High Watermak），俗称“高水位”，代表ISR中最小的logEndOffset，它表示了一个特定消息的偏移量（offset），消费之只能拉取到这个offset之前的消息。</p>
+<p><img src="https://s2.loli.net/2022/03/30/Adjr8UeQvZRsVxC.png" alt="20220330164929"></p>
+]]></content>
+      <tags>
+        <tag>kafka</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>阿里淘宝智能制造二面</title>
     <url>/2022/03/25/%E9%98%BF%E9%87%8C%E6%B7%98%E5%AE%9D%E6%99%BA%E8%83%BD%E5%88%B6%E9%80%A0%E4%BA%8C%E9%9D%A2/</url>
     <content><![CDATA[<ul>

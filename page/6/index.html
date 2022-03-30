@@ -188,6 +188,80 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/09/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/09/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/" class="post-title-link" itemprop="url">函数指针</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-09 17:00:31 / Modified: 17:07:24" itemprop="dateCreated datePublished" datetime="2022-03-09T17:00:31+08:00">2022-03-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h2><p>函数指针就是指向函数的指针。</p>
+<h2 id="函数指针的作用"><a href="#函数指针的作用" class="headerlink" title="函数指针的作用"></a>函数指针的作用</h2><ol>
+<li><p>实现多态</p>
+<ul>
+<li><p>比如c++面向对象编程里的虚函数。</p>
+</li>
+<li><p>以及面向过程编程的多态指的是，具体执行哪个函数不是在编译时决定的，而是在函数运行时根据函数指针的值来决定的。</p>
+</li>
+</ul>
+</li>
+<li><p>回调函数</p>
+<p>函数指针作为某个函数的参数，通过函数参数调用的函数就是回调函数。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/08/%E5%AD%97%E8%8A%82TikTok%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%89%E9%9D%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -604,89 +678,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/04/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/04/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/" class="post-title-link" itemprop="url">系统调用</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-03-04 17:02:45" itemprop="dateCreated datePublished" datetime="2022-03-04T17:02:45+08:00">2022-03-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-06 13:35:31" itemprop="dateModified" datetime="2022-03-06T13:35:31+08:00">2022-03-06</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h2><p>系统调用就是调用操作系统提供的一系列内核功能函数，因为内核总是对用户程序持不信任的态度，一些核心功能不能直接交由用户程序来实现执行。用户程序只能发出请求，然后内核调用相应的内核函数来帮着处理，将结果返回给应用程序。如此才能保证系统的稳定和安全。</p>
-<p>系统调用是给用户态下的程序使用的，但是用户程序并不直接使用系统调用，而是系统调用在用户态下的接口。这个用户接口就是操作系统提供的系统调用API，一般遵循POSIX标准。</p>
-<p>每一个系统调用都唯一分配了一个整数来标识，通常的做法就是将这个系统调用号放进eax寄存器，当执行到系统调用入口程序的时候就会根据eax的值去调用具体的系统调用程序，比如说eax中存放的是1那么就会去调用fork这个系统调用的相关函数。</p>
-<h3 id="系统调用的实现"><a href="#系统调用的实现" class="headerlink" title="系统调用的实现"></a>系统调用的实现</h3><ul>
-<li><p>参数</p>
-<p>  有些系统调用的是需要参数的，用户接口不真正干活，真正干活的是内核功能函数，但是需要的参数在用户态下，所以需要在用户接口部分向内核传递参数。传参有两种方法：</p>
-<ul>
-<li><p>直接传给寄存器，寄存器是通用的，在用户态将值传给寄存器，进入内核态之后就可以直接使用，这可以使用内联汇编来实现。</p>
-</li>
-<li><p>压栈，压栈有个问题，系统调用使用中断/陷阱来实现，这期间会换栈，在用户态下压栈的参数对内核来说似乎没什么用处。所以要想使用用户态下栈中的参数，必须要获得用户栈的地址，这个值在哪呢？没错，在内核栈中的上下文保存着，从内核栈中取出用户栈的栈顶esp值，就可以取到系统调用的参数了，xv6就是这样实现的。</p>
-</li>
-</ul>
-</li>
-<li><p>返回值</p>
-<p>  函数的调用约定中规定了返回值应该放在eax寄存器里面。而在系统调用的一开始我们将系统调用号传进了eax寄存器，然后中断时保存上下文，将eax压入内核栈，系统调用处理程序将最后结果放到eax寄存器中。</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -757,14 +748,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">152</span>
+          <span class="site-state-item-count">153</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

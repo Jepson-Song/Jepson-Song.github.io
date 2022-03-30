@@ -188,6 +188,73 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/30/kafka%E4%B8%AD%E7%9A%84HW/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/30/kafka%E4%B8%AD%E7%9A%84HW/" class="post-title-link" itemprop="url">kafka中的HW</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-30 16:47:31 / Modified: 17:15:49" itemprop="dateCreated datePublished" datetime="2022-03-30T16:47:31+08:00">2022-03-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>isr列表：inSyncReplicas，分区中与leader副本保持一定程度同步的副本成为isr，这个是与副本同步有关的，就是说，如果你partition的follower副本会去leader副本上拉取数据同步到follower副本中，这个时候follower副本的leo也是会增加的，每拉过来一条数据follower副本的leo就会+1，然后如果你这个follower 副本的leo追上了leader的hw，就会将这个follower副本添加到isr列表中，如果过段时间发现这个follower 好长时间没有拉取数据了，就会将它从isr列表中剔除。</p>
+<p><img src="https://s2.loli.net/2022/03/30/FbyIpTO2JhSY56r.png" alt="20220330165313"></p>
+<p>logStartOffset，日志中第一条消息的offset，副本的拉取请求（FetchRequest）和删除请求（DeleteRecordRequest）有可能触发新建日志分段而旧的的被清理，进而导致logStartoffset的增加。</p>
+<p>LW（Low Watermark），俗称“低水位”，代表AR集合中最小的logStartOffset值。</p>
+<p>logEndOffset，日志中将要写入的新消息的offset，最后一条消息的offset+1。</p>
+<p>HW（High Watermak），俗称“高水位”，代表ISR中最小的logEndOffset，它表示了一个特定消息的偏移量（offset），消费之只能拉取到这个offset之前的消息。</p>
+<p><img src="https://s2.loli.net/2022/03/30/Adjr8UeQvZRsVxC.png" alt="20220330164929"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/25/%E9%98%BF%E9%87%8C%E6%B7%98%E5%AE%9D%E6%99%BA%E8%83%BD%E5%88%B6%E9%80%A0%E4%BA%8C%E9%9D%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -533,88 +600,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/23/Cookie%E5%92%8CSession/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/23/Cookie%E5%92%8CSession/" class="post-title-link" itemprop="url">Cookie和Session</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-03-23 10:45:25 / Modified: 10:53:22" itemprop="dateCreated datePublished" datetime="2022-03-23T10:45:25+08:00">2022-03-23</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>理论上，一个用户的所有请求操作都应该属于同一个会话，而另一个用户的所有请求操作则应该属于另一个会话，二者不能混淆。</p>
-<p>HTTP协议是无状态的协议。一旦数据交换完毕，客户端与服务器端的连接就会关闭，再次交换数据需要建立新的连接。这就意味着服务器无法从连接上跟踪会话。</p>
-<h2 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h2><p>由于HTTP是一种无状态的协议，服务器单从网络连接上无从知道客户身份。所以服务器给客户端们颁发一个通行证，每人一个，无论谁访问都必须携带自己通行证。这样服务器就能从通行证上确认客户身份了。这就是Cookie的工作原理。</p>
-<p>Cookie实际上是一小段的文本信息。客户端请求服务器，如果服务器需要记录该用户状态，就使用response向客户端浏览器颁发一个Cookie。客户端浏览器会把Cookie保存起来。当浏览器再请求该网站时，浏览器把请求的网址连同该Cookie一同提交给服务器。服务器检查该Cookie，以此来辨认用户状态。服务器还可以根据需要修改Cookie的内容。</p>
-<h2 id="Seesion"><a href="#Seesion" class="headerlink" title="Seesion"></a>Seesion</h2><p>Session是服务器端使用的一种记录客户端状态的机制，使用上比Cookie简单一些，相应的也增加了服务器的存储压力。</p>
-<p>Session是另一种记录客户状态的机制，不同的是Cookie保存在客户端浏览器中，而Session保存在服务器上。客户端浏览器访问服务器的时候，服务器把客户端信息以某种形式记录在服务器上。这就是Session。客户端浏览器再次访问时只需要从该Session中查找该客户的状态就可以了。</p>
-<p>如果说Cookie机制是通过检查客户身上的“通行证”来确定客户身份的话，那么Session机制就是通过检查服务器上的“客户明细表”来确认客户身份。Session相当于程序在服务器上建立的一份客户档案，客户来访的时候只需要查询客户档案表就可以了。</p>
-<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p>1、cookie数据存放在客户的浏览器上，session数据放在服务器上.</p>
-<pre><code>简单的说，当你登录一个网站的时候，如果web服务器端使用的是session,那么所有的数据都保存在服务器上面，
-
-客户端每次请求服务器的时候会发送 当前会话的session_id，服务器根据当前session_id判断相应的用户数据标志，以确定用户是否登录，或具有某种权限。
-
-由于数据是存储在服务器 上面，所以你不能伪造，但是如果你能够获取某个登录用户的session_id，用特殊的浏览器伪造该用户的请求也是能够成功的。
-
-session_id是服务器和客户端链接时候随机分配的，一般来说是不会有重复，但如果有大量的并发请求，也不是没有重复的可能性。
-
-Session是由应用服务器维持的一个服务器端的存储空间，用户在连接服务器时，会由服务器生成一个唯一的SessionID,用该SessionID 为标识符来存取服务器端的Session存储空间。而SessionID这一数据则是保存到客户端，用Cookie保存的，用户提交页面时，会将这一 SessionID提交到服务器端，来存取Session数据。这一过程，是不用开发人员干预的。所以一旦客户端禁用Cookie，那么Session也会失效。
-</code></pre>
-<p>2、cookie不是很安全，别人可以分析存放在本地的COOKIE并进行COOKIE欺骗考虑到安全应当使用session。</p>
-<p>3、设置cookie时间可以使cookie过期。但是使用session-destory（），我们将会销毁会话。</p>
-<p>4、session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能考虑到减轻服务器性能方面，应当使用cookie。</p>
-<p>5、单个cookie保存的数据不能超过4K，很多浏览器都限制一个站点最多保存20个cookie。(Session对象没有对存储的数据量的限制，其中可以保存更为复杂的数据类型)</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -685,14 +670,14 @@ Session是由应用服务器维持的一个服务器端的存储空间，用户�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">152</span>
+          <span class="site-state-item-count">153</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
