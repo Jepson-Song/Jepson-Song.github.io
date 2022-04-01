@@ -188,6 +188,67 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951008/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951008/" class="post-title-link" itemprop="url">实验记录1008</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-10-08 12:31:24 / Modified: 12:32:08" itemprop="dateCreated datePublished" datetime="2021-10-08T12:31:24+08:00">2021-10-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="https://i.loli.net/2021/10/08/jt2qzDFK9uLiTNU.png" alt="20211008123140"><br>（左边是cir右边是dcir）</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/23/%E8%AE%A8%E8%AE%BA0924/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -613,80 +674,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/25/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950825/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/25/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950825/" class="post-title-link" itemprop="url">实验记录0825</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-08-25 17:07:25 / Modified: 18:16:18" itemprop="dateCreated datePublished" datetime="2021-08-25T17:07:25+08:00">2021-08-25</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="用HMM完成分类任务"><a href="#用HMM完成分类任务" class="headerlink" title="用HMM完成分类任务"></a>用HMM完成分类任务</h2><p><img src="https://i.loli.net/2021/08/25/XVh9TxvJnpMSRDG.png" alt="20210825170754"></p>
-<p>只用了单边位置的数据进行分类，理论上左右发射端的位置是非常对称的。主要是因为HMM的输入好像只能是一维的？</p>
-<p>数据长度为10时正确率在90%左右</p>
-<p>把数据长度改成20能达到97%的准确率</p>
-<p><img src="https://i.loli.net/2021/08/25/oYcQPRKT2wlMpHZ.png" alt="20210825181612"></p>
-<p>步长设为5准确率也有96%</p>
-<p>但是步长设为10准确率就降到85%zuoyou</p>
-<p>步长设为20准确率会降到65%</p>
-<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><ol>
-<li>优化HMM</li>
-<li>把HMM训练好的参数保存下来</li>
-<li>把HMM和之前的代码结合起来</li>
-<li>每次采集数据时要新建一个文件夹</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -757,7 +744,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">153</span>
+          <span class="site-state-item-count">154</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
