@@ -21,15 +21,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Producer通过producer.send()函数发送数据 send发送的是record，record包含了message的topic和value，可选的还有key和partition等 发送之前需要先把key和value序列化，序列化就是将其变成字节流，对于一般类型kafka已经内置了序列化和反序列化函数，复杂类型的可能需要自己实现 获取partition的值，producer发送消息的时">
+  <meta name="description" content="发送数据 Producer通过producer.send()函数发送数据 send发送的是record，record包含了message的topic和value，可选的还有key和partition等 发送之前需要先把key和value序列化，序列化就是将其变成字节流，对于一般类型kafka已经内置了序列化和反序列化函数，复杂类型的可能需要自己实现   获取partition的值，produce">
 <meta property="og:type" content="article">
 <meta property="og:title" content="kafka中的Producer">
 <meta property="og:url" content="http://example.com/2022/04/01/kafka%E4%B8%AD%E7%9A%84Producer/index.html">
 <meta property="og:site_name" content="Jepson&#39;s Blog">
-<meta property="og:description" content="Producer通过producer.send()函数发送数据 send发送的是record，record包含了message的topic和value，可选的还有key和partition等 发送之前需要先把key和value序列化，序列化就是将其变成字节流，对于一般类型kafka已经内置了序列化和反序列化函数，复杂类型的可能需要自己实现 获取partition的值，producer发送消息的时">
+<meta property="og:description" content="发送数据 Producer通过producer.send()函数发送数据 send发送的是record，record包含了message的topic和value，可选的还有key和partition等 发送之前需要先把key和value序列化，序列化就是将其变成字节流，对于一般类型kafka已经内置了序列化和反序列化函数，复杂类型的可能需要自己实现   获取partition的值，produce">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-04-01T09:03:15.000Z">
-<meta property="article:modified_time" content="2022-04-01T09:15:56.318Z">
+<meta property="article:modified_time" content="2022-04-02T02:00:03.799Z">
 <meta property="article:author" content="Jepson">
 <meta property="article:tag" content="kafka">
 <meta name="twitter:card" content="summary">
@@ -218,10 +218,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-04-01 17:03:15 / Modified: 17:15:56" itemprop="dateCreated datePublished" datetime="2022-04-01T17:03:15+08:00">2022-04-01</time>
+              <time title="Created: 2022-04-01 17:03:15" itemprop="dateCreated datePublished" datetime="2022-04-01T17:03:15+08:00">2022-04-01</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-02 10:00:03" itemprop="dateModified" datetime="2022-04-02T10:00:03+08:00">2022-04-02</time>
+              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -242,16 +248,19 @@
 
       
         <ul>
+<li>发送数据<ul>
 <li>Producer通过producer.send()函数发送数据</li>
 <li>send发送的是record，record包含了message的topic和value，可选的还有key和partition等</li>
 <li>发送之前需要先把key和value序列化，序列化就是将其变成字节流，对于一般类型kafka已经内置了序列化和反序列化函数，复杂类型的可能需要自己实现</li>
+</ul>
+</li>
 <li>获取partition的值，producer发送消息的时候需要确定发送到哪个topic的哪个partition<ul>
 <li>指明partition的情况下，直接发送到指明的partition</li>
 <li>没指明partition的情况下，将key的hash值与partition个数取余作为partition值</li>
 <li>如果连key都没有的话，则随机一个整数对partition个数取余作为partition值，之后每次都自增，即round-robin算法</li>
 </ul>
 </li>
-<li>向 accumulator 写数据<ul>
+<li>向accumulator写数据<ul>
 <li>每个topic-partition都会有一个队列，队列的单元是recordbatch</li>
 <li>producer要发送的record先追加到recordbatch中，如果不存在或者空间不足则新建一个recordbatch</li>
 <li>写入成功后，如果发现有recordbatch满足发送条件，就会唤醒sender线程发送recordbatch</li>
@@ -300,7 +309,10 @@
     <a href="/2022/03/30/kafka%E4%B8%AD%E7%9A%84HW/" rel="prev" title="kafka中的HW">
       <i class="fa fa-chevron-left"></i> kafka中的HW
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/02/kafka%E4%B8%AD%E7%9A%84Metadata/" rel="next" title="kafka中的Metadata">
+      kafka中的Metadata <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -373,7 +385,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">154</span>
+          <span class="site-state-item-count">155</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -188,6 +188,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/02/kafka%E4%B8%AD%E7%9A%84Metadata/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/02/kafka%E4%B8%AD%E7%9A%84Metadata/" class="post-title-link" itemprop="url">kafka中的Metadata</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-02 10:44:49 / Modified: 16:27:53" itemprop="dateCreated datePublished" datetime="2022-04-02T10:44:49+08:00">2022-04-02</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li><p>Metadata的内容</p>
+<ul>
+<li>Metadata元数据主要包含了broker、topic和partition的信息，比如broker的id、topic的partition数、partition的leader和副本等</li>
+<li>集群中有哪些节点；</li>
+<li>集群中有哪些 topic，这些 topic 有哪些 partition；</li>
+<li>每个 partition 的 leader 副本分配在哪个节点上，follower 副本分配在哪些节点上；</li>
+<li>每个 partition 的 AR 有哪些副本，ISR 有哪些副本</li>
+</ul>
+</li>
+<li><p>Metadata的应用场景</p>
+<ul>
+<li>KafkaProducer 发送一条消息到指定的 topic 中，需要知道分区的数量，要发送的目标分区，目标分区的 leader，leader 所在的节点地址等，这些信息都要从 Metadata 中获取。</li>
+<li>当 Kafka 集群中发生了 leader 选举，节点中 partition 或副本发生了变化等，这些场景都需要更新Metadata 中的数据</li>
+</ul>
+</li>
+<li><p>Metadata的更新</p>
+<ul>
+<li>Producer 在调用 dosend() 方法时，第一步就是通过 waitOnMetadata 方法获取该 topic 的 metadata 信息。如果metadata读不到，会一直阻塞在那，直到超时，抛出TimeoutException。</li>
+<li>Sender poll()更新Metadata<ul>
+<li>周期性的更新: 每隔一段时间更新一次，这个通过 Metadata的lastRefreshMs, lastSuccessfulRefreshMs 这2个字段来实现</li>
+<li>失效检测，强制更新：检查到metadata失效以后，调用metadata.requestUpdate()强制更新。 requestUpdate()函数里面其实什么都没做，就是把needUpdate置成了false</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Metadata失效检测</p>
+<ul>
+<li>initConnect的时候</li>
+<li>poll里面IO的时候，连接断掉了</li>
+<li>有请求超时</li>
+<li>发消息的时候，有partition的leader没找到</li>
+<li>返回的response和请求对不上的时候</li>
+<li>总之一句话：发生各式各样的异常，数据不同步，都认为metadata可能出问题了，要求更新。</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/01/kafka%E4%B8%AD%E7%9A%84Producer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,10 +310,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-04-01 17:03:15 / Modified: 17:15:56" itemprop="dateCreated datePublished" datetime="2022-04-01T17:03:15+08:00">2022-04-01</time>
+              <time title="Created: 2022-04-01 17:03:15" itemprop="dateCreated datePublished" datetime="2022-04-01T17:03:15+08:00">2022-04-01</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-02 10:00:03" itemprop="dateModified" datetime="2022-04-02T10:00:03+08:00">2022-04-02</time>
+              </span>
 
           
 
@@ -230,16 +333,19 @@
 
       
           <ul>
+<li>发送数据<ul>
 <li>Producer通过producer.send()函数发送数据</li>
 <li>send发送的是record，record包含了message的topic和value，可选的还有key和partition等</li>
 <li>发送之前需要先把key和value序列化，序列化就是将其变成字节流，对于一般类型kafka已经内置了序列化和反序列化函数，复杂类型的可能需要自己实现</li>
+</ul>
+</li>
 <li>获取partition的值，producer发送消息的时候需要确定发送到哪个topic的哪个partition<ul>
 <li>指明partition的情况下，直接发送到指明的partition</li>
 <li>没指明partition的情况下，将key的hash值与partition个数取余作为partition值</li>
 <li>如果连key都没有的话，则随机一个整数对partition个数取余作为partition值，之后每次都自增，即round-robin算法</li>
 </ul>
 </li>
-<li>向 accumulator 写数据<ul>
+<li>向accumulator写数据<ul>
 <li>每个topic-partition都会有一个队列，队列的单元是recordbatch</li>
 <li>producer要发送的record先追加到recordbatch中，如果不存在或者空间不足则新建一个recordbatch</li>
 <li>写入成功后，如果发现有recordbatch满足发送条件，就会唤醒sender线程发送recordbatch</li>
@@ -492,68 +598,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/24/KMP%E7%AE%97%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/24/KMP%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">KMP算法</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-03-24 17:13:47 / Modified: 17:15:00" itemprop="dateCreated datePublished" datetime="2022-03-24T17:13:47+08:00">2022-03-24</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="KMP算法"><a href="#KMP算法" class="headerlink" title="KMP算法"></a>KMP算法</h2><h3 id="详解"><a href="#详解" class="headerlink" title="详解"></a>详解</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_52622200/article/details/110563434">https://blog.csdn.net/weixin_52622200/article/details/110563434</a></p>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">getNext</span><span class="params">(string p, <span class="keyword">int</span> *next)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> lenp = p.<span class="built_in">length</span>();</span><br><span class="line">    <span class="keyword">int</span> j = <span class="number">0</span>, k = <span class="number">-1</span>;</span><br><span class="line">    next[<span class="number">0</span>] = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">while</span>(j&lt;lenp<span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(k==<span class="number">-1</span>||p[j]==p[k])&#123;</span><br><span class="line">            j++; k++;</span><br><span class="line">            <span class="keyword">if</span>(p[j]==p[k])&#123;</span><br><span class="line">                next[j] = next[k];</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                next[j] = k;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            k = next[k];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">KMP</span><span class="params">(string t, string p, <span class="keyword">int</span> *next)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> lent = t.<span class="built_in">length</span>();</span><br><span class="line">    <span class="keyword">int</span> lenp = p.<span class="built_in">length</span>();</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(i&lt;lent&amp;&amp;j&lt;lenp)&#123;</span><br><span class="line">        <span class="keyword">if</span>(j==<span class="number">-1</span>||t[i]==p[j])&#123;</span><br><span class="line">            i++; j++;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            j = next[j];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(j==lenp) <span class="keyword">return</span> i-j;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">strStr</span><span class="params">(string haystack, string needle)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> lent = haystack.<span class="built_in">length</span>();</span><br><span class="line">    <span class="keyword">int</span> lenp = needle.<span class="built_in">length</span>();</span><br><span class="line">    <span class="keyword">if</span>(lenp==<span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> next[lenp];</span><br><span class="line">    <span class="built_in">getNext</span>(needle, next);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">KMP</span>(haystack, needle, next);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -624,7 +668,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">154</span>
+          <span class="site-state-item-count">155</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
