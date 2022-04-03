@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>kafka中的Topic</title>
+    <url>/2022/04/02/kafka%E4%B8%AD%E7%9A%84Topic/</url>
+    <content><![CDATA[<ul>
+<li><p>topic的创建</p>
+<ul>
+<li>通过 kafka-topics.sh 创建一个 topic，可以设置相应的副本数让 Server 端自动进行 replica 分配，也可以直接指定手动 replica 的分配；</li>
+<li>Server 端如果 auto.create.topics.enable 设置为 true 时，那么当 Producer 向一个不存在的 topic 发送数据时，该 topic 同样会被创建出来，此时，副本数默认是1。</li>
+<li>无论使用哪种方式，最后都是通过 AdminUtils.createOrUpdateTopicPartitionAssignmentPathInZK() 将 topic 的 Partition replicas 的更新到 zk 上，这中间关键的一点在于：Partition 的 replicas 是如何分配的。在创建时，我们既可以指定相应 replicas 分配，也可以使用默认的算法自动分配。</li>
+</ul>
+</li>
+<li><p>replica的分配</p>
+<ul>
+<li>创建时指定 replicas 分配</li>
+<li>replicas 自动分配算法<ul>
+<li>在创建 topic 时，Server 通过 AdminUtils.assignReplicasToBrokers() 方法来获取该 topic partition 的 replicas 分配。</li>
+<li>从 broker.list 随机选择一个 Broker,使用 round-robin 算法分配每个 partition 的第一个副本;</li>
+<li>对于这个 partition 的其他副本,逐渐增加 Broker.id 来选择 replica 的分配。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>partition的状态</p>
+<ul>
+<li>NonExistentPartition：这个 partition 不存在；</li>
+<li>NewPartition：这个 partition 刚创建，有对应的 replicas，但还没有 leader 和 isr；</li>
+<li>OnlinePartition：这个 partition 的 leader 已经选举出来了，处理正常的工作状态；</li>
+<li>OfflinePartition：partition 的 leader 挂了。</li>
+<li>partition 只有在 OnlinePartition 这个状态时，才是可用状态。</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>kafka</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>kafka中的Metadata</title>
     <url>/2022/04/02/kafka%E4%B8%AD%E7%9A%84Metadata/</url>
     <content><![CDATA[<ul>
