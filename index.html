@@ -188,6 +188,96 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/04/kafka%E4%B9%8Bpartition%E7%9A%84%E9%A1%BA%E5%BA%8F%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/04/kafka%E4%B9%8Bpartition%E7%9A%84%E9%A1%BA%E5%BA%8F%E6%80%A7/" class="post-title-link" itemprop="url">kafka之partition的顺序性</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-04 10:39:30 / Modified: 11:18:32" itemprop="dateCreated datePublished" datetime="2022-04-04T10:39:30+08:00">2022-04-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li><p>RecordAccumulator</p>
+<ul>
+<li>每个 topic-partition 都有一个对应的 deque，deque 中存储的是 RecordBatch，它是发送的基本单位，只有这个 topic-partition 的 RecordBatch 达到大小或时间要求才会触发发送操作（但并不是只有达到这两个条件之一才会被发送，这点要理解清楚）。<br><img src="https://s2.loli.net/2022/04/04/TazJLP8esYxDbqZ.png" alt="20220404111740"></li>
+</ul>
+</li>
+<li><p>mutePartition() 与 unmutePartition()</p>
+<ul>
+<li>这两个方法是保证有序性关键之一，其主要做用就是将指定的 topic-partition 从 muted 集合中加入或删除。</li>
+<li>mutePartition()：如果要求保证顺序性，那么这个 tp 对应的 RecordBatch 如果要开始发送，就将这个 tp 加入到 muted 集合中；</li>
+<li>unmutePartition()：如果 tp 对应的 RecordBatch 发送完成，tp 将会从 muted 集合中移除。</li>
+</ul>
+</li>
+<li><p>ready()</p>
+<ul>
+<li>ready() 是在 Sender 线程中调用的，其作用选择那些可以发送的 node，也就是说，如果这个 tp 对应的 batch 可以发送（达到时间或大小要求），就把 tp 对应的 leader 选出来。</li>
+</ul>
+</li>
+<li><p>drain()</p>
+<ul>
+<li>是用来遍历可发送请求的 node，然后再遍历在这个 node 上所有 tp，如果 tp 对应的 deque 有数据，将会被选择出来直到超过一个请求的最大长度（max.request.size）为止，也就说说即使 RecordBatch 没有达到条件，但为了保证每个 request 尽快多地发送数据提高发送效率，这个 RecordBatch 依然会被提前选出来并进行发送。</li>
+</ul>
+</li>
+<li><p>顺序性如何保证？</p>
+<ul>
+<li>如果 KafkaProducer 的 max.in.flight.requests.per.connection 设置为1，那么就可以保证其顺序性，否则的话，就不保证顺序性</li>
+<li>而其实现机制则是在 RecordAccumulator 中的 mutePartition() 与 unmutePartition()</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/02/kafka%E4%B8%AD%E7%9A%84Topic/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -221,7 +311,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-03 10:22:04" itemprop="dateModified" datetime="2022-04-03T10:22:04+08:00">2022-04-03</time>
+                <time title="Modified: 2022-04-04 10:37:30" itemprop="dateModified" datetime="2022-04-04T10:37:30+08:00">2022-04-04</time>
               </span>
 
           
@@ -530,107 +620,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/25/%E9%98%BF%E9%87%8C%E6%B7%98%E5%AE%9D%E6%99%BA%E8%83%BD%E5%88%B6%E9%80%A0%E4%BA%8C%E9%9D%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/25/%E9%98%BF%E9%87%8C%E6%B7%98%E5%AE%9D%E6%99%BA%E8%83%BD%E5%88%B6%E9%80%A0%E4%BA%8C%E9%9D%A2/" class="post-title-link" itemprop="url">阿里淘宝智能制造二面</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-03-25 19:47:38 / Modified: 19:58:59" itemprop="dateCreated datePublished" datetime="2022-03-25T19:47:38+08:00">2022-03-25</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li>自我介绍</li>
-<li>问项目<ul>
-<li>主要问了科研项目</li>
-<li>系统的组成</li>
-<li>横向比较，跟CV</li>
-<li>技术难点</li>
-<li>负责的工作</li>
-<li>系统的成果</li>
-</ul>
-</li>
-<li>无线感知是什么</li>
-<li>实验室做什么的</li>
-<li>周围同学有做相关研究或者不同研究的吗</li>
-<li>linux了解吗<ul>
-<li>常用命令</li>
-</ul>
-</li>
-<li>学习中遇到哪些困难怎么解决的</li>
-<li>哪一阶段代码能力提高最快<ul>
-<li>打ACM的时候</li>
-<li>问了ACM的分工</li>
-</ul>
-</li>
-<li>投了哪些公司哪些岗位</li>
-<li>自己的优点和缺点</li>
-<li>最近在学什么看什么</li>
-<li>反问环节<ul>
-<li>部门干什么的<ul>
-<li>工厂使用的系统（偏java）</li>
-<li>边缘端研发（偏c/c++）</li>
-</ul>
-</li>
-<li>面试进展<ul>
-<li>不会再有技术面了</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>视频面，一共面了大概四十多分钟</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -701,7 +690,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">156</span>
+          <span class="site-state-item-count">157</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

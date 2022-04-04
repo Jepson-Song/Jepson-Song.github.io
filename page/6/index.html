@@ -188,6 +188,105 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/10/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7-1/" class="post-title-link" itemprop="url">并发一致性</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-10 09:43:52 / Modified: 09:59:28" itemprop="dateCreated datePublished" datetime="2022-03-10T09:43:52+08:00">2022-03-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <table>
+<thead>
+<tr>
+<th>问题</th>
+<th>原因</th>
+<th>封锁级别</th>
+<th>解决方法</th>
+<th>隔离级别</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>丢失修改</td>
+<td>一个写操作被另一个写操作覆盖，第一个写操作丢失</td>
+<td>一级封锁协议</td>
+<td>写操作加X锁，且X锁不共存</td>
+<td>未提交读</td>
+</tr>
+<tr>
+<td>读脏数据</td>
+<td>读操作读到数据后写操作回滚，则读操作读到脏数据</td>
+<td>二级封锁协议</td>
+<td>在一级的基础上，读操作加S锁，读完后立刻释放S锁</td>
+<td>提交读</td>
+</tr>
+<tr>
+<td>不可重复读</td>
+<td>读操作读完数据后，写操作修改数据，读操作再次读取数据发现不一致</td>
+<td>三级封锁协议</td>
+<td>在二级的基础上，读操作加的S锁不立刻释放，直到事务结束之后再释放</td>
+<td>可重复读</td>
+</tr>
+<tr>
+<td>幻读</td>
+<td>一般是在操作范围数据时，比如求和或者取平均值，有其它事务在区间内插入或者删除</td>
+<td>/</td>
+<td>加间隙锁</td>
+<td>/</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/09/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%88%86%E7%B1%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -494,143 +593,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/08/%E5%AD%97%E8%8A%82TikTok%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%89%E9%9D%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/08/%E5%AD%97%E8%8A%82TikTok%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91%E4%B8%89%E9%9D%A2/" class="post-title-link" itemprop="url">字节TikTok客户端开发三面</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-03-08 18:57:38" itemprop="dateCreated datePublished" datetime="2022-03-08T18:57:38+08:00">2022-03-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-22 19:21:34" itemprop="dateModified" datetime="2022-03-22T19:21:34+08:00">2022-03-22</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>已通过</p>
-<hr>
-<ul>
-<li><p>自我介绍</p>
-</li>
-<li><p>问了编译器项目</p>
-</li>
-<li><p>着重问了那个超声的科研项目</p>
-<p>系统的设计啊、遇到的困难啊、解决的方案啊</p>
-</li>
-<li><p>马斯克的星链计划</p>
-<p>如果要实现地球的全覆盖至少需要几个卫星（答得不好）</p>
-</li>
-<li><p>从之前面试官问过的问题里找一些问题重新问</p>
-<ul>
-<li>重新问了一面的大鱼吃小鱼的问题，问一开始回答的思路是啥，以及回去之后有没有思考更优的算法</li>
-<li>假设题目变化，大鱼吃了小鱼之后变大了，上述算法还可用吗</li>
-</ul>
-</li>
-<li><p>曾经遇到的困难</p>
-<ul>
-<li>讲了搞科研、写论文以及实习之间的困难</li>
-</ul>
-</li>
-<li><p>从我github里找了一个很久之前fork的版本一键更新仓库，然后问到了抖音更新问题</p>
-<ul>
-<li>用户打开APP时弹窗版本更新是怎么实现的</li>
-<li>用户正在使用APP时怎么通知更新</li>
-<li>问了很多客户端和服务端http通信的问题</li>
-<li>tcp长链接短连接</li>
-<li>http是双攻的还是半工的</li>
-<li>socket</li>
-</ul>
-</li>
-<li><p>设计一个APP需要考虑哪些部分</p>
-<ul>
-<li>答了UI、客户端编程、后台数据库、前后端之间的通信</li>
-</ul>
-</li>
-<li><p>介绍自己开发的APP</p>
-<ul>
-<li>三个大创的APP，然后主要选了那个请假APP介绍</li>
-</ul>
-</li>
-<li><p>开发APP时是怎么去学习的</p>
-<ul>
-<li>用到啥学啥，举了开发的位置模拟APP的例子</li>
-</ul>
-</li>
-<li><p>activity是啥</p>
-</li>
-<li><p>介绍了飞书的一个黑科技，进入一个房间会电脑可以自动连上这个房间的投屏，问是怎么实现的</p>
-<ul>
-<li><p>诶，这个答得不好，说了半天wifi、NFC、蓝牙之类的，愣是没想起来自己做的超声，麻了</p>
-</li>
-<li><p>面试官提醒超声之后问怎么实现的</p>
-</li>
-</ul>
-</li>
-<li><p>对安卓开发的兴趣，后续是否愿意从事这个方向</p>
-</li>
-<li><p>安卓开发后续的学习规划</p>
-</li>
-<li><p>问了实习的计划，从几月到几月</p>
-</li>
-<li><p>反问环节</p>
-<ul>
-<li>问了一下实习生去了之后干什么，能学到什么？</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -701,7 +663,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">156</span>
+          <span class="site-state-item-count">157</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

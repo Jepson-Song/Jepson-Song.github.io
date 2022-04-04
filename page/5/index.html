@@ -188,6 +188,67 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/12/CV/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/12/CV/" class="post-title-link" itemprop="url">简历</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-12 17:39:52 / Modified: 17:58:52" itemprop="dateCreated datePublished" datetime="2022-03-12T17:39:52+08:00">2022-03-12</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <div class="pdfobject-container" data-target="/CV.pdf" data-height="900px"></div>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/11/%E9%98%BF%E9%87%8C%E4%BA%91%E6%B8%B8%E6%88%8F%E4%B8%80%E7%82%B9%E4%BA%94%E9%9D%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -616,105 +677,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/10/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7-1/" class="post-title-link" itemprop="url">并发一致性</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-03-10 09:43:52 / Modified: 09:59:28" itemprop="dateCreated datePublished" datetime="2022-03-10T09:43:52+08:00">2022-03-10</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <table>
-<thead>
-<tr>
-<th>问题</th>
-<th>原因</th>
-<th>封锁级别</th>
-<th>解决方法</th>
-<th>隔离级别</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>丢失修改</td>
-<td>一个写操作被另一个写操作覆盖，第一个写操作丢失</td>
-<td>一级封锁协议</td>
-<td>写操作加X锁，且X锁不共存</td>
-<td>未提交读</td>
-</tr>
-<tr>
-<td>读脏数据</td>
-<td>读操作读到数据后写操作回滚，则读操作读到脏数据</td>
-<td>二级封锁协议</td>
-<td>在一级的基础上，读操作加S锁，读完后立刻释放S锁</td>
-<td>提交读</td>
-</tr>
-<tr>
-<td>不可重复读</td>
-<td>读操作读完数据后，写操作修改数据，读操作再次读取数据发现不一致</td>
-<td>三级封锁协议</td>
-<td>在二级的基础上，读操作加的S锁不立刻释放，直到事务结束之后再释放</td>
-<td>可重复读</td>
-</tr>
-<tr>
-<td>幻读</td>
-<td>一般是在操作范围数据时，比如求和或者取平均值，有其它事务在区间内插入或者删除</td>
-<td>/</td>
-<td>加间隙锁</td>
-<td>/</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -785,7 +747,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">156</span>
+          <span class="site-state-item-count">157</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

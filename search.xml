@@ -1,6 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>kafka之partition的顺序性</title>
+    <url>/2022/04/04/kafka%E4%B9%8Bpartition%E7%9A%84%E9%A1%BA%E5%BA%8F%E6%80%A7/</url>
+    <content><![CDATA[<ul>
+<li><p>RecordAccumulator</p>
+<ul>
+<li>每个 topic-partition 都有一个对应的 deque，deque 中存储的是 RecordBatch，它是发送的基本单位，只有这个 topic-partition 的 RecordBatch 达到大小或时间要求才会触发发送操作（但并不是只有达到这两个条件之一才会被发送，这点要理解清楚）。<br><img src="https://s2.loli.net/2022/04/04/TazJLP8esYxDbqZ.png" alt="20220404111740"></li>
+</ul>
+</li>
+<li><p>mutePartition() 与 unmutePartition()</p>
+<ul>
+<li>这两个方法是保证有序性关键之一，其主要做用就是将指定的 topic-partition 从 muted 集合中加入或删除。</li>
+<li>mutePartition()：如果要求保证顺序性，那么这个 tp 对应的 RecordBatch 如果要开始发送，就将这个 tp 加入到 muted 集合中；</li>
+<li>unmutePartition()：如果 tp 对应的 RecordBatch 发送完成，tp 将会从 muted 集合中移除。</li>
+</ul>
+</li>
+<li><p>ready()</p>
+<ul>
+<li>ready() 是在 Sender 线程中调用的，其作用选择那些可以发送的 node，也就是说，如果这个 tp 对应的 batch 可以发送（达到时间或大小要求），就把 tp 对应的 leader 选出来。</li>
+</ul>
+</li>
+<li><p>drain()</p>
+<ul>
+<li>是用来遍历可发送请求的 node，然后再遍历在这个 node 上所有 tp，如果 tp 对应的 deque 有数据，将会被选择出来直到超过一个请求的最大长度（max.request.size）为止，也就说说即使 RecordBatch 没有达到条件，但为了保证每个 request 尽快多地发送数据提高发送效率，这个 RecordBatch 依然会被提前选出来并进行发送。</li>
+</ul>
+</li>
+<li><p>顺序性如何保证？</p>
+<ul>
+<li>如果 KafkaProducer 的 max.in.flight.requests.per.connection 设置为1，那么就可以保证其顺序性，否则的话，就不保证顺序性</li>
+<li>而其实现机制则是在 RecordAccumulator 中的 mutePartition() 与 unmutePartition()</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>kafka</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>kafka中的Topic</title>
     <url>/2022/04/02/kafka%E4%B8%AD%E7%9A%84Topic/</url>
     <content><![CDATA[<ul>
