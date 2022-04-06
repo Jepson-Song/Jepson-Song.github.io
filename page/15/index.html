@@ -188,6 +188,106 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/18/%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/18/%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1/" class="post-title-link" itemprop="url">进程通信</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-18 16:41:42" itemprop="dateCreated datePublished" datetime="2022-02-18T16:41:42+08:00">2022-02-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-06 10:27:37" itemprop="dateModified" datetime="2022-04-06T10:27:37+08:00">2022-04-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="进程通信"><a href="#进程通信" class="headerlink" title="进程通信"></a>进程通信</h2><p>进程同步与进程通信很容易混淆，它们的区别在于：</p>
+<pre><code>进程同步：控制多个进程按一定顺序执行；
+
+进程通信：进程间传输信息。
+</code></pre>
+<p>进程通信是一种手段，而进程同步是一种目的。也可以说，为了能够达到进程同步的目的，需要让进程进行通信，传输一些进程同步所需要的信息。</p>
+<ol>
+<li><p>管道</p>
+<p> 它具有以下限制：</p>
+<p> 只支持半双工通信（单向交替传输）；<br> 只能在父子进程或者兄弟进程中使用。</p>
+</li>
+<li><p>FIFO</p>
+<p> 也称为命名管道，去除了管道只能在父子进程中使用的限制。</p>
+</li>
+<li><p>消息队列</p>
+<p> 相比于 FIFO，消息队列具有以下优点：</p>
+<pre><code> 消息队列可以独立于读写进程存在，从而避免了 FIFO 中同步管道的打开和关闭时可能产生的困难；
+
+ 避免了 FIFO 的同步阻塞问题，不需要进程自己提供同步方法；
+ 
+ 读进程可以根据消息类型有选择地接收消息，而不像 FIFO 那样只能默认地接收。
+</code></pre>
+</li>
+<li><p>信号量</p>
+<p> 它是一个计数器，用于为多个进程提供对共享数据对象的访问。</p>
+</li>
+<li><p>共享存储</p>
+<p> 允许多个进程共享一个给定的存储区。因为数据不需要在进程之间复制，所以这是最快的一种 IPC。</p>
+<p> 需要使用信号量用来同步对共享存储的访问。</p>
+<p> 多个进程可以将同一个文件映射到它们的地址空间从而实现共享内存。另外 XSI 共享内存不是使用文件，而是使用内存的匿名段。</p>
+</li>
+<li><p>套接字<br> 与其它通信机制不同的是，它可用于不同机器间的进程通信。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/18/%E8%AE%A8%E8%AE%BA0218/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -467,91 +567,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/17/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E7%89%B9%E5%BE%81/" class="post-title-link" itemprop="url">操作系统基本特征</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-17 16:26:27 / Modified: 16:58:45" itemprop="dateCreated datePublished" datetime="2022-02-17T16:26:27+08:00">2022-02-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="基本特征"><a href="#基本特征" class="headerlink" title="基本特征"></a>基本特征</h2><ol>
-<li><p>并发</p>
-<p> 并发是指宏观上在一段时间内能同时运行多个程序，而并行则指同一时刻能运行多个指令。</p>
-<p> 并行需要硬件支持，如多流水线、多核处理器或者分布式计算系统。</p>
-<p> 操作系统通过引入进程和线程，使得程序能够并发运行。</p>
-</li>
-<li><p>共享</p>
-<p> 共享是指系统中的资源可以被多个并发进程共同使用。</p>
-<p> 有两种共享方式：互斥共享和同时共享。</p>
-<p> 互斥共享的资源称为临界资源，例如打印机等，在同一时刻只允许一个进程访问，需要用同步机制来实现互斥访问。</p>
-</li>
-<li><p>虚拟</p>
-<p> 虚拟技术把一个物理实体转换为多个逻辑实体。</p>
-<p> 主要有两种虚拟技术：时（时间）分复用技术和空（空间）分复用技术。</p>
-<p> 多个进程能在同一个处理器上并发执行使用了时分复用技术，让每个进程轮流占用处理器，每次只执行一小个时间片并快速切换。</p>
-<p> 虚拟内存使用了空分复用技术，它将物理内存抽象为地址空间，每个进程都有各自的地址空间。地址空间的页被映射到物理内存，地址空间的页并不需要全部在物理内存中，当使用到一个没有在物理内存的页时，执行页面置换算法，将该页置换到内存中。</p>
-</li>
-<li><p>异步</p>
-<p> 异步指进程不是一次性执行完毕，而是走走停停，以不可知的速度向前推进</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/14/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><a class="extend next" rel="next" href="/page/16/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/14/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/16/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -618,7 +637,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">160</span>
+          <span class="site-state-item-count">161</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

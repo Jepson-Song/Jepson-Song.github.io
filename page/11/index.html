@@ -188,6 +188,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/26/GET%E5%92%8CPOST/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/26/GET%E5%92%8CPOST/" class="post-title-link" itemprop="url">GET和POST</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-26 10:07:08 / Modified: 10:16:41" itemprop="dateCreated datePublished" datetime="2022-02-26T10:07:08+08:00">2022-02-26</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ol>
+<li><p>报文上的区别</p>
+<p> GET 和 POST 只是 HTTP 协议中两种请求方式，所以在传输上，没有区别，因为HTTP 协议是基于 TCP/IP 的应用层协议<br> 报文格式上，不带参数时，最大区别仅仅是第一行方法名不同，一个是GET，一个是POST。</p>
+<p> 带参数时报文的区别呢？在约定中，GET方法的参数应该放在url中，POST方法参数应该放在body中。</p>
+<p> 举个例子，如果参数是 name=qiming.c, age=22。</p>
+<p> GET 方法简约版报文可能是这样的：</p>
+<pre><code> GET /index.php?name=qiming.c&amp;age=22 HTTP/1.1
+ Host: localhost
+</code></pre>
+<p> POST 方法简约版报文可能是这样的：</p>
+<pre><code> POST /index.php HTTP/1.1
+ Host: localhost
+ Content-Type: application/x-www-form-urlencoded name=qiming. c&amp;age=22
+</code></pre>
+</li>
+<li><p>传输数据的大小</p>
+<p> 在HTTP规范中，没有对URL的长度和传输的数据大小进行限制。但是在实际开发过程中，对于GET，特定的浏览器和服务器对URL的长度有限制。因此，在使用GET请求时，传输数据会受到URL长度的限制。</p>
+<p> 对于POST，由于不是URL传值，理论上是不会受限制的，但是实际上各个服务器会规定对POST提交数据大小进行限制，Apache、IIS都有各自的配置。</p>
+</li>
+<li><p>安全性</p>
+<p> POST的安全性比GET的高。比如，在进行登录操作，通过GET请求，用户名和密码都会暴露再URL上，因为登录页面有可能被浏览器缓存以及其他人查看浏览器的历史记录的原因，此时的用户名和密码就很容易被他人拿到了。除此之外，GET请求提交的数据还可能会造成Cross-site request frogery攻击。</p>
+</li>
+</ol>
+<p>深入理解</p>
+<ol>
+<li><p>GET和POST都是http请求方式，底层都是TCP/IP协议；通常GET 产生一个TCP数据包；POST产生两个TCP数据包（但firefox是发送一个数据包），</p>
+</li>
+<li><p>对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）表示成功；</p>
+<p> 而对于POST，浏览器先发送header，服务器响应100， 浏览器再继续发送data，服务器响应200 （返回数据）。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/26/FTP%E7%9A%84%E4%B8%BB%E5%8A%A8%E6%A8%A1%E5%BC%8F%E5%92%8C%E8%A2%AB%E5%8A%A8%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -556,72 +647,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/24/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/24/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">十大排序算法</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-24 10:57:58 / Modified: 10:59:18" itemprop="dateCreated datePublished" datetime="2022-02-24T10:57:58+08:00">2022-02-24</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://s2.loli.net/2022/02/24/GDViCKSkOUqLPtY.png" alt="20220224105819"></p>
-<p><img src="https://s2.loli.net/2022/02/24/njH3MlzIhiC7Nec.png" alt="20220224105839"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -688,7 +717,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">160</span>
+          <span class="site-state-item-count">161</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -5198,9 +5198,15 @@ consumer group 的某个 consumer 实例挂掉；
 <ol>
 <li><p>topic列表订阅</p>
 <p> 通过集合的方式订阅一到多个topic。</p>
+<p> SubscriptionType 类型设置为 AUTO_TOPICS；</p>
+<p> 更新 metadata 中的 topic 列表（topics 变量），并请求更新 metadata；</p>
 </li>
 <li><p>pattern模式订阅</p>
 <p> 以使用正则表达式来匹配多个主题，而且订阅之后如果又有匹配新主题，那么这个消费组会立即对其进行消费。</p>
+<p> SubscriptionType 类型设置为 AUTO_PATTERN；</p>
+<p> 设置 Metadata 的 needMetadataForAllTopics 为 true，即在请求 metadata 时，需要更新所有 topic 的 metadata 信息，设置后再请求更新 metadata；</p>
+<p> 调用 coordinator.updatePatternSubscription() 方法，遍历所有 topic 的 metadata，找到所有满足 pattern 的 topic 列表，更新到 SubscriptionState 的 subscriptions 和 Metadata 的 topics 中；</p>
+<p> 通过在 ConsumerCoordinator 中调用 addMetadataListener() 方法在 Metadata 中添加 listener 当每次 metadata update 时就调用第三步的方法更新，但是只有当本地缓存的 topic 列表与现在要订阅的 topic 列表不同时，才会触发 rebalance 操作。</p>
 </li>
 </ol>
 <p>其他部分，两者基本一样，只是 pattern 模型在每次更新 topic-metadata 时，获取全局的 topic 列表，如果发现有新加入的符合条件的 topic，就立马去订阅，其他的地方，包括 Group 管理、topic-partition 的分配都是一样的。</p>
@@ -5209,6 +5215,44 @@ consumer group 的某个 consumer 实例挂掉；
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ConsumerCoordinator.poll() // Coordinator.poll()</span></span><br><span class="line"><span class="comment">// 用处：</span></span><br><span class="line"><span class="comment">//      1. 同步更新 coordinator：确保我们的 consumer group 的 coordinator 是最新的。</span></span><br><span class="line"><span class="comment">//      2. 更新拉取的位移：确保当前 consumer 分配的分区更新其相应的拉取位移，如果没有更新到的话，consumer 就会使用 auto.offset.reset 来更新分区的拉取位移（设置为最早位移、最近位移或者抛错）。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// note: 它确保了这个 group 的 coordinator 是已知的,并且这个 consumer 是已经加入到了 group 中,也用于 offset 周期性的 commit</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">poll</span><span class="params">(<span class="keyword">long</span> now)</span> </span>&#123;</span><br><span class="line">    invokeCompletedOffsetCommitCallbacks();<span class="comment">// note: 用于测试</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// note: Step1 通过 subscribe() 方法订阅 topic,并且 coordinator 未知,初始化 Consumer Coordinator</span></span><br><span class="line">    <span class="keyword">if</span> (subscriptions.partitionsAutoAssigned() &amp;&amp; coordinatorUnknown()) &#123;</span><br><span class="line">        <span class="comment">// note: 获取 GroupCoordinator 地址,并且建立连接</span></span><br><span class="line">        ensureCoordinatorReady();</span><br><span class="line">        now = time.milliseconds();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// note: Step2 判断是否需要重新加入 group,如果订阅的 partition 变化或则分配的 partition 变化时,需要 rejoin</span></span><br><span class="line">    <span class="comment">// note: 如果订阅模式不是 AUTO_TOPICS 或 AUTO_PATTERN,直接跳过</span></span><br><span class="line">    <span class="keyword">if</span> (needRejoin()) &#123;</span><br><span class="line">        <span class="comment">// note: rejoin group 之前先刷新一下 metadata（对于 AUTO_PATTERN 而言）</span></span><br><span class="line">        <span class="keyword">if</span> (subscriptions.hasPatternSubscription())</span><br><span class="line">            client.ensureFreshMetadata();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// note: 确保 group 是 active; 加入 group; 分配订阅的 partition</span></span><br><span class="line">        ensureActiveGroup();</span><br><span class="line">        now = time.milliseconds();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// note: Step3 检查心跳线程运行是否正常,如果心跳线程失败,则抛出异常,反之更新 poll 调用的时间</span></span><br><span class="line">    <span class="comment">// note: 发送心跳请求是在 ensureCoordinatorReady() 中调用的</span></span><br><span class="line">    pollHeartbeat(now);</span><br><span class="line">    <span class="comment">// note: Step4 自动 commit 时,当定时达到时,进行自动 commit</span></span><br><span class="line">    maybeAutoCommitOffsetsAsync(now);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>如果使用的是 assign 模式，也即是非 AUTO_TOPICS 或 AUTO_PATTERN 模式时，Consumer 实例在调用 poll 方法时，是不会向 GroupCoordinator 发送 join-group/sync-group/heartbeat 请求的，也就是说 GroupCoordinator 是拿不到这个 Consumer 实例的相关信息，也不会去维护这个 member 是否存活，这种情况下就需要用户自己管理自己的处理程序。但是在这种模式是可以进行 offset commit的。</p>
+]]></content>
+      <tags>
+        <tag>kafka</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>kafka之consumer的commit机制</title>
+    <url>/2022/04/06/kafka%E4%B9%8Bconsumer%E7%9A%84commit%E6%9C%BA%E5%88%B6/</url>
+    <content><![CDATA[<h2 id="commit机制"><a href="#commit机制" class="headerlink" title="commit机制"></a>commit机制</h2><p>在kafka的消费者中，有一个非常关键的机制，那就是offset机制。它使得Kafka在消费的过程中即使挂了或者引发再均衡问题重新分配Partation，当下次重新恢复消费时仍然可以知道从哪里开始消费。</p>
+<p>kafka对于offset的处理有两种提交方式：(1) 自动提交(默认的提交方式)   (2) 手动提交(可以灵活地控制offset)</p>
+<h3 id="偏移量offset"><a href="#偏移量offset" class="headerlink" title="偏移量offset"></a>偏移量offset</h3><p>如果消费者一直处于运行状态，那么偏移量就没有什么用处.</p>
+<p>如果有消费者退出或者新 partition 加入，此时就会触发再均衡。完成再均衡之后，每个消费者可能分配到新的 partition，而不是之前处理的那个。为了能够继续之前的工作，消费者需要读取每个 partition 最后一次提交的offset，然后从偏移量指定的地方继续处理.</p>
+<h3 id="自动提交偏移量"><a href="#自动提交偏移量" class="headerlink" title="自动提交偏移量"></a>自动提交偏移量</h3><p>Kafka中偏移量的自动提交是由参数enable_auto_commit和auto_commit_interval_ms控制的，当enable_auto_commit=True时，Kafka在消费的过程中会以频率为auto_commit_interval_ms向Kafka自带的topic(__consumer_offsets)进行偏移量提交，具体提交到哪个Partation是以算法：partation=hash(group_id)%50来计算的。</p>
+<p>Kafka消费者客户端编程逻辑中位移提交是一个大难点，自动位移提交免去了复杂的位移提交逻辑，让编码更简洁，但同时也带来了重复消费和消息丢失的问题。</p>
+<ol>
+<li><p>重复消费</p>
+<p> 假设刚刚提交完一次消费位移，然后拉取一批消息进行消费，在下一次进行自动位移提交之前，消费者崩溃了或者发生再均衡，那么又得从上一次的位移处重新开始消费。</p>
+<p> 我们可以通过减少自动位移提交的时间间隔来减少重复消息的窗口大小，但这样不能从根本上解决重复消费的问题，而且会使位移提交更加频繁。</p>
+</li>
+<li><p>消息丢失</p>
+<p> 比如在如下图场景：拉取线程不断拉取消息并存入本地缓存，比如存入到BlockingQueue中，另外一个线程负责从缓存中读取消息并进行相应的逻辑处理。假设目前已经进行第y+1次拉取和第Z次位移提交，也就是第X+9以前的位移一经提交，但是处理消息的线程还在处理第X+4条消息，此时如果处理消息的线程发生异常，然后恢复正常后，则再次拉取消息会从第Z次提交的位置X+9处开始拉取消息然后处理，此时从X+4到X+9处的消息就被丢失了。</p>
+<p> <img src="https://s2.loli.net/2022/04/06/Y31EFazhRAWQKMD.png" alt="20220406165937"></p>
+</li>
+</ol>
+<h3 id="手动提交偏移量"><a href="#手动提交偏移量" class="headerlink" title="手动提交偏移量"></a>手动提交偏移量</h3><p>鉴于Kafka自动提交offset的不灵活性和不精确性(只能是按指定频率的提交)，Kafka提供了手动提交offset策略。手动提交能对偏移量更加灵活精准地控制，以保证消息不被重复消费以及消息不被丢失。可以通过将 enable.auto.commit 设为 false，然后手动提交偏移量。</p>
+<p>对于手动提交offset主要有3种方式：1.同步提交  2.异步提交  3.异步+同步 组合的方式提交。</p>
+<ol>
+<li><p>同步手动提交偏移量</p>
+<p> 同步模式下提交失败的时候一直尝试提交，直到遇到无法重试的情况下才会结束，同时同步方式下消费者线程在拉取消息会被阻塞，在broker对提交的请求做出响应之前，会一直阻塞直到偏移量提交操作成功或者在提交过程中发生异常，限制了消息的吞吐量。</p>
+</li>
+<li><p>异步手动提交偏移量+回调函数</p>
+<p> 异步手动提交offset时，消费者线程不会阻塞，提交失败的时候也不会进行重试，并且可以配合回调函数在broker做出响应的时候记录错误信息。</p>
+<p> 对于异步提交，由于不会进行失败重试，当消费者异常关闭或者触发了再均衡前，如果偏移量还未提交就会造成偏移量丢失。</p>
+</li>
+<li><p>异步+同步 组合的方式提交偏移量</p>
+<p> 针对异步提交偏移量丢失的问题，通过对消费者进行异步批次提交并且在关闭时同步提交的方式，这样即使上一次的异步提交失败，通过同步提交还能够进行补救，同步会一直重试，直到提交成功。</p>
+</li>
+</ol>
 ]]></content>
       <tags>
         <tag>kafka</tag>

@@ -29,7 +29,7 @@
 <meta property="og:description" content="订阅模式consumer 的两种订阅模式， subscribe()和assign() 模式，一种是 topic 粒度（使用 group 管理），一种是 topic-partition 粒度（用户自己去管理） 订阅模式subscribeconsumer自动分配partition，有内部算法保证topic-partition以最优的方式均匀分配给同group下的不同consumer。 按照 topic">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-04-06T06:55:50.000Z">
-<meta property="article:modified_time" content="2022-04-06T08:05:39.297Z">
+<meta property="article:modified_time" content="2022-04-06T08:49:59.937Z">
 <meta property="article:author" content="Jepson">
 <meta property="article:tag" content="kafka">
 <meta name="twitter:card" content="summary">
@@ -220,7 +220,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-04-06 14:55:50 / Modified: 16:05:39" itemprop="dateCreated datePublished" datetime="2022-04-06T14:55:50+08:00">2022-04-06</time>
+              <time title="Created: 2022-04-06 14:55:50 / Modified: 16:49:59" itemprop="dateCreated datePublished" datetime="2022-04-06T14:55:50+08:00">2022-04-06</time>
             </span>
 
           
@@ -254,9 +254,15 @@ consumer group 的某个 consumer 实例挂掉；
 <ol>
 <li><p>topic列表订阅</p>
 <p> 通过集合的方式订阅一到多个topic。</p>
+<p> SubscriptionType 类型设置为 AUTO_TOPICS；</p>
+<p> 更新 metadata 中的 topic 列表（topics 变量），并请求更新 metadata；</p>
 </li>
 <li><p>pattern模式订阅</p>
 <p> 以使用正则表达式来匹配多个主题，而且订阅之后如果又有匹配新主题，那么这个消费组会立即对其进行消费。</p>
+<p> SubscriptionType 类型设置为 AUTO_PATTERN；</p>
+<p> 设置 Metadata 的 needMetadataForAllTopics 为 true，即在请求 metadata 时，需要更新所有 topic 的 metadata 信息，设置后再请求更新 metadata；</p>
+<p> 调用 coordinator.updatePatternSubscription() 方法，遍历所有 topic 的 metadata，找到所有满足 pattern 的 topic 列表，更新到 SubscriptionState 的 subscriptions 和 Metadata 的 topics 中；</p>
+<p> 通过在 ConsumerCoordinator 中调用 addMetadataListener() 方法在 Metadata 中添加 listener 当每次 metadata update 时就调用第三步的方法更新，但是只有当本地缓存的 topic 列表与现在要订阅的 topic 列表不同时，才会触发 rebalance 操作。</p>
 </li>
 </ol>
 <p>其他部分，两者基本一样，只是 pattern 模型在每次更新 topic-metadata 时，获取全局的 topic 列表，如果发现有新加入的符合条件的 topic，就立马去订阅，其他的地方，包括 Group 管理、topic-partition 的分配都是一样的。</p>
@@ -306,7 +312,10 @@ consumer group 的某个 consumer 实例挂掉；
     <a href="/2022/04/05/kafka%E4%B9%8BConsumerPoll/" rel="prev" title="kafka之Consumer Poll">
       <i class="fa fa-chevron-left"></i> kafka之Consumer Poll
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/06/kafka%E4%B9%8Bconsumer%E7%9A%84commit%E6%9C%BA%E5%88%B6/" rel="next" title="kafka之consumer的commit机制">
+      kafka之consumer的commit机制 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -380,7 +389,7 @@ consumer group 的某个 consumer 实例挂掉；
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">160</span>
+          <span class="site-state-item-count">161</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

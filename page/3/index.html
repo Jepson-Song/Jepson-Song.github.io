@@ -188,6 +188,68 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/24/hungary%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/24/hungary%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">hungary算法</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-24 20:34:31 / Modified: 20:35:50" itemprop="dateCreated datePublished" datetime="2022-03-24T20:34:31+08:00">2022-03-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="二分图最大匹配——匈牙利算法"><a href="#二分图最大匹配——匈牙利算法" class="headerlink" title="二分图最大匹配——匈牙利算法"></a>二分图最大匹配——匈牙利算法</h2><h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/sunny_hun/article/details/80627351">https://blog.csdn.net/sunny_hun/article/details/80627351</a></p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">find</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; graph, <span class="keyword">bool</span> *used, <span class="keyword">int</span> *couple, <span class="keyword">int</span> u)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;graph[u].<span class="built_in">size</span>();i++)&#123;</span><br><span class="line">        <span class="keyword">int</span> v = graph[u][i];</span><br><span class="line">        <span class="keyword">if</span>(!used[v])&#123;</span><br><span class="line">            used[v] = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span>(couple[v]==<span class="number">-1</span>||<span class="built_in">find</span>(graph, used, couple, couple[v]))&#123;</span><br><span class="line">                couple[v] = u;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">hungary</span><span class="params">(vector&lt;vector&lt;<span class="keyword">int</span>&gt;&gt;&amp; graph)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = graph.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">bool</span> used[n];</span><br><span class="line">    <span class="keyword">int</span> couple[n];</span><br><span class="line">    <span class="built_in">memset</span>(couple, <span class="number">-1</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(couple));</span><br><span class="line">    <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="built_in">memset</span>(used, <span class="literal">false</span>, <span class="built_in"><span class="keyword">sizeof</span></span>(used));</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">find</span>(graph, used, couple, i))&#123;</span><br><span class="line">            cnt ++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cnt/<span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/24/KMP%E7%AE%97%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -600,109 +662,10 @@ Session是由应用服务器维持的一个服务器端的存储空间，用户�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/21/zookeeper/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/21/zookeeper/" class="post-title-link" itemprop="url">zookeeper</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-03-21 15:36:29" itemprop="dateCreated datePublished" datetime="2022-03-21T15:36:29+08:00">2022-03-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-28 15:43:17" itemprop="dateModified" datetime="2022-03-28T15:43:17+08:00">2022-03-28</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="VMware虚拟机"><a href="#VMware虚拟机" class="headerlink" title="VMware虚拟机"></a>VMware虚拟机</h2><p><a target="_blank" rel="noopener" href="https://www.vmware.com/cn/products/workstation-pro/workstation-pro-evaluation.html">https://www.vmware.com/cn/products/workstation-pro/workstation-pro-evaluation.html</a></p>
-<h2 id="FinalShell-SSH工具"><a href="#FinalShell-SSH工具" class="headerlink" title="FinalShell SSH工具"></a>FinalShell SSH工具</h2><p><a target="_blank" rel="noopener" href="http://www.hostbuf.com/t/988.html">http://www.hostbuf.com/t/988.html</a></p>
-<h2 id="ubuntu16-04"><a href="#ubuntu16-04" class="headerlink" title="ubuntu16.04"></a>ubuntu16.04</h2><p><a target="_blank" rel="noopener" href="http://mirrors.zju.edu.cn/ubuntu-releases/16.04/">http://mirrors.zju.edu.cn/ubuntu-releases/16.04/</a></p>
-<h2 id="zookeeper"><a href="#zookeeper" class="headerlink" title="zookeeper"></a>zookeeper</h2><p><a target="_blank" rel="noopener" href="https://dlcdn.apache.org/zookeeper/zookeeper-3.8.0/apache-zookeeper-3.8.0-bin.tar.gz">https://dlcdn.apache.org/zookeeper/zookeeper-3.8.0/apache-zookeeper-3.8.0-bin.tar.gz</a></p>
-<p>分布式协调服务</p>
-<p>用来实现分布式锁和无状态化</p>
-<p>zookeeper可以保存数据但是不能当成数据库来使用，它主要是保存一些状态信息</p>
-<h2 id="ubuntu开启ssh"><a href="#ubuntu开启ssh" class="headerlink" title="ubuntu开启ssh"></a>ubuntu开启ssh</h2><ol>
-<li><p>查看是否开启了ssh服务是否安装</p>
- <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ps -e |grep ssh</span><br></pre></td></tr></table></figure></li>
-<li><p>先更新资源列表</p>
- <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure></li>
-<li><p>安装openssh-server</p>
- <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install openssh-server</span><br></pre></td></tr></table></figure></li>
-<li><p>查看主机的IP地址</p>
- <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="文件传输"><a href="#文件传输" class="headerlink" title="文件传输"></a>文件传输</h2><ol>
-<li><p>安装lrzsz</p>
- <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install lrzsz</span><br></pre></td></tr></table></figure></li>
-<li><p>上传文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rz</span><br></pre></td></tr></table></figure></li>
-<li><p>下载文件</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sz</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="解压缩"><a href="#解压缩" class="headerlink" title="解压缩"></a>解压缩</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf “文件名”</span><br></pre></td></tr></table></figure>
-
-<h2 id="配置java环境"><a href="#配置java环境" class="headerlink" title="配置java环境"></a>配置java环境</h2><ol>
-<li><p>安装jre</p>
- <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install java openjdk-8-jre-headless</span><br></pre></td></tr></table></figure></li>
-<li><p>安装jdk</p>
- <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install java openjdk-8-jdk-headless</span><br></pre></td></tr></table></figure></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -769,7 +732,7 @@ Session是由应用服务器维持的一个服务器端的存储空间，用户�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">160</span>
+          <span class="site-state-item-count">161</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
