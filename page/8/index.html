@@ -188,6 +188,102 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/07/%E7%BC%96%E8%AF%91%E5%99%A8%E9%A1%B9%E7%9B%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/07/%E7%BC%96%E8%AF%91%E5%99%A8%E9%A1%B9%E7%9B%AE/" class="post-title-link" itemprop="url">编译器项目</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-07 16:53:55" itemprop="dateCreated datePublished" datetime="2022-03-07T16:53:55+08:00">2022-03-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-03-08 09:31:55" itemprop="dateModified" datetime="2022-03-08T09:31:55+08:00">2022-03-08</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="基于C0文法的编译器设计与开发"><a href="#基于C0文法的编译器设计与开发" class="headerlink" title="基于C0文法的编译器设计与开发"></a>基于C0文法的编译器设计与开发</h2><h3 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h3><p>大三时编译原理课程，报名参加了试点班。试点班就是不用参加平常的理论课和实验课，只需要用一学期的时间开发出一个编译器。但是一共三四十名学生报名参加了试点班，最后我的成绩是最高的。</p>
+<p>在上编译原理这门课之前对编译器可以说是一无所知，所以一开始上手很困难。老师给了我们一本编译原理的书，就是号称编译原理三大圣经之一的龙书，然后给了我们一个编译原理的网课让我们自学。看了一段时间书和网课然后慢慢开始一点点上手实践。</p>
+<h3 id="项目流程"><a href="#项目流程" class="headerlink" title="项目流程"></a>项目流程</h3><p>编译器开发主要分为四大块：词法分析、语法分析、中间代码生成和汇编代码生成。</p>
+<ul>
+<li>词法分析主要是将源代码的字符串划分为token，每个token都包含了一个划分出来的词以及这个词的类型。</li>
+<li>语法分析就是按照定义好的语法规则将词法分析生成的tokens转换成抽象语法树的过程。</li>
+<li>中间代码生成式在语法分析的过程中，将语法树转换成四元组的形式，使用四元组主要是为了方便后续汇编代码生成。</li>
+<li>汇编代码生成就是将四元组转化成对应的汇编代码，比如我采用的mips指令集。</li>
+</ul>
+<h3 id="项目难点"><a href="#项目难点" class="headerlink" title="项目难点"></a>项目难点</h3><ul>
+<li><p>寄存器优化</p>
+<p>  不进行优化的方案就是，每次对变量进行操作的时候，都需要先将变量从内存读到寄存器，然后在寄存器上对变量进行操作，操作完成后再将变量写回寄存器，所以每次使用一个变量都会带来两次寄存器读写，这是很耗时间的，尤其是当对一个变量进行反复修改，就得不断的反复从内存读出写入。</p>
+<p>  所以最好的解决方案是，给每个变量都分配一个寄存器，等到程序结束的时候再一起写回。但是实际中寄存器的数量是很有限的，以mips指令集为例，一般只有32位寄存器，除去一些有特殊用处的能够使用的寄存器可能只有十几二十几个，而一段代码内部的变量可能有很多，所以没办法给每个变量都分配一个寄存器。</p>
+<p>  可以尽可能多的把寄存器分配给变量，但是当寄存器用完了而又来了新变量时，就必须做出一个抉择就是要把哪个旧的变量踢出寄存器。这个选择做的好坏非常影响编译器的性能。</p>
+<p>  当时对这方面的算法了解不多，所以采取了一个比较简单的算法，就是引用计数法。即每次使用一个变量都对将它的计数器加一，然后需要踢出变量的时候就优先踢出计数器次数最小的那个。这种方法再大多数情况下是有效的，但是有些极端情况比如寄存器震荡等。</p>
+<p>  后来慢慢接触到其它知识后，了解到这个问题其实跟很多其它问题类似，比如内存的页面置换等。有一些很好的算法，比如LRU等，这也是这个编译器后续可以继续优化的方向。</p>
+</li>
+<li><p>函数调用时的压栈和出栈设计</p>
+<p>每个函数都在内存中对应着一段栈帧，栈帧由栈顶和栈底两个寄存器确定，mips里叫做sp和fp。</p>
+<p>调用函数时，先将函数参数压栈压栈，再将返回地址压栈，再将栈底位置压栈，然后将栈底指向栈顶也就是当前位置，之后就是新函数的栈帧。</p>
+<p>函数调用结束后，出栈的顺序跟入栈的顺序相反，先让栈顶指向栈底，意味着将该函数的栈帧取消，再将栈底移到它指向的值，即回到上一个栈底的位置，从而恢复上一个函数的栈帧，然后再将放回地址出栈，让指令寄存器回到返回地址处继续执行程序。</p>
+</li>
+<li><p>多重for循坏的线性化</p>
+<p>通过mips的label和jump指令将for循环展开</p>
+</li>
+</ul>
+<h3 id="后续的优化方向"><a href="#后续的优化方向" class="headerlink" title="后续的优化方向"></a>后续的优化方向</h3><ul>
+<li>增加一些功能，比如多维数组、结构体等。</li>
+<li>改进寄存器优化算法，比如增加计数器衰减或者使用LRU算法等。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/04/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -607,84 +703,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/02/%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/02/%E4%B9%B0%E5%8D%96%E8%82%A1%E7%A5%A8%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">买卖股票问题总结</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-03-02 15:22:14 / Modified: 15:31:17" itemprop="dateCreated datePublished" datetime="2022-03-02T15:22:14+08:00">2022-03-02</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>leetcode上买卖股票问题一共有六道题，六道题十分相似，只要掌握一个算法稍作修改就可以都AC掉，现做一个总结。</p>
-<h2 id="买卖股票的最佳时机"><a href="#买卖股票的最佳时机" class="headerlink" title="买卖股票的最佳时机"></a>买卖股票的最佳时机</h2><p>只能买卖一次</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        buy = <span class="built_in">max</span>(buy, <span class="number">0</span>-prices[i]);</span><br><span class="line">        sell = <span class="built_in">max</span>(sell, prices[i]+buy);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="买卖股票的最佳时机-II"><a href="#买卖股票的最佳时机-II" class="headerlink" title="买卖股票的最佳时机 II"></a>买卖股票的最佳时机 II</h2><p>可以买卖多次</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        buy = <span class="built_in">max</span>(buy, sell-prices[i]);</span><br><span class="line">        sell = <span class="built_in">max</span>(sell, prices[i]+buy);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="买卖股票的最佳时机-III"><a href="#买卖股票的最佳时机-III" class="headerlink" title="买卖股票的最佳时机 III"></a>买卖股票的最佳时机 III</h2><p>只能买卖两次</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> buy2 = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell2 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        buy = <span class="built_in">max</span>(buy, <span class="number">0</span>-prices[i]);</span><br><span class="line">        sell = <span class="built_in">max</span>(sell, prices[i]+buy);</span><br><span class="line">        buy2 = <span class="built_in">max</span>(buy2, sell-prices[i]);</span><br><span class="line">        sell2 = <span class="built_in">max</span>(sell2, prices[i]+buy2);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="买卖股票的最佳时机-IV"><a href="#买卖股票的最佳时机-IV" class="headerlink" title="买卖股票的最佳时机 IV"></a>买卖股票的最佳时机 IV</h2><p>只能买卖K次</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(<span class="keyword">int</span> k, vector&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy[k+<span class="number">1</span>], sell[k+<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=k;i++)&#123;</span><br><span class="line">        buy[i] = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">        sell[i] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=k;j++)&#123;</span><br><span class="line">            buy[j] = <span class="built_in">max</span>(buy[j], sell[j<span class="number">-1</span>]-prices[i]);</span><br><span class="line">            sell[j] = <span class="built_in">max</span>(sell[j], prices[i]+buy[j]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell[k];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="最佳买卖股票时机含冷冻期"><a href="#最佳买卖股票时机含冷冻期" class="headerlink" title="最佳买卖股票时机含冷冻期"></a>最佳买卖股票时机含冷冻期</h2><p>有一天冷冻期，卖了之后隔一个天才能再买</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; prices)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> sell2 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        buy = <span class="built_in">max</span>(buy, sell2-prices[i]);</span><br><span class="line"></span><br><span class="line">        sell2 = sell;</span><br><span class="line">        sell = <span class="built_in">max</span>(sell, prices[i]+buy);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="买卖股票的最佳时机含手续费"><a href="#买卖股票的最佳时机含手续费" class="headerlink" title="买卖股票的最佳时机含手续费"></a>买卖股票的最佳时机含手续费</h2><p>每次买卖需要交手续费fee（同一次买卖只交一次）</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxProfit</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; prices, <span class="keyword">int</span> fee)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = prices.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">int</span> buy = <span class="number">-0x3f3f3f3f</span>;</span><br><span class="line">    <span class="keyword">int</span> sell = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        buy = <span class="built_in">max</span>(buy, sell-prices[i]-fee);</span><br><span class="line">        sell = <span class="built_in">max</span>(sell, prices[i]+buy);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sell;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -755,7 +773,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-count">159</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

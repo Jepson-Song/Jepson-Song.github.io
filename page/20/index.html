@@ -188,6 +188,88 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/13/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951213/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/13/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%951213/" class="post-title-link" itemprop="url">实验记录1213</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-13 21:01:32" itemprop="dateCreated datePublished" datetime="2021-12-13T21:01:32+08:00">2021-12-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-12-14 13:56:06" itemprop="dateModified" datetime="2021-12-14T13:56:06+08:00">2021-12-14</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>数据编号：20211213_205317</p>
+<p>第4个特征值对应的呼吸好像比较靠谱</p>
+<p>每次呼吸的峰值都是负数，应该是因为原始数据的dcir采用的是后一帧减前一帧，而呼吸时前半段是胸膛隆起，对应测得的反射径的距离是逐渐减小，所以是负数。</p>
+<p><img src="https://s2.loli.net/2021/12/13/iSVNnPo7pfmL4gQ.png" alt="20211213210148"></p>
+<p>用原始cir进行pca</p>
+<p><img src="https://s2.loli.net/2021/12/13/y6OjuASfVe91lnk.png" alt="20211213212723"></p>
+<p>对cir进行低通滤波</p>
+<p><img src="https://s2.loli.net/2021/12/13/yS3A9fqotuJkc64.png" alt="20211213212756"></p>
+<p>用差分的dcir进行pca</p>
+<p>第四个特征值对应的结果出奇的好</p>
+<p><img src="https://s2.loli.net/2021/12/13/mufgJYEo4SbdzPv.png" alt="20211213213401"></p>
+<p>对dcir进行低通滤波</p>
+<p>效果变差了</p>
+<p><img src="https://s2.loli.net/2021/12/13/ixVj64o12wpTclm.png" alt="20211213213732"></p>
+<p>数据编号：20211213_214603</p>
+<p><img src="https://s2.loli.net/2021/12/13/KkeWJOQdwqzDoYm.png" alt="20211213215710"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/%E7%B4%A2%E5%BC%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -567,72 +649,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/04/%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" class="post-title-link" itemprop="url">优先队列</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-12-04 10:30:29 / Modified: 10:37:54" itemprop="dateCreated datePublished" datetime="2021-12-04T10:30:29+08:00">2021-12-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>C++ STL里的优先队列priority_queue底层时用堆实现的。</p>
-<p>使用时简单的小顶堆/大顶堆可以如下定义：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">priority_queue&lt;<span class="keyword">int</span>,vector&lt;<span class="keyword">int</span>&gt;,greater&lt;<span class="keyword">int</span>&gt; &gt; q;  <span class="comment">//小顶堆</span></span><br><span class="line"></span><br><span class="line">priority_queue&lt;<span class="keyword">int</span>,vector&lt;<span class="keyword">int</span>&gt;,less&lt;<span class="keyword">int</span>&gt; &gt; q;  <span class="comment">//大顶堆</span></span><br></pre></td></tr></table></figure>
-
-<p>但是greater和less只适用于简单的元素类型，对于复杂元素（比如自定义的结构体）需要重载运算符&lt;。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">int</span> dis;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &lt;(<span class="keyword">const</span> node &amp;a) <span class="keyword">const</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.dis&lt;dis; <span class="comment">// 小顶堆</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -703,7 +719,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-count">159</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

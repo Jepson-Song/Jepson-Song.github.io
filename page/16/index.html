@@ -188,6 +188,117 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/MVCC-NextKeyLocks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/17/MVCC-NextKeyLocks/" class="post-title-link" itemprop="url">MVCC+NextKeyLocks</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-17 10:13:14 / Modified: 10:15:34" itemprop="dateCreated datePublished" datetime="2022-02-17T10:13:14+08:00">2022-02-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="多版本并发控制"><a href="#多版本并发控制" class="headerlink" title="多版本并发控制"></a>多版本并发控制</h2><p>多版本并发控制（Multi-Version Concurrency Control, MVCC）是 MySQL 的 InnoDB 存储引擎实现隔离级别的一种具体方式，用于实现提交读和可重复读这两种隔离级别。而未提交读隔离级别总是读取最新的数据行，要求很低，无需使用 MVCC。可串行化隔离级别需要对所有读取的行都加锁，单纯使用 MVCC 无法实现。</p>
+<h3 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h3><p>在封锁一节中提到，加锁能解决多个事务同时执行时出现的并发一致性问题。在实际场景中读操作往往多于写操作，因此又引入了读写锁来避免不必要的加锁操作，例如读和读没有互斥关系。读写锁中读和写操作仍然是互斥的，而 MVCC 利用了多版本的思想，写操作更新最新的版本快照，而读操作去读旧版本快照，没有互斥关系，这一点和 CopyOnWrite 类似。</p>
+<p>在 MVCC 中事务的修改操作（DELETE、INSERT、UPDATE）会为数据行新增一个版本快照。</p>
+<p>脏读和不可重复读最根本的原因是事务读取到其它事务未提交的修改。在事务进行读取操作时，为了解决脏读和不可重复读问题，MVCC 规定只能读取已经提交的快照。当然一个事务可以读取自身未提交的快照，这不算是脏读。</p>
+<h3 id="版本号"><a href="#版本号" class="headerlink" title="版本号"></a>版本号</h3><ul>
+<li>系统版本号 SYS_ID：是一个递增的数字，每开始一个新的事务，系统版本号就会自动递增。</li>
+<li>事务版本号 TRX_ID ：事务开始时的系统版本号。</li>
+</ul>
+<h3 id="Undo-日志"><a href="#Undo-日志" class="headerlink" title="Undo 日志"></a>Undo 日志</h3><p>MVCC 的多版本指的是多个版本的快照，快照存储在 Undo 日志中，该日志通过回滚指针 ROLL_PTR 把一个数据行的所有快照连接起来。</p>
+<p>例如在 MySQL 创建一个表 t，包含主键 id 和一个字段 x。我们先插入一个数据行，然后对该数据行执行两次更新操作。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> t(id, x) <span class="keyword">VALUES</span>(<span class="number">1</span>, &quot;a&quot;);</span><br><span class="line">UPDATE t <span class="keyword">SET</span> x<span class="operator">=</span>&quot;b&quot; <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="number">1</span>;</span><br><span class="line">UPDATE t <span class="keyword">SET</span> x<span class="operator">=</span>&quot;c&quot; <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>因为没有使用 <code>START TRANSACTION</code> 将上面的操作当成一个事务来执行，根据 MySQL 的 AUTOCOMMIT 机制，每个操作都会被当成一个事务来执行，所以上面的操作总共涉及到三个事务。快照中除了记录事务版本号 TRX_ID 和操作之外，还记录了一个 bit 的 DEL 字段，用于标记是否被删除。</p>
+<div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/image-20191208164808217.png"/> </div><br>
+
+<p>INSERT、UPDATE、DELETE 操作会创建一个日志，并将事务版本号 TRX_ID  写入。DELETE 可以看成是一个特殊的 UPDATE，还会额外将 DEL 字段设置为 1。</p>
+<h3 id="ReadView"><a href="#ReadView" class="headerlink" title="ReadView"></a>ReadView</h3><p>MVCC 维护了一个 ReadView 结构，主要包含了当前系统未提交的事务列表 TRX_IDs {TRX_ID_1, TRX_ID_2, …}，还有该列表的最小值 TRX_ID_MIN 和 TRX_ID_MAX。</p>
+<div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/image-20191208171445674.png"/> </div><br>
+
+<p>在进行 SELECT 操作时，根据数据行快照的 TRX_ID 与 TRX_ID_MIN 和 TRX_ID_MAX 之间的关系，从而判断数据行快照是否可以使用：</p>
+<ul>
+<li><p>TRX_ID &lt; TRX_ID_MIN，表示该数据行快照时在当前所有未提交事务之前进行更改的，因此可以使用。</p>
+</li>
+<li><p>TRX_ID &gt; TRX_ID_MAX，表示该数据行快照是在事务启动之后被更改的，因此不可使用。</p>
+</li>
+<li><p>TRX_ID_MIN &lt;= TRX_ID &lt;= TRX_ID_MAX，需要根据隔离级别再进行判断：</p>
+<ul>
+<li>提交读：如果 TRX_ID  在 TRX_IDs  列表中，表示该数据行快照对应的事务还未提交，则该快照不可使用。否则表示已经提交，可以使用。</li>
+<li>可重复读：都不可以使用。因为如果可以使用的话，那么其它事务也可以读到这个数据行快照并进行修改，那么当前事务再去读这个数据行得到的值就会发生改变，也就是出现了不可重复读问题。</li>
+</ul>
+</li>
+</ul>
+<p>在数据行快照不可使用的情况下，需要沿着 Undo Log 的回滚指针 ROLL_PTR  找到下一个快照，再进行上面的判断。</p>
+<h3 id="快照读与当前读"><a href="#快照读与当前读" class="headerlink" title="快照读与当前读"></a>快照读与当前读</h3><h4 id="1-快照读"><a href="#1-快照读" class="headerlink" title="1. 快照读"></a>1. 快照读</h4><p>MVCC 的 SELECT 操作是快照中的数据，不需要进行加锁操作。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="keyword">table</span> ...;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-当前读"><a href="#2-当前读" class="headerlink" title="2. 当前读"></a>2. 当前读</h4><p>MVCC 其它会对数据库进行修改的操作（INSERT、UPDATE、DELETE）需要进行加锁操作，从而读取最新的数据。可以看到 MVCC 并不是完全不用加锁，而只是避免了 SELECT 的加锁操作。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span>;</span><br><span class="line">UPDATE;</span><br><span class="line"><span class="keyword">DELETE</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在进行 SELECT 操作时，可以强制指定进行加锁操作。以下第一个语句需要加 S 锁，第二个需要加 X 锁。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> ? lock <span class="keyword">in</span> share mode;</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> ? <span class="keyword">for</span> update;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Next-Key-Locks"><a href="#Next-Key-Locks" class="headerlink" title="Next-Key Locks"></a>Next-Key Locks</h2><p>Next-Key Locks 是 MySQL 的 InnoDB 存储引擎的一种锁实现。</p>
+<p>MVCC 不能解决幻影读问题，Next-Key Locks 就是为了解决这个问题而存在的。在可重复读（REPEATABLE READ）隔离级别下，使用 MVCC + Next-Key Locks 可以解决幻读问题。</p>
+<h3 id="Record-Locks"><a href="#Record-Locks" class="headerlink" title="Record Locks"></a>Record Locks</h3><p>锁定一个记录上的索引，而不是记录本身。</p>
+<p>如果表没有设置索引，InnoDB 会自动在主键上创建隐藏的聚簇索引，因此 Record Locks 依然可以使用。</p>
+<h3 id="Gap-Locks"><a href="#Gap-Locks" class="headerlink" title="Gap Locks"></a>Gap Locks</h3><p>锁定索引之间的间隙，但是不包含索引本身。例如当一个事务执行以下语句，其它事务就不能在 t.c 中插入 15。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> c <span class="keyword">FROM</span> t <span class="keyword">WHERE</span> c <span class="keyword">BETWEEN</span> <span class="number">10</span> <span class="keyword">and</span> <span class="number">20</span> <span class="keyword">FOR</span> UPDATE;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Next-Key-Locks-1"><a href="#Next-Key-Locks-1" class="headerlink" title="Next-Key Locks"></a>Next-Key Locks</h3><p>它是 Record Locks 和 Gap Locks 的结合，不仅锁定一个记录上的索引，也锁定索引之间的间隙。它锁定一个前开后闭区间，例如一个索引包含以下值：10, 11, 13, and 20，那么就需要锁定以下区间：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(<span class="operator">-</span>∞, <span class="number">10</span>]</span><br><span class="line">(<span class="number">10</span>, <span class="number">11</span>]</span><br><span class="line">(<span class="number">11</span>, <span class="number">13</span>]</span><br><span class="line">(<span class="number">13</span>, <span class="number">20</span>]</span><br><span class="line">(<span class="number">20</span>, <span class="operator">+</span>∞)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/17/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E7%90%86%E8%AE%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -740,77 +851,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E6%9F%B1%E7%8A%B6%E5%9B%BE%E4%B8%AD%E6%9C%80%E5%A4%A7%E7%9A%84%E7%9F%A9%E5%BD%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/16/%E6%9F%B1%E7%8A%B6%E5%9B%BE%E4%B8%AD%E6%9C%80%E5%A4%A7%E7%9A%84%E7%9F%A9%E5%BD%A2/" class="post-title-link" itemprop="url">柱状图中最大的矩形</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-02-16 15:27:09 / Modified: 15:34:24" itemprop="dateCreated datePublished" datetime="2022-02-16T15:27:09+08:00">2022-02-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。</p>
-<p>求在该柱状图中，能够勾勒出来的矩形的最大面积。</p>
-<p>示例：</p>
-<p><img src="https://s2.loli.net/2022/02/16/sTSw6JUKRNqjDyV.png" alt="20220216152744"></p>
-<p>输入：heights = [2,1,5,6,2,3]</p>
-<p>输出：10</p>
-<p>解释：最大的矩形为图中红色区域，面积为 10</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>遍历每个柱子，以该柱子的高度为矩形高度，并寻找每个柱子左边和右边最后一个高于它的柱子的位置作为左右矩形边界。</p>
-<h2 id="解法1：单调栈"><a href="#解法1：单调栈" class="headerlink" title="解法1：单调栈"></a>解法1：单调栈</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> n = heights.<span class="built_in">size</span>();</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">lb</span><span class="params">(n, <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">rb</span><span class="params">(n, n<span class="number">-1</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    stack&lt;<span class="keyword">int</span>&gt; sta;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="keyword">while</span>(!sta.<span class="built_in">empty</span>()&amp;&amp;heights[i]&lt;heights[sta.<span class="built_in">top</span>()])&#123;</span><br><span class="line">            rb[sta.<span class="built_in">top</span>()] = i<span class="number">-1</span>;</span><br><span class="line">            sta.<span class="built_in">pop</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        sta.<span class="built_in">push</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    sta.<span class="built_in">pop</span>();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=n<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">        <span class="keyword">while</span>(!sta.<span class="built_in">empty</span>()&amp;&amp;heights[i]&lt;heights[sta.<span class="built_in">top</span>()])&#123;</span><br><span class="line">            lb[sta.<span class="built_in">top</span>()] = i+<span class="number">1</span>;</span><br><span class="line">            sta.<span class="built_in">pop</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        sta.<span class="built_in">push</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">    sta.<span class="built_in">pop</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++) ans = <span class="built_in">max</span>(ans, heights[i]*(rb[i]-lb[i]+<span class="number">1</span>));</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="解法2：线段树"><a href="#解法2：线段树" class="headerlink" title="解法2：线段树"></a>解法2：线段树</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">vector&lt;<span class="keyword">int</span>&gt; a;</span><br><span class="line"><span class="keyword">int</span> tree[<span class="number">1000000</span>];</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">build</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> l, <span class="keyword">int</span> r)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(l==r)&#123;</span><br><span class="line">        tree[p] = a[l];</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid=(l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="built_in">build</span>(p*<span class="number">2</span>,l,mid);</span><br><span class="line">    <span class="built_in">build</span>(p*<span class="number">2</span>+<span class="number">1</span>,mid+<span class="number">1</span>,r);</span><br><span class="line">    tree[p] = <span class="built_in">min</span>(tree[p*<span class="number">2</span>], tree[p*<span class="number">2</span>+<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">query</span><span class="params">(<span class="keyword">int</span> p, <span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(x&lt;=l&amp;&amp;r&lt;=y)&#123;</span><br><span class="line">        <span class="keyword">return</span> tree[p];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span>(y&lt;=mid) <span class="keyword">return</span> <span class="built_in">query</span>(p*<span class="number">2</span>,l,mid,x,y);</span><br><span class="line">    <span class="keyword">if</span>(x&gt;=mid+<span class="number">1</span>) <span class="keyword">return</span> <span class="built_in">query</span>(p*<span class="number">2</span>+<span class="number">1</span>,mid+<span class="number">1</span>,r,x,y);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">min</span>(<span class="built_in">query</span>(p*<span class="number">2</span>,l,mid,x,y),<span class="built_in">query</span>(p*<span class="number">2</span>+<span class="number">1</span>,mid+<span class="number">1</span>,r,x,y));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea2</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; heights)</span> </span>&#123;</span><br><span class="line">    a = heights;</span><br><span class="line">    <span class="keyword">int</span> n = heights.<span class="built_in">size</span>();</span><br><span class="line">    <span class="built_in">build</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> ans = <span class="built_in">max</span>(heights[<span class="number">0</span>], heights[n<span class="number">-1</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> lm,rm,lb,rb;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=n<span class="number">-1</span>;i++)&#123;</span><br><span class="line">        <span class="comment">//cout&lt;&lt;i&lt;&lt;&quot;: (&quot;&lt;&lt;heights[i]&lt;&lt;&quot;) &quot;;</span></span><br><span class="line">        <span class="keyword">if</span>(i==<span class="number">0</span>) lm = heights[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">else</span> lm = <span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,<span class="number">0</span>,i<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span>(lm&gt;=heights[i])&#123;</span><br><span class="line">            lb = <span class="number">0</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">int</span> l, r, mid;</span><br><span class="line">            l = <span class="number">0</span>;</span><br><span class="line">            r = i<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">                mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,mid+<span class="number">1</span>,r)&lt;heights[i])&#123;</span><br><span class="line">                    l = mid+<span class="number">1</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    r = mid;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            lb = l+<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(i==n<span class="number">-1</span>) rm = heights[n<span class="number">-1</span>];</span><br><span class="line">        <span class="keyword">else</span> rm = <span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,i+<span class="number">1</span>,n<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">if</span>(rm&gt;=heights[i])&#123;</span><br><span class="line">            rb = n<span class="number">-1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">int</span> l, r, mid;</span><br><span class="line">            l = i+<span class="number">1</span>;</span><br><span class="line">            r = n<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">while</span>(l&lt;r)&#123;</span><br><span class="line">                mid = (l+r)/<span class="number">2</span>;</span><br><span class="line">                <span class="keyword">if</span>(<span class="built_in">query</span>(<span class="number">1</span>,<span class="number">0</span>,n<span class="number">-1</span>,l,mid)&lt;heights[i])&#123;</span><br><span class="line">                    r = mid;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    l = mid+<span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            rb = l<span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ans = <span class="built_in">max</span>(ans, heights[i]*(rb-lb+<span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -881,7 +921,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">158</span>
+          <span class="site-state-item-count">159</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
