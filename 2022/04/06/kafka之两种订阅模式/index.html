@@ -21,21 +21,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="问题 原因 封锁级别 解决方法 隔离级别    丢失修改 一个写操作被另一个写操作覆盖，第一个写操作丢失 一级封锁协议 写操作加X锁，且X锁不共存 未提交读   读脏数据 读操作读到数据后写操作回滚，则读操作读到脏数据 二级封锁协议 在一级的基础上，读操作加S锁，读完后立刻释放S锁 提交读   不可重复读 读操作读完数据后，写操作修改数据，读操作再次读取数据发现不一致 三级封锁协议 在二级的">
+  <meta name="description" content="订阅模式consumer 的两种订阅模式， subscribe()和assign() 模式，一种是 topic 粒度（使用 group 管理），一种是 topic-partition 粒度（用户自己去管理） 订阅模式subscribeconsumer自动分配partition，有内部算法保证topic-partition以最优的方式均匀分配给同group下的不同consumer。 按照 topic">
 <meta property="og:type" content="article">
-<meta property="og:title" content="并发一致性">
-<meta property="og:url" content="http://example.com/2022/03/10/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7-1/index.html">
+<meta property="og:title" content="kafka之两种订阅模式">
+<meta property="og:url" content="http://example.com/2022/04/06/kafka%E4%B9%8B%E4%B8%A4%E7%A7%8D%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/index.html">
 <meta property="og:site_name" content="Jepson&#39;s Blog">
-<meta property="og:description" content="问题 原因 封锁级别 解决方法 隔离级别    丢失修改 一个写操作被另一个写操作覆盖，第一个写操作丢失 一级封锁协议 写操作加X锁，且X锁不共存 未提交读   读脏数据 读操作读到数据后写操作回滚，则读操作读到脏数据 二级封锁协议 在一级的基础上，读操作加S锁，读完后立刻释放S锁 提交读   不可重复读 读操作读完数据后，写操作修改数据，读操作再次读取数据发现不一致 三级封锁协议 在二级的">
+<meta property="og:description" content="订阅模式consumer 的两种订阅模式， subscribe()和assign() 模式，一种是 topic 粒度（使用 group 管理），一种是 topic-partition 粒度（用户自己去管理） 订阅模式subscribeconsumer自动分配partition，有内部算法保证topic-partition以最优的方式均匀分配给同group下的不同consumer。 按照 topic">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-03-10T01:43:52.000Z">
-<meta property="article:modified_time" content="2022-03-10T01:59:28.564Z">
+<meta property="article:published_time" content="2022-04-06T06:55:50.000Z">
+<meta property="article:modified_time" content="2022-04-06T08:05:39.297Z">
 <meta property="article:author" content="Jepson">
-<meta property="article:tag" content="八股文">
-<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="kafka">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/03/10/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7-1/">
+<link rel="canonical" href="http://example.com/2022/04/06/kafka%E4%B9%8B%E4%B8%A4%E7%A7%8D%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/">
 
 
 <script id="page-configurations">
@@ -48,7 +47,7 @@
   };
 </script>
 
-  <title>并发一致性 | Jepson's Blog</title>
+  <title>kafka之两种订阅模式 | Jepson's Blog</title>
   
 
 
@@ -195,7 +194,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/%E5%B9%B6%E5%8F%91%E4%B8%80%E8%87%B4%E6%80%A7-1/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/06/kafka%E4%B9%8B%E4%B8%A4%E7%A7%8D%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -208,7 +207,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          并发一致性
+          kafka之两种订阅模式
         </h1>
 
         <div class="post-meta">
@@ -221,7 +220,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-03-10 09:43:52 / Modified: 09:59:28" itemprop="dateCreated datePublished" datetime="2022-03-10T09:43:52+08:00">2022-03-10</time>
+              <time title="Created: 2022-04-06 14:55:50 / Modified: 16:05:39" itemprop="dateCreated datePublished" datetime="2022-04-06T14:55:50+08:00">2022-04-06</time>
             </span>
 
           
@@ -242,45 +241,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <table>
-<thead>
-<tr>
-<th>问题</th>
-<th>原因</th>
-<th>封锁级别</th>
-<th>解决方法</th>
-<th>隔离级别</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>丢失修改</td>
-<td>一个写操作被另一个写操作覆盖，第一个写操作丢失</td>
-<td>一级封锁协议</td>
-<td>写操作加X锁，且X锁不共存</td>
-<td>未提交读</td>
-</tr>
-<tr>
-<td>读脏数据</td>
-<td>读操作读到数据后写操作回滚，则读操作读到脏数据</td>
-<td>二级封锁协议</td>
-<td>在一级的基础上，读操作加S锁，读完后立刻释放S锁</td>
-<td>提交读</td>
-</tr>
-<tr>
-<td>不可重复读</td>
-<td>读操作读完数据后，写操作修改数据，读操作再次读取数据发现不一致</td>
-<td>三级封锁协议</td>
-<td>在二级的基础上，读操作加的S锁不立刻释放，直到事务结束之后再释放</td>
-<td>可重复读</td>
-</tr>
-<tr>
-<td>幻读</td>
-<td>一般是在操作范围数据时，比如求和或者取平均值，有其它事务在区间内插入或者删除</td>
-<td>/</td>
-<td>加间隙锁</td>
-<td>/</td>
-</tr>
-</tbody></table>
+        <h2 id="订阅模式"><a href="#订阅模式" class="headerlink" title="订阅模式"></a>订阅模式</h2><p>consumer 的两种订阅模式， subscribe()和assign() 模式，一种是 topic 粒度（使用 group 管理），一种是 topic-partition 粒度（用户自己去管理）</p>
+<h3 id="订阅模式subscribe"><a href="#订阅模式subscribe" class="headerlink" title="订阅模式subscribe"></a>订阅模式subscribe</h3><p>consumer自动分配partition，有内部算法保证topic-partition以最优的方式均匀分配给同group下的不同consumer。</p>
+<p>按照 topic 级别去订阅，可以动态地获取其分配的 topic-partition，这是使用 Group 动态管理，它不能与手动 partition 管理一起使用。当监控到发生下面的事件时，Group 将会触发 rebalance 操作：</p>
+<pre><code>订阅的 topic 列表变化；
+topic 被创建或删除；
+consumer group 的某个 consumer 实例挂掉；
+一个新的 consumer 实例通过 join 方法加入到一个 group 中。
+</code></pre>
+<p>在这种模式下，当 KafkaConsumer 调用 pollOnce 方法时，第一步会首先加入到一个 group 中，并获取其分配的 topic-partition 列表。</p>
+<p>subscribe的两种方式：</p>
+<ol>
+<li><p>topic列表订阅</p>
+<p> 通过集合的方式订阅一到多个topic。</p>
+</li>
+<li><p>pattern模式订阅</p>
+<p> 以使用正则表达式来匹配多个主题，而且订阅之后如果又有匹配新主题，那么这个消费组会立即对其进行消费。</p>
+</li>
+</ol>
+<p>其他部分，两者基本一样，只是 pattern 模型在每次更新 topic-metadata 时，获取全局的 topic 列表，如果发现有新加入的符合条件的 topic，就立马去订阅，其他的地方，包括 Group 管理、topic-partition 的分配都是一样的。</p>
+<h3 id="分配模式assign"><a href="#分配模式assign" class="headerlink" title="分配模式assign"></a>分配模式assign</h3><p>为consumer手动、显示的指定需要消费的topic-partitions，不受group.id限制，相当与指定的group无效。</p>
+<p>当调用 assign() 方法手动分配 topic-partition 列表时，是不会使用 consumer 的 Group 管理机制，也即是当 consumer group member 变化或 topic 的 metadata 信息变化时是不会触发 rebalance 操作的。比如：当 topic 的 partition 增加时，这里是无法感知，需要用户进行相应的处理，Apache Flink 就是使用的这种方式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ConsumerCoordinator.poll() // Coordinator.poll()</span></span><br><span class="line"><span class="comment">// 用处：</span></span><br><span class="line"><span class="comment">//      1. 同步更新 coordinator：确保我们的 consumer group 的 coordinator 是最新的。</span></span><br><span class="line"><span class="comment">//      2. 更新拉取的位移：确保当前 consumer 分配的分区更新其相应的拉取位移，如果没有更新到的话，consumer 就会使用 auto.offset.reset 来更新分区的拉取位移（设置为最早位移、最近位移或者抛错）。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// note: 它确保了这个 group 的 coordinator 是已知的,并且这个 consumer 是已经加入到了 group 中,也用于 offset 周期性的 commit</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">poll</span><span class="params">(<span class="keyword">long</span> now)</span> </span>&#123;</span><br><span class="line">    invokeCompletedOffsetCommitCallbacks();<span class="comment">// note: 用于测试</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// note: Step1 通过 subscribe() 方法订阅 topic,并且 coordinator 未知,初始化 Consumer Coordinator</span></span><br><span class="line">    <span class="keyword">if</span> (subscriptions.partitionsAutoAssigned() &amp;&amp; coordinatorUnknown()) &#123;</span><br><span class="line">        <span class="comment">// note: 获取 GroupCoordinator 地址,并且建立连接</span></span><br><span class="line">        ensureCoordinatorReady();</span><br><span class="line">        now = time.milliseconds();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// note: Step2 判断是否需要重新加入 group,如果订阅的 partition 变化或则分配的 partition 变化时,需要 rejoin</span></span><br><span class="line">    <span class="comment">// note: 如果订阅模式不是 AUTO_TOPICS 或 AUTO_PATTERN,直接跳过</span></span><br><span class="line">    <span class="keyword">if</span> (needRejoin()) &#123;</span><br><span class="line">        <span class="comment">// note: rejoin group 之前先刷新一下 metadata（对于 AUTO_PATTERN 而言）</span></span><br><span class="line">        <span class="keyword">if</span> (subscriptions.hasPatternSubscription())</span><br><span class="line">            client.ensureFreshMetadata();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// note: 确保 group 是 active; 加入 group; 分配订阅的 partition</span></span><br><span class="line">        ensureActiveGroup();</span><br><span class="line">        now = time.milliseconds();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// note: Step3 检查心跳线程运行是否正常,如果心跳线程失败,则抛出异常,反之更新 poll 调用的时间</span></span><br><span class="line">    <span class="comment">// note: 发送心跳请求是在 ensureCoordinatorReady() 中调用的</span></span><br><span class="line">    pollHeartbeat(now);</span><br><span class="line">    <span class="comment">// note: Step4 自动 commit 时,当定时达到时,进行自动 commit</span></span><br><span class="line">    maybeAutoCommitOffsetsAsync(now);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果使用的是 assign 模式，也即是非 AUTO_TOPICS 或 AUTO_PATTERN 模式时，Consumer 实例在调用 poll 方法时，是不会向 GroupCoordinator 发送 join-group/sync-group/heartbeat 请求的，也就是说 GroupCoordinator 是拿不到这个 Consumer 实例的相关信息，也不会去维护这个 member 是否存活，这种情况下就需要用户自己管理自己的处理程序。但是在这种模式是可以进行 offset commit的。</p>
 
     </div>
 
@@ -310,8 +294,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E5%85%AB%E8%82%A1%E6%96%87/" rel="tag"><i class="fa fa-tag"></i> 八股文</a>
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+              <a href="/tags/kafka/" rel="tag"><i class="fa fa-tag"></i> kafka</a>
           </div>
 
         
@@ -320,13 +303,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/09/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%88%86%E7%B1%BB/" rel="prev" title="操作系统的分类">
-      <i class="fa fa-chevron-left"></i> 操作系统的分类
+    <a href="/2022/04/05/kafka%E4%B9%8BConsumerPoll/" rel="prev" title="kafka之Consumer Poll">
+      <i class="fa fa-chevron-left"></i> kafka之Consumer Poll
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/03/10/%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5%E5%92%8C%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5/" rel="next" title="进程同步和线程同步">
-      进程同步和线程同步 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -386,6 +366,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">订阅模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8Fsubscribe"><span class="nav-number">1.1.</span> <span class="nav-text">订阅模式subscribe</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E9%85%8D%E6%A8%A1%E5%BC%8Fassign"><span class="nav-number">1.2.</span> <span class="nav-text">分配模式assign</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

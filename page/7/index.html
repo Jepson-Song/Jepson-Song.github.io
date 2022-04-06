@@ -188,6 +188,100 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/09/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/09/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/" class="post-title-link" itemprop="url">文件描述符</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-03-09 20:58:26 / Modified: 21:22:59" itemprop="dateCreated datePublished" datetime="2022-03-09T20:58:26+08:00">2022-03-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="描述符表"><a href="#描述符表" class="headerlink" title="描述符表"></a>描述符表</h2><ul>
+<li><p>Linux中一切都被抽象成文件，设备也是文件，socket、惯导、消息队列等都是文件。</p>
+</li>
+<li><p>每个进程都有独立的描述符表。</p>
+</li>
+<li><p>件描述符就是一个整形变量，表示文件在描述符表中的下标。</p>
+</li>
+<li><p>每打开一个文件，就会将这个文件的描述符表中。每个进程都有三个默认文件描述符，分别是0（标准输入），1（标准输出），2（标准错误）。</p>
+</li>
+<li><p>文件描述符一般是调用open()函数返回，调用close()函数会收回对应的文件描述符。</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/03/09/XcuYRK6FqzA4fPk.png" alt="20220309205905"></p>
+<h2 id="文件表"><a href="#文件表" class="headerlink" title="文件表"></a>文件表</h2><ul>
+<li><p>所有进程共享同一个文件表。</p>
+</li>
+<li><p>文件表记录了文件的一些信息，比如文件位置、引用计数以及指向v-node表的指针等。</p>
+</li>
+<li><p>所有打开的文件都有一个文件位置，表示下一次读或写的起始位置。 seek, read, write 函数都可以修改该文件位置。</p>
+</li>
+<li><p>所有进程共享同一个文件表。文件表中的一个表项可能会被多个描述符指向，引用计数用来表示当前有多少个描述符指向该文件表表项。当调用 close() 函数时，系统会将描述符对应的文件表表项的引用计数减1，然后如果引用计数已经为0，则系统会删除此文件表表项。</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/03/09/lV3DtfpJ5e2HIc7.png" alt="20220309211335"></p>
+<h2 id="v-node表"><a href="#v-node表" class="headerlink" title="v-node表"></a>v-node表</h2><ul>
+<li><p>所有进程共享同一个 v-node 表。</p>
+</li>
+<li><p>一个 v-node 表的表项对应于一个文件。它记录了文件的元数据信息。包括文件权限，文件大小，文件类型等信息。</p>
+</li>
+<li><p>当对同一个文件调用多次 open() 函数，那么会产生多个文件表表项，但是只有一个 v-node 表表项。</p>
+</li>
+</ul>
+<p><img src="https://s2.loli.net/2022/03/09/PQ2cds8KZJM7eNf.png" alt="20220309211619"></p>
+<p><img src="https://s2.loli.net/2022/03/09/I6jGfuCw2BXqHKr.png" alt="20220309212229"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/09/I-O%E6%A8%A1%E5%9E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -541,116 +635,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/07/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/07/%E7%A7%91%E7%A0%94%E9%A1%B9%E7%9B%AE/" class="post-title-link" itemprop="url">科研项目</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-03-07 22:14:12" itemprop="dateCreated datePublished" datetime="2022-03-07T22:14:12+08:00">2022-03-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-03-08 09:33:40" itemprop="dateModified" datetime="2022-03-08T09:33:40+08:00">2022-03-08</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="基于超声波的驾驶员头部朝向追踪和生命体征监控系统"><a href="#基于超声波的驾驶员头部朝向追踪和生命体征监控系统" class="headerlink" title="基于超声波的驾驶员头部朝向追踪和生命体征监控系统"></a>基于超声波的驾驶员头部朝向追踪和生命体征监控系统</h2><h2 id="项目内容"><a href="#项目内容" class="headerlink" title="项目内容"></a>项目内容</h2><ul>
-<li><p>头部朝向追踪</p>
-<ul>
-<li><p>方案：基于超声波测距和定位算法。</p>
-</li>
-<li><p>应用：估计驾驶员的意图用于智能驾驶。</p>
-</li>
-</ul>
-</li>
-<li><p>生命体征监控</p>
-<ul>
-<li><p>方案：对2*8通道的超声信号一起进行主成分分析，从中提取驾驶员的呼吸和心跳信息。</p>
-</li>
-<li><p>应用：检测驾驶员疲劳驾驶和危险动作识别。</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="项目难点"><a href="#项目难点" class="headerlink" title="项目难点"></a>项目难点</h2><ul>
-<li><p>声波信号的多径问题</p>
-<ul>
-<li><p>原因：由于环境中物体的反射，无线信号普遍存在的多径问题，即从发射端到达接收端会有多个不同的路径，包括直达径和多个反射径。</p>
-</li>
-<li><p>解决方案：采用Zadoff-Chu序列来调制超声信号，zc信号具有很好的多径分辨能力。</p>
-</li>
-</ul>
-</li>
-<li><p>直达径被遮挡问题</p>
-<ul>
-<li><p>原因：超声波测距和定位算法基于直达径信号传播时间的估计，如果直达径被遮挡，那么测得的就是反射径的距离，无法用于定位。</p>
-</li>
-<li><p>解决方案：理论上只需要三个接收端就可以根据三点定位算法完成发射端定位，通过布置更多的接收端保证头部不管怎样旋转都至少与三个接收端之间的直达径不被遮挡。</p>
-</li>
-</ul>
-</li>
-<li><p>只能定位头部的两个坐标</p>
-<ul>
-<li><p>原因：理论上至少需要知道物体上三个点的坐标才能确定其在三维空间中的朝向，但是生活中大多数设备都只支持双声道，而且实验用的数据采集卡也只支持两发，所以只能完成两个点的定位。</p>
-</li>
-<li><p>解决方案：提出“轴点”的假设，因为驾驶员在驾驶过程中头部动作十分有限，而且不会有复杂的动作，所以可以根据两个发射端的轨迹估计出驾驶员的动作，进而推算出轴点的位置。</p>
-</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -721,14 +705,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">159</span>
+          <span class="site-state-item-count">160</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
