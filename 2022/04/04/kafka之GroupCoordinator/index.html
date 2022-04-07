@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://s2.loli.net/2022/04/04/g6LNzYuy4jIRPl1.png">
 <meta property="og:image" content="https://s2.loli.net/2022/04/04/51CN6OFLceVdpyZ.png">
 <meta property="article:published_time" content="2022-04-04T08:08:37.000Z">
-<meta property="article:modified_time" content="2022-04-05T02:25:28.695Z">
+<meta property="article:modified_time" content="2022-04-07T05:33:22.127Z">
 <meta property="article:author" content="Jepson">
 <meta property="article:tag" content="kafka">
 <meta name="twitter:card" content="summary">
@@ -231,7 +231,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-05 10:25:28" itemprop="dateModified" datetime="2022-04-05T10:25:28+08:00">2022-04-05</time>
+                <time title="Modified: 2022-04-07 13:33:22" itemprop="dateModified" datetime="2022-04-07T13:33:22+08:00">2022-04-07</time>
               </span>
 
           
@@ -293,9 +293,9 @@ ConsumerCoordinator：consumer端的，和GroupCoordinator通信的媒介。
 <p>然后由这个leader进行partition分配。然后在第3步，leader通过SyncGroup消息，把分配结果发给coordinator，其他consumer也发送SyncGroup消息，获得这个分配结果。</p>
 <p>为什么要在consumer中选一个leader出来，进行分配，而不是由coordinator直接分配呢？关于这个, Kafka的官方文档有详细的分析。其中一个重要原因是为了灵活性：如果让server分配，一旦需要新的分配策略，server集群要重新部署，这对于已经在线上运行的集群来说，代价是很大的；而让client分配，server集群就不需要重新部署了。</p>
 <h4 id="Rebalance-Generation"><a href="#Rebalance-Generation" class="headerlink" title="Rebalance Generation"></a>Rebalance Generation</h4><p>它表示了rebalance之后的一届成员，主要是用于保护consumer group，隔离无效offset提交的。比如上一届的consumer成员是无法提交位移到新一届的consumer group中。每次group进行rebalance之后，generation号都会加1，表示group进入到了一个新的版本。</p>
-<h3 id="heartbeat的实现原理"><a href="#heartbeat的实现原理" class="headerlink" title="heartbeat的实现原理"></a>heartbeat的实现原理</h3><p>前面介绍了rebalance的条件，这些条件主要是通过heartbeat感知，每一个consumer都会定期的往coordinator发送heartbeat消息，一旦coordinator返回了某个特定的error code：ILLEGAL_GENERATION, 就说明之前的group无效了（解散了），要重新进行JoinGroup + SyncGroup操作。</p>
+<h2 id="heartbeat的实现原理"><a href="#heartbeat的实现原理" class="headerlink" title="heartbeat的实现原理"></a>heartbeat的实现原理</h2><p>前面介绍了rebalance的条件，这些条件主要是通过heartbeat感知，每一个consumer都会定期的往coordinator发送heartbeat消息，一旦coordinator返回了某个特定的error code：ILLEGAL_GENERATION, 就说明之前的group无效了（解散了），要重新进行JoinGroup + SyncGroup操作。</p>
 <p>那这个定期发送如何实现呢？一个直观的想法就是开一个后台线程，定时发送heartbeat消息，但维护一个后台线程，很显然会增大实现的复杂性。上面也说了，consumer是单线程程序。在这里是通过DelayedQueue来实现的。</p>
-<h4 id="DelayedQueue与HeartBeatTask"><a href="#DelayedQueue与HeartBeatTask" class="headerlink" title="DelayedQueue与HeartBeatTask"></a>DelayedQueue与HeartBeatTask</h4><p>其基本思路是把HeartBeatRequest放入一个DelayedQueue中，然后在while循环的poll中，每次从DelayedQueue中把请求拿出来发送出去（只有时间到了，Task才能从Queue中拿出来）。</p>
+<h3 id="DelayedQueue与HeartBeatTask"><a href="#DelayedQueue与HeartBeatTask" class="headerlink" title="DelayedQueue与HeartBeatTask"></a>DelayedQueue与HeartBeatTask</h3><p>其基本思路是把HeartBeatRequest放入一个DelayedQueue中，然后在while循环的poll中，每次从DelayedQueue中把请求拿出来发送出去（只有时间到了，Task才能从Queue中拿出来）。</p>
 <h2 id="offset管理"><a href="#offset管理" class="headerlink" title="offset管理"></a>offset管理</h2><p>老版本的位移是提交到zookeeper中的，目录结构是：/consumers/&lt;group.id&gt;/offsets/&lt;topic&gt;/&lt;partitionId&gt;，但是zookeeper其实并不适合进行大批量的读写操作，尤其是写操作。</p>
 <p>因此kafka提供了另一种解决方案：增加__consumeroffsets topic，将offset信息写入这个topic，摆脱对zookeeper的依赖(指保存offset这件事情)。__consumer_offsets中的消息保存了每个consumer group某一时刻提交的offset信息。</p>
 <p><img src="https://s2.loli.net/2022/04/04/g6LNzYuy4jIRPl1.png" alt="20220404164238"></p>
@@ -414,7 +414,7 @@ ConsumerCoordinator：consumer端的，和GroupCoordinator通信的媒介。
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#GroupCoordinator"><span class="nav-number">1.</span> <span class="nav-text">GroupCoordinator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rebalance%E6%9C%BA%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">rebalance机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8Ezk%E7%9A%84rebalance"><span class="nav-number">2.1.</span> <span class="nav-text">基于zk的rebalance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8ECoordinator%E7%9A%84rebalance"><span class="nav-number">2.2.</span> <span class="nav-text">基于Coordinator的rebalance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#group-%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E7%9B%B8%E5%BA%94%E7%9A%84-GroupCoordinator"><span class="nav-number">2.3.</span> <span class="nav-text">group 如何选择相应的 GroupCoordinator</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Rebalance-Generation"><span class="nav-number">2.3.1.</span> <span class="nav-text">Rebalance Generation</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#heartbeat%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">2.4.</span> <span class="nav-text">heartbeat的实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DelayedQueue%E4%B8%8EHeartBeatTask"><span class="nav-number">2.4.1.</span> <span class="nav-text">DelayedQueue与HeartBeatTask</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#offset%E7%AE%A1%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">offset管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#offset%E7%9A%84%E7%AE%A1%E7%90%86%E8%BF%87%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">offset的管理过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Offset-Commit%E6%8F%90%E4%BA%A4%E8%BF%87%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">Offset Commit提交过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Offset-Fetch%E8%8E%B7%E5%8F%96%E8%BF%87%E7%A8%8B"><span class="nav-number">3.3.</span> <span class="nav-text">Offset Fetch获取过程</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#GroupCoordinator"><span class="nav-number">1.</span> <span class="nav-text">GroupCoordinator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rebalance%E6%9C%BA%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">rebalance机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8Ezk%E7%9A%84rebalance"><span class="nav-number">2.1.</span> <span class="nav-text">基于zk的rebalance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8ECoordinator%E7%9A%84rebalance"><span class="nav-number">2.2.</span> <span class="nav-text">基于Coordinator的rebalance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#group-%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E7%9B%B8%E5%BA%94%E7%9A%84-GroupCoordinator"><span class="nav-number">2.3.</span> <span class="nav-text">group 如何选择相应的 GroupCoordinator</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Rebalance-Generation"><span class="nav-number">2.3.1.</span> <span class="nav-text">Rebalance Generation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#heartbeat%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">heartbeat的实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DelayedQueue%E4%B8%8EHeartBeatTask"><span class="nav-number">3.1.</span> <span class="nav-text">DelayedQueue与HeartBeatTask</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#offset%E7%AE%A1%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">offset管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#offset%E7%9A%84%E7%AE%A1%E7%90%86%E8%BF%87%E7%A8%8B"><span class="nav-number">4.1.</span> <span class="nav-text">offset的管理过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Offset-Commit%E6%8F%90%E4%BA%A4%E8%BF%87%E7%A8%8B"><span class="nav-number">4.2.</span> <span class="nav-text">Offset Commit提交过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Offset-Fetch%E8%8E%B7%E5%8F%96%E8%BF%87%E7%A8%8B"><span class="nav-number">4.3.</span> <span class="nav-text">Offset Fetch获取过程</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -428,7 +428,7 @@ ConsumerCoordinator：consumer端的，和GroupCoordinator通信的媒介。
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">161</span>
+          <span class="site-state-item-count">162</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

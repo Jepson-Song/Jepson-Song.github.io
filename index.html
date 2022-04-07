@@ -188,6 +188,84 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/06/kafka%E4%B9%8Bpartition%E5%88%86%E9%85%8D%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/06/kafka%E4%B9%8Bpartition%E5%88%86%E9%85%8D%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">kafka之partition分配机制</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-06 19:46:32 / Modified: 20:00:28" itemprop="dateCreated datePublished" datetime="2022-04-06T19:46:32+08:00">2022-04-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="partition分配机制"><a href="#partition分配机制" class="headerlink" title="partition分配机制"></a>partition分配机制</h2><p>consumer 提供的两种不同 partition 分配策略，可以通过 partition.assignment.strategy 参数进行配置，默认情况下使用的是 org.apache.kafka.clients.consumer.RangeAssignor，Kafka 中提供另一种 partition 的分配策略 org.apache.kafka.clients.consumer.RoundRobinAssignor</p>
+<h3 id="RangeAssignor-分配模式"><a href="#RangeAssignor-分配模式" class="headerlink" title="RangeAssignor 分配模式"></a>RangeAssignor 分配模式</h3><p>假设 topic 的 partition 数为 numPartitionsForTopic，group 中订阅这个 topic 的 member 数为 consumersForTopic.size()，首先需要算出两个值：</p>
+<pre><code>numPartitionsPerConsumer = numPartitionsForTopic / consumersForTopic.size()：表示平均每个 consumer 会分配到几个 partition；
+
+consumersWithExtraPartition = numPartitionsForTopic % consumersForTopic.size()：表示平均分配后还剩下多少个 partition 未分配。
+</code></pre>
+<p>分配的规则是：对于剩下的那些 partition 分配到前 consumersWithExtraPartition 个 consumer 上，也就是前 consumersWithExtraPartition 个 consumer 获得 topic-partition 列表会比后面多一个。</p>
+<p>在上述的程序中，举了一个例子，假设有一个 topic 有 7 个 partition，group 有5个 consumer，这个5个 consumer 都订阅这个 topic，那么 range 的分配方式如下：</p>
+<pre><code>consumer 0：start: 0, length: 2, topic-partition: p0,p1；
+consumer 1：start: 2, length: 2, topic-partition: p2,p3；
+consumer 2：start: 4, length: 1, topic-partition: p4；
+consumer 3：start: 5, length: 1, topic-partition: p5；
+consumer 4：start: 6, length: 1, topic-partition: p6
+</code></pre>
+<h3 id="RoundRobinAssignor分配模式"><a href="#RoundRobinAssignor分配模式" class="headerlink" title="RoundRobinAssignor分配模式"></a>RoundRobinAssignor分配模式</h3><p>roundrobin 的实现原则，简单来说就是：列出所有 topic-partition 和列出所有的 consumer member，然后开始分配，一轮之后继续下一轮，假设有有一个 topic，它有7个 partition，group 有3个 consumer 都订阅了这个 topic，那么其分配方式为：</p>
+<p><img src="https://s2.loli.net/2022/04/06/XFhag9qmS8BNojE.png" alt="20220406200003"></p>
+<p>对于多个 topic 的订阅，将有两个 topic，一个 partition 有5个，一个 partition 有7个，group 有5个 consumer，但是只有前3个订阅第一个 topic，而另一个 topic 是所有 consumer 都订阅了，那么其分配结果如下：</p>
+<p><img src="https://s2.loli.net/2022/04/06/2EFa3NZmAWr6bKl.png" alt="20220406200004"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/06/kafka%E4%B9%8Bconsumer%E7%9A%84commit%E6%9C%BA%E5%88%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -483,7 +561,7 @@ consumer group 的某个 consumer 实例挂掉；
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-05 10:25:28" itemprop="dateModified" datetime="2022-04-05T10:25:28+08:00">2022-04-05</time>
+                <time title="Modified: 2022-04-07 13:33:22" itemprop="dateModified" datetime="2022-04-07T13:33:22+08:00">2022-04-07</time>
               </span>
 
           
@@ -538,9 +616,9 @@ ConsumerCoordinator：consumer端的，和GroupCoordinator通信的媒介。
 <p>然后由这个leader进行partition分配。然后在第3步，leader通过SyncGroup消息，把分配结果发给coordinator，其他consumer也发送SyncGroup消息，获得这个分配结果。</p>
 <p>为什么要在consumer中选一个leader出来，进行分配，而不是由coordinator直接分配呢？关于这个, Kafka的官方文档有详细的分析。其中一个重要原因是为了灵活性：如果让server分配，一旦需要新的分配策略，server集群要重新部署，这对于已经在线上运行的集群来说，代价是很大的；而让client分配，server集群就不需要重新部署了。</p>
 <h4 id="Rebalance-Generation"><a href="#Rebalance-Generation" class="headerlink" title="Rebalance Generation"></a>Rebalance Generation</h4><p>它表示了rebalance之后的一届成员，主要是用于保护consumer group，隔离无效offset提交的。比如上一届的consumer成员是无法提交位移到新一届的consumer group中。每次group进行rebalance之后，generation号都会加1，表示group进入到了一个新的版本。</p>
-<h3 id="heartbeat的实现原理"><a href="#heartbeat的实现原理" class="headerlink" title="heartbeat的实现原理"></a>heartbeat的实现原理</h3><p>前面介绍了rebalance的条件，这些条件主要是通过heartbeat感知，每一个consumer都会定期的往coordinator发送heartbeat消息，一旦coordinator返回了某个特定的error code：ILLEGAL_GENERATION, 就说明之前的group无效了（解散了），要重新进行JoinGroup + SyncGroup操作。</p>
+<h2 id="heartbeat的实现原理"><a href="#heartbeat的实现原理" class="headerlink" title="heartbeat的实现原理"></a>heartbeat的实现原理</h2><p>前面介绍了rebalance的条件，这些条件主要是通过heartbeat感知，每一个consumer都会定期的往coordinator发送heartbeat消息，一旦coordinator返回了某个特定的error code：ILLEGAL_GENERATION, 就说明之前的group无效了（解散了），要重新进行JoinGroup + SyncGroup操作。</p>
 <p>那这个定期发送如何实现呢？一个直观的想法就是开一个后台线程，定时发送heartbeat消息，但维护一个后台线程，很显然会增大实现的复杂性。上面也说了，consumer是单线程程序。在这里是通过DelayedQueue来实现的。</p>
-<h4 id="DelayedQueue与HeartBeatTask"><a href="#DelayedQueue与HeartBeatTask" class="headerlink" title="DelayedQueue与HeartBeatTask"></a>DelayedQueue与HeartBeatTask</h4><p>其基本思路是把HeartBeatRequest放入一个DelayedQueue中，然后在while循环的poll中，每次从DelayedQueue中把请求拿出来发送出去（只有时间到了，Task才能从Queue中拿出来）。</p>
+<h3 id="DelayedQueue与HeartBeatTask"><a href="#DelayedQueue与HeartBeatTask" class="headerlink" title="DelayedQueue与HeartBeatTask"></a>DelayedQueue与HeartBeatTask</h3><p>其基本思路是把HeartBeatRequest放入一个DelayedQueue中，然后在while循环的poll中，每次从DelayedQueue中把请求拿出来发送出去（只有时间到了，Task才能从Queue中拿出来）。</p>
 <h2 id="offset管理"><a href="#offset管理" class="headerlink" title="offset管理"></a>offset管理</h2><p>老版本的位移是提交到zookeeper中的，目录结构是：/consumers/&lt;group.id&gt;/offsets/&lt;topic&gt;/&lt;partitionId&gt;，但是zookeeper其实并不适合进行大批量的读写操作，尤其是写操作。</p>
 <p>因此kafka提供了另一种解决方案：增加__consumeroffsets topic，将offset信息写入这个topic，摆脱对zookeeper的依赖(指保存offset这件事情)。__consumer_offsets中的消息保存了每个consumer group某一时刻提交的offset信息。</p>
 <p><img src="https://s2.loli.net/2022/04/04/g6LNzYuy4jIRPl1.png" alt="20220404164238"></p>
@@ -555,96 +633,6 @@ ConsumerCoordinator：consumer端的，和GroupCoordinator通信的媒介。
 <p>消费者启动时,会首先创建到任意一个存活的brokers的通道.因此消费者会发送它所有”OffsetFetchRequest”到这个随机选中的broker。如果出现错误,这个通道就会被关闭,并重新创建一个随机的通道。</p>
 <p>broker端</p>
 <p>一个Offset抓取请求包含了多个topic-partitions. 接收请求的broker可能有也可能没有请求的partitions的offset信息。因此接收请求的brokers也会和其他broker通信. 一个通道连接池会用来转发请求给partition的leader broker。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/04/kafka%E4%B9%8Bpartition%E7%9A%84%E9%A1%BA%E5%BA%8F%E6%80%A7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/04/kafka%E4%B9%8Bpartition%E7%9A%84%E9%A1%BA%E5%BA%8F%E6%80%A7/" class="post-title-link" itemprop="url">kafka之partition的顺序性</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-04 10:39:30 / Modified: 11:18:44" itemprop="dateCreated datePublished" datetime="2022-04-04T10:39:30+08:00">2022-04-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li><p>RecordAccumulator</p>
-<ul>
-<li>每个 topic-partition 都有一个对应的 deque，deque 中存储的是 RecordBatch，它是发送的基本单位，只有这个 topic-partition 的 RecordBatch 达到大小或时间要求才会触发发送操作（但并不是只有达到这两个条件之一才会被发送，这点要理解清楚）。<br><img src="https://s2.loli.net/2022/04/04/TazJLP8esYxDbqZ.png" alt="20220404111740"></li>
-</ul>
-</li>
-<li><p>mutePartition() 与 unmutePartition()</p>
-<ul>
-<li>这两个方法是保证有序性关键之一，其主要做用就是将指定的 topic-partition 从 muted 集合中加入或删除。</li>
-<li>mutePartition()：如果要求保证顺序性，那么这个 tp 对应的 RecordBatch 如果要开始发送，就将这个 tp 加入到 muted 集合中；</li>
-<li>unmutePartition()：如果 tp 对应的 RecordBatch 发送完成，tp 将会从 muted 集合中移除。</li>
-</ul>
-</li>
-<li><p>ready()</p>
-<ul>
-<li>ready() 是在 Sender 线程中调用的，其作用选择那些可以发送的 node，也就是说，如果这个 tp 对应的 batch 可以发送（达到时间或大小要求），就把 tp 对应的 leader 选出来。</li>
-</ul>
-</li>
-<li><p>drain()</p>
-<ul>
-<li>是用来遍历可发送请求的 node，然后再遍历在这个 node 上所有 tp，如果 tp 对应的 deque 有数据，将会被选择出来直到超过一个请求的最大长度（max.request.size）为止，也就说说即使 RecordBatch 没有达到条件，但为了保证每个 request 尽快多地发送数据提高发送效率，这个 RecordBatch 依然会被提前选出来并进行发送。</li>
-</ul>
-</li>
-<li><p>顺序性如何保证？</p>
-<ul>
-<li>如果 KafkaProducer 的 max.in.flight.requests.per.connection 设置为1，那么就可以保证其顺序性，否则的话，就不保证顺序性</li>
-<li>而其实现机制则是在 RecordAccumulator 中的 mutePartition() 与 unmutePartition()</li>
-</ul>
-</li>
-</ul>
 
       
     </div>
@@ -730,7 +718,7 @@ ConsumerCoordinator：consumer端的，和GroupCoordinator通信的媒介。
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">161</span>
+          <span class="site-state-item-count">162</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

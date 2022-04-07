@@ -5136,9 +5136,9 @@ ConsumerCoordinator：consumer端的，和GroupCoordinator通信的媒介。
 <p>然后由这个leader进行partition分配。然后在第3步，leader通过SyncGroup消息，把分配结果发给coordinator，其他consumer也发送SyncGroup消息，获得这个分配结果。</p>
 <p>为什么要在consumer中选一个leader出来，进行分配，而不是由coordinator直接分配呢？关于这个, Kafka的官方文档有详细的分析。其中一个重要原因是为了灵活性：如果让server分配，一旦需要新的分配策略，server集群要重新部署，这对于已经在线上运行的集群来说，代价是很大的；而让client分配，server集群就不需要重新部署了。</p>
 <h4 id="Rebalance-Generation"><a href="#Rebalance-Generation" class="headerlink" title="Rebalance Generation"></a>Rebalance Generation</h4><p>它表示了rebalance之后的一届成员，主要是用于保护consumer group，隔离无效offset提交的。比如上一届的consumer成员是无法提交位移到新一届的consumer group中。每次group进行rebalance之后，generation号都会加1，表示group进入到了一个新的版本。</p>
-<h3 id="heartbeat的实现原理"><a href="#heartbeat的实现原理" class="headerlink" title="heartbeat的实现原理"></a>heartbeat的实现原理</h3><p>前面介绍了rebalance的条件，这些条件主要是通过heartbeat感知，每一个consumer都会定期的往coordinator发送heartbeat消息，一旦coordinator返回了某个特定的error code：ILLEGAL_GENERATION, 就说明之前的group无效了（解散了），要重新进行JoinGroup + SyncGroup操作。</p>
+<h2 id="heartbeat的实现原理"><a href="#heartbeat的实现原理" class="headerlink" title="heartbeat的实现原理"></a>heartbeat的实现原理</h2><p>前面介绍了rebalance的条件，这些条件主要是通过heartbeat感知，每一个consumer都会定期的往coordinator发送heartbeat消息，一旦coordinator返回了某个特定的error code：ILLEGAL_GENERATION, 就说明之前的group无效了（解散了），要重新进行JoinGroup + SyncGroup操作。</p>
 <p>那这个定期发送如何实现呢？一个直观的想法就是开一个后台线程，定时发送heartbeat消息，但维护一个后台线程，很显然会增大实现的复杂性。上面也说了，consumer是单线程程序。在这里是通过DelayedQueue来实现的。</p>
-<h4 id="DelayedQueue与HeartBeatTask"><a href="#DelayedQueue与HeartBeatTask" class="headerlink" title="DelayedQueue与HeartBeatTask"></a>DelayedQueue与HeartBeatTask</h4><p>其基本思路是把HeartBeatRequest放入一个DelayedQueue中，然后在while循环的poll中，每次从DelayedQueue中把请求拿出来发送出去（只有时间到了，Task才能从Queue中拿出来）。</p>
+<h3 id="DelayedQueue与HeartBeatTask"><a href="#DelayedQueue与HeartBeatTask" class="headerlink" title="DelayedQueue与HeartBeatTask"></a>DelayedQueue与HeartBeatTask</h3><p>其基本思路是把HeartBeatRequest放入一个DelayedQueue中，然后在while循环的poll中，每次从DelayedQueue中把请求拿出来发送出去（只有时间到了，Task才能从Queue中拿出来）。</p>
 <h2 id="offset管理"><a href="#offset管理" class="headerlink" title="offset管理"></a>offset管理</h2><p>老版本的位移是提交到zookeeper中的，目录结构是：/consumers/&lt;group.id&gt;/offsets/&lt;topic&gt;/&lt;partitionId&gt;，但是zookeeper其实并不适合进行大批量的读写操作，尤其是写操作。</p>
 <p>因此kafka提供了另一种解决方案：增加__consumeroffsets topic，将offset信息写入这个topic，摆脱对zookeeper的依赖(指保存offset这件事情)。__consumer_offsets中的消息保存了每个consumer group某一时刻提交的offset信息。</p>
 <p><img src="https://s2.loli.net/2022/04/04/g6LNzYuy4jIRPl1.png" alt="20220404164238"></p>
@@ -5253,6 +5253,32 @@ consumer group 的某个 consumer 实例挂掉；
 <p> 针对异步提交偏移量丢失的问题，通过对消费者进行异步批次提交并且在关闭时同步提交的方式，这样即使上一次的异步提交失败，通过同步提交还能够进行补救，同步会一直重试，直到提交成功。</p>
 </li>
 </ol>
+]]></content>
+      <tags>
+        <tag>kafka</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>kafka之partition分配机制</title>
+    <url>/2022/04/06/kafka%E4%B9%8Bpartition%E5%88%86%E9%85%8D%E6%9C%BA%E5%88%B6/</url>
+    <content><![CDATA[<h2 id="partition分配机制"><a href="#partition分配机制" class="headerlink" title="partition分配机制"></a>partition分配机制</h2><p>consumer 提供的两种不同 partition 分配策略，可以通过 partition.assignment.strategy 参数进行配置，默认情况下使用的是 org.apache.kafka.clients.consumer.RangeAssignor，Kafka 中提供另一种 partition 的分配策略 org.apache.kafka.clients.consumer.RoundRobinAssignor</p>
+<h3 id="RangeAssignor-分配模式"><a href="#RangeAssignor-分配模式" class="headerlink" title="RangeAssignor 分配模式"></a>RangeAssignor 分配模式</h3><p>假设 topic 的 partition 数为 numPartitionsForTopic，group 中订阅这个 topic 的 member 数为 consumersForTopic.size()，首先需要算出两个值：</p>
+<pre><code>numPartitionsPerConsumer = numPartitionsForTopic / consumersForTopic.size()：表示平均每个 consumer 会分配到几个 partition；
+
+consumersWithExtraPartition = numPartitionsForTopic % consumersForTopic.size()：表示平均分配后还剩下多少个 partition 未分配。
+</code></pre>
+<p>分配的规则是：对于剩下的那些 partition 分配到前 consumersWithExtraPartition 个 consumer 上，也就是前 consumersWithExtraPartition 个 consumer 获得 topic-partition 列表会比后面多一个。</p>
+<p>在上述的程序中，举了一个例子，假设有一个 topic 有 7 个 partition，group 有5个 consumer，这个5个 consumer 都订阅这个 topic，那么 range 的分配方式如下：</p>
+<pre><code>consumer 0：start: 0, length: 2, topic-partition: p0,p1；
+consumer 1：start: 2, length: 2, topic-partition: p2,p3；
+consumer 2：start: 4, length: 1, topic-partition: p4；
+consumer 3：start: 5, length: 1, topic-partition: p5；
+consumer 4：start: 6, length: 1, topic-partition: p6
+</code></pre>
+<h3 id="RoundRobinAssignor分配模式"><a href="#RoundRobinAssignor分配模式" class="headerlink" title="RoundRobinAssignor分配模式"></a>RoundRobinAssignor分配模式</h3><p>roundrobin 的实现原则，简单来说就是：列出所有 topic-partition 和列出所有的 consumer member，然后开始分配，一轮之后继续下一轮，假设有有一个 topic，它有7个 partition，group 有3个 consumer 都订阅了这个 topic，那么其分配方式为：</p>
+<p><img src="https://s2.loli.net/2022/04/06/XFhag9qmS8BNojE.png" alt="20220406200003"></p>
+<p>对于多个 topic 的订阅，将有两个 topic，一个 partition 有5个，一个 partition 有7个，group 有5个 consumer，但是只有前3个订阅第一个 topic，而另一个 topic 是所有 consumer 都订阅了，那么其分配结果如下：</p>
+<p><img src="https://s2.loli.net/2022/04/06/2EFa3NZmAWr6bKl.png" alt="20220406200004"></p>
 ]]></content>
       <tags>
         <tag>kafka</tag>
