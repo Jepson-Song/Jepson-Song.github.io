@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>kafka之Server端如何处理Produce请求</title>
+    <url>/2022/04/07/kafka%E4%B9%8BServer%E7%AB%AF%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86Produce%E8%AF%B7%E6%B1%82/</url>
+    <content><![CDATA[<h2 id="produce-请求处理整体流程"><a href="#produce-请求处理整体流程" class="headerlink" title="produce 请求处理整体流程"></a>produce 请求处理整体流程</h2><p>在 Producer Client 端，Producer 会维护一个 ConcurrentMap&lt;TopicPartition, Deque&lt;RecordBatch&gt;&gt; batches 的变量，然后会根据 topic-partition 的 leader 信息，将 leader 在同一台机器上的 batch 放在一个 request 中，发送到 server，这样可以节省很多网络开销，提高发送效率。</p>
+<p>在发送 Produce 的请求里，Client 是把一个 Map&lt;TopicPartition, MemoryRecords&gt; 类型的 produceRecordsByPartition 作为内容发送给了 Server 端，那么 Server 端是如何处理这个请求的呢？</p>
+<p><img src="https://s2.loli.net/2022/04/07/JCuR8isjbmwKGfT.png" alt="20220407200553"></p>
+<p>Broker 在收到 Produce 请求后，会有一个 KafkaApis 进行处理，KafkaApis 是 Server 端处理所有请求的入口，它会负责将请求的具体处理交给相应的组件进行处理，从上图可以看到 Produce 请求是交给了 ReplicaManager 对象进行处理了。</p>
+<h2 id="Server-端处理"><a href="#Server-端处理" class="headerlink" title="Server 端处理"></a>Server 端处理</h2><h3 id="KafkaApis-处理-Produce-请求"><a href="#KafkaApis-处理-Produce-请求" class="headerlink" title="KafkaApis 处理 Produce 请求"></a>KafkaApis 处理 Produce 请求</h3><p>KafkaApis 处理 produce 请求是在 handleProducerRequest() 方法中完成，总体来说，处理过程是（在权限系统的情况下）：</p>
+<pre><code>1. 查看 topic 是否存在，以及 client 是否有相应的 Describe 权限；（Describe 权限：如果用户在指定主题上具有 Describe 权限，则会列出该主题。）
+
+2. 对于已经有 Describe 权限的 topic 查看是否有 Write 权限；
+
+3. 调用 replicaManager.appendRecords() 方法向有 Write 权限的 topic-partition 追加相应的 record。
+</code></pre>
+<h3 id="ReplicaManager"><a href="#ReplicaManager" class="headerlink" title="ReplicaManager"></a>ReplicaManager</h3><p>ReplicaManager 顾名思义，它就是副本管理器，副本管理器的作用是管理这台 broker 上的所有副本（replica）。在 Kafka 中，每个副本（replica）都会跟日志实例（Log 对象）一一对应，一个副本会对应一个 Log 对象。</p>
+<p>Kafka Server 在启动的时候，会创建 ReplicaManager 对象，如下所示。在 ReplicaManager 的构造方法中，它需要 LogManager 作为成员变量。</p>
+<p>ReplicaManager 的并不负责具体的日志创建，它只是管理 Broker 上的所有分区（也就是图中下一步的那个 Partition 对象）。在创建 Partition 对象时，它需要 ReplicaManager 的 logManager 对象，Partition 会通过这个 logManager 对象为每个 replica 创建对应的日志。</p>
+<p>ReplicaManager 与 LogManger 对比如下：</p>
+<p><img src="https://s2.loli.net/2022/04/07/oTfnxZbv3dt7wUQ.png" alt="20220407201545"></p>
+<h4 id="appendRecords-实现"><a href="#appendRecords-实现" class="headerlink" title="appendRecords() 实现"></a>appendRecords() 实现</h4><p>appendRecords() 的实现主要分为以下几步：</p>
+<pre><code>1. 首先判断 acks 设置是否有效（-1，0，1三个值有效），无效的话直接返回异常，不再处理；
+2. acks 设置有效的话，调用 appendToLocalLog() 方法将 records 追加到本地对应的 log 对象中；
+3. appendToLocalLog() 处理完后，如果发现 clients 设置的 acks=-1，即需要 isr 的其他的副本同步完成才能返回 response，那么就会创建一个 DelayedProduce 对象，等待 isr 的其他副本进行同步，否则的话直接返回追加的结果。
+</code></pre>
+<h4 id="appendToLocalLog-实现"><a href="#appendToLocalLog-实现" class="headerlink" title="appendToLocalLog() 实现"></a>appendToLocalLog() 实现</h4><p>appendToLocalLog() 的实现如下：</p>
+<pre><code>1. 首先判断要写的 topic 是不是 Kafka 内置的 topic，内置的 topic 是不允许 Producer 写入的；
+2. 先查找 topic-partition 对应的 Partition 对象，如果在 allPartitions 中查找到了对应的 partition，那么直接调用 partition.appendRecordsToLeader() 方法追加相应的 records，否则会向 client 抛出异常。
+</code></pre>
+<h3 id="Partition-appendRecordsToLeader-方法"><a href="#Partition-appendRecordsToLeader-方法" class="headerlink" title="Partition.appendRecordsToLeader() 方法"></a>Partition.appendRecordsToLeader() 方法</h3><p>ReplicaManager 在追加 records 时，调用的是 Partition 的 appendRecordsToLeader() 方法。</p>
+<p>在这个方法里，会根据 topic 的 min.isrs 配置以及当前这个 partition 的 isr 情况判断是否可以写入，如果不满足条件，就会抛出 NotEnoughReplicasException 的异常，如果满足条件，就会调用 log.append() 向 replica 追加日志。</p>
+<h2 id="存储层"><a href="#存储层" class="headerlink" title="存储层"></a>存储层</h2>]]></content>
+      <tags>
+        <tag>kafka</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>kafka之LogManager</title>
     <url>/2022/04/07/kafka%E4%B9%8BLogManager/</url>
     <content><![CDATA[<h2 id="LogManager的结构"><a href="#LogManager的结构" class="headerlink" title="LogManager的结构"></a>LogManager的结构</h2><p>logDir：表示用户配置的日志存放路径，通过log.dir配置，可以配置多个。LogManager会维护一个LogDir的列表。</p>
