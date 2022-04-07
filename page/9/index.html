@@ -188,6 +188,89 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/04/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/04/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/" class="post-title-link" itemprop="url">系统调用</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-04 17:02:45" itemprop="dateCreated datePublished" datetime="2022-03-04T17:02:45+08:00">2022-03-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-03-06 13:35:31" itemprop="dateModified" datetime="2022-03-06T13:35:31+08:00">2022-03-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="系统调用"><a href="#系统调用" class="headerlink" title="系统调用"></a>系统调用</h2><p>系统调用就是调用操作系统提供的一系列内核功能函数，因为内核总是对用户程序持不信任的态度，一些核心功能不能直接交由用户程序来实现执行。用户程序只能发出请求，然后内核调用相应的内核函数来帮着处理，将结果返回给应用程序。如此才能保证系统的稳定和安全。</p>
+<p>系统调用是给用户态下的程序使用的，但是用户程序并不直接使用系统调用，而是系统调用在用户态下的接口。这个用户接口就是操作系统提供的系统调用API，一般遵循POSIX标准。</p>
+<p>每一个系统调用都唯一分配了一个整数来标识，通常的做法就是将这个系统调用号放进eax寄存器，当执行到系统调用入口程序的时候就会根据eax的值去调用具体的系统调用程序，比如说eax中存放的是1那么就会去调用fork这个系统调用的相关函数。</p>
+<h3 id="系统调用的实现"><a href="#系统调用的实现" class="headerlink" title="系统调用的实现"></a>系统调用的实现</h3><ul>
+<li><p>参数</p>
+<p>  有些系统调用的是需要参数的，用户接口不真正干活，真正干活的是内核功能函数，但是需要的参数在用户态下，所以需要在用户接口部分向内核传递参数。传参有两种方法：</p>
+<ul>
+<li><p>直接传给寄存器，寄存器是通用的，在用户态将值传给寄存器，进入内核态之后就可以直接使用，这可以使用内联汇编来实现。</p>
+</li>
+<li><p>压栈，压栈有个问题，系统调用使用中断/陷阱来实现，这期间会换栈，在用户态下压栈的参数对内核来说似乎没什么用处。所以要想使用用户态下栈中的参数，必须要获得用户栈的地址，这个值在哪呢？没错，在内核栈中的上下文保存着，从内核栈中取出用户栈的栈顶esp值，就可以取到系统调用的参数了，xv6就是这样实现的。</p>
+</li>
+</ul>
+</li>
+<li><p>返回值</p>
+<p>  函数的调用约定中规定了返回值应该放在eax寄存器里面。而在系统调用的一开始我们将系统调用号传进了eax寄存器，然后中断时保存上下文，将eax压入内核栈，系统调用处理程序将最后结果放到eax寄存器中。</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/04/%E8%AF%AD%E6%B3%95%E7%B3%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -608,90 +691,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/02/%E9%A1%B5%E8%A1%A8%E5%92%8C%E5%BF%AB%E8%A1%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/02/%E9%A1%B5%E8%A1%A8%E5%92%8C%E5%BF%AB%E8%A1%A8/" class="post-title-link" itemprop="url">页表和快表</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-03-02 08:59:23 / Modified: 09:16:01" itemprop="dateCreated datePublished" datetime="2022-03-02T08:59:23+08:00">2022-03-02</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="页表"><a href="#页表" class="headerlink" title="页表"></a>页表</h2><ul>
-<li><p>页表是将逻辑地址转换为物理地址。</p>
-</li>
-<li><p>页表内存储的是页号和块号的映射。</p>
-</li>
-<li><p>逻辑地址整除页长得到的商就是页号，余数就是页面偏移量。</p>
-</li>
-<li><p>通过页表将页号转换为块号，在用块号和页面偏移量即可得到数据在内存中的物理地址。</p>
-</li>
-<li><p>当请求的页面不在内存中时（页表中还有状态位等信息表示页面是否在内存中），发生缺页中断将需要的页面调入内存，如果内存没有多余的空间则使用页面置换算法替换掉内存中的某个页。</p>
-</li>
-</ul>
-<p><img src="https://s2.loli.net/2022/03/02/3oqNDV2jnAOx5EL.png" alt="20220302085955"></p>
-<h2 id="快表"><a href="#快表" class="headerlink" title="快表"></a>快表</h2><ul>
-<li><p>快表是一种比内存快很多的高速缓存存储器</p>
-</li>
-<li><p>快表存储的是一些常用的的页号，相当于页表的cache，如果快表命中了则不需要再访问页表。</p>
-</li>
-<li><p>快表中的页一定在内存中，页表中的页不一定在内存中。</p>
-</li>
-<li><p>快表命中了只需要访问一次内存，没命中则需要访问两次内存（访问页表一次加访问数据一次）。</p>
-</li>
-</ul>
-<p><img src="https://s2.loli.net/2022/03/02/9LqQ8Ycj6S7oEhF.png" alt="20220302091110"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -762,7 +761,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">162</span>
+          <span class="site-state-item-count">163</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

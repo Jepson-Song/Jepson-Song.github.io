@@ -188,6 +188,130 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/04/kafka%E4%B9%8BGroupCoordinator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/04/kafka%E4%B9%8BGroupCoordinator/" class="post-title-link" itemprop="url">kafka之GroupCoordinator</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-04-04 16:08:37" itemprop="dateCreated datePublished" datetime="2022-04-04T16:08:37+08:00">2022-04-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-07 13:33:22" itemprop="dateModified" datetime="2022-04-07T13:33:22+08:00">2022-04-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="GroupCoordinator"><a href="#GroupCoordinator" class="headerlink" title="GroupCoordinator"></a>GroupCoordinator</h2><p>Kafka 的 Server 端主要有三块内容：GroupCoordinator、Controller 和 ReplicaManager</p>
+<p>GroupCoordinator 是负责进行 consumer 的 group 成员的rebalance 与 offset 管理（但每个 GroupCoordinator 只是管理一部分的 consumer group member 和 offset 信息）</p>
+<h2 id="rebalance机制"><a href="#rebalance机制" class="headerlink" title="rebalance机制"></a>rebalance机制</h2><p>kafka保证同一消费组中的每个consumer能够消费一个或者多个特定的partition数据，一个partition的数据只能被一个consumer消费；因为每个partition里的消息是有序的，这样可以保证partition中的数据被同一个消费者有序消费；同时consumer只需要和自己消费的partition的broker通信就可以，减少开销。</p>
+<p>在如下条件下，partition要在consumer中重新分配：</p>
+<pre><code>条件1：有新的consumer加入
+条件2：旧的consumer挂了
+条件3：coordinator挂了，集群选举出新的coordinator
+条件4：topic的partition新加
+条件5：consumer调用unsubscrible()，取消topic的订阅
+</code></pre>
+<p>在kafka中消费者的分区分配策略默认有两种：range和RoundRobin。</p>
+<h3 id="基于zk的rebalance"><a href="#基于zk的rebalance" class="headerlink" title="基于zk的rebalance"></a>基于zk的rebalance</h3><p>在kafka0.9版本之前,consumer的rebalance是通过在zookeeper上注册watch完成的。</p>
+<p>这种做法很容易带来zk的羊群效应，任何Broker或者Consumer的增减都会触发所有的Consumer的Rebalance，造成集群内大量的调整；同时由于每个consumer单独通过zookeeper判断Broker和consumer宕机，由于zk的脑裂特性，同一时刻不同consumer通过zk看到的表现可能是不一样，这就可能会造成很多不正确的rebalance尝试；除此之外，由于consumer彼此独立，每个consumer都不知道其他consumer是否rebalance成功，可能会导致consumer group消费不正确。</p>
+<h3 id="基于Coordinator的rebalance"><a href="#基于Coordinator的rebalance" class="headerlink" title="基于Coordinator的rebalance"></a>基于Coordinator的rebalance</h3><p>基于zk的rebalance存在不可避免的羊群效应和脑裂问题，如何不用zk来协调，而是将失败探测和Rebalance的逻辑放到一个高可用的中心，那么上述问题就能得以解决；因此kafka0.9.*的版本重新设计了consumer端，诞生了这样一个高可用中心Coordinator，大大减少了zookeeper负载。</p>
+<p>对于每一个Consumer Group，Kafka集群为其从broker集群中选择一个broker作为其coordinator。coordinator主要做两件事：</p>
+<pre><code>维持group的成员组成。这包括加入新的成员，检测成员的存活性，清除不再存活的成员。
+协调group成员的行为。
+</code></pre>
+<p>Coordinator有如下几种类型：</p>
+<pre><code>GroupCoordinator：broker端的，每个kafka server都有一个实例，管理部分的consumer group和它们的offset
+WorkerCoordinator：broker端的，管理GroupCoordinator程序，主要管理workers的分配。
+ConsumerCoordinator：consumer端的，和GroupCoordinator通信的媒介。
+</code></pre>
+<p>ConsumerCoordinator是KafkaConsumer的一个成员，只负责与GroupCoordinator通信，所以真正的协调者还是GroupCoordinator。</p>
+<h3 id="group-如何选择相应的-GroupCoordinator"><a href="#group-如何选择相应的-GroupCoordinator" class="headerlink" title="group 如何选择相应的 GroupCoordinator"></a>group 如何选择相应的 GroupCoordinator</h3><ul>
+<li><p>步骤1：对于每1个consumer group，Kafka集群为其从broker集群中选择一个broker作为其coordinator。因此，第1步就是找到这个coordinator。</p>
+<p>  __consumer_offsets topic 是 Kafka 内部使用的一个 topic，专门用来存储 group 消费的情况，默认情况下有50个 partition，每个 partition 默认有三个副本。</p>
+<p>  而具体的一个 group 的消费情况要存储到哪一个 partition 上，是根据 abs(GroupId.hashCode()) % NumPartitions来计算的（其中，NumPartitions 是 __consumer_offsets 的 partition 数，默认是50个）。</p>
+<p>  对于 consumer group 而言，是根据其 group.id 进行 hash 并计算得到其具对应的 partition 值，该 partition leader 所在 Broker 即为该 Group 所对应的 GroupCoordinator，GroupCoordinator 会存储与该 group 相关的所有的 Meta 信息。</p>
+</li>
+<li><p>步骤2：找到coordinator之后，发送JoinGroup请求</p>
+<p>  <img src="https://s2.loli.net/2022/04/04/xIftO64yhC1gzrY.png" alt="20220404162248"></p>
+</li>
+<li><p>步骤3：JoinGroup返回之后，发送SyncGroup，得到自己所分配到的partition</p>
+<p>  <img src="https://s2.loli.net/2022/04/04/1TCXVvq6u5M9o4Q.png" alt="20220404162401"></p>
+</li>
+</ul>
+<p>partition的分配策略和分配结果其实是由client决定的，而不是由coordinator决定的。在第2步，所有consumer都往coordinator发送JoinGroup消息之后，coordinator会指定其中一个consumer作为leader，其他consumer作为follower。</p>
+<p>然后由这个leader进行partition分配。然后在第3步，leader通过SyncGroup消息，把分配结果发给coordinator，其他consumer也发送SyncGroup消息，获得这个分配结果。</p>
+<p>为什么要在consumer中选一个leader出来，进行分配，而不是由coordinator直接分配呢？关于这个, Kafka的官方文档有详细的分析。其中一个重要原因是为了灵活性：如果让server分配，一旦需要新的分配策略，server集群要重新部署，这对于已经在线上运行的集群来说，代价是很大的；而让client分配，server集群就不需要重新部署了。</p>
+<h4 id="Rebalance-Generation"><a href="#Rebalance-Generation" class="headerlink" title="Rebalance Generation"></a>Rebalance Generation</h4><p>它表示了rebalance之后的一届成员，主要是用于保护consumer group，隔离无效offset提交的。比如上一届的consumer成员是无法提交位移到新一届的consumer group中。每次group进行rebalance之后，generation号都会加1，表示group进入到了一个新的版本。</p>
+<h2 id="heartbeat的实现原理"><a href="#heartbeat的实现原理" class="headerlink" title="heartbeat的实现原理"></a>heartbeat的实现原理</h2><p>前面介绍了rebalance的条件，这些条件主要是通过heartbeat感知，每一个consumer都会定期的往coordinator发送heartbeat消息，一旦coordinator返回了某个特定的error code：ILLEGAL_GENERATION, 就说明之前的group无效了（解散了），要重新进行JoinGroup + SyncGroup操作。</p>
+<p>那这个定期发送如何实现呢？一个直观的想法就是开一个后台线程，定时发送heartbeat消息，但维护一个后台线程，很显然会增大实现的复杂性。上面也说了，consumer是单线程程序。在这里是通过DelayedQueue来实现的。</p>
+<h3 id="DelayedQueue与HeartBeatTask"><a href="#DelayedQueue与HeartBeatTask" class="headerlink" title="DelayedQueue与HeartBeatTask"></a>DelayedQueue与HeartBeatTask</h3><p>其基本思路是把HeartBeatRequest放入一个DelayedQueue中，然后在while循环的poll中，每次从DelayedQueue中把请求拿出来发送出去（只有时间到了，Task才能从Queue中拿出来）。</p>
+<h2 id="offset管理"><a href="#offset管理" class="headerlink" title="offset管理"></a>offset管理</h2><p>老版本的位移是提交到zookeeper中的，目录结构是：/consumers/&lt;group.id&gt;/offsets/&lt;topic&gt;/&lt;partitionId&gt;，但是zookeeper其实并不适合进行大批量的读写操作，尤其是写操作。</p>
+<p>因此kafka提供了另一种解决方案：增加__consumeroffsets topic，将offset信息写入这个topic，摆脱对zookeeper的依赖(指保存offset这件事情)。__consumer_offsets中的消息保存了每个consumer group某一时刻提交的offset信息。</p>
+<p><img src="https://s2.loli.net/2022/04/04/g6LNzYuy4jIRPl1.png" alt="20220404164238"></p>
+<p><img src="https://s2.loli.net/2022/04/04/51CN6OFLceVdpyZ.png" alt="20220404164330"></p>
+<h3 id="offset的管理过程"><a href="#offset的管理过程" class="headerlink" title="offset的管理过程"></a>offset的管理过程</h3><p>offset提交消息会根据消费组的key(消费组名称)进行分区. 对于一个给定的消费组,它的所有消息都会发送到唯一的broker(即Coordinator)</p>
+<p>Coordinator上负责管理offset的组件是Offset manager。负责存储,抓取,和维护消费者的offsets. 每个broker都有一个offset manager实例。</p>
+<h3 id="Offset-Commit提交过程"><a href="#Offset-Commit提交过程" class="headerlink" title="Offset Commit提交过程"></a>Offset Commit提交过程</h3><p>消费端</p>
+<p>一条offset提交消息会作为生产请求.当消费者启动时,会为”offsets topic”创建一个消费者。</p>
+<p>broker端</p>
+<p>broker把接收到的offset提交信息当做一个正常的生产请求,对offset请求的处理和正常的生产者请求处理方式是一样的.一旦将数据追加到leader的本地日志中,并且所有的replicas都赶上leader.leader检查生产请求是”offsets topic”,(因为broker端的处理逻辑针对offset请求和普通生产请求是一样的,如果是offset请求,还需要有不同的处理分支)它就会要求offset manager添加这个offset(对于延迟的生产请求,更新操作会在延迟的生产请求被完成的时候).<br>因为设置了acks=-1,只有当这些offsets成功地复制到ISR中的所有brokers,才会被提交给offset manager.</p>
+<h3 id="Offset-Fetch获取过程"><a href="#Offset-Fetch获取过程" class="headerlink" title="Offset Fetch获取过程"></a>Offset Fetch获取过程</h3><p>消费端</p>
+<p>消费者启动时,会首先创建到任意一个存活的brokers的通道.因此消费者会发送它所有”OffsetFetchRequest”到这个随机选中的broker。如果出现错误,这个通道就会被关闭,并重新创建一个随机的通道。</p>
+<p>broker端</p>
+<p>一个Offset抓取请求包含了多个topic-partitions. 接收请求的broker可能有也可能没有请求的partitions的offset信息。因此接收请求的brokers也会和其他broker通信. 一个通道连接池会用来转发请求给partition的leader broker。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/04/kafka%E4%B9%8Bpartition%E7%9A%84%E9%A1%BA%E5%BA%8F%E6%80%A7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -553,73 +677,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/30/kafka%E4%B8%AD%E7%9A%84HW/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/30/kafka%E4%B8%AD%E7%9A%84HW/" class="post-title-link" itemprop="url">kafka中的HW</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-03-30 16:47:31 / Modified: 17:15:49" itemprop="dateCreated datePublished" datetime="2022-03-30T16:47:31+08:00">2022-03-30</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>isr列表：inSyncReplicas，分区中与leader副本保持一定程度同步的副本成为isr，这个是与副本同步有关的，就是说，如果你partition的follower副本会去leader副本上拉取数据同步到follower副本中，这个时候follower副本的leo也是会增加的，每拉过来一条数据follower副本的leo就会+1，然后如果你这个follower 副本的leo追上了leader的hw，就会将这个follower副本添加到isr列表中，如果过段时间发现这个follower 好长时间没有拉取数据了，就会将它从isr列表中剔除。</p>
-<p><img src="https://s2.loli.net/2022/03/30/FbyIpTO2JhSY56r.png" alt="20220330165313"></p>
-<p>logStartOffset，日志中第一条消息的offset，副本的拉取请求（FetchRequest）和删除请求（DeleteRecordRequest）有可能触发新建日志分段而旧的的被清理，进而导致logStartoffset的增加。</p>
-<p>LW（Low Watermark），俗称“低水位”，代表AR集合中最小的logStartOffset值。</p>
-<p>logEndOffset，日志中将要写入的新消息的offset，最后一条消息的offset+1。</p>
-<p>HW（High Watermak），俗称“高水位”，代表ISR中最小的logEndOffset，它表示了一个特定消息的偏移量（offset），消费之只能拉取到这个offset之前的消息。</p>
-<p><img src="https://s2.loli.net/2022/03/30/Adjr8UeQvZRsVxC.png" alt="20220330164929"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -690,7 +747,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">162</span>
+          <span class="site-state-item-count">163</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

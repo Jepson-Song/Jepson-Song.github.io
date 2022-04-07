@@ -188,6 +188,102 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/%E7%B4%A2%E5%BC%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/04/%E7%B4%A2%E5%BC%95/" class="post-title-link" itemprop="url">索引</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-04 16:15:26" itemprop="dateCreated datePublished" datetime="2021-12-04T16:15:26+08:00">2021-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-12-07 20:38:36" itemprop="dateModified" datetime="2021-12-07T20:38:36+08:00">2021-12-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>索引是对数据库表中一列或多列的值进行处理后的一种结构，使用索引可快速访问数据库表中的特定信息。</p>
+<h2 id="Hash索引"><a href="#Hash索引" class="headerlink" title="Hash索引"></a>Hash索引</h2><p>说到Hash，老铁们很容易联想到HashMap，没错，Hash索引的结构和HashMap相类似，键值 key 通过 Hash 映射找到桶 bucket。在这里桶（bucket）指的是一个能存储一条或多条记录的存储单位。一个桶的结构包含了一个内存指针数组，桶中的每行数据都会指向下一行，形成链表结构，当遇到 Hash 冲突时，会在桶中进行键值的查找。</p>
+<p>InnoDB中采用除法散列函数(取余法)，冲突机制采用链接法。</p>
+<h2 id="Hash索引和B-tree索引查询效率"><a href="#Hash索引和B-tree索引查询效率" class="headerlink" title="Hash索引和B+tree索引查询效率"></a>Hash索引和B+tree索引查询效率</h2><p>采用 Hash 进行检索效率非常高，基本上一次检索就可以找到数据，而 B+ 树需要自顶向下依次查找，多次访问节点才能找到数据，中间需要多次 I/O 操作，理论上来说 Hash 比 B+ tree更快。下图是引用网上的Hash索引图片和 B+tree 索引图片，便于直观的理解2种索引结构。</p>
+<h3 id="Hash索引-1"><a href="#Hash索引-1" class="headerlink" title="Hash索引"></a>Hash索引</h3><p><img src="https://s2.loli.net/2021/12/04/BOnpZRJCkog1e4U.png" alt="20211204161752"></p>
+<h3 id="B-树索引"><a href="#B-树索引" class="headerlink" title="B+树索引"></a>B+树索引</h3><p><img src="https://s2.loli.net/2021/12/04/LPS6OpWXoGTYDtB.png" alt="20211204161803"></p>
+<h2 id="Hash索引和B-tree索引的区别"><a href="#Hash索引和B-tree索引的区别" class="headerlink" title="Hash索引和B+tree索引的区别"></a>Hash索引和B+tree索引的区别</h2><ol>
+<li><p>在查询速度上，如果是等值查询，那么Hash索引明显有绝对优势，因为只需要经过一次 Hash 算法即可找到相应的键值，复杂度为O(1)；当然了，这个前提是键值都是唯一的。如果键值不是唯一(或存在Hash冲突)，就需要先找到该键所在位置，然后再根据链表往后扫描，直到找到相应的数据，这时候复杂度会变成O(n)，降低了Hash索引的查找效率。所以，Hash 索引通常不会用到重复值多的列上，比如列为性别、年龄的情况等（当然B+tree索引也不适合这种离散型低的字段上）；</p>
+</li>
+<li><p>Hash 索引是无序的，如果是范围查询检索，这时候 Hash 索引就无法起到作用，即使原先是有序的键值，经过 Hash 算法后，也会变成不连续的了。因此:</p>
+<ol>
+<li><p>Hash 索引只支持等值比较查询、无法索成范围查询检索，B+tree索引的叶子节点形成有序链表，便于范围查询。</p>
+</li>
+<li><p>Hash 索引无法做 like ‘xxx%’ 这样的部分模糊查询，因为需要对 完整 key 做 Hash 计算，定位bucket。而 B+tree 索引具有最左前缀匹配，可以进行部分模糊查询。</p>
+</li>
+<li><p>Hash索引中存放的是经过Hash计算之后的Hash值，而且Hash值的大小关系并不一定和Hash运算前的键值完全一样，所以数据库无法利用索引的数据来避免任何排序运算。B+tree 索引的叶子节点形成有序链表，可用于排序。</p>
+</li>
+</ol>
+</li>
+<li><p>Hash 索引不支持多列联合索引，对于联合索引来说，Hash 索引在计算 Hash 值的时候是将索引键合并后再一起计算 Hash 值，不会针对每个索引单独计算 Hash 值。因此如果用到联合索引的一个或者几个索引时，联合索引无法被利用；</p>
+</li>
+<li><p>因为存在哈希碰撞问题，在有大量重复键值情况下，哈希索引的效率极低。B+tree 所有查询都要找到叶子节点，性能稳定；</p>
+</li>
+</ol>
+<h2 id="场景区分"><a href="#场景区分" class="headerlink" title="场景区分"></a>场景区分</h2><ol>
+<li><p>大多数场景下，都会有组合查询，范围查询、排序、分组、模糊查询等查询特征，Hash 索引无法满足要求，建议数据库使用B+树索引。</p>
+</li>
+<li><p>在离散型高，数据基数大，且等值查询时候，Hash索引有优势。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/b%E6%A0%91%E5%92%8Cb+%E6%A0%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -537,84 +633,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/03/%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/03/%E6%9C%80%E7%9F%AD%E8%B7%AF%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">最短路算法总结</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-12-03 16:01:50 / Modified: 18:52:49" itemprop="dateCreated datePublished" datetime="2021-12-03T16:01:50+08:00">2021-12-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>算法变革：BFS-&gt;Dijkstra-&gt;A*</p>
-<h2 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a>BFS</h2><p>1162. 地图分析</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BFS</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x, y, z;</span><br><span class="line">    <span class="keyword">int</span> nx, ny, nz;</span><br><span class="line">    <span class="keyword">while</span>(!que.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        z = que.<span class="built_in">front</span>();</span><br><span class="line">        que.<span class="built_in">pop</span>();</span><br><span class="line">        vis[z] = <span class="literal">true</span>;</span><br><span class="line">        x = z/n;</span><br><span class="line">        y = z%n;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;i++)&#123;</span><br><span class="line">            nx = x+dir[i][<span class="number">0</span>];</span><br><span class="line">            ny = y+dir[i][<span class="number">1</span>];</span><br><span class="line">            nz = nx*n+ny;</span><br><span class="line">            <span class="keyword">if</span>(nx&gt;=<span class="number">0</span>&amp;&amp;nx&lt;n&amp;&amp;ny&gt;=<span class="number">0</span>&amp;&amp;ny&lt;n&amp;&amp;!mp[nx][ny]&amp;&amp;!vis[nz]&amp;&amp;dis[nz]&gt;dis[z]+<span class="number">1</span>)&#123;</span><br><span class="line">                dis[nz] = dis[z] + <span class="number">1</span>;</span><br><span class="line">                que.<span class="built_in">push</span>(nz);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ans = dis[z];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>BFS只能用来解决无权图的最短路问题。</p>
-<h2 id="Dijkstra"><a href="#Dijkstra" class="headerlink" title="Dijkstra"></a>Dijkstra</h2><p>743. 网络延迟时间</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> mx = <span class="number">0</span>;</span><br><span class="line">    dis[<span class="number">0</span>] = <span class="number">0x3f3f3f3f</span>; </span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=m;i++)&#123;</span><br><span class="line">        mx = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vis[j]&amp;&amp;dis[j]&lt;dis[mx])&#123;</span><br><span class="line">                mx = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(mx==<span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        vis[mx] = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vis[j]&amp;&amp;dis[j]&gt;dis[mx]+mp[mx][j])&#123;</span><br><span class="line">                dis[j] = dis[mx] + mp[mx][j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, dis[mx]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Dijkstra可以解决带权图的最短路问题，但是普通版Dijkstra的时间复杂度是O(N^2)的，可以使用堆优化来降低复杂度。</p>
-<h3 id="堆优化Dijkstra"><a href="#堆优化Dijkstra" class="headerlink" title="堆优化Dijkstra"></a>堆优化Dijkstra</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">int</span> dis;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span> &lt;(<span class="keyword">const</span> node &amp;a) <span class="keyword">const</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.dis&lt;dis;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dijkstra</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    priority_queue&lt;node&gt; que;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(dis[j]==<span class="number">0</span>)&#123;</span><br><span class="line">            que.<span class="built_in">push</span>(node&#123;j,<span class="number">0</span>&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(!que.<span class="built_in">empty</span>())&#123;</span><br><span class="line">        node tmp = que.<span class="built_in">top</span>();</span><br><span class="line">        <span class="keyword">int</span> u = tmp.num;</span><br><span class="line">        que.<span class="built_in">pop</span>();</span><br><span class="line">        <span class="keyword">if</span>(vis[u]) <span class="keyword">continue</span>;</span><br><span class="line">        vis[u] = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">1</span>;j&lt;=m;j++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(!vis[j]&amp;&amp;dis[j]&gt;dis[u]+mp[u][j])&#123;</span><br><span class="line">                dis[j] = dis[u] + mp[u][j];</span><br><span class="line">                que.<span class="built_in">push</span>(node&#123;j,dis[j]&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ans = <span class="built_in">max</span>(ans, dis[u]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>堆优化就是把每次寻找优先级最高的节点的操作用一个小顶堆代替，复杂度为O(nlogn)。</p>
-<h2 id="BestFirst-最佳优先搜索"><a href="#BestFirst-最佳优先搜索" class="headerlink" title="BestFirst(最佳优先搜索)"></a>BestFirst(最佳优先搜索)</h2><p>BestFirst就是把未搜索节点的优先级定义为该节点与目标节点之间的<strong>估计距离</strong>，如果这个估计距离刚好是真实距离，则BestFirst可以很快搜索到目标节点，但是大多数情况下估计距离时不准确的。这个估计距离是非常启发式的，比如曼哈顿距离等。如果估计距离设定的不准确，那么很可能得到的最短路是错误的。</p>
-<h2 id="A"><a href="#A" class="headerlink" title="A*"></a>A*</h2><p>A*结合了Dijkstra和BestFirst，关键的区别也是对未搜索节点的优先级定义。A*将优先级定义为：f(n) = g(n) + h(n)。其中g(n)是该节点到其实节点的距离，h(n)是一个启发式函数表示该节点到目标节点之间的估计距离。</p>
-<p>在极端情况下，如果h(n)=0则A*退化为Dijkstra，如果g(n)=0则A*退化为BestFirst。</p>
-<p>如果h(n)小于该节点到目标节点的实际距离，则A*一定能找到最短路，但是h(n)越小，搜索的节点就越多，导致算法就越慢；</p>
-<p>如果h(n)刚好等于该节点到目标节点的实际距离，则A*会以很快的速度找到最短路，但是在现实中很难找到这样的h(n);</p>
-<p>如果h(n)大于该节点到目标节点的实际距离，则A*不一定能找到最短路，不过此时算法的速度会很快。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -685,7 +703,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">162</span>
+          <span class="site-state-item-count">163</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
