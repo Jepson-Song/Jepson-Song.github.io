@@ -188,6 +188,96 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/06/kafka%E4%B9%8Bconsumer%E7%9A%84commit%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/06/kafka%E4%B9%8Bconsumer%E7%9A%84commit%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">kafka之consumer的commit机制</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-06 16:54:41 / Modified: 19:30:33" itemprop="dateCreated datePublished" datetime="2022-04-06T16:54:41+08:00">2022-04-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="commit机制"><a href="#commit机制" class="headerlink" title="commit机制"></a>commit机制</h2><p>在kafka的消费者中，有一个非常关键的机制，那就是offset机制。它使得Kafka在消费的过程中即使挂了或者引发再均衡问题重新分配Partation，当下次重新恢复消费时仍然可以知道从哪里开始消费。</p>
+<p>kafka对于offset的处理有两种提交方式：(1) 自动提交(默认的提交方式)   (2) 手动提交(可以灵活地控制offset)</p>
+<h3 id="偏移量offset"><a href="#偏移量offset" class="headerlink" title="偏移量offset"></a>偏移量offset</h3><p>如果消费者一直处于运行状态，那么偏移量就没有什么用处.</p>
+<p>如果有消费者退出或者新 partition 加入，此时就会触发再均衡。完成再均衡之后，每个消费者可能分配到新的 partition，而不是之前处理的那个。为了能够继续之前的工作，消费者需要读取每个 partition 最后一次提交的offset，然后从偏移量指定的地方继续处理.</p>
+<h3 id="自动提交偏移量"><a href="#自动提交偏移量" class="headerlink" title="自动提交偏移量"></a>自动提交偏移量</h3><p>Kafka中偏移量的自动提交是由参数enable_auto_commit和auto_commit_interval_ms控制的，当enable_auto_commit=True时，Kafka在消费的过程中会以频率为auto_commit_interval_ms向Kafka自带的topic(__consumer_offsets)进行偏移量提交，具体提交到哪个Partation是以算法：partation=hash(group_id)%50来计算的。</p>
+<p>Kafka消费者客户端编程逻辑中位移提交是一个大难点，自动位移提交免去了复杂的位移提交逻辑，让编码更简洁，但同时也带来了重复消费和消息丢失的问题。</p>
+<ol>
+<li><p>重复消费</p>
+<p> 假设刚刚提交完一次消费位移，然后拉取一批消息进行消费，在下一次进行自动位移提交之前，消费者崩溃了或者发生再均衡，那么又得从上一次的位移处重新开始消费。</p>
+<p> 我们可以通过减少自动位移提交的时间间隔来减少重复消息的窗口大小，但这样不能从根本上解决重复消费的问题，而且会使位移提交更加频繁。</p>
+</li>
+<li><p>消息丢失</p>
+<p> 比如在如下图场景：拉取线程不断拉取消息并存入本地缓存，比如存入到BlockingQueue中，另外一个线程负责从缓存中读取消息并进行相应的逻辑处理。假设目前已经进行第y+1次拉取和第Z次位移提交，也就是第X+9以前的位移一经提交，但是处理消息的线程还在处理第X+4条消息，此时如果处理消息的线程发生异常，然后恢复正常后，则再次拉取消息会从第Z次提交的位置X+9处开始拉取消息然后处理，此时从X+4到X+9处的消息就被丢失了。</p>
+<p> <img src="https://s2.loli.net/2022/04/06/Y31EFazhRAWQKMD.png" alt="20220406165937"></p>
+</li>
+</ol>
+<h3 id="手动提交偏移量"><a href="#手动提交偏移量" class="headerlink" title="手动提交偏移量"></a>手动提交偏移量</h3><p>鉴于Kafka自动提交offset的不灵活性和不精确性(只能是按指定频率的提交)，Kafka提供了手动提交offset策略。手动提交能对偏移量更加灵活精准地控制，以保证消息不被重复消费以及消息不被丢失。可以通过将 enable.auto.commit 设为 false，然后手动提交偏移量。</p>
+<p>对于手动提交offset主要有3种方式：1.同步提交  2.异步提交  3.异步+同步 组合的方式提交。</p>
+<ol>
+<li><p>同步手动提交偏移量</p>
+<p> 同步模式下提交失败的时候一直尝试提交，直到遇到无法重试的情况下才会结束，同时同步方式下消费者线程在拉取消息会被阻塞，在broker对提交的请求做出响应之前，会一直阻塞直到偏移量提交操作成功或者在提交过程中发生异常，限制了消息的吞吐量。</p>
+</li>
+<li><p>异步手动提交偏移量+回调函数</p>
+<p> 异步手动提交offset时，消费者线程不会阻塞，提交失败的时候也不会进行重试，并且可以配合回调函数在broker做出响应的时候记录错误信息。</p>
+<p> 对于异步提交，由于不会进行失败重试，当消费者异常关闭或者触发了再均衡前，如果偏移量还未提交就会造成偏移量丢失。</p>
+</li>
+<li><p>异步+同步 组合的方式提交偏移量</p>
+<p> 针对异步提交偏移量丢失的问题，通过对消费者进行异步批次提交并且在关闭时同步提交的方式，这样即使上一次的异步提交失败，通过同步提交还能够进行补救，同步会一直重试，直到提交成功。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/06/kafka%E4%B9%8B%E4%B8%A4%E7%A7%8D%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -570,105 +660,10 @@ ConsumerCoordinator：consumer端的，和GroupCoordinator通信的媒介。
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/02/kafka%E4%B8%AD%E7%9A%84Topic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/02/kafka%E4%B8%AD%E7%9A%84Topic/" class="post-title-link" itemprop="url">kafka中的Topic</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-02 17:11:46" itemprop="dateCreated datePublished" datetime="2022-04-02T17:11:46+08:00">2022-04-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-04 10:37:30" itemprop="dateModified" datetime="2022-04-04T10:37:30+08:00">2022-04-04</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li><p>topic的创建</p>
-<ul>
-<li>通过 kafka-topics.sh 创建一个 topic，可以设置相应的副本数让 Server 端自动进行 replica 分配，也可以直接指定手动 replica 的分配；</li>
-<li>Server 端如果 auto.create.topics.enable 设置为 true 时，那么当 Producer 向一个不存在的 topic 发送数据时，该 topic 同样会被创建出来，此时，副本数默认是1。</li>
-<li>无论使用哪种方式，最后都是通过 AdminUtils.createOrUpdateTopicPartitionAssignmentPathInZK() 将 topic 的 Partition replicas 的更新到 zk 上，这中间关键的一点在于：Partition 的 replicas 是如何分配的。在创建时，我们既可以指定相应 replicas 分配，也可以使用默认的算法自动分配。</li>
-</ul>
-</li>
-<li><p>replica的分配</p>
-<ul>
-<li>创建时指定 replicas 分配</li>
-<li>replicas 自动分配算法<ul>
-<li>在创建 topic 时，Server 通过 AdminUtils.assignReplicasToBrokers() 方法来获取该 topic partition 的 replicas 分配。</li>
-<li>从 broker.list 随机选择一个 Broker,使用 round-robin 算法分配每个 partition 的第一个副本;</li>
-<li>对于这个 partition 的其他副本,逐渐增加 Broker.id 来选择 replica 的分配。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>partition的状态</p>
-<ul>
-<li>NonExistentPartition：这个 partition 不存在；</li>
-<li>NewPartition：这个 partition 刚创建，有对应的 replicas，但还没有 leader 和 isr；</li>
-<li>OnlinePartition：这个 partition 的 leader 已经选举出来了，处理正常的工作状态；</li>
-<li>OfflinePartition：partition 的 leader 挂了。</li>
-<li>partition 只有在 OnlinePartition 这个状态时，才是可用状态。</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -735,7 +730,7 @@ ConsumerCoordinator：consumer端的，和GroupCoordinator通信的媒介。
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-count">166</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

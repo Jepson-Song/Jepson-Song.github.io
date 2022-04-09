@@ -188,6 +188,164 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/27/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950827/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/08/27/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950827/" class="post-title-link" itemprop="url">实验记录0827</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-08-27 16:59:40 / Modified: 20:25:33" itemprop="dateCreated datePublished" datetime="2021-08-27T16:59:40+08:00">2021-08-27</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="函数重名bug"><a href="#函数重名bug" class="headerlink" title="函数重名bug"></a>函数重名bug</h2><p>workspace输入which strsplit -all查找函数strsplit的地址会发现两条记录：</p>
+<p>D:\chrome下载\HMM\HMMall\KPMtools\strsplit.m</p>
+<p>D:\MATLAB\R2020a\toolbox\matlab\strfun\strsplit.m  % Shadowed</p>
+<p>说明HMM里和toolbox里都有一个名为strsplit的函数，导致函数重名问题。</p>
+<p>该bug会在play并且调用hmm时触发，导致程序报错。如果只play采集数据不跑hmm的话不会报错，用已经采集好的数据跑hmm也不会报错。</p>
+<p>解决方法是把其中一个工具箱的函数名改掉，但是要找到所有调用该函数的地方改名，暂时还没解决掉。。</p>
+<h2 id="数据采集"><a href="#数据采集" class="headerlink" title="数据采集"></a>数据采集</h2><table>
+<thead>
+<tr>
+<th>数据编号</th>
+<th>分类动作</th>
+<th>分类编号</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>20210827_182636</td>
+<td>前后移动</td>
+<td>1</td>
+</tr>
+<tr>
+<td>20210827_183214</td>
+<td>左右移动</td>
+<td>2</td>
+</tr>
+<tr>
+<td>20210827_183657</td>
+<td>上下移动</td>
+<td>3</td>
+</tr>
+<tr>
+<td>20210827_184027</td>
+<td>左右倾斜</td>
+<td>4</td>
+</tr>
+<tr>
+<td>20210827_184337</td>
+<td>前后俯仰</td>
+<td>5</td>
+</tr>
+<tr>
+<td>20210827_184709</td>
+<td>左右旋转</td>
+<td>6</td>
+</tr>
+<tr>
+<td>20210827_194237</td>
+<td>前后移动</td>
+<td>1</td>
+</tr>
+<tr>
+<td>20210827_194606</td>
+<td>左右移动</td>
+<td>2</td>
+</tr>
+<tr>
+<td>20210827_195119</td>
+<td>上下移动</td>
+<td>3</td>
+</tr>
+<tr>
+<td>20210827_195413</td>
+<td>左右倾斜</td>
+<td>4</td>
+</tr>
+<tr>
+<td>20210827_195739</td>
+<td>前后俯仰</td>
+<td>5</td>
+</tr>
+<tr>
+<td>20210827_200120</td>
+<td>左右旋转</td>
+<td>6</td>
+</tr>
+<tr>
+<td>20210827_200819</td>
+<td>前后左右上下（平动）</td>
+<td>7</td>
+</tr>
+<tr>
+<td>20210827_201313</td>
+<td>倾斜俯仰旋转（转动）</td>
+<td>8</td>
+</tr>
+<tr>
+<td>20210827_201808</td>
+<td>随意平动</td>
+<td>7？</td>
+</tr>
+<tr>
+<td>20210827_202339</td>
+<td>随意转动</td>
+<td>8？</td>
+</tr>
+</tbody></table>
+<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><p>在某些情况下，尤其是移动比较剧烈（比如太左太右或者太高）时，两个定位点会移动到z轴上半轴，比如20210827_183214中后20s的数据。</p>
+<p>把每个数据编号都建立一个文件夹应该比较好。</p>
+<h2 id="是否可以直接模拟生成数据？"><a href="#是否可以直接模拟生成数据？" class="headerlink" title="是否可以直接模拟生成数据？"></a>是否可以直接模拟生成数据？</h2><p>代码构造一个人头让其移动，记录下来双耳的位置作为数据，这样可以获得大量训练集。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/26/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950826/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -471,80 +629,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950808/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/08/%E5%AE%9E%E9%AA%8C%E8%AE%B0%E5%BD%950808/" class="post-title-link" itemprop="url">实验记录0808</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-08-08 14:13:21" itemprop="dateCreated datePublished" datetime="2021-08-08T14:13:21+08:00">2021-08-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-08-27 19:46:50" itemprop="dateModified" datetime="2021-08-27T19:46:50+08:00">2021-08-27</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>全部默认为转动，知道耳机中点与轴点的距离超出阈值认为是移动，更新轴点。</p>
-<p>俯仰数据：20210808_202031</p>
-<p>旋转数据：20210808_202544</p>
-<p>倾斜数据：20210808_202641</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/24/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><span class="page-number current">25</span><a class="page-number" href="/page/26/">26</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/26/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/24/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><span class="page-number current">25</span><a class="page-number" href="/page/26/">26</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/26/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -611,7 +699,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">165</span>
+          <span class="site-state-item-count">166</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
