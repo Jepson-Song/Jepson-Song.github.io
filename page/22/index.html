@@ -188,6 +188,100 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/b%E6%A0%91%E5%92%8Cb+%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/04/b%E6%A0%91%E5%92%8Cb+%E6%A0%91/" class="post-title-link" itemprop="url">b树和b+树</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-12-04 16:01:04 / Modified: 16:11:57" itemprop="dateCreated datePublished" datetime="2021-12-04T16:01:04+08:00">2021-12-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="b树"><a href="#b树" class="headerlink" title="b树"></a>b树</h2><p>b树就是平衡M叉树。跟平衡二叉树类似，avl的非叶子节点只有一个关键字，b树的非叶子节点有M-1个关键字。M-1个关键字将数据划分为M段，每个儿子节点对应一段。b树的叶子结点和非叶子节点都存放数据。</p>
+<p><img src="https://s2.loli.net/2021/12/04/5de4ZTs6hIn9Rbw.png" alt="20211204160835"></p>
+<p>一个M阶的b树具有如下几个特征：</p>
+<ul>
+<li>定义任意非叶子结点最多只有M个儿子，且M&gt;2；</li>
+<li>根结点的儿子数为[2, M]；</li>
+<li>除根结点以外的非叶子结点的儿子数为[M/2, M]，向上取整；</li>
+<li>非叶子结点的关键字个数=儿子数-1；</li>
+<li>所有叶子结点位于同一层；</li>
+<li>k个关键字把节点拆成k+1段，分别指向k+1个儿子，同时满足查找树的大小关系。</li>
+</ul>
+<p>有关b树的一些特性，注意与后面的b+树区分：</p>
+<ul>
+<li>关键字集合分布在整颗树中；</li>
+<li>任何一个关键字出现且只出现在一个结点中；</li>
+<li>搜索有可能在非叶子结点结束；</li>
+<li>其搜索性能等价于在关键字全集内做一次二分查找；</li>
+</ul>
+<h2 id="b-树"><a href="#b-树" class="headerlink" title="b+树"></a>b+树</h2><p>b+树是b树的变体，区别是b+树非叶子节点有M个关键字，并且不在非叶子结点存储数据，同时b+树的叶子结点之间也有指针相连。</p>
+<p><img src="https://s2.loli.net/2021/12/04/YuMm2KXtR9BWk63.png" alt="20211204160733"></p>
+<p>M阶的b+树的特征：</p>
+<ul>
+<li>有M棵子树的非叶子结点中含有M个关键字（b树是M-1个），这些关键字不保存数据，只用来索引，所有数据都保存在叶子节点（b树是每个关键字都保存数据）。</li>
+<li>所有的叶子结点中包含了全部关键字的信息，及指向含这些关键字记录的指针，且叶子结点本身依关键字的大小自小而大顺序链接。</li>
+<li>所有的非叶子结点可以看成是索引部分，结点中仅含其子树中的最大（或最小）关键字。</li>
+<li>通常在b+树上有两个头指针，一个指向根结点，一个指向关键字最小的叶子结点。</li>
+<li>同一个数字会在不同节点中重复出现，根节点的最大元素就是b+树的最大元素。</li>
+</ul>
+<p>b+树相比于b树的查询优势：</p>
+<ul>
+<li>b+树的中间节点不保存数据，所以磁盘页能容纳更多节点元素，更“矮胖”；</li>
+<li>b+树查询必须查找到叶子节点，b树只要匹配到即可不用管元素位置，因此b+树查找更稳定（并不慢）；</li>
+<li>对于范围查找来说，b+树只需遍历叶子节点链表即可，b树却需要重复地中序遍历;</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/04/B+%E6%A0%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -521,89 +615,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/03/insert%E5%92%8Cerase/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/12/03/insert%E5%92%8Cerase/" class="post-title-link" itemprop="url">insert和erase</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-12-03 11:01:26 / Modified: 11:13:31" itemprop="dateCreated datePublished" datetime="2021-12-03T11:01:26+08:00">2021-12-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>string和vector都有insert和erase函数，但是参数有区别。</p>
-<table>
-<thead>
-<tr>
-<th>容器</th>
-<th>insert</th>
-<th>erase</th>
-<th>*note</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>string</td>
-<td>s.insert(i, s)</td>
-<td>s.erase(i, n)</td>
-<td>string可以用迭代器也可以直接用下标，习惯直接用下标</td>
-</tr>
-<tr>
-<td>vector</td>
-<td>a.insert(a.begin()+i, val)</td>
-<td>a.erase(a.begin()+i)</td>
-<td>vector只能用迭代器</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -674,7 +685,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-count">167</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

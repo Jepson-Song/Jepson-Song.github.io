@@ -188,6 +188,84 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/06/kafka%E4%B9%8Bpartition%E5%88%86%E9%85%8D%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/06/kafka%E4%B9%8Bpartition%E5%88%86%E9%85%8D%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">kafka之partition分配机制</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-06 19:46:32 / Modified: 20:00:28" itemprop="dateCreated datePublished" datetime="2022-04-06T19:46:32+08:00">2022-04-06</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="partition分配机制"><a href="#partition分配机制" class="headerlink" title="partition分配机制"></a>partition分配机制</h2><p>consumer 提供的两种不同 partition 分配策略，可以通过 partition.assignment.strategy 参数进行配置，默认情况下使用的是 org.apache.kafka.clients.consumer.RangeAssignor，Kafka 中提供另一种 partition 的分配策略 org.apache.kafka.clients.consumer.RoundRobinAssignor</p>
+<h3 id="RangeAssignor-分配模式"><a href="#RangeAssignor-分配模式" class="headerlink" title="RangeAssignor 分配模式"></a>RangeAssignor 分配模式</h3><p>假设 topic 的 partition 数为 numPartitionsForTopic，group 中订阅这个 topic 的 member 数为 consumersForTopic.size()，首先需要算出两个值：</p>
+<pre><code>numPartitionsPerConsumer = numPartitionsForTopic / consumersForTopic.size()：表示平均每个 consumer 会分配到几个 partition；
+
+consumersWithExtraPartition = numPartitionsForTopic % consumersForTopic.size()：表示平均分配后还剩下多少个 partition 未分配。
+</code></pre>
+<p>分配的规则是：对于剩下的那些 partition 分配到前 consumersWithExtraPartition 个 consumer 上，也就是前 consumersWithExtraPartition 个 consumer 获得 topic-partition 列表会比后面多一个。</p>
+<p>在上述的程序中，举了一个例子，假设有一个 topic 有 7 个 partition，group 有5个 consumer，这个5个 consumer 都订阅这个 topic，那么 range 的分配方式如下：</p>
+<pre><code>consumer 0：start: 0, length: 2, topic-partition: p0,p1；
+consumer 1：start: 2, length: 2, topic-partition: p2,p3；
+consumer 2：start: 4, length: 1, topic-partition: p4；
+consumer 3：start: 5, length: 1, topic-partition: p5；
+consumer 4：start: 6, length: 1, topic-partition: p6
+</code></pre>
+<h3 id="RoundRobinAssignor分配模式"><a href="#RoundRobinAssignor分配模式" class="headerlink" title="RoundRobinAssignor分配模式"></a>RoundRobinAssignor分配模式</h3><p>roundrobin 的实现原则，简单来说就是：列出所有 topic-partition 和列出所有的 consumer member，然后开始分配，一轮之后继续下一轮，假设有有一个 topic，它有7个 partition，group 有3个 consumer 都订阅了这个 topic，那么其分配方式为：</p>
+<p><img src="https://s2.loli.net/2022/04/06/XFhag9qmS8BNojE.png" alt="20220406200003"></p>
+<p>对于多个 topic 的订阅，将有两个 topic，一个 partition 有5个，一个 partition 有7个，group 有5个 consumer，但是只有前3个订阅第一个 topic，而另一个 topic 是所有 consumer 都订阅了，那么其分配结果如下：</p>
+<p><img src="https://s2.loli.net/2022/04/06/2EFa3NZmAWr6bKl.png" alt="20220406200004"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/06/kafka%E4%B9%8Bconsumer%E7%9A%84commit%E6%9C%BA%E5%88%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -570,96 +648,6 @@ ConsumerCoordinator：consumer端的，和GroupCoordinator通信的媒介。
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/04/kafka%E4%B9%8Bpartition%E7%9A%84%E9%A1%BA%E5%BA%8F%E6%80%A7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/04/kafka%E4%B9%8Bpartition%E7%9A%84%E9%A1%BA%E5%BA%8F%E6%80%A7/" class="post-title-link" itemprop="url">kafka之partition的顺序性</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-04 10:39:30 / Modified: 11:18:44" itemprop="dateCreated datePublished" datetime="2022-04-04T10:39:30+08:00">2022-04-04</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li><p>RecordAccumulator</p>
-<ul>
-<li>每个 topic-partition 都有一个对应的 deque，deque 中存储的是 RecordBatch，它是发送的基本单位，只有这个 topic-partition 的 RecordBatch 达到大小或时间要求才会触发发送操作（但并不是只有达到这两个条件之一才会被发送，这点要理解清楚）。<br><img src="https://s2.loli.net/2022/04/04/TazJLP8esYxDbqZ.png" alt="20220404111740"></li>
-</ul>
-</li>
-<li><p>mutePartition() 与 unmutePartition()</p>
-<ul>
-<li>这两个方法是保证有序性关键之一，其主要做用就是将指定的 topic-partition 从 muted 集合中加入或删除。</li>
-<li>mutePartition()：如果要求保证顺序性，那么这个 tp 对应的 RecordBatch 如果要开始发送，就将这个 tp 加入到 muted 集合中；</li>
-<li>unmutePartition()：如果 tp 对应的 RecordBatch 发送完成，tp 将会从 muted 集合中移除。</li>
-</ul>
-</li>
-<li><p>ready()</p>
-<ul>
-<li>ready() 是在 Sender 线程中调用的，其作用选择那些可以发送的 node，也就是说，如果这个 tp 对应的 batch 可以发送（达到时间或大小要求），就把 tp 对应的 leader 选出来。</li>
-</ul>
-</li>
-<li><p>drain()</p>
-<ul>
-<li>是用来遍历可发送请求的 node，然后再遍历在这个 node 上所有 tp，如果 tp 对应的 deque 有数据，将会被选择出来直到超过一个请求的最大长度（max.request.size）为止，也就说说即使 RecordBatch 没有达到条件，但为了保证每个 request 尽快多地发送数据提高发送效率，这个 RecordBatch 依然会被提前选出来并进行发送。</li>
-</ul>
-</li>
-<li><p>顺序性如何保证？</p>
-<ul>
-<li>如果 KafkaProducer 的 max.in.flight.requests.per.connection 设置为1，那么就可以保证其顺序性，否则的话，就不保证顺序性</li>
-<li>而其实现机制则是在 RecordAccumulator 中的 mutePartition() 与 unmutePartition()</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -730,7 +718,7 @@ ConsumerCoordinator：consumer端的，和GroupCoordinator通信的媒介。
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-count">167</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
