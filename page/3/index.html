@@ -188,6 +188,88 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/05/kafka%E4%B9%8BConsumerPoll/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/05/kafka%E4%B9%8BConsumerPoll/" class="post-title-link" itemprop="url">kafka之Consumer Poll</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-04-05 10:56:48" itemprop="dateCreated datePublished" datetime="2022-04-05T10:56:48+08:00">2022-04-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-06 10:28:35" itemprop="dateModified" datetime="2022-04-06T10:28:35+08:00">2022-04-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Consumer-poll-模型"><a href="#Consumer-poll-模型" class="headerlink" title="Consumer poll 模型"></a>Consumer poll 模型</h2><p>Consumer poll 方法的真正实现是在 pollOnce() 方法中，一次 poll 过程,包括检查新的数据、做一些必要的 commit 以及 offset  重置操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Do one round of polling. In addition to checking for new data, this does any needed offset commits</span></span><br><span class="line"><span class="comment"> * (if auto-commit is enabled), and offset resets (if an offset reset policy is defined).</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> timeout The maximum time to block in the underlying call to &#123;<span class="doctag">@link</span> ConsumerNetworkClient#poll(long)&#125;.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> The fetched records (may be empty)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">// note: 一次 poll 过程,包括检查新的数据、做一些必要的 commit 以及 offset  重置操作</span></span><br><span class="line"><span class="keyword">private</span> Map&lt;TopicPartition, List&lt;ConsumerRecord&lt;K, V&gt;&gt;&gt; pollOnce(<span class="keyword">long</span> timeout) &#123;</span><br><span class="line">    <span class="comment">// note： 1. 获取 GroupCoordinator 并连接、加入 Group、sync Group, 期间 group 会进行 rebalance 并获取</span></span><br><span class="line">    coordinator.poll(time.milliseconds());</span><br><span class="line">    <span class="comment">// assignment</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// fetch positions if we have partitions we&#x27;re subscribed to that we</span></span><br><span class="line">    <span class="comment">// don&#x27;t know the offset for</span></span><br><span class="line">    <span class="comment">// note: 2. 更新要拉取 partition 的 offset（如果需要更新的话）</span></span><br><span class="line">    <span class="keyword">if</span> (!subscriptions.hasAllFetchPositions())</span><br><span class="line">        updateFetchPositions(<span class="keyword">this</span>.subscriptions.missingFetchPositions());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// if data is available already, return it immediately</span></span><br><span class="line">    <span class="comment">// note: 3. 获取 fetcher 已经拉取到的数据</span></span><br><span class="line">    Map&lt;TopicPartition, List&lt;ConsumerRecord&lt;K, V&gt;&gt;&gt; records = fetcher.fetchedRecords();</span><br><span class="line">    <span class="keyword">if</span> (!records.isEmpty())</span><br><span class="line">    <span class="comment">// 如果不是空，说明 completedFetches 队列中有数据，就直接拿数据</span></span><br><span class="line">        <span class="keyword">return</span> records;</span><br><span class="line">    <span class="comment">// 如果是空</span></span><br><span class="line">    <span class="comment">// note: 说明上次 fetch 到是的数据已经全部拉取了,需要再次发送 fetch 请求,从 broker 拉取数据</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// send any new fetches (won&#x27;t resend pending fetches)</span></span><br><span class="line">    <span class="comment">// note: 4. 向订阅的所有 partition 发送 fetch 请求,会从多个 partition 拉取数据，结果存放在completedFetches中</span></span><br><span class="line">    <span class="comment">// 但是这里的发送并不是真正的发送，而是将 FetchRequest 请求对象存放在 unsend 缓存当中，然后会在 ConsumerNetworkClient#poll 方法调用时才会被真正地执行发送。</span></span><br><span class="line">    fetcher.sendFetches();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">long</span> now = time.milliseconds();</span><br><span class="line">    <span class="keyword">long</span> pollTimeout = Math.min(coordinator.timeToNextPoll(now), timeout);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//note: 5. 调用 poll 方法发送数据</span></span><br><span class="line">    client.poll(pollTimeout, now, <span class="keyword">new</span> PollCondition() &#123;</span><br><span class="line">    <span class="comment">// 发送请求到服务端，但是如果之前发送的fectch请求还在路上的话，就block等待。</span></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">shouldBlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="comment">// since a fetch might be completed by the background thread, we need this poll condition</span></span><br><span class="line">            <span class="comment">// to ensure that we do not block unnecessarily in poll()</span></span><br><span class="line">            <span class="keyword">return</span> !fetcher.hasCompletedFetches();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// after the long poll, we should check whether the group needs to rebalance</span></span><br><span class="line">    <span class="comment">// prior to returning data so that the group can stabilize faster</span></span><br><span class="line">    <span class="comment">//note: 6. 如果 group 需要 rebalance, 直接返回空数据,这样更快地让 group 进行稳定状态</span></span><br><span class="line">    <span class="keyword">if</span> (coordinator.needRejoin())</span><br><span class="line">        <span class="keyword">return</span> Collections.emptyMap();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 再次返回数据</span></span><br><span class="line">    <span class="keyword">return</span> fetcher.fetchedRecords();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这里，我们把一个 pollOnce 模型分为6个部分，这里简单介绍一下：</p>
+<ol>
+<li>coordinator.poll()：连接 GroupCoordinator，并发送 join-group、sync-group 请求，加入 group 成功，并获取其分配的 tp 列表；，如果设置了自动 commit，也会在这一步进行 commit，总之，对于一个新建的 group，group 状态将会从 Empty –&gt; PreparingRebalance –&gt; AwaiSync –&gt; Stable；</li>
+<li>updateFetchPositions()： 在上一步中已经获取到了这个 consumer 实例要订阅的 topic-partition list，这一步更新其 fetch-position offset，以便进行拉取；</li>
+<li>fetcher.fetchedRecords()：返回其 fetched records，并更新其 fetch-position offset，只有在 offset-commit 时（自动 commit 时，是在第一步实现的），才会更新其 committed offset；</li>
+<li>fetcher.sendFetches()：只要订阅的 topic-partition list 没有未处理的 fetch 请求，就发送对这个 topic-partition 的 fetch 请求，在真正发送时，还是会按 node 级别去发送，leader 是同一个 node 的 topic-partition 会合成一个请求去发送；</li>
+<li>client.poll()：调用底层 NetworkClient 提供的接口去发送相应的请求；</li>
+<li>oordinator.needRejoin()：如果当前实例分配的 topic-partition 列表发送了变化，那么这个 consumer group 就需要进行 rebalance。</li>
+</ol>
+<p>注意：</p>
+<p>其实 Kafka 消费者在拉取消息过程中，有两条线程在工作，其中用户主线程调用 pollForFetches 方法从缓存中获取消息消费，在获取消息后，会再调用 ConsumerNetworkClient#poll 方法从 Broker 发送拉取请求，然后将拉取到的消息缓存到本地，这里为什么在拉取完消息后，会主动调用 ConsumerNetworkClient#poll 方法呢？我想这里的目的是为了下次 poll 的时候可以立即从缓存中拉取消息。</p>
+<p>当缓存中还存在中还存在某个分区的消息数据时，消费者不会继续对该分区进行拉取请求，直到该分区的本地缓存被消费完，才会继续发送拉取请求。假设某消费者监听三个分区，每个分区每次从 Broker 中拉取 4 条消息，用户每次从本地缓存中获取 2 条消息：</p>
+<p><img src="https://s2.loli.net/2022/04/05/yTeVuhp7xZ6kgsK.png" alt="20220405155653"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/04/kafka%E4%B9%8BGroupCoordinator/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -590,93 +672,6 @@ ConsumerCoordinator：consumer端的，和GroupCoordinator通信的媒介。
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/01/kafka%E4%B8%AD%E7%9A%84Producer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/01/kafka%E4%B8%AD%E7%9A%84Producer/" class="post-title-link" itemprop="url">kafka中的Producer</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-04-01 17:03:15" itemprop="dateCreated datePublished" datetime="2022-04-01T17:03:15+08:00">2022-04-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-04-02 10:00:03" itemprop="dateModified" datetime="2022-04-02T10:00:03+08:00">2022-04-02</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li>发送数据<ul>
-<li>Producer通过producer.send()函数发送数据</li>
-<li>send发送的是record，record包含了message的topic和value，可选的还有key和partition等</li>
-<li>发送之前需要先把key和value序列化，序列化就是将其变成字节流，对于一般类型kafka已经内置了序列化和反序列化函数，复杂类型的可能需要自己实现</li>
-</ul>
-</li>
-<li>获取partition的值，producer发送消息的时候需要确定发送到哪个topic的哪个partition<ul>
-<li>指明partition的情况下，直接发送到指明的partition</li>
-<li>没指明partition的情况下，将key的hash值与partition个数取余作为partition值</li>
-<li>如果连key都没有的话，则随机一个整数对partition个数取余作为partition值，之后每次都自增，即round-robin算法</li>
-</ul>
-</li>
-<li>向accumulator写数据<ul>
-<li>每个topic-partition都会有一个队列，队列的单元是recordbatch</li>
-<li>producer要发送的record先追加到recordbatch中，如果不存在或者空间不足则新建一个recordbatch</li>
-<li>写入成功后，如果发现有recordbatch满足发送条件，就会唤醒sender线程发送recordbatch</li>
-<li>将broker相同的recordbatch放在一起发送</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -747,7 +742,7 @@ ConsumerCoordinator：consumer端的，和GroupCoordinator通信的媒介。
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">168</span>
+          <span class="site-state-item-count">169</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
