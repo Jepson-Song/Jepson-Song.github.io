@@ -3,7 +3,10 @@
   <entry>
     <title>阿里本地生活一面</title>
     <url>/2022/05/08/%E9%98%BF%E9%87%8C%E6%9C%AC%E5%9C%B0%E7%94%9F%E6%B4%BB%E4%B8%80%E9%9D%A2/</url>
-    <content><![CDATA[<ul>
+    <content><![CDATA[<p>以挂</p>
+<p>而且官网显示是挂在简历评估阶段，我不理解。</p>
+<hr>
+<ul>
 <li>自我介绍<ul>
 <li>问华为实习的内</li>
 <li>问编译器项目</li>
@@ -17,6 +20,7 @@
 <li>智能指针</li>
 </ul>
 </li>
+<li>多线程编程要注意的问题</li>
 <li>topk问题<ul>
 <li>堆</li>
 <li>分组</li>
