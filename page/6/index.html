@@ -188,6 +188,154 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/22/kafka/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/22/kafka/" class="post-title-link" itemprop="url">kafka</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-22 12:45:40" itemprop="dateCreated datePublished" datetime="2022-03-22T12:45:40+08:00">2022-03-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-04-06 10:27:35" itemprop="dateModified" datetime="2022-04-06T10:27:35+08:00">2022-04-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="启动zokeeper"><a href="#启动zokeeper" class="headerlink" title="启动zokeeper"></a>启动zokeeper</h3><p>进入zokeeper的bin目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/zookeeper/apache-zookeeper-3.8.0-bin/bin/</span><br></pre></td></tr></table></figure>
+
+<p>开启zookeeper集群</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./zkCli.sh -server 192.168.79.128:2181,192.168.79.128:2182,192.168.79.128:2183,192.168.79.128:2184</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动kafka服务器"><a href="#启动kafka服务器" class="headerlink" title="启动kafka服务器"></a>启动kafka服务器</h3><p>进入kafka的bin目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/kafka/kafka_2.11-2.4.1/bin/</span><br></pre></td></tr></table></figure>
+
+<p>启动kafka</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-server-start.sh -daemon ../config/server.properties</span><br></pre></td></tr></table></figure>
+
+<p>检查是否启动成功</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -aux|grep server.properties</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建topic"><a href="#创建topic" class="headerlink" title="创建topic"></a>创建topic</h3><p>通过kafka命令创建一个topic</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-topics.sh --create --zookeeper 192.168.79.128:2181 --replication-factor 1 --partitions 1 --topic test</span><br></pre></td></tr></table></figure>
+
+<p>查看zk中所有topic</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-topics.sh --list --zookeeper 192.168.79.128:2181</span><br></pre></td></tr></table></figure>
+
+<h3 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h3><p>生产者发送消息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-console-producer.sh --broker-list 192.168.79.129:9092 --topic test</span><br></pre></td></tr></table></figure>
+
+<h3 id="接收消息"><a href="#接收消息" class="headerlink" title="接收消息"></a>接收消息</h3><p>消费者接收消息</p>
+<ul>
+<li>方式一：从最后一条消息的偏移量+1开始消费</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-console-consumer.sh --bootstrap-server 192.168.79.129:9092 --topic test</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>方式二：从头开始消费</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-console-consumer.sh --bootstrap-server 192.168.79.129:9092 --from-beginning --topic test</span><br></pre></td></tr></table></figure>
+
+<h3 id="单播消息"><a href="#单播消息" class="headerlink" title="单播消息"></a>单播消息</h3><p>两个消费者在同一个组</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-console-consumer.sh --bootstrap-server 192.168.79.129:9092 --consumer-property group.id=testGroup --topic test</span><br></pre></td></tr></table></figure>
+
+<p>如果多个消费者在同一个消费者组，那么只有一个消费者能收到订阅的topic中的消息</p>
+<h3 id="多播消息"><a href="#多播消息" class="headerlink" title="多播消息"></a>多播消息</h3><p>两个消费者在不同组</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-console-consumer.sh --bootstrap-server 192.168.79.129:9092 --consumer-property group.id=testGroup --topic test</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-console-consumer.sh --bootstrap-server 192.168.79.129:9092 --consumer-property group.id=testGroup1 --topic test</span><br></pre></td></tr></table></figure>
+
+<p>可以同时收到消息</p>
+<h3 id="查看消费者组"><a href="#查看消费者组" class="headerlink" title="查看消费者组"></a>查看消费者组</h3><p>查看有哪些消费者组</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-consumer-groups.sh --bootstrap-server 192.168.79.129:9092--topic test</span><br></pre></td></tr></table></figure>
+
+<p>查看某个组的具体信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-consumer-groups.sh --bootstrap-server 192.168.79.129:9092 --describe --group testGroup</span><br></pre></td></tr></table></figure>
+
+<h2 id="topic和patition"><a href="#topic和patition" class="headerlink" title="topic和patition"></a>topic和patition</h2><h3 id="topic"><a href="#topic" class="headerlink" title="topic"></a>topic</h3><p>kafka中的topic是一个逻辑概念，通过topic对消息进行分类，不同的topic会被订阅该topic的消费者消费。</p>
+<p>如果消息非常多，因为消息是会被保存在log日志中，为了解决文件过大的问题，kafka提出了patition的概念。</p>
+<h3 id="partition"><a href="#partition" class="headerlink" title="partition"></a>partition</h3><p>通过partition将topic的消息分区存储</p>
+<ul>
+<li><p>解决了log文件过大的问题</p>
+</li>
+<li><p>提高生产者和消费者的吞吐量，读和写可以在多个分区同时进行</p>
+</li>
+</ul>
+<h2 id="创建多分区topic"><a href="#创建多分区topic" class="headerlink" title="创建多分区topic"></a>创建多分区topic</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-topics.sh --create --zookeeper 192.168.79.128:2181 --replication-factor 1 --partitions 2 --topic test1</span><br></pre></td></tr></table></figure>
+
+<h2 id="搭建kafka集群"><a href="#搭建kafka集群" class="headerlink" title="搭建kafka集群"></a>搭建kafka集群</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./kafka-server-start.sh -daemon ../config/server.properties</span><br><span class="line">./kafka-server-start.sh -daemon ../config/server1.properties</span><br><span class="line">./kafka-server-start.sh -daemon ../config/server2.properties</span><br></pre></td></tr></table></figure>
+
+<h3 id="副本"><a href="#副本" class="headerlink" title="副本"></a>副本</h3><p>一个主题，两个分区，三个副本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-topics.sh --create --zookeeper 192.168.79.128:2181 --replication-factor 3 --partitions 2 --topic my-replicated-topic</span><br></pre></td></tr></table></figure>
+
+<p>查看topic</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-topics.sh --describe --zookeeper 192.168.79.128:2181 --topic my-replicated-topicmy-replicated-topic</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s2.loli.net/2022/03/22/UMcGQJ1L8uBaDkr.png" alt="20220322152036"></p>
+<p>副本时为分区建立的副本，一个leader其余是follower</p>
+<p>读和写都发生在leader上，leader挂了从follower中选举产生新leader</p>
+<p>follower接收leader的同步数据</p>
+<p><img src="https://s2.loli.net/2022/03/22/mnRIlBcizh79C4g.png" alt="20220322153205"></p>
+<h3 id="集群发消息"><a href="#集群发消息" class="headerlink" title="集群发消息"></a>集群发消息</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-console-producer.sh --broker-list 192.168.79.129:9092,192.168.79.129:9093,192.168.79.129:9094 --topic my-replicated-topic</span><br></pre></td></tr></table></figure>
+
+<h3 id="集群收消息"><a href="#集群收消息" class="headerlink" title="集群收消息"></a>集群收消息</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./kafka-console-consumer.sh --bootstrap-server 192.168.79.129:9092,192.168.79.129:9093,192.168.79.129:9094 --from-beginning --topic my-replicated-topic</span><br></pre></td></tr></table></figure>
+
+<h3 id="分区分消费组的集群消费"><a href="#分区分消费组的集群消费" class="headerlink" title="分区分消费组的集群消费"></a>分区分消费组的集群消费</h3><p><img src="https://s2.loli.net/2022/03/22/GConpFKMeWw2zk9.png" alt="20220322160204"></p>
+<p>一个partition最多被一个consumer消费（保证消费的顺序），一个consumer可以消费多个partition。</p>
+<p>消费者组中consumer的数量不能比patition的数量多，不然多出来的consumer没有patition消费。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/21/zookeeper/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -571,93 +719,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/16/%E5%8D%8E%E4%B8%BA%E6%97%A0%E7%BA%BF%E7%BD%91%E4%BA%8C%E9%9D%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/16/%E5%8D%8E%E4%B8%BA%E6%97%A0%E7%BA%BF%E7%BD%91%E4%BA%8C%E9%9D%A2/" class="post-title-link" itemprop="url">华为无线网二面</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-03-16 15:32:41 / Modified: 15:40:11" itemprop="dateCreated datePublished" datetime="2022-03-16T15:32:41+08:00">2022-03-16</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ul>
-<li>业务面</li>
-<li>先自我介绍</li>
-<li>面试官表示对超声波的项目很感兴趣，让详细介绍一下<ul>
-<li>大概说了一下应用场景，系统组成，难点和算法之类的</li>
-</ul>
-</li>
-<li>又让介绍了编译器项目<ul>
-<li>主要问了还可以有哪些优化方向，说了字符串匹配换成字典树，使用更好的编译器优化算法</li>
-</ul>
-</li>
-<li>未来的发展规划</li>
-<li>对城市的倾向性</li>
-<li>还面了哪些其它公司</li>
-<li>反问环节<ul>
-<li>问了面试流程和进度</li>
-</ul>
-</li>
-<li>最后介绍部门是干啥的<ul>
-<li>通信，嵌入式开发，5G标准研发，设计芯片，通信协议</li>
-<li>产品主要是基站上面的数字信号处理</li>
-<li>介绍了好久好久，什么美国打压，未来前景，美国5G行业影响力下降</li>
-<li>行业倾向性</li>
-</ul>
-</li>
-</ul>
-<p>一共就面了半个小时，后面没有别的面试流程了，面试官表示他应该就可以给出最终的结果。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -728,7 +789,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">171</span>
+          <span class="site-state-item-count">172</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

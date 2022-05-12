@@ -188,6 +188,102 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/10/kafka%E4%B9%8BController/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/10/kafka%E4%B9%8BController/" class="post-title-link" itemprop="url">kafka之Controller</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-10 10:58:51 / Modified: 12:34:25" itemprop="dateCreated datePublished" datetime="2022-04-10T10:58:51+08:00">2022-04-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h2><p>Controller 作为 Kafka Server 端一个重要的组件，它的角色类似于其他分布式系统 Master 的角色，跟其他系统不一样的是，Kafka 集群的任何一台 Broker 都可以作为 Controller，但是在一个集群中同时只会有一个 Controller 是 alive 状态。Controller 在集群中负责的事务很多，比如：集群 meta 信息的一致性保证、Partition leader 的选举、broker 上下线等都是由 Controller 来具体负责。</p>
+<h3 id="Controller-简介"><a href="#Controller-简介" class="headerlink" title="Controller 简介"></a>Controller 简介</h3><p>在于分布式系统中，总会有一个地方需要对全局 meta 做一个统一的维护，Kafka 的 Controller 就是充当这个角色的。</p>
+<p>Controller 是运行在 Broker 上的，任何一台 Broker 都可以作为 Controller，但是一个集群同时只能存在一个 Controller，也就意味着 Controller 与数据节点是在一起的，Controller 做的主要事情如下：</p>
+<ol>
+<li>Broker 的上线、下线处理；</li>
+<li>新创建的 topic 或已有 topic 的分区扩容，处理分区副本的分配、leader 选举；</li>
+<li>管理所有副本的状态机和分区的状态机，处理状态机的变化事件；</li>
+<li>topic 删除、副本迁移、leader 切换等处理。</li>
+</ol>
+<h3 id="Controller-选举过程"><a href="#Controller-选举过程" class="headerlink" title="Controller 选举过程"></a>Controller 选举过程</h3><h4 id="Controller-启动"><a href="#Controller-启动" class="headerlink" title="Controller 启动"></a>Controller 启动</h4><p>Kafka Server 在启动的过程中，都会去启动 Controller 服务。</p>
+<p>Controller 在 startup() 方法中主要实现以下两部分功能：</p>
+<ol>
+<li>registerSessionExpirationListener() 方法注册连接 zk 的超时监听器；</li>
+<li>controllerElector.startup() 方法，监听 zk 上 controller 节点的变化，并触发 controller 选举方法。</li>
+</ol>
+<h4 id="Controller-选举"><a href="#Controller-选举" class="headerlink" title="Controller 选举"></a>Controller 选举</h4><p>Controller 在启动时，会初始化 ZookeeperLeaderElector 对象，并调用其 startup() 启动相应的流程。</p>
+<p>在 startup() 方法中，主要做了下面两件事情：</p>
+<ol>
+<li>监听 zk 的 /controller 节点的数据变化，一旦节点有变化，立刻通过 LeaderChangeListener 的方法进行相应的处理；</li>
+<li>elect 在 controller 不存在的情况下选举 controller，存在的话，就是从 zk 获取当前的 controller 节点信息。</li>
+</ol>
+<h5 id="Controller-选举方法-elect"><a href="#Controller-选举方法-elect" class="headerlink" title="Controller 选举方法 elect"></a>Controller 选举方法 elect</h5><p>其实现逻辑如下：</p>
+<ol>
+<li>先获取 zk 的 /cotroller 节点的信息，获取 controller 的 broker id，如果该节点不存在（比如集群刚创建时），那么获取的 controller id 为-1；</li>
+<li>如果 controller id 不为-1，即 controller 已经存在，直接结束流程；</li>
+<li>如果 controller id 为-1，证明 controller 还不存在，这时候当前 broker 开始在 zk 注册 controller；</li>
+<li>如果注册成功，那么当前 broker 就成为了 controller，这时候开始调用 onBecomingLeader() 方法，正式初始化 controller（注意：controller 节点是临时节点，如果当前 controller 与 zk 的 session 断开，那么 controller 的临时节点会消失，会触发 controller 的重新选举）；</li>
+<li>如果注册失败（刚好 controller 被其他 broker 创建了、抛出异常等），那么直接返回。</li>
+</ol>
+<p>在这里 controller 算是成功被选举出来了，controller 选举过程实际上就是各个 Broker 抢占式注册该节点，注册成功的便为 Controller。</p>
+<h5 id="controller-节点监听-LeaderChangeListener"><a href="#controller-节点监听-LeaderChangeListener" class="headerlink" title="controller 节点监听 LeaderChangeListener"></a>controller 节点监听 LeaderChangeListener</h5><p>LeaderChangeListener 主要是监听 zk 上的 Controller 节点变化，如果该节点内容变化或者节点被删除，那么会触发 handleDataChange() 和 handleDataDeleted() 方法。</p>
+<p>处理过程如下：</p>
+<ol>
+<li>如果 /controller 节点内容变化，那么更新一下 controller 最新的节点信息，如果该节点刚好之前是 controller，现在不是了，那么需要执行 controller 关闭操作，即 onResigningAsLeader() 方法；</li>
+<li>如果 /controller 节点被删除，如果该节点刚好之前是 controller，那么需要执行 controller 关闭操作，即 onResigningAsLeader() 方法，然后再执行 elect 方法重新去选举 controller；</li>
+</ol>
+<h3 id="Controller-服务启动流程"><a href="#Controller-服务启动流程" class="headerlink" title="Controller 服务启动流程"></a>Controller 服务启动流程</h3>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/09/kafka%E4%B9%8BReplicaManager/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -599,84 +695,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/06/kafka%E4%B9%8Bpartition%E5%88%86%E9%85%8D%E6%9C%BA%E5%88%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/06/kafka%E4%B9%8Bpartition%E5%88%86%E9%85%8D%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">kafka之partition分配机制</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-06 19:46:32 / Modified: 20:00:28" itemprop="dateCreated datePublished" datetime="2022-04-06T19:46:32+08:00">2022-04-06</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="partition分配机制"><a href="#partition分配机制" class="headerlink" title="partition分配机制"></a>partition分配机制</h2><p>consumer 提供的两种不同 partition 分配策略，可以通过 partition.assignment.strategy 参数进行配置，默认情况下使用的是 org.apache.kafka.clients.consumer.RangeAssignor，Kafka 中提供另一种 partition 的分配策略 org.apache.kafka.clients.consumer.RoundRobinAssignor</p>
-<h3 id="RangeAssignor-分配模式"><a href="#RangeAssignor-分配模式" class="headerlink" title="RangeAssignor 分配模式"></a>RangeAssignor 分配模式</h3><p>假设 topic 的 partition 数为 numPartitionsForTopic，group 中订阅这个 topic 的 member 数为 consumersForTopic.size()，首先需要算出两个值：</p>
-<pre><code>numPartitionsPerConsumer = numPartitionsForTopic / consumersForTopic.size()：表示平均每个 consumer 会分配到几个 partition；
-
-consumersWithExtraPartition = numPartitionsForTopic % consumersForTopic.size()：表示平均分配后还剩下多少个 partition 未分配。
-</code></pre>
-<p>分配的规则是：对于剩下的那些 partition 分配到前 consumersWithExtraPartition 个 consumer 上，也就是前 consumersWithExtraPartition 个 consumer 获得 topic-partition 列表会比后面多一个。</p>
-<p>在上述的程序中，举了一个例子，假设有一个 topic 有 7 个 partition，group 有5个 consumer，这个5个 consumer 都订阅这个 topic，那么 range 的分配方式如下：</p>
-<pre><code>consumer 0：start: 0, length: 2, topic-partition: p0,p1；
-consumer 1：start: 2, length: 2, topic-partition: p2,p3；
-consumer 2：start: 4, length: 1, topic-partition: p4；
-consumer 3：start: 5, length: 1, topic-partition: p5；
-consumer 4：start: 6, length: 1, topic-partition: p6
-</code></pre>
-<h3 id="RoundRobinAssignor分配模式"><a href="#RoundRobinAssignor分配模式" class="headerlink" title="RoundRobinAssignor分配模式"></a>RoundRobinAssignor分配模式</h3><p>roundrobin 的实现原则，简单来说就是：列出所有 topic-partition 和列出所有的 consumer member，然后开始分配，一轮之后继续下一轮，假设有有一个 topic，它有7个 partition，group 有3个 consumer 都订阅了这个 topic，那么其分配方式为：</p>
-<p><img src="https://s2.loli.net/2022/04/06/XFhag9qmS8BNojE.png" alt="20220406200003"></p>
-<p>对于多个 topic 的订阅，将有两个 topic，一个 partition 有5个，一个 partition 有7个，group 有5个 consumer，但是只有前3个订阅第一个 topic，而另一个 topic 是所有 consumer 都订阅了，那么其分配结果如下：</p>
-<p><img src="https://s2.loli.net/2022/04/06/2EFa3NZmAWr6bKl.png" alt="20220406200004"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -747,7 +765,7 @@ consumer 4：start: 6, length: 1, topic-partition: p6
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">171</span>
+          <span class="site-state-item-count">172</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

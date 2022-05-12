@@ -21,24 +21,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="排序原理希尔排序是把记录按下标的一定增量分组，对每组使用直接插入排序算法排序；随着增量逐渐减少，每组包含的关键词越来越多，当增量减至1时，整个文件恰被分成一组，算法便终止。 简单插入排序很循规蹈矩，不管数组分布是怎么样的，依然一步一步的对元素进行比较，移动，插入，比如[5,4,3,2,1,0]这种倒序序列，数组末端的0要回到首位置很是费劲，比较和移动元素均需n-1次。 而希尔排序在数组中采用跳跃式">
+  <meta name="description" content="无自我介绍 无知识点问题 无项目问题 就写了个LRU 反问环节">
 <meta property="og:type" content="article">
-<meta property="og:title" content="希尔排序">
-<meta property="og:url" content="http://example.com/2022/02/24/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:title" content="腾讯光子一面agin">
+<meta property="og:url" content="http://example.com/2022/05/12/%E8%85%BE%E8%AE%AF%E5%85%89%E5%AD%90%E4%B8%80%E9%9D%A2-1/index.html">
 <meta property="og:site_name" content="Jepson&#39;s Blog">
-<meta property="og:description" content="排序原理希尔排序是把记录按下标的一定增量分组，对每组使用直接插入排序算法排序；随着增量逐渐减少，每组包含的关键词越来越多，当增量减至1时，整个文件恰被分成一组，算法便终止。 简单插入排序很循规蹈矩，不管数组分布是怎么样的，依然一步一步的对元素进行比较，移动，插入，比如[5,4,3,2,1,0]这种倒序序列，数组末端的0要回到首位置很是费劲，比较和移动元素均需n-1次。 而希尔排序在数组中采用跳跃式">
+<meta property="og:description" content="无自我介绍 无知识点问题 无项目问题 就写了个LRU 反问环节">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://s2.loli.net/2022/02/24/gjkAKLSPoGYuCRV.png">
-<meta property="og:image" content="https://s2.loli.net/2022/02/24/ZWMs3SkyAr1mu4I.png">
-<meta property="article:published_time" content="2022-02-24T02:32:29.000Z">
-<meta property="article:modified_time" content="2022-02-24T02:46:22.236Z">
+<meta property="article:published_time" content="2022-05-12T08:08:27.000Z">
+<meta property="article:modified_time" content="2022-05-12T08:09:51.654Z">
 <meta property="article:author" content="Jepson">
-<meta property="article:tag" content="刷题">
-<meta property="article:tag" content="算法">
+<meta property="article:tag" content="面经">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s2.loli.net/2022/02/24/gjkAKLSPoGYuCRV.png">
 
-<link rel="canonical" href="http://example.com/2022/02/24/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/">
+<link rel="canonical" href="http://example.com/2022/05/12/%E8%85%BE%E8%AE%AF%E5%85%89%E5%AD%90%E4%B8%80%E9%9D%A2-1/">
 
 
 <script id="page-configurations">
@@ -51,7 +47,7 @@
   };
 </script>
 
-  <title>希尔排序 | Jepson's Blog</title>
+  <title>腾讯光子一面agin | Jepson's Blog</title>
   
 
 
@@ -198,7 +194,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/24/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/12/%E8%85%BE%E8%AE%AF%E5%85%89%E5%AD%90%E4%B8%80%E9%9D%A2-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -211,7 +207,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          希尔排序
+          腾讯光子一面agin
         </h1>
 
         <div class="post-meta">
@@ -224,7 +220,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2022-02-24 10:32:29 / Modified: 10:46:22" itemprop="dateCreated datePublished" datetime="2022-02-24T10:32:29+08:00">2022-02-24</time>
+              <time title="Created: 2022-05-12 16:08:27 / Modified: 16:09:51" itemprop="dateCreated datePublished" datetime="2022-05-12T16:08:27+08:00">2022-05-12</time>
             </span>
 
           
@@ -245,16 +241,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="排序原理"><a href="#排序原理" class="headerlink" title="排序原理"></a>排序原理</h2><p>希尔排序是把记录按下标的一定增量分组，对每组使用直接插入排序算法排序；随着增量逐渐减少，每组包含的关键词越来越多，当增量减至1时，整个文件恰被分成一组，算法便终止。</p>
-<p>简单插入排序很循规蹈矩，不管数组分布是怎么样的，依然一步一步的对元素进行比较，移动，插入，比如[5,4,3,2,1,0]这种倒序序列，数组末端的0要回到首位置很是费劲，比较和移动元素均需n-1次。</p>
-<p>而希尔排序在数组中采用跳跃式分组的策略，通过某个增量将数组元素划分为若干组，然后分组进行插入排序，随后逐步缩小增量，继续按组进行插入排序操作，直至增量为1。希尔排序通过这种策略使得整个数组在初始阶段达到从宏观上看基本有序，小的基本在前，大的基本在后。然后缩小增量，到增量为1时，其实多数情况下只需微调即可，不会涉及过多的数据移动。</p>
-<p>好像有人证明希尔排序的时间复杂度是O(n^1.3)</p>
-<p><img src="https://s2.loli.net/2022/02/24/gjkAKLSPoGYuCRV.png" alt="20220224103652"></p>
-<p>动图：</p>
-<p><img src="https://s2.loli.net/2022/02/24/ZWMs3SkyAr1mu4I.png" alt="20220224103635"></p>
-<h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><p>希尔排序的核心就是通过步长比较大的那几次插入排序保证了数组是基本有序的，然后再进行步长小的插入排序时不需要进行过多的比较和交换。</p>
-<p>在进行每一轮插入排序时，遇到第一个非逆序时就直接break就行了，我认为这才是希尔排序比简单插入排序快的原因。而网上大量博客都没说清楚，甚至代码里都没有这个break，这样性能可能还没有普通插入排序高。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">vector&lt;<span class="keyword">int</span>&gt; <span class="title">sortArray</span><span class="params">(vector&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = nums.<span class="built_in">size</span>();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> d=n/<span class="number">2</span>;d&gt;=<span class="number">1</span>;d/=<span class="number">2</span>)&#123; <span class="comment">// 步长d，共分为d组</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=d;i&lt;n;i++)&#123;  <span class="comment">// 对每个元素进行组内插入排序</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=i;j&gt;=d;j-=d)&#123; <span class="comment">// 组内插入排序</span></span><br><span class="line">                <span class="keyword">if</span>(nums[j-d]&gt;nums[j]) <span class="built_in">swap</span>(nums[j-d], nums[j]);</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">break</span>; <span class="comment">// 希尔排序的核心就是这个break，遇到非逆序时就break</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> nums;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <ul>
+<li>无自我介绍</li>
+<li>无知识点问题</li>
+<li>无项目问题</li>
+<li>就写了个LRU</li>
+<li>反问环节</li>
+</ul>
 
     </div>
 
@@ -284,8 +277,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E5%88%B7%E9%A2%98/" rel="tag"><i class="fa fa-tag"></i> 刷题</a>
-              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+              <a href="/tags/%E9%9D%A2%E7%BB%8F/" rel="tag"><i class="fa fa-tag"></i> 面经</a>
           </div>
 
         
@@ -294,13 +286,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/02/23/%E6%9C%80%E9%95%BF%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97LIS/" rel="prev" title="最长上升子序列LIS">
-      <i class="fa fa-chevron-left"></i> 最长上升子序列LIS
+    <a href="/2022/05/12/%E7%BD%91%E6%98%93%E4%BA%92%E5%A8%B1%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E5%B7%A5%E7%A8%8B%E5%B8%88%E4%BA%8C%E9%9D%A2/" rel="prev" title="网易互娱游戏开发工程师二面">
+      <i class="fa fa-chevron-left"></i> 网易互娱游戏开发工程师二面
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/02/24/%E6%A1%B6%E6%8E%92%E5%BA%8F%E3%80%81%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F%E5%92%8C%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/" rel="next" title="桶排序、计数排序和基数排序">
-      桶排序、计数排序和基数排序 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -360,7 +349,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">排序原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83"><span class="nav-number">2.</span> <span class="nav-text">核心</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">代码</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
