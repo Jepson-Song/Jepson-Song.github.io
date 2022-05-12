@@ -188,6 +188,92 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/09/kafka%E4%B9%8BReplicaManager/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jepson">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jepson's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/09/kafka%E4%B9%8BReplicaManager/" class="post-title-link" itemprop="url">kafka之ReplicaManager</a>
+        </h2>
+
+        <div class="post-meta">
+
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-04-09 14:28:03 / Modified: 14:41:32" itemprop="dateCreated datePublished" datetime="2022-04-09T14:28:03+08:00">2022-04-09</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Kafka的副本机制"><a href="#Kafka的副本机制" class="headerlink" title="Kafka的副本机制"></a>Kafka的副本机制</h2><p>Kafka中主题的每个Partition有一个预写式日志文件，每个Partition都由一系列有序的、不可变的消息组成，这些消息被连续的追加到Partition中，Partition中的每个消息都有一个连续的序列号叫做offset， 确定它在分区日志中唯一的位置。</p>
+<p><img src="https://s2.loli.net/2022/04/09/G7Mvcre5uCQKxYq.png" alt="20220409143015"></p>
+<p>Kafka每个topic的partition有N个副本，其中N是topic的复制因子。Kafka通过多副本机制实现故障自动转移，当Kafka集群中一个Broker失效情况下仍然保证服务可用。在Kafka中发生复制时确保partition的预写式日志有序地写到其他节点上。N个replicas中。其中一个replica为leader，其他都为follower，leader处理partition的所有读写请求，与此同时，follower会被动定期地去复制leader上的数据。</p>
+<p><img src="https://s2.loli.net/2022/04/09/T2sXiE6C4JGRHKe.png" alt="20220409143223"></p>
+<p>Kafka提供了数据复制算法保证，如果leader发生故障或挂掉，一个新leader被选举并被接受客户端的消息成功写入。Kafka确保从同步副本列表中选举一个副本为leader，或者说follower追赶leader数据。leader负责维护和跟踪ISR(In-Sync Replicas的缩写，表示副本同步队列，具体可参考下节)中所有follower滞后的状态。当producer发送一条消息到broker后，leader写入消息并复制到所有follower。消息提交之后才被成功复制到所有的同步副本。消息复制延迟受最慢的follower限制，重要的是快速检测慢副本，如果follower“落后”太多或者失效，leader将会把它从ISR中删除。</p>
+<p>leader和follower的角色区分，也主要是ReplicaManager来实现。具体地讲：</p>
+<h3 id="leader"><a href="#leader" class="headerlink" title="leader"></a>leader</h3><ol>
+<li>leader会接受client的读取请求和写入请求。</li>
+<li>leader需要接受follwer抓取message的请求，返回message给follower</li>
+<li>leader需要维护ISR(in-sync replicas)列表。“保持同步”的含义有些复杂，0.9之前版本对这个概念的定义与0.9不同，详情参见KIP-16 - Automated Replica Lag Tuning。0.9版本，broker的参数replica.lag.time.max.ms用来指定ISR的定义，如果leader在这么长时间没收到follower的拉取请求，或者在这么长时间内，follower没有fetch到leader的log end offset，就会被leader从ISR中移除。ISR是个很重要的指标，controller选取partition的leader replica时会使用它，因此leader选取ISR后会把结果记到Zookeeper上。</li>
+<li>leader需要维护high watermark。high watermark以下的消息就是所有ISR列表里的replica都已经读取的消息(注意，并不是所有replica都一定有这些消息，而只是ISR里的那些才肯定会有)。因此leader会根据follower拉取数据时提供的offset和ISR列表，决定HW，并且在返回给follower的请求中附带最新的HW。</li>
+</ol>
+<h3 id="follower"><a href="#follower" class="headerlink" title="follower"></a>follower</h3><ol>
+<li>follower需要不停地去leader处拉取最新的log</li>
+<li>follower需要根据leader在fetch reponse中提供的HW，更新自己本地保存的leader的HW信息。在它过行leader或follower转变时，会用到这个HW。</li>
+</ol>
+<h3 id="副本同步队列ISR"><a href="#副本同步队列ISR" class="headerlink" title="副本同步队列ISR"></a>副本同步队列ISR</h3><p>所谓同步，必须满足如下两个条件：</p>
+<ol>
+<li>副本节点必须能与zookeeper保持会话（心跳机制）</li>
+<li>副本能复制leader上的所有写操作，并且不能落后太多。(卡住或滞后的副本控制是由 replica.lag.time.max.ms 配置)</li>
+</ol>
+<p>所有的副本（replicas）统称为Assigned Replicas，即AR。ISR是AR中的一个子集，由leader维护ISR列表，follower从leader同步数据有一些延迟。任意一个超过阈值都会把follower剔除出ISR, 存入OSR（Outof-Sync Replicas）列表，新加入的follower也会先存放在OSR中。AR=ISR+OSR。</p>
+<p>上一节中的HW俗称高水位，是HighWatermark的缩写，取一个partition对应的ISR中最小的LEO作为HW，consumer最多只能消费到HW所在的位置。另外每个replica都有HW,leader和follower各自负责更新自己的HW的状态。对于leader新写入的消息，consumer不能立刻消费，leader会等待该消息被所有ISR中的replicas同步后更新HW，此时消息才能被consumer消费。这样就保证了如果leader所在的broker失效，该消息仍然可以从新选举的leader中获取。对于来自内部broKer的读取请求，没有HW的限制。</p>
+<p>下图详细的说明了当producer生产消息至broker后，ISR以及HW和LEO的流转过程：</p>
+<p><img src="https://s2.loli.net/2022/04/09/sSEx98RhmIZprw3.png" alt="20220409143654"></p>
+<p>由此可见，Kafka的复制机制既不是完全的同步复制，也不是单纯的异步复制。事实上，同步复制要求所有能工作的follower都复制完，这条消息才会被commit，这种复制方式极大的影响了吞吐率。而异步复制方式下，follower异步的从leader复制数据，数据只要被leader写入log就被认为已经commit，这种情况下如果follower都还没有复制完，落后于leader时，突然leader宕机，则会丢失数据。而Kafka的这种使用ISR的方式则很好的均衡了确保数据不丢失以及吞吐率。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/08/kafka%E4%B9%8BServer%E7%AB%AF%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86Fetch%E8%AF%B7%E6%B1%82/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -591,100 +677,10 @@ consumer 4：start: 6, length: 1, topic-partition: p6
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/06/kafka%E4%B9%8Bconsumer%E7%9A%84commit%E6%9C%BA%E5%88%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jepson">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jepson's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/06/kafka%E4%B9%8Bconsumer%E7%9A%84commit%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">kafka之consumer的commit机制</a>
-        </h2>
-
-        <div class="post-meta">
-
-
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2022-04-06 16:54:41 / Modified: 19:30:33" itemprop="dateCreated datePublished" datetime="2022-04-06T16:54:41+08:00">2022-04-06</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="commit机制"><a href="#commit机制" class="headerlink" title="commit机制"></a>commit机制</h2><p>在kafka的消费者中，有一个非常关键的机制，那就是offset机制。它使得Kafka在消费的过程中即使挂了或者引发再均衡问题重新分配Partation，当下次重新恢复消费时仍然可以知道从哪里开始消费。</p>
-<p>kafka对于offset的处理有两种提交方式：(1) 自动提交(默认的提交方式)   (2) 手动提交(可以灵活地控制offset)</p>
-<h3 id="偏移量offset"><a href="#偏移量offset" class="headerlink" title="偏移量offset"></a>偏移量offset</h3><p>如果消费者一直处于运行状态，那么偏移量就没有什么用处.</p>
-<p>如果有消费者退出或者新 partition 加入，此时就会触发再均衡。完成再均衡之后，每个消费者可能分配到新的 partition，而不是之前处理的那个。为了能够继续之前的工作，消费者需要读取每个 partition 最后一次提交的offset，然后从偏移量指定的地方继续处理.</p>
-<h3 id="自动提交偏移量"><a href="#自动提交偏移量" class="headerlink" title="自动提交偏移量"></a>自动提交偏移量</h3><p>Kafka中偏移量的自动提交是由参数enable_auto_commit和auto_commit_interval_ms控制的，当enable_auto_commit=True时，Kafka在消费的过程中会以频率为auto_commit_interval_ms向Kafka自带的topic(__consumer_offsets)进行偏移量提交，具体提交到哪个Partation是以算法：partation=hash(group_id)%50来计算的。</p>
-<p>Kafka消费者客户端编程逻辑中位移提交是一个大难点，自动位移提交免去了复杂的位移提交逻辑，让编码更简洁，但同时也带来了重复消费和消息丢失的问题。</p>
-<ol>
-<li><p>重复消费</p>
-<p> 假设刚刚提交完一次消费位移，然后拉取一批消息进行消费，在下一次进行自动位移提交之前，消费者崩溃了或者发生再均衡，那么又得从上一次的位移处重新开始消费。</p>
-<p> 我们可以通过减少自动位移提交的时间间隔来减少重复消息的窗口大小，但这样不能从根本上解决重复消费的问题，而且会使位移提交更加频繁。</p>
-</li>
-<li><p>消息丢失</p>
-<p> 比如在如下图场景：拉取线程不断拉取消息并存入本地缓存，比如存入到BlockingQueue中，另外一个线程负责从缓存中读取消息并进行相应的逻辑处理。假设目前已经进行第y+1次拉取和第Z次位移提交，也就是第X+9以前的位移一经提交，但是处理消息的线程还在处理第X+4条消息，此时如果处理消息的线程发生异常，然后恢复正常后，则再次拉取消息会从第Z次提交的位置X+9处开始拉取消息然后处理，此时从X+4到X+9处的消息就被丢失了。</p>
-<p> <img src="https://s2.loli.net/2022/04/06/Y31EFazhRAWQKMD.png" alt="20220406165937"></p>
-</li>
-</ol>
-<h3 id="手动提交偏移量"><a href="#手动提交偏移量" class="headerlink" title="手动提交偏移量"></a>手动提交偏移量</h3><p>鉴于Kafka自动提交offset的不灵活性和不精确性(只能是按指定频率的提交)，Kafka提供了手动提交offset策略。手动提交能对偏移量更加灵活精准地控制，以保证消息不被重复消费以及消息不被丢失。可以通过将 enable.auto.commit 设为 false，然后手动提交偏移量。</p>
-<p>对于手动提交offset主要有3种方式：1.同步提交  2.异步提交  3.异步+同步 组合的方式提交。</p>
-<ol>
-<li><p>同步手动提交偏移量</p>
-<p> 同步模式下提交失败的时候一直尝试提交，直到遇到无法重试的情况下才会结束，同时同步方式下消费者线程在拉取消息会被阻塞，在broker对提交的请求做出响应之前，会一直阻塞直到偏移量提交操作成功或者在提交过程中发生异常，限制了消息的吞吐量。</p>
-</li>
-<li><p>异步手动提交偏移量+回调函数</p>
-<p> 异步手动提交offset时，消费者线程不会阻塞，提交失败的时候也不会进行重试，并且可以配合回调函数在broker做出响应的时候记录错误信息。</p>
-<p> 对于异步提交，由于不会进行失败重试，当消费者异常关闭或者触发了再均衡前，如果偏移量还未提交就会造成偏移量丢失。</p>
-</li>
-<li><p>异步+同步 组合的方式提交偏移量</p>
-<p> 针对异步提交偏移量丢失的问题，通过对消费者进行异步批次提交并且在关闭时同步提交的方式，这样即使上一次的异步提交失败，通过同步提交还能够进行补救，同步会一直重试，直到提交成功。</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/35/">35</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -751,7 +747,7 @@ consumer 4：start: 6, length: 1, topic-partition: p6
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">170</span>
+          <span class="site-state-item-count">171</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>网易互娱游戏开发工程师二面</title>
+    <url>/2022/05/12/%E7%BD%91%E6%98%93%E4%BA%92%E5%A8%B1%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E5%B7%A5%E7%A8%8B%E5%B8%88%E4%BA%8C%E9%9D%A2/</url>
+    <content><![CDATA[<ul>
+<li>自我介绍</li>
+<li>问编译器项目<ul>
+<li>寄存器优化方法</li>
+</ul>
+</li>
+<li>安卓生命周期</li>
+<li>读过哪些书，有什么收获</li>
+<li>玩过哪些游戏</li>
+<li>手撕代码<ul>
+<li>写一个游戏中的英雄的类，不用实现细节</li>
+</ul>
+</li>
+<li>设计类问题<ul>
+<li>开发一个音乐类app比如网易云音乐可能有哪些模块</li>
+<li>设计模式？</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>面经</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>阿里本地生活一面</title>
     <url>/2022/05/08/%E9%98%BF%E9%87%8C%E6%9C%AC%E5%9C%B0%E7%94%9F%E6%B4%BB%E4%B8%80%E9%9D%A2/</url>
     <content><![CDATA[<p>已挂</p>
